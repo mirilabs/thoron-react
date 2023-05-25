@@ -1,22 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './stylesheets/App.css';
+import './stylesheets/components.css';
+import map from './data/map.js';
+import Provider from './components/Provider';
+import GameWindow from './components/GameWindow';
+import Chapter from 'thoron';
 
 function App() {
+  const chapter = new Chapter({ map: map });
+  console.log(chapter);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Provider chapter={chapter}>
+          <GameWindow />
+        </Provider>
       </header>
     </div>
   );
