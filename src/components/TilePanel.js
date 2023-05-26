@@ -9,8 +9,11 @@ function TilePanel({ render }) {
     if (chapter != null && controller != null) {
       const listener = event => {
         let coords = controller.getTileCoordsAtCursor(event);
+        if (coords == null) return;
+
         let tile = chapter.terrain.getTile(coords, true);
-        if (tile == null) { return }
+        if (tile == null) return;
+        
         setData(tile)
       }
       controller.canvas.addEventListener('mouseenter', listener);
