@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
-import { ThoronContext } from "../utils/ThoronContext";
+import React, { useState, useEffect } from 'react';
+import { ThoronContext } from '../utils/ThoronContext.js';
+import Controller from '../controllers/Controller.js';
+import Renderer from '../controllers/Renderer.js';
 
 function Provider({ chapter, children }) {
   let [canvas, setCanvas] = useState(null);
+  let [controller, setController] = useState(null);
+  
+  useEffect(() => {
+    if (chapter && canvas) {
+      let renderer = new Renderer(canvas);
+      let controller = new Controller(renderer);
+      setController(controller);
+    }
+  }, [chapter, canvas])
 
-  let defaultValue = {
+  let value = {
     chapter,
-    canvas,
-    setCanvas
+    controller,
+    canvas, setCanvas
   }
 
   return (
-    <ThoronContext.Provider value={defaultValue}>
+    <ThoronContext.Provider value={value}>
       {children}
     </ThoronContext.Provider>
   )
