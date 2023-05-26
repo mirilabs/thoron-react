@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "react": "^18.2.0",
-    "thoron": "^1.0.3"
+    "thoron": "^1.0.6"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -14,7 +14,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
-  },  
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
