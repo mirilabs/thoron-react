@@ -1,4 +1,4 @@
-import defaults from "./defaults";
+import defaults from "../utils/defaults";
 
 class Renderer {
   /**
@@ -9,30 +9,21 @@ class Renderer {
    * @param {string} opts.background URL to the background image
    * @param {number} opts.tileWidth Width of a single tile, in pixels
    * @param {number} opts.tileHeight Height of a single tile, in pixels
-   * @param {Object} ctxOpts Properties of this object will be assigned to the
-   *  CanvasRenderingContext2D used for drawing (`lineWidth`, `font`, etc.)
    */
-  constructor(chapter, canvas, {
+  constructor(canvas, {
     background,
     tileWidth = defaults.TILE_SIZE,
     tileHeight = defaults.TILE_SIZE,
-    ctxOpts = {
+    grid = {
       lineWidth: 1
     }
-  }) {
+  } = {}) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-
-    this.chapter = chapter;
 
     this.background = background;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
-    this.applyOpts(ctxOpts);
-  }
-
-  applyOpts(opts) {
-    Object.assign(this.ctx, opts);
   }
 
   get width() {
@@ -42,13 +33,16 @@ class Renderer {
   get height() {
     return this.canvas.height;
   }
-
+  
+  /**
+   * Draws a new frame
+   */
   draw() {
-    this.drawBackground();
-    this.drawGrid();
+    this._drawBackground();
+    this._drawGrid();
   }
 
-  drawBackground() {
+  _drawBackground() {
     if (!this.background) { return }
 
     let img = new Image();
@@ -56,7 +50,7 @@ class Renderer {
     this.ctx.drawImage(img, 0, 0);
   }
 
-  drawGrid() {
+  _drawGrid() {
     let ctx = this.ctx;
     let x, y;
     
