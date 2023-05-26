@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThoronContext } from "../utils/ThoronContext";
 
 function Provider({ chapter, children }) {
+  let [canvas, setCanvas] = useState(null);
+
+  let defaultValue = {
+    chapter,
+    canvas,
+    setCanvas
+  }
+
   return (
-    <ThoronContext.Provider value={chapter}>
+    <ThoronContext.Provider value={defaultValue}>
       {children}
     </ThoronContext.Provider>
   )
