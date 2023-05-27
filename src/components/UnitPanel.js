@@ -1,23 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ThoronContext } from '../utils/ThoronContext';
 
-function TilePanel({ render }) {
+function UnitPanel({ render }) {
   const { chapter, controller } = useContext(ThoronContext);
   const [data, setData] = useState(null);
   
   useEffect(() => {
     if (chapter != null && controller != null) {
       const listener = event => {
-        let tile = controller.getTileAtCursor(event, chapter);
-        if (tile == null) return;
-        setData(tile)
+        let unit = controller.getUnitAtCursor(event, chapter);
+        setData(unit)
       }
-      controller.canvas.addEventListener('mouseenter', listener);
-      controller.canvas.addEventListener('mousemove', listener);
+      controller.canvas.addEventListener('mousedown', listener);
 
       return function cleanup() {
-        controller.canvas.removeEventListener('mouseenter', listener);
-        controller.canvas.removeEventListener('mousemove', listener);
+        controller.canvas.removeEventListener('mousedown', listener);
       }
     }
   }, [chapter, controller])
@@ -34,4 +31,4 @@ function TilePanel({ render }) {
   }
 }
 
-export default TilePanel;
+export default UnitPanel;

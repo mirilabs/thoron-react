@@ -10,7 +10,7 @@ function Provider({ chapter, children }) {
   useEffect(() => {
     if (chapter && canvas) {
       let renderer = new Renderer(canvas);
-      let controller = new Controller(renderer);
+      let controller = new Controller(chapter, renderer);
       setController(controller);
     }
   }, [chapter, canvas])

@@ -6,6 +6,7 @@ import chapter from './data/chapter';
 import Provider from './components/Provider';
 import GameCanvas from './components/GameCanvas';
 import TilePanel from './components/TilePanel';
+import UnitPanel from './components/UnitPanel';
 
 global.chapter = chapter;
 
@@ -16,6 +17,7 @@ function App() {
         <Provider chapter={chapter}>
           <GameCanvas />
           <TilePanel />
+          <UnitPanel />
         </Provider>
       </header>
     </div>

@@ -1,4 +1,5 @@
-import defaults from "../utils/defaults";
+import defaults from '../utils/defaults';
+import positionMixin from './positionMixin.js';
 
 class Renderer {
   /**
@@ -13,10 +14,7 @@ class Renderer {
   constructor(canvas, {
     background,
     tileWidth = defaults.TILE_SIZE,
-    tileHeight = defaults.TILE_SIZE,
-    grid = {
-      lineWidth: 1
-    }
+    tileHeight = defaults.TILE_SIZE
   } = {}) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
@@ -37,9 +35,10 @@ class Renderer {
   /**
    * Draws a new frame
    */
-  draw() {
+  draw(chapter) {
     this._drawBackground();
     this._drawGrid();
+    this.drawUnits(chapter);
   }
 
   _drawBackground() {
@@ -65,6 +64,38 @@ class Renderer {
     }
     ctx.stroke();
   }
+
+  _drawUnit(unit, [x, y]) {
+    let ctx = this.ctx;
+    let origin = this.getTilePosition(x, y, 'topLeft');
+    [x, y] = origin;
+    console.log(x, y)
+
+    if (unit.record.sprite) {
+      let img = new Image(this.tileWidth, this.tileHeight);
+      img.src = unit.record.sprite;
+      img.onload = (() => {
+        this.ctx.drawImage(img, x, y, this.tileWidth, this.tileHeight);
+      })
+    }
+    else {
+      this.ctx.fillText(unit.id, x, y, this.tileWidth);
+    }
+  }
+  
+  /**
+   * Draw unit sprites. Each unit's `record` should have a `sprite` property
+   * (url to image), or else the unit will be drawn as text (its id).
+   * @param {thoron.Chapter} chapter Chapter to draw units from
+   */
+  drawUnits(chapter) {
+    chapter.unitLayer.units.forEach(unit => {
+      let tileCoords = chapter.unitLayer.getPosition(unit);
+      this._drawUnit(unit, tileCoords)
+    });
+  }
 }
+
+Object.assign(Renderer.prototype, positionMixin);
 
 export default Renderer;
