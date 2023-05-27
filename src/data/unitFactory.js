@@ -36,7 +36,8 @@ const unitFactory = () => ({
     'sword': 0
   },
   inventory: [],
-  skills: []
+  skills: [],
+  sprite: 'https://cdn.discordapp.com/emojis/1107849361691529227.webp'
 })
 
 export default unitFactory;
