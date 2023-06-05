@@ -1,5 +1,6 @@
 import defaults from '../utils/defaults';
 import positionMixin from './positionMixin.js';
+import SortedArray from './lib/SortedArray.js';
 
 class Renderer {
   /**
@@ -10,18 +11,29 @@ class Renderer {
    * @param {string} opts.background URL to the background image
    * @param {number} opts.tileWidth Width of a single tile, in pixels
    * @param {number} opts.tileHeight Height of a single tile, in pixels
+   * @param {number} opts.tileSize This option sets both tileWidth and
+   *  tileHeight if specified
+   * @param {boolean} opts.debug If true, draws additional objects to help with
+   *  debugging
    */
   constructor(canvas, {
     background,
-    tileWidth = defaults.TILE_SIZE,
-    tileHeight = defaults.TILE_SIZE
+    tileWidth,
+    tileHeight,
+    tileSize,
+    debug = false
   } = {}) {
+    this.background = background;
+    this.tileWidth = tileSize || tileWidth || defaults.TILE_SIZE;
+    this.tileHeight = tileSize || tileHeight || defaults.TILE_SIZE;
+    this.debug = debug;
+    
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
 
-    this.background = background;
-    this.tileWidth = tileWidth;
-    this.tileHeight = tileHeight;
+    this.entities = new SortedArray((a, b) => a.z - b.z);
+
+    this.draw = this.draw.bind(this);
   }
 
   get width() {
@@ -35,64 +47,20 @@ class Renderer {
   /**
    * Draws a new frame
    */
-  draw(chapter) {
-    this._drawBackground();
-    this._drawGrid();
-    this.drawUnits(chapter);
+  draw() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    this.entities.forEach(entity => entity.draw(this.ctx));
   }
 
-  _drawBackground() {
-    if (!this.background) { return }
-
-    let img = new Image();
-    img.src = this.background;
-    this.ctx.drawImage(img, 0, 0);
+  addEntity(entity) {
+    this.entities.add(entity);
+    entity.init().then(this.draw);
   }
 
-  _drawGrid() {
-    let ctx = this.ctx;
-    let x, y;
-    
-    ctx.beginPath();
-    for (x = 0; x <= this.width; x += this.tileWidth) {
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, this.height);
-    }
-    for (y = 0; y <= this.height; y += this.tileHeight) {
-      ctx.moveTo(0, y);
-      ctx.lineTo(this.width, y);
-    }
-    ctx.stroke();
-  }
-
-  _drawUnit(unit, [x, y]) {
-    let ctx = this.ctx;
-    let origin = this.getTilePosition(x, y, 'topLeft');
-    [x, y] = origin;
-    console.log(x, y)
-
-    if (unit.record.sprite) {
-      let img = new Image(this.tileWidth, this.tileHeight);
-      img.src = unit.record.sprite;
-      img.onload = (() => {
-        this.ctx.drawImage(img, x, y, this.tileWidth, this.tileHeight);
-      })
-    }
-    else {
-      this.ctx.fillText(unit.id, x, y, this.tileWidth);
-    }
-  }
-  
-  /**
-   * Draw unit sprites. Each unit's `record` should have a `sprite` property
-   * (url to image), or else the unit will be drawn as text (its id).
-   * @param {thoron.Chapter} chapter Chapter to draw units from
-   */
-  drawUnits(chapter) {
-    chapter.unitLayer.units.forEach(unit => {
-      let tileCoords = chapter.unitLayer.getPosition(unit);
-      this._drawUnit(unit, tileCoords)
-    });
+  addEntities(...entities) {
+    entities.forEach(ent => this.entities.add(ent));
+    Promise.all(entities.map(ent => ent.init())).then(this.draw);
   }
 }
 

@@ -1,18 +1,33 @@
-import positionMixin from "./positionMixin";
+import Background from './lib/Background.js';
+import Sprite from './lib/Sprite.js';
 
 class Controller {
   constructor(chapter, renderer) {
+    this.chapter = chapter;
     this.renderer = renderer;
-    this.canvas = renderer.canvas;
-    this.tileWidth = renderer.tileWidth;
-    this.tileHeight = renderer.tileHeight;
 
-    renderer.draw(chapter);
+    let { width, height, tileWidth, tileHeight } = this.renderer;
+    renderer.addEntities(
+      new Background(null, width, height, tileWidth, tileHeight),
+      ...(this.chapter.unitLayer.units.map(unit => {
+        // Get pixel coordinates
+        let [x, y] = chapter.unitLayer.getPosition(unit);
+        [x, y] = this.renderer.getTilePosition(x, y, 'topLeft');
+
+        let src = unit.record['sprite'];
+
+        return new Sprite(src, x, y, tileWidth, tileHeight);
+      }))
+    );
   }
 
+  get canvas() { return this.renderer.canvas }
+  get tileWidth() { return this.renderer.tileWidth }
+  get tileHeight() { return this.renderer.tileHeight }
+
   getTileCoordsAtCursor(event) {
-    let [x, y] = this.getCursorPosition(event);
-    return this.getTileCoords(x, y);
+    let [x, y] = this.renderer.getCursorPosition(event);
+    return this.renderer.getTileCoords(x, y);
   }
 
   getTileAtCursor(event, chapter) {
@@ -29,7 +44,5 @@ class Controller {
     return chapter.unitLayer.getUnitAt(tileCoords);
   }
 }
-
-Object.assign(Controller.prototype, positionMixin);
 
 export default Controller;
