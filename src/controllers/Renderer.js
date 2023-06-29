@@ -1,5 +1,4 @@
 import defaults from '../utils/defaults';
-import positionMixin from './positionMixin.js';
 import SortedArray from './lib/SortedArray.js';
 
 class Renderer {
@@ -63,7 +62,5 @@ class Renderer {
     Promise.all(entities.map(ent => ent.init())).then(this.draw);
   }
 }
-
-Object.assign(Renderer.prototype, positionMixin);
 
 export default Renderer;
