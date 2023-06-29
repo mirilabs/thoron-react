@@ -5920,7 +5920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.2.0":
+"events@npm:^3.2.0, events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: f6f487ad2198aa41d878fa31452f1a3c00958f46e9019286ff4787c84aac329332ab45c9cdc8c445928fc6d7ded294b9e005a7fce9426488518017831b272780
@@ -6693,6 +6693,13 @@ __metadata:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
+  languageName: node
+  linkType: hard
+
+"heap-js@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "heap-js@npm:2.3.0"
+  checksum: 04ba26c68ab6f5f8ef8726b806648bd433a5db1eba95510b09ddb46c4c915da944078582f2c136b6aafaf1b07e69a1d9fad5b8e24143aba00b6fd403876a1b46
   languageName: node
   linkType: hard
 
@@ -8872,7 +8879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.3, nanoid@npm:^3.3.6":
+"nanoid@npm:^3.3.6":
   version: 3.3.6
   resolution: "nanoid@npm:3.3.6"
   bin:
@@ -11176,13 +11183,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"seedrandom@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "seedrandom@npm:3.0.5"
-  checksum: 728b56bc3bc1b9ddeabd381e449b51cb31bdc0aa86e27fcd0190cea8c44613d5bcb2f6bb63ed79f78180cbe791c20b8ec31a9627f7b7fc7f476fd2bdb7e2da9f
-  languageName: node
-  linkType: hard
-
 "select-hose@npm:^2.0.0":
   version: 2.0.0
   resolution: "select-hose@npm:2.0.0"
@@ -12051,20 +12051,20 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-scripts: 5.0.1
-    thoron: ^1.0.6
+    thoron: ^1.1.0
     web-vitals: ^2.1.4
   languageName: unknown
   linkType: soft
 
-"thoron@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "thoron@npm:1.0.6"
+"thoron@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "thoron@npm:1.1.0"
   dependencies:
     ajv: ^8.11.0
+    events: ^3.3.0
+    heap-js: ^2.3.0
     lodash: ^4.17.21
-    nanoid: ^3.3.3
-    seedrandom: ^3.0.5
-  checksum: 7e43aacf522ebd2e964812bdae88228b2abf5a1b7cead1c54d9d5cd9bef3e64ddc2c88c3c07d7fe269ec3eadeae82e8578420f3bbd58690753e2addf79f502bf
+  checksum: c93c63801ebaf517e6941674bef60b871c1691872d7f714fba58aa4716a7a0f30f4dab27c1b6f8f2eb2b312d1e4931c16ff6dfc35d0d978a3e06910e1edf388f
   languageName: node
   linkType: hard
 
