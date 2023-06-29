@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "react": "^18.2.0",
-    "thoron": "^1.1.1"
+    "thoron": "^1.1.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
