@@ -30,6 +30,7 @@ class Sprite extends DrawnEntity {
   }
   
   draw(ctx) {
+    if (this.image == null) return;
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 }
