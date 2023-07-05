@@ -31,6 +31,7 @@ class Renderer {
     this.ctx = canvas.getContext('2d');
 
     this.entities = new SortedArray((a, b) => a.z - b.z);
+    this.entities.byId = new Map();
 
     this.draw = this.draw.bind(this);
   }
@@ -48,18 +49,13 @@ class Renderer {
    */
   draw() {
     this.ctx.clearRect(0, 0, this.width, this.height);
-
     this.entities.forEach(entity => entity.draw(this.ctx));
   }
 
-  addEntity(entity) {
+  addEntity(id, entity) {
+    this.entities.byId.set(id, entity);
     this.entities.add(entity);
     entity.init().then(this.draw);
-  }
-
-  addEntities(...entities) {
-    entities.forEach(ent => this.entities.add(ent));
-    Promise.all(entities.map(ent => ent.init())).then(this.draw);
   }
 }
 

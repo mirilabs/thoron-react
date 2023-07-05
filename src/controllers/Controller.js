@@ -1,6 +1,7 @@
 import Background from './lib/Background.js';
 import Sprite from './lib/Sprite.js';
 import CoordinateConverter from './lib/CoordinateConverter.js';
+import Animator from './Animator.js';
 
 class Controller {
   constructor(chapter, renderer) {
@@ -9,21 +10,37 @@ class Controller {
 
     let { canvas, width, height, tileWidth, tileHeight } = this.renderer;
     this.coords = new CoordinateConverter(canvas, tileWidth, tileHeight);
+
+    this.animator = new Animator(renderer);
+
     let map = new Background(null, width, height, tileWidth, tileHeight);
-    let units = this.chapter.unitLayer.units.map(unit => {
+    renderer.addEntity("MAP", map);
+
+    this.chapter.unitLayer.units.forEach(unit => {
       // Get pixel coordinates
       let [x, y] = chapter.getPosition(unit.id);
       [x, y] = this.coords.toPixels(x, y, 'topLeft');
 
       let src = unit.record['sprite'];
-      return new Sprite(src, x, y, tileWidth, tileHeight);
-    })
-    renderer.addEntities(map, ...units);
+      let sprite = new Sprite(src, x, y, tileWidth, tileHeight);
+      renderer.addEntity(unit.id, sprite)
+    });
+
+    this._registerEvents();
   }
 
+  _registerEvents() {
+    this.canvas.addEventListener('mousedown', event => {
+      this.selectUnit(this.getUnitAtCursor(event));
+    })
+  }
+
+  /**
+   * Canvas events -> Controller -> Chapter events
+   * Chapter events -> Animator -> Generate new animations
+   */
+
   get canvas() { return this.renderer.canvas }
-  get tileWidth() { return this.renderer.tileWidth }
-  get tileHeight() { return this.renderer.tileHeight }
 
   /**
    * Determine position of the cursor relative to the canvas origin
@@ -40,18 +57,18 @@ class Controller {
     return this.coords.toTiles(x, y);
   }
 
-  getTileAtCursor(event, chapter) {
+  getTileAtCursor(event) {
     let tileCoords = this.getTileCoordsAtCursor(event);
     if (tileCoords == null) return null;
 
-    return chapter.terrain.getTile(tileCoords, true);
+    return this.chapter.terrain.getTile(tileCoords, true);
   }
 
-  getUnitAtCursor(event, chapter) {
+  getUnitAtCursor(event) {
     let tileCoords = this.getTileCoordsAtCursor(event);
     if (tileCoords == null) return null;
 
-    return chapter.unitLayer.getUnitAt(tileCoords);
+    return this.chapter.unitLayer.getUnitAt(tileCoords);
   }
 }
 
