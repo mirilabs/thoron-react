@@ -1,9 +1,11 @@
 class SortedArray extends Array {
-  constructor(compareFn, items = []) {
-    super(...items);
-    
-    this.compareFn = compareFn;
+  constructor(compareFn = null, ...items) {
+    super(...(items.sort(compareFn)));
+    this.compareFn = compareFn || SortedArray.MIN;
   }
+
+  static MIN(a, b) { return a - b }
+  static MAX(a, b) { return b - a }
 
   sort() {
     return super.sort(this.compareFn);
