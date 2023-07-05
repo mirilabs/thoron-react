@@ -2,6 +2,7 @@ class DrawnEntity {
   constructor(x, y, w = 0, h = 0, opts = {}) {
     this.transform = { x, y, w, h }
     this._zIndex = opts.z || 0;
+    this._customDraw = opts.draw || (() => {});
   }
 
   get x() { return this.transform.x }
@@ -16,7 +17,7 @@ class DrawnEntity {
   }
 
   draw(ctx) {
-    throw new Error('This method should be overriden');
+    this._customDraw(ctx);
   }
 }
 
