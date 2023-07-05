@@ -1,4 +1,3 @@
-import Background from './draw/Background.js';
 import Sprite from './draw/Sprite.js';
 import CoordinateConverter from './lib/CoordinateConverter.js';
 import Animator from './Animator.js';
