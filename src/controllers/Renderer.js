@@ -1,5 +1,6 @@
 import defaults from '../utils/defaults';
 import SortedArray from './lib/SortedArray.js';
+import RendererLayer from './RendererLayer.js';
 
 class Renderer {
   /**
@@ -16,24 +17,22 @@ class Renderer {
    *  debugging
    */
   constructor(canvas, {
-    background,
     tileWidth,
     tileHeight,
     tileSize,
     debug = false
   } = {}) {
-    this.background = background;
-    this.tileWidth = tileSize || tileWidth || defaults.TILE_SIZE;
-    this.tileHeight = tileSize || tileHeight || defaults.TILE_SIZE;
-    this.debug = debug;
-    
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    this.params = {
+      tileWidth: tileSize || tileWidth || defaults.TILE_SIZE,
+      tileHeight: tileSize || tileHeight || defaults.TILE_SIZE,
+      canvas,
+      ctx: canvas.getContext('2d'),
+      debug
+    }
 
-    this.entities = new SortedArray((a, b) => a.z - b.z);
-    this.entities.byId = new Map();
-
-    this.draw = this.draw.bind(this);
+    this._layerIds = new SortedArray();
+    this._layers = {}
+    this._namedLayers = {}
   }
 
   get width() {
@@ -44,18 +43,58 @@ class Renderer {
     return this.canvas.height;
   }
   
+  get layers() {
+    return this._layerIds.map(id => this._layers[id]);
+  }
+  
   /**
    * Draws a new frame
    */
   draw() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.entities.forEach(entity => entity.draw(this.ctx));
+    this.clear();
+    this.layers.forEach(layer => layer.draw());
+  }
+  
+  /**
+   * Clears canvas
+   */
+  clear() {
+    let { ctx, width, height } = this.params;
+    ctx.clearRect(0, 0, width, height);
   }
 
-  addEntity(id, entity) {
-    this.entities.byId.set(id, entity);
-    this.entities.add(entity);
-    entity.init().then(this.draw);
+  /**
+   * Gets a layer
+   * @param {string|number} id Layer's name or z-index
+   * @returns The layer (one will be created if it doesn't exist).
+   */
+  layer(id) {
+    return this._namedLayers[id] ??
+      this._layers[id] ??
+      this.addLayer(`layer ${id}`, id)
+  }
+
+  /**
+   * Creates a new layer
+   * @param {string} name The layer will be accessible by this name.
+   * @param {number} zIndex Layers with lower z values are drawn first.
+   */
+  addLayer(name, zIndex) {
+    layer = new RendererLayer(this, id);
+    layer.name = name;
+
+    this._layerIds.add(zIndex);
+    this._layers[id] = layer;
+    this._namedLayers[name] = layer;
+    return layer;
+  }
+
+  removeLayer(id) {
+    let { name } = this.layer(id);
+
+    this._layerIds.splice(this._layerIds.indexOf(id), 1);
+    delete this._layers[id];
+    delete this._namedLayers[name];
   }
 }
 
