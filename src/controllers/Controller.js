@@ -1,5 +1,5 @@
-import Background from './lib/Background.js';
-import Sprite from './lib/Sprite.js';
+import Background from './draw/Background.js';
+import Sprite from './draw/Sprite.js';
 import CoordinateConverter from './lib/CoordinateConverter.js';
 import Animator from './Animator.js';
 
@@ -7,14 +7,10 @@ class Controller {
   constructor(chapter, renderer) {
     this.chapter = chapter;
     this.renderer = renderer;
+    this.animator = new Animator(renderer);
 
     let { canvas, width, height, tileWidth, tileHeight } = this.renderer;
     this.coords = new CoordinateConverter(canvas, tileWidth, tileHeight);
-
-    this.animator = new Animator(renderer);
-
-    let map = new Background(null, width, height, tileWidth, tileHeight);
-    renderer.addEntity("MAP", map);
 
     this.chapter.unitLayer.units.forEach(unit => {
       // Get pixel coordinates
@@ -34,11 +30,6 @@ class Controller {
       this.selectUnit(this.getUnitAtCursor(event));
     })
   }
-
-  /**
-   * Canvas events -> Controller -> Chapter events
-   * Chapter events -> Animator -> Generate new animations
-   */
 
   get canvas() { return this.renderer.canvas }
 
@@ -69,6 +60,18 @@ class Controller {
     if (tileCoords == null) return null;
 
     return this.chapter.unitLayer.getUnitAt(tileCoords);
+  }
+
+  
+  /**
+   * Canvas events -> Controller -> Chapter events
+   * Chapter events -> Animator -> Generate new animations
+   */
+  selectTileAtCursor(event) {
+    let tileCoords = this.getTileCoordsAtCursor(event);
+    if (tileCoords == null) return;
+
+    this.renderer.setHighlight
   }
 }
 
