@@ -1,7 +1,11 @@
 class SortedArray extends Array {
   constructor(compareFn = null, ...items) {
-    super(...(items.sort(compareFn)));
-    this.compareFn = compareFn || SortedArray.MIN;
+    if (items.length === 0)
+      super()
+    else
+      super(...(items.sort(compareFn)));
+      
+    this.compareFn = compareFn ?? SortedArray.MIN;
   }
 
   static MIN(a, b) { return a - b }
