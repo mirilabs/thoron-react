@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ThoronContext } from '../utils/ThoronContext.js';
-import Controller from '../controllers/Controller.js';
-import Renderer from '../controllers/Renderer.js';
-import ChapterRenderer from '../controllers/ChapterRenderer.js';
-import CanvasEventHandler from '../controllers/CanvasEventHandler.js';
-import CoordinateConverter from '../controllers/lib/CoordinateConverter.js';
+import { ThoronContext } from './ThoronContext.js';
+import Controller from '../control/Controller.js';
+import ChapterRenderer from '../view/ChapterRenderer.js';
+import CanvasEventHandler from '../control/CanvasEventHandler.js';
+import CoordinateConverter from '../lib/CoordinateConverter.js';
 
 function Provider({ chapter, children }) {
   let [canvas, setCanvas] = useState(null);

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { ThoronContext } from "../utils/ThoronContext.js";
+import { ThoronContext } from "./ThoronContext.js";
 import defaults from '../utils/defaults.js';
 
 function GameWindow({ rendererOpts = {} }) {
