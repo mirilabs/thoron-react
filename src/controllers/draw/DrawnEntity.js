@@ -21,12 +21,4 @@ class DrawnEntity {
   }
 }
 
-class DrawCommand extends DrawnEntity {
-  constructor(drawFn, x, y, w, h) {
-    super(x, y, w, h);
-    this.draw = drawFn.bind(this);
-  }
-}
-
 export default DrawnEntity;
-export { DrawCommand }

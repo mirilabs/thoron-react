@@ -35,13 +35,13 @@ class Renderer {
     this._namedLayers = {}
   }
 
-  get width() {
-    return this.canvas.width;
-  }
+  get canvas() { return this.params.canvas }
 
-  get height() {
-    return this.canvas.height;
-  }
+  get width() { return this.canvas.width }
+  get height() { return this.canvas.height }
+
+  get tileWidth() { return this.params.tileWidth }
+  get tileHeight() { return this.params.tileHeight }
   
   get layers() {
     return this._layerIds.map(id => this._layers[id]);
@@ -80,11 +80,11 @@ class Renderer {
    * @param {number} zIndex Layers with lower z values are drawn first.
    */
   addLayer(name, zIndex) {
-    layer = new RendererLayer(this, id);
+    let layer = new RendererLayer(this, zIndex);
     layer.name = name;
 
     this._layerIds.add(zIndex);
-    this._layers[id] = layer;
+    this._layers[zIndex] = layer;
     this._namedLayers[name] = layer;
     return layer;
   }

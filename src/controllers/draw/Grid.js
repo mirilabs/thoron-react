@@ -22,3 +22,5 @@ class Grid extends DrawnEntity {
     ctx.stroke();
   }
 }
+
+export default Grid;
