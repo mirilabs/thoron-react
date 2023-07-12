@@ -1,47 +1,22 @@
-import defaults from '../utils/defaults';
 import SortedArray from './lib/SortedArray.js';
 import RendererLayer from './RendererLayer.js';
 
 class Renderer {
   /**
-   * Draws game state onto a canvas
-   * @param {thoron.Chapter} chapter Chapter instance
+   * Creates a renderer that can draw entities to a canvas
    * @param {HTMLCanvasElement} canvas The target <canvas> element
-   * @param {Object} opts
-   * @param {string} opts.background URL to the background image
-   * @param {number} opts.tileWidth Width of a single tile, in pixels
-   * @param {number} opts.tileHeight Height of a single tile, in pixels
-   * @param {number} opts.tileSize This option sets both tileWidth and
-   *  tileHeight if specified
-   * @param {boolean} opts.debug If true, draws additional objects to help with
-   *  debugging
    */
-  constructor(canvas, {
-    tileWidth,
-    tileHeight,
-    tileSize,
-    debug = false
-  } = {}) {
-    this.params = {
-      tileWidth: tileSize || tileWidth || defaults.TILE_SIZE,
-      tileHeight: tileSize || tileHeight || defaults.TILE_SIZE,
-      canvas,
-      ctx: canvas.getContext('2d'),
-      debug
-    }
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
 
     this._layerIds = new SortedArray();
     this._layers = {}
     this._namedLayers = {}
   }
 
-  get canvas() { return this.params.canvas }
-
   get width() { return this.canvas.width }
   get height() { return this.canvas.height }
-
-  get tileWidth() { return this.params.tileWidth }
-  get tileHeight() { return this.params.tileHeight }
   
   get layers() {
     return this._layerIds.map(id => this._layers[id]);
@@ -59,7 +34,8 @@ class Renderer {
    * Clears canvas
    */
   clear() {
-    let { ctx, width, height } = this.params;
+    console.log('clearing')
+    let { ctx, width, height } = this;
     ctx.clearRect(0, 0, width, height);
   }
 
@@ -77,14 +53,14 @@ class Renderer {
   /**
    * Creates a new layer
    * @param {string} name The layer will be accessible by this name.
-   * @param {number} zIndex Layers with lower z values are drawn first.
+   * @param {number} id Layers with lower id values are drawn first.
    */
-  addLayer(name, zIndex) {
-    let layer = new RendererLayer(this, zIndex);
+  addLayer(name, id) {
+    let layer = new RendererLayer(this, id);
     layer.name = name;
 
-    this._layerIds.add(zIndex);
-    this._layers[zIndex] = layer;
+    this._layerIds.add(id);
+    this._layers[id] = layer;
     this._namedLayers[name] = layer;
     return layer;
   }
@@ -95,6 +71,16 @@ class Renderer {
     this._layerIds.splice(this._layerIds.indexOf(id), 1);
     delete this._layers[id];
     delete this._namedLayers[name];
+  }
+
+  removeAllLayers() {
+    this._layerIds.forEach(id => this.removeLayer(id));
+  }
+
+  listEntities() {
+    return this.layers.reduce((list, currentLayer) => {
+      return list.concat(currentLayer.entities);
+    }, [])
   }
 }
 

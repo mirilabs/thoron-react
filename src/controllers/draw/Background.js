@@ -5,7 +5,6 @@ class Background extends Sprite {
     super(src, 0, 0, width, height);
 
     this.src = src;
-    this.z = -1
   }
 
   draw(ctx) {
