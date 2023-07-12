@@ -16,6 +16,7 @@ class Subscriber {
 
   _initializeState() {
     let { chapter, renderer } = this;
+    let { width, height, tileWidth, tileHeight } = renderer;
 
     renderer.addLayer('background', 0);
     renderer.addLayer('grid', 1);
@@ -24,10 +25,7 @@ class Subscriber {
     let bg = new Background(null, renderer.width, renderer.height);
     renderer.layer('background').addEntity('BACKGROUND', bg);
 
-    let grid = new Grid(
-      renderer.width, renderer.height,
-      renderer.tileWidth, renderer.tileHeight
-    );
+    let grid = new Grid(width, height, tileWidth, tileHeight);
     renderer.layer('grid').addEntity('GRID', grid);
 
     chapter.units.forEach(unit => {

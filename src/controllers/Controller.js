@@ -1,4 +1,3 @@
-import Sprite from './draw/Sprite.js';
 import CoordinateConverter from './lib/CoordinateConverter.js';
 import Animator from './Animator.js';
 
@@ -8,26 +7,10 @@ class Controller {
     this.renderer = renderer;
     this.animator = new Animator(renderer);
 
-    let { canvas, width, height, tileWidth, tileHeight } = this.renderer;
+    let { canvas, tileWidth, tileHeight } = this.renderer;
     this.coords = new CoordinateConverter(canvas, tileWidth, tileHeight);
 
-    this.chapter.unitLayer.units.forEach(unit => {
-      // Get pixel coordinates
-      let [x, y] = chapter.getPosition(unit.id);
-      [x, y] = this.coords.toPixels(x, y, 'topLeft');
-
-      let src = unit.record['sprite'];
-      let sprite = new Sprite(src, x, y, tileWidth, tileHeight);
-      renderer.addEntity(unit.id, sprite)
-    });
-
     this._registerEvents();
-  }
-
-  _registerEvents() {
-    this.canvas.addEventListener('mousedown', event => {
-      this.selectUnit(this.getUnitAtCursor(event));
-    })
   }
 
   get canvas() { return this.renderer.canvas }
@@ -60,7 +43,6 @@ class Controller {
 
     return this.chapter.unitLayer.getUnitAt(tileCoords);
   }
-
   
   /**
    * Canvas events -> Controller -> Chapter events
@@ -70,7 +52,21 @@ class Controller {
     let tileCoords = this.getTileCoordsAtCursor(event);
     if (tileCoords == null) return;
 
-    this.renderer.setHighlight
+    // this.renderer.setHighlight
+  }
+
+  _registerEvents(canvas) {
+    this.canvas.addEventListener('mousedown', event => {
+      // this.selectUnit(this.getUnitAtCursor(event));
+    })
+  }
+
+  setCanvas(canvas) {
+    this._registerEvents(canvas)
+  }
+
+  unsetCanvas() {
+
   }
 }
 
