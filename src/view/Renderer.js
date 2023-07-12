@@ -1,4 +1,4 @@
-import SortedArray from './lib/SortedArray.js';
+import SortedArray from '../lib/SortedArray.js';
 import RendererLayer from './RendererLayer.js';
 
 class Renderer {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ThoronContext } from '../utils/ThoronContext';
+import { ThoronContext } from './ThoronContext';
 
 function UnitPanel({ render }) {
   const { chapter, canvasEventHandler } = useContext(ThoronContext);
