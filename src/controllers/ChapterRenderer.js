@@ -1,22 +1,36 @@
-import CoordinateConverter from "./lib/CoordinateConverter";
+import Renderer from './Renderer';
 import Background from './draw/Background';
 import Grid from './draw/Grid';
 import Sprite from './draw/Sprite';
 
-class Subscriber {
-  constructor(chapter, renderer) {
-    this.chapter = chapter;
-    this.renderer = renderer;
+class ChapterRenderer {
+  constructor(canvas, coordinateConverter) {
+    this.renderer = new Renderer(canvas);
+    this.coords = coordinateConverter;
 
-    let { canvas, tileWidth, tileHeight } = this.renderer;
-    this.coords = new CoordinateConverter(canvas, tileWidth, tileHeight);
-
-    this._initializeState()
+    this.handleChapterEvent = this.handleChapterEvent.bind(this);
   }
 
-  _initializeState() {
-    let { chapter, renderer } = this;
-    let { width, height, tileWidth, tileHeight } = renderer;
+  handleChapterEvent(eventName, ...params) {
+    this[eventName](...params);
+  }
+
+  subscribe(chapter) {
+    this._initialize(chapter);
+    // chapter.events.all(this.handleChapterEvent);
+  }
+
+  unsubscribe() {
+    this.renderer.removeAllLayers();
+    // this.chapter.events.off()
+    delete this.chapter;
+  }
+
+  _initialize(chapter) {
+    this.chapter = chapter;
+    let renderer = this.renderer;
+    let { width, height } = renderer;
+    let { tileWidth, tileHeight } = this.coords;
 
     renderer.addLayer('background', 0);
     renderer.addLayer('grid', 1);
@@ -41,12 +55,4 @@ class Subscriber {
   }
 }
 
-function subscribe(chapter, renderer) {
-  const sub = new Subscriber(chapter, renderer);
-  const subscription = (event, params) => sub[event](params);
-
-  // chapter.events.all(subscription)
-  // return () => { chapter.events.off(subscription) }
-}
-
-export default subscribe;
+export default ChapterRenderer;

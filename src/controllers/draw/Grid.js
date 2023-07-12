@@ -3,6 +3,11 @@ import DrawnEntity from './DrawnEntity';
 class Grid extends DrawnEntity {
   constructor(width, height, tileWidth, tileHeight) {
     super(0, 0, width, height);
+
+    if (isNaN(tileWidth) || isNaN(tileHeight)) {
+      throw new Error('One or both tile dimesions is NaN')
+    }
+
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
   }

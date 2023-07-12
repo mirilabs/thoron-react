@@ -1,7 +1,7 @@
 class RendererLayer {
   constructor(renderer, id) {
     this.id = id;
-    this.params = renderer.params;
+    this.ctx = renderer.ctx;
 
     this.draw = this.draw.bind(this);
     this.remove = () => {
@@ -12,6 +12,10 @@ class RendererLayer {
       ids: [],
       byId: {}
     }
+  }
+
+  get entities() {
+    return this._entities.ids.map(id => this._entities.byId[id]);
   }
 
   addEntity(id, entity) {
@@ -28,9 +32,8 @@ class RendererLayer {
   }
 
   draw() {
-    this._entities.ids.forEach(id => {
-      let entity = this._entities.byId[id];
-      entity.draw(this.params.ctx);
+    this.entities.forEach(entity => {
+      entity.draw(this.ctx);
     })
   }
 }

@@ -15,17 +15,13 @@ class Sprite extends DrawnEntity {
     return new Promise((resolve, reject) => {
       let img = new Image(this.width, this.height);
 
-      if (!this.src) {
-        resolve(img);
+      if (this.src == null) {
+        resolve(img)
       }
 
       img.src = this.src;
-      img.onload = () => {
-        resolve(img);
-      }
-      img.onerror = err => {
-        reject(err);
-      }
+      img.onload = () => { resolve(img) }
+      img.onerror = err => { reject(err) }
     })
   }
   

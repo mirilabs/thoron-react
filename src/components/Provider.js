@@ -2,25 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { ThoronContext } from '../utils/ThoronContext.js';
 import Controller from '../controllers/Controller.js';
 import Renderer from '../controllers/Renderer.js';
-import subscribe from '../controllers/subscribe.js';
+import ChapterRenderer from '../controllers/ChapterRenderer.js';
+import CanvasEventHandler from '../controllers/CanvasEventHandler.js';
+import CoordinateConverter from '../controllers/lib/CoordinateConverter.js';
 
 function Provider({ chapter, children }) {
   let [canvas, setCanvas] = useState(null);
-  let [controller, setController] = useState(null);
+  let [api, setApi] = useState(null);
   
   useEffect(() => {
     if (chapter && canvas) {
-      let renderer = new Renderer(canvas);
-      let controller = new Controller(chapter, renderer);
-      setController(controller);
+      let coords = new CoordinateConverter(64, 64, canvas);
 
-      subscribe(chapter, renderer);
+      let canvasEventHandler = new CanvasEventHandler(coords);
+      canvasEventHandler.attachCanvas(canvas);
+
+      let renderer = new ChapterRenderer(canvas, coords);
+      renderer.subscribe(chapter);
+
+      let controller = new Controller(chapter, canvasEventHandler);
+
+      setApi({
+        controller,
+        canvasEventHandler,
+        renderer
+      });
+
+      return function cleanup() {
+        canvasEventHandler.detachCanvas(canvas);
+        renderer.unsubscribe();
+      }
     }
   }, [chapter, canvas])
 
   let value = {
     chapter,
-    controller,
+    ...api,
     canvas, setCanvas
   }
 

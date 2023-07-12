@@ -2,25 +2,23 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ThoronContext } from '../utils/ThoronContext';
 
 function TilePanel({ render }) {
-  const { chapter, controller } = useContext(ThoronContext);
+  const { chapter, canvasEventHandler } = useContext(ThoronContext);
   const [data, setData] = useState(null);
   
   useEffect(() => {
-    if (chapter != null && controller != null) {
-      const listener = event => {
-        let tile = controller.getTileAtCursor(event, chapter);
+    if (chapter != null && canvasEventHandler != null) {
+      const cb = (x, y) => {
+        let tile = chapter.terrain.getTile([x, y], true);
         if (tile == null) return;
         setData(tile)
       }
-      controller.canvas.addEventListener('mouseenter', listener);
-      controller.canvas.addEventListener('mousemove', listener);
+      canvasEventHandler.on('mousemove', cb);
 
       return function cleanup() {
-        controller.canvas.removeEventListener('mouseenter', listener);
-        controller.canvas.removeEventListener('mousemove', listener);
+        canvasEventHandler.off('mousemove', cb);
       }
     }
-  }, [chapter, controller])
+  }, [chapter, canvasEventHandler])
 
   if (render) {
     return render(data);

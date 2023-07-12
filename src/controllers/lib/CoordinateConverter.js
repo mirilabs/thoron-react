@@ -1,9 +1,9 @@
 class CoordinateConverter {
-  constructor({ width, height }, tileWidth, tileHeight) {
-    this.maxWidth = width;
-    this.maxHeight = height;
+  constructor(tileWidth, tileHeight, { width, height }) {
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
+    this.maxWidth = width ?? Number.POSITIVE_INFINITY;
+    this.maxHeight = height ?? Number.POSITIVE_INFINITY;
   }
 
   /**

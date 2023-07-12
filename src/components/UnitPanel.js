@@ -2,22 +2,22 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ThoronContext } from '../utils/ThoronContext';
 
 function UnitPanel({ render }) {
-  const { chapter, controller } = useContext(ThoronContext);
+  const { chapter, canvasEventHandler } = useContext(ThoronContext);
   const [data, setData] = useState(null);
   
   useEffect(() => {
-    if (chapter != null && controller != null) {
-      const listener = event => {
-        let unit = controller.getUnitAtCursor(event, chapter);
+    if (chapter != null && canvasEventHandler != null) {
+      const cb = (x, y) => {
+        let unit = chapter.getUnitAt([x, y]);
         setData(unit)
       }
-      controller.canvas.addEventListener('mousedown', listener);
+      canvasEventHandler.on('mousedown', cb)
 
       return function cleanup() {
-        controller.canvas.removeEventListener('mousedown', listener);
+        canvasEventHandler.off('mousedown', cb)
       }
     }
-  }, [chapter, controller])
+  }, [chapter, canvasEventHandler])
 
   if (render) {
     return render(data);
