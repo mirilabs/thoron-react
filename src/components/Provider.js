@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ThoronContext } from './ThoronContext.js';
-import Controller from '../control/Controller.js';
-import ChapterRenderer from '../view/ChapterRenderer.js';
-import CanvasEventHandler from '../control/CanvasEventHandler.js';
+import Controller from '../game/controller/Controller.js';
+import ChapterRenderer from '../game/renderer/ChapterRenderer.js';
+import CanvasEventHandler from '../game/controller/CanvasEventHandler.js';
 import CoordinateConverter from '../lib/CoordinateConverter.js';
 
 function Provider({ chapter, children }) {
