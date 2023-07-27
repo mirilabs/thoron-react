@@ -17,6 +17,10 @@ class Layer {
     return this._entities.ids.map(id => this._entities.byId[id]);
   }
 
+  getEntity(id) {
+    return this._entities.byId[id];
+  }
+
   addEntity(id, entity) {
     this._entities.ids.push(id);
     this._entities.byId[id] = entity;
@@ -31,6 +35,8 @@ class Layer {
   }
 
   removeEntity(id) {
+    this.getEntity(id).onDestroy();
+
     this._entities.ids = this._entities.ids.splice(
       this._entities.ids.indexOf(id), 1
     )
