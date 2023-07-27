@@ -20,19 +20,13 @@ class Controller {
 
   selectTile(x, y) {
     let unit = this.chapter.getUnitAt([x, y]);
-    this.selectedUnit = unit;
     this.events.emit('select_unit', unit);
-
-    let tile = this.chapter.terrain.getTile([x, y], true);
-    this.selectedTile = tile;
-    this.events.emit('select_tile', tile);
+    this.selectedUnit = unit;
   }
 
   hover(x, y) {
-    if (this.selectedTile == null) {
-      let tile = this.chapter.terrain.getTile([x, y], true);
-      this.events.emit('select_tile', tile);
-    }
+    let tile = this.chapter.terrain.getTile([x, y], true);
+    this.events.emit('select_tile', tile);
   }
 
   dragStart(x, y) {
@@ -45,7 +39,7 @@ class Controller {
   dragMove(x, y) {
     if (!this.dragging) return;
     if (this.draggingUnit) {
-      this.events.emit('drag_unit')
+      this.events.emit('drag_unit', this.selectedUnit, x, y);
     }
   }
 
