@@ -49,8 +49,7 @@ class Game {
     scene.addLayer(2, 'units');
     this.chapter.units.forEach(unit => {
       // Create entity
-      let src = unit.record['sprite'];
-      let ent = Unit(this.tileWidth, this.tileHeight, src);
+      let ent = Unit(unit, this.tileWidth, this.tileHeight);
       scene.layer('units').addEntity(unit.id, ent);
       
       // Move to initial position

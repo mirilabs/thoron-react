@@ -25,11 +25,21 @@ function Grid(width, height, tileWidth, tileHeight) {
     })
 }
 
-function Unit(width, height, src) {
+function Unit(unit, width, height) {
+  let spriteUrl = unit.record['sprite'];
+
   return new Entity({ isPointerTarget: true })
     .withPosition(0, 0)
     .withRect(width, height)
-    .withSprite(src);
+    .withSprite(spriteUrl)
+
+    .withPointerEvents()
+    .withBehavior({
+      onMouseDown({ x, y, target }) {
+        if (target === this)
+          console.log(this)
+      }
+    })
 }
 
 export {
