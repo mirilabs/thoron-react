@@ -15,6 +15,7 @@ const sprite = {
 
   async loadSprite() {
     this.image = await this._load();
+    this.draw(this.getLayer().ctx);
   },
   
   draw(ctx) {
@@ -28,7 +29,7 @@ function withSprite(url) {
     spriteUrl: url,
     ...sprite
   })
-  this.onInit(this.loadSprite.bind(this));
+  this.withBehavior({ init: this.loadSprite.bind(this) });
 
   return this;
 }

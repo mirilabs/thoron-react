@@ -1,12 +1,11 @@
 class Layer {
-  constructor(renderer, id) {
+  constructor(scene, id) {
     this.id = id;
-    this.ctx = renderer.ctx;
+    this.ctx = scene.ctx;
 
     this.draw = this.draw.bind(this);
-    this.remove = () => {
-      renderer.removeLayer(id);
-    }
+    this.getScene = () => { return scene }
+    this.remove = () => { scene.removeLayer(this.id) }
 
     this._entities = {
       ids: [],
@@ -21,8 +20,11 @@ class Layer {
   addEntity(id, entity) {
     this._entities.ids.push(id);
     this._entities.byId[id] = entity;
-    entity.init().then(this.draw);
-
+    
+    entity.getLayer = () => { return this }
+    entity.getScene = this.getScene;
+    entity.init();
+    
     return this;
   }
 
