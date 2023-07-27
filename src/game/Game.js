@@ -41,7 +41,6 @@ class Game {
     let bg = Background(width, height, null)
     scene.addLayer(0, 'background') 
       .addEntity('BACKGROUND', bg)
-      // https://i.ytimg.com/vi/z4k9fPvw_LQ/hqdefault.jpg
 
     let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight)
     scene.addLayer(1, 'grid')

@@ -4,8 +4,8 @@ import withRect from './components/withRect';
 import withSprite from './components/withSprite';
 
 class Entity {
-  constructor(id) {
-    if (id) this.id = id;
+  constructor(opts) {
+    Object.assign(this, opts);
   }
 
   static addMixin(mixin) {
@@ -35,7 +35,7 @@ class Entity {
   /**
    * Add behavior to an Entity
    * @param {*} behavior Object with key: event, value: the function to be
-   *  called when the event occurs. Example: `{ init() { this.draw() } }`
+   *  called when the event occurs. Example: `{ onInit() { this.draw() } }`
    */
   withBehavior(behavior) {
     Object.keys(behavior).forEach(event => {
@@ -56,7 +56,13 @@ class Entity {
   .forEach(mixin => Entity.addMixin(mixin));
 
 [
-  'init'
+  'onInit',
+  'onMouseDown',
+  'onMouseDownGlobal',
+  'onMouseMove',
+  'onMouseMoveGlobal',
+  'onMouseUp',
+  'onMouseUpGlobal'
 ]
   .forEach(event => Entity.addEvent(event));
 
