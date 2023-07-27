@@ -1,40 +1,75 @@
+import EventEmitter from '../../lib/EventEmitter';
+
 class Controller {
   constructor(chapter, canvasEventHandler) {
     this.chapter = chapter;
     this.canvasEventHandler = canvasEventHandler;
-
-    this.coords = canvasEventHandler.coords;
+    
+    this.events = new EventEmitter();
+    
+    this.listen(canvasEventHandler);
   }
 
-  getTileCoordsAtCursor(event) {
-    let [x, y] = this.canvasEventHandler.getCursorTileCoords();
-    return this.coords.toTiles(x, y);
+  listen(canvasEventHandler) {
+    canvasEventHandler.on('mousedown', this.selectTile.bind(this));
+    canvasEventHandler.on('mousemove', this.hover.bind(this));
+    canvasEventHandler.on('mouseup', this.mouseUp.bind(this));
+
+    canvasEventHandler.on('mousedown', this.dragStart.bind(this));
   }
 
-  getTileAtCursor(event) {
-    let tileCoords = this.getTileCoordsAtCursor(event);
-    if (tileCoords == null) return null;
+  selectTile(x, y) {
+    let unit = this.chapter.getUnitAt([x, y]);
+    this.selectedUnit = unit;
+    this.events.emit('select_unit', unit);
 
-    return this.chapter.terrain.getTile(tileCoords, true);
+    let tile = this.chapter.terrain.getTile([x, y], true);
+    this.selectedTile = tile;
+    this.events.emit('select_tile', tile);
   }
 
-  getUnitAtCursor(event) {
-    let tileCoords = this.getTileCoordsAtCursor(event);
-    if (tileCoords == null) return null;
-
-    return this.chapter.unitLayer.getUnitAt(tileCoords);
-  }
-  
-  selectTileAtCursor(event) {
-    let tileCoords = this.getTileCoordsAtCursor(event);
-    if (tileCoords == null) return;
-
-    // this.renderer.setHighlight
+  hover(x, y) {
+    if (this.selectedTile == null) {
+      let tile = this.chapter.terrain.getTile([x, y], true);
+      this.events.emit('select_tile', tile);
+    }
   }
 
-  mouseDown(event) {
-    this.selectedUnit = this.getUnitAtCursor(event) ?? null;
-    console.log(this.selectedUnit);
+  dragStart(x, y) {
+    this.dragging = true;
+    if (this.selectedUnit != null) {
+      this.draggingUnit = true;
+    }
+  }
+
+  dragMove(x, y) {
+    if (!this.dragging) return;
+    if (this.draggingUnit) {
+      this.events.emit('drag_unit')
+    }
+  }
+
+  dragEnd(x, y) {
+    if (!this.dragging) return;
+    this.events.emit('move_unit', this.selectedUnit, x, y);
+    this.dragging = false;
+  }
+
+  mouseMove(x, y) {
+    this.events.emit('')
+  }
+
+  mouseUp(x, y) {
+    if (this.dragging) {
+      // drop (finish drag)
+      this.events.emit('move_unit', this.selectedUnit, x, y);
+    }
+
+    if (this.selectedUnit != null) {
+
+    }
+
+    this.dragging = false;
   }
 }
 
