@@ -29,7 +29,15 @@ function Unit(width, height, src) {
   return new Entity({ isPointerTarget: true })
     .withPosition(0, 0)
     .withRect(width, height)
-    .withSprite(src);
+    .withSprite(src)
+
+    .withPointerEvents()
+    .withBehavior({
+      onGlobalMouseDown({ x, y, target }) {
+        if (target === this)
+          console.log(this)
+      }
+    })
 }
 
 export {

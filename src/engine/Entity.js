@@ -2,6 +2,7 @@ import withPosition from './components/withPosition';
 import withDraw from './components/withDraw';
 import withRect from './components/withRect';
 import withSprite from './components/withSprite';
+import withPointerEvents from './components/withPointerEvents';
 
 class Entity {
   constructor(opts) {
@@ -51,18 +52,20 @@ class Entity {
   withPosition,
   withDraw,
   withRect,
-  withSprite
+  withSprite,
+  withPointerEvents
 ]
   .forEach(mixin => Entity.addMixin(mixin));
 
 [
   'onInit',
+  'onDestroy',
   'onMouseDown',
-  'onMouseDownGlobal',
   'onMouseMove',
-  'onMouseMoveGlobal',
   'onMouseUp',
-  'onMouseUpGlobal'
+  'onGlobalMouseDown',
+  'onGlobalMouseMove',
+  'onGlobalMouseUp'
 ]
   .forEach(event => Entity.addEvent(event));
 
