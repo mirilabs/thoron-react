@@ -1,4 +1,4 @@
-class RendererLayer {
+class Layer {
   constructor(renderer, id) {
     this.id = id;
     this.ctx = renderer.ctx;
@@ -23,12 +23,7 @@ class RendererLayer {
     this._entities.byId[id] = entity;
     entity.init().then(this.draw);
 
-    return new Promise((resolve, reject) => {
-      entity.init()
-        .then(this.draw)
-        .then(resolve(entity))
-        .catch(e => reject(e));
-    })
+    return this;
   }
 
   draw() {
@@ -38,4 +33,4 @@ class RendererLayer {
   }
 }
 
-export default RendererLayer;
+export default Layer;
