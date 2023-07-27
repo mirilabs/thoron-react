@@ -25,19 +25,22 @@ function Grid(width, height, tileWidth, tileHeight) {
     })
 }
 
-function Unit(unit, width, height) {
+function Unit(unit, eventEmitter, {tileWidth, tileHeight}) {
   let spriteUrl = unit.record['sprite'];
 
-  return new Entity({ isPointerTarget: true })
+  return new Entity({
+    unit,
+    isPointerTarget: true
+  })
     .withPosition(0, 0)
-    .withRect(width, height)
+    .withRect(tileWidth, tileHeight)
     .withSprite(spriteUrl)
 
     .withPointerEvents()
     .withBehavior({
       onMouseDown({ x, y, target }) {
         if (target === this)
-          console.log(this)
+          eventEmitter.emit('select_unit', this.unit);
       }
     })
 }

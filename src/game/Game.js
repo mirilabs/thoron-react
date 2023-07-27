@@ -1,6 +1,7 @@
 import CoordinateConverter from '../lib/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid, Unit } from './entities';
+import EventEmitter from '../lib/EventEmitter';
 
 class Game {
   constructor(chapter, opts = {}) {
@@ -17,7 +18,8 @@ class Game {
         width: this.chapter.terrain.width * this.tileWidth,
         height: this.chapter.terrain.height * this.tileHeight
       }
-    )
+    );
+    this.uiEvents = new EventEmitter();
   }
 
   get tileWidth() { return this.opts.tileWidth }
@@ -49,7 +51,7 @@ class Game {
     scene.addLayer(2, 'units');
     this.chapter.units.forEach(unit => {
       // Create entity
-      let ent = Unit(unit, this.tileWidth, this.tileHeight);
+      let ent = Unit(unit, this.uiEvents, this.opts);
       scene.layer('units').addEntity(unit.id, ent);
       
       // Move to initial position
