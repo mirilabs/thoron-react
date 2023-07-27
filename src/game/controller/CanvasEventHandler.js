@@ -1,5 +1,8 @@
 import EventEmitter from '../../lib/EventEmitter';
 
+/**
+ * Emits mouse events but with coordinates converted to tile units.
+ */
 class CanvasEventHandler extends EventEmitter {
   constructor(coordinateConverter) {
     super();
@@ -10,14 +13,14 @@ class CanvasEventHandler extends EventEmitter {
     this.mouseup = this.mouseup.bind(this);
   }
   
-  attachCanvas(canvas) {
+  setCanvas(canvas) {
     this.canvas = canvas;
     canvas.addEventListener('mousedown', this.mousedown);
     canvas.addEventListener('mousemove', this.mousemove);
     canvas.addEventListener('mouseup', this.mouseup);
   }
 
-  detachCanvas() {
+  unsetCanvas() {
     this.canvas.removeEventListener('mousedown', this.mousedown);
     this.canvas.removeEventListener('mousemove', this.mousemove);
     this.canvas.removeEventListener('mouseup', this.mouseup);
@@ -49,8 +52,7 @@ class CanvasEventHandler extends EventEmitter {
 
     this.emit('mouseup', this.x, this.y);
 
-    this.prevX = null;
-    this.prevY = null;
+    this._clearPrevCoords();
   }
 
   /**
@@ -63,6 +65,10 @@ class CanvasEventHandler extends EventEmitter {
     return [x, y]
   }
 
+  /**
+   * Update cursor position (in tiles) based on the event
+   * @param {*} event any MouseEvent or Touch
+   */
   _updateCoords(event) {
     let [x, y] = this._getCursorPosition(event);
     let coords = this.coords.toTiles(x, y);
@@ -76,6 +82,11 @@ class CanvasEventHandler extends EventEmitter {
   _setPrevCoords() { 
     this.prevX = this.x;
     this.prevY = this.y;
+  }
+
+  _clearPrevCoords() {
+    this.prevX = null;
+    this.prevY = null;
   }
 
   getCursorTileCoords() {

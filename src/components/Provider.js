@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ThoronContext } from './ThoronContext.js';
-import Controller from '../game/controller/Controller.js';
-import ChapterRenderer from '../game/renderer/ChapterRenderer.js';
-import CanvasEventHandler from '../game/controller/CanvasEventHandler.js';
-import CoordinateConverter from '../lib/CoordinateConverter.js';
+import Game from '../game/Game.js';
 
 function Provider({ chapter, children }) {
   let [canvas, setCanvas] = useState(null);
@@ -11,25 +8,15 @@ function Provider({ chapter, children }) {
   
   useEffect(() => {
     if (chapter && canvas) {
-      let coords = new CoordinateConverter(64, 64, canvas);
-
-      let canvasEventHandler = new CanvasEventHandler(coords);
-      canvasEventHandler.attachCanvas(canvas);
-
-      let renderer = new ChapterRenderer(canvas, coords);
-      renderer.subscribe(chapter);
-
-      let controller = new Controller(chapter, canvasEventHandler);
+      let game = new Game(chapter);
+      game.setCanvas(canvas);
 
       setApi({
-        controller,
-        canvasEventHandler,
-        renderer
+        controllerEvents: game.controller.events
       });
 
       return function cleanup() {
-        canvasEventHandler.detachCanvas(canvas);
-        renderer.unsubscribe();
+        game.unsetCanvas();
       }
     }
   }, [chapter, canvas])
@@ -37,7 +24,8 @@ function Provider({ chapter, children }) {
   let value = {
     chapter,
     ...api,
-    canvas, setCanvas
+    canvas,
+    setCanvas
   }
 
   return (
