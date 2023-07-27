@@ -12,7 +12,7 @@ function Provider({ chapter, children }) {
       game.setCanvas(canvas);
 
       setApi({
-        // controllerEvents: game.controller.events
+        uiEvents: game.uiEvents
       });
 
       return function cleanup() {
