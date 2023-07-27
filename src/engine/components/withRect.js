@@ -14,13 +14,13 @@ function withRect(width = 0, height = 0) {
       get() { return this.x }
     },
     right: {
-      get() { return this.x + this.w }
+      get() { return this.x + this.width }
     },
     top: {
       get() { return this.y }
     },
     bottom: {
-      get() { return this.y + this.h }
+      get() { return this.y + this.height }
     }
   })
 

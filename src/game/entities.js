@@ -26,7 +26,7 @@ function Grid(width, height, tileWidth, tileHeight) {
 }
 
 function Unit(width, height, src) {
-  return new Entity()
+  return new Entity({ isPointerTarget: true })
     .withPosition(0, 0)
     .withRect(width, height)
     .withSprite(src);

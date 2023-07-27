@@ -7,12 +7,20 @@ class Scene {
    * @param {HTMLCanvasElement} canvas The target <canvas> element
    */
   constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    this.setCanvas(canvas);
 
     this._layerIds = new SortedArray();
     this._layers = {}
     this._layerAliases = {}
+  }
+
+  setCanvas(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+
+    this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
 
   get width() { return this.canvas.width }
@@ -89,6 +97,42 @@ class Scene {
     return this.layers.reduce((list, currentLayer) => {
       return list.concat(currentLayer.entities);
     }, [])
+  }
+
+  /**
+   * Get the entity that a pointer event should target
+   * @param {*} x 
+   * @param {*} y 
+   */
+  getPointerTarget(x, y) {
+    for (let layer of this.layers) {
+      let targetEntity = layer.getPointerTarget(x, y);
+      if (targetEntity != null) return targetEntity;
+    }
+    return null;
+  }
+
+  /**
+   * Determine position of the cursor relative to the canvas origin
+   * @param {Event} event any MouseEvent or Touch
+   */
+  _getCursorPosition(event) {
+    let x = event.pageX - this.canvas.offsetLeft;
+    let y = event.pageY - this.canvas.offsetTop;
+    return [x, y]
+  }
+
+  onMouseDown(event) {
+    let [x, y] = this._getCursorPosition(event);
+    console.log(this.getPointerTarget(x, y));
+  }
+
+  onMouseMove(event) {
+    
+  }
+
+  onMouseUp(event) {
+
   }
 }
 
