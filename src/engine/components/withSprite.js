@@ -29,7 +29,7 @@ function withSprite(url) {
     spriteUrl: url,
     ...sprite
   })
-  this.withBehavior({ init: this.loadSprite.bind(this) });
+  this.withBehavior({ onInit: this.loadSprite.bind(this) });
 
   return this;
 }
