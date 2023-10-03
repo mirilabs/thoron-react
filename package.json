@@ -6,7 +6,7 @@
   "dependencies": {
     "eslint-config-react-app": "^7.0.1",
     "react": "^18.2.0",
-    "thoron": "^1.1.2"
+    "thoron": "^1.1.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -39,5 +39,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }
