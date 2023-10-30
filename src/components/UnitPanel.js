@@ -7,7 +7,7 @@ function UnitPanel({ render }) {
   const [data, setData] = useState(null);
 
   useEventListener(uiEvents, 'select_unit', unit => {
-    setData(unit);
+    setData(unit.serialize());
   });
 
   if (render) {
