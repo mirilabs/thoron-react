@@ -7,6 +7,7 @@ import Provider from './components/Provider';
 import GameCanvas from './components/GameCanvas';
 import TilePanel from './components/TilePanel';
 import UnitPanel from './components/UnitPanel';
+import UnitList from './components/UnitList';
 
 import renderObject from './utils/renderObject';
 
@@ -23,6 +24,7 @@ function App() {
           <div className="panels-container">
             <TilePanel render={renderObject} />
             <UnitPanel render={renderObject} />
+            <UnitList render={renderObject} />
           </div>
         </Provider>
       </main>
