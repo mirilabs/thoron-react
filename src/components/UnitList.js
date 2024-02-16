@@ -7,7 +7,7 @@ function UnitList({ render }) {
 
   const [units, setUnits] = useState(null);
   useEffect(() => {
-    setUnits(chapter.units.map(unit => unit.serialize()));
+    setUnits(chapter.getUnits().map(unit => unit.serialize()));
   }, []);
   
   const [selected, setSelected] = useState(null);

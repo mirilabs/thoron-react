@@ -55,7 +55,7 @@ class Game {
       scene.layer('units').addEntity(unit.id, ent);
       
       // Move to initial position
-      let [x, y] = this.chapter.getUnit(unit.id).getPosition();
+      let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
       [x, y] = this.coords.toPixels(x, y, 'topLeft');
       ent.moveTo(x, y);
     })
