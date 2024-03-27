@@ -8,7 +8,7 @@ function UnitList({ render }) {
   const [units, setUnits] = useState(null);
   useEffect(() => {
     setUnits(chapter.getUnits().map(unit => unit.serialize()));
-  }, []);
+  }, [ chapter ]);
   
   const [selected, setSelected] = useState(null);
   useEventListener(uiEvents, 'select_unit', unit => {
@@ -20,7 +20,7 @@ function UnitList({ render }) {
     selected
   }
 
-  if (render !== undefined) {
+  if (render) {
     return render(data);
   }
   else {

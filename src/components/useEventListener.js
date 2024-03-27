@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 function useEventListener(eventListener, event, callback) {
   useEffect(() => {
-    if (eventListener == undefined) return;
+    if (!eventListener) return;
 
     eventListener.on(event, callback);
 
