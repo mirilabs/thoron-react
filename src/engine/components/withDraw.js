@@ -1,7 +1,7 @@
 function withDraw(drawFn) {
   this.draw = drawFn;
 
-  return this.withBehavior({
+  return this.withEventHandlers({
     onInit() {
       this.draw(this.getLayer().ctx);
     }

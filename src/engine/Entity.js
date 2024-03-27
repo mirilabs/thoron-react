@@ -38,7 +38,7 @@ class Entity {
    * @param {*} behavior Object with key: event, value: the function to be
    *  called when the event occurs. Example: `{ onInit() { this.draw() } }`
    */
-  withBehavior(behavior) {
+  withEventHandlers(behavior) {
     Object.keys(behavior).forEach(event => {
       let callback = behavior[event].bind(this);
       this._behaviors[event].push(callback);
