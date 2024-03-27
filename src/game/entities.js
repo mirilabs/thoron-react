@@ -29,20 +29,19 @@ function createUnit(unit, eventEmitter, {tileWidth, tileHeight}) {
   let spriteUrl = unit.record['sprite'];
 
   return new Entity({
-    unit,
-    isPointerTarget: true
+    unit
   })
     .withPosition(0, 0)
     .withRect(tileWidth, tileHeight)
     .withSprite(spriteUrl)
 
     .withPointerEvents()
-    .withEventHandlers({
-      onMouseDown({ x, y, target }) {
-        if (target === this)
-          eventEmitter.emit('select_unit', this.unit);
-      }
-    })
+    // .withEventHandlers({
+    //   onMouseDown({ x, y, target }) {
+    //     if (target === this)
+    //       eventEmitter.emit('select_unit', this.unit);
+    //   }
+    // })
 }
 
 export {

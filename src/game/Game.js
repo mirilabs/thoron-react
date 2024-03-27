@@ -1,5 +1,6 @@
 import CoordinateConverter from '../lib/CoordinateConverter';
 import Scene from '../engine/Scene';
+import Position from '../engine/components/Position';
 import {
   createBackground,
   createGrid,
@@ -45,26 +46,23 @@ class Game {
     let { width, height } = this.canvas;
 
     let bg = createBackground(width, height, null);
-    scene.addLayer(0, 'background') 
-      .addEntity('BACKGROUND', bg);
+    scene.addEntity(bg);
 
     let grid = createGrid(
       width, height,
       this.opts.tileWidth, this.opts.tileHeight
     );
-    scene.addLayer(1, 'grid')
-      .addEntity('GRID', grid);
+    scene.addEntity(grid);
 
-    scene.addLayer(2, 'units');
     this.chapter.units.forEach(unit => {
       // Create entity
       let ent = createUnit(unit, this.uiEvents, this.opts);
-      scene.layer('units').addEntity(unit.id, ent);
+      scene.addEntity(ent);
       
       // Move to initial position
       let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
       [x, y] = this.coords.toPixels(x, y, 'topLeft');
-      ent.moveTo(x, y);
+      ent.getComponent(Position).moveTo(x, y);
     })
   }
 }
