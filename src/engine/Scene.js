@@ -64,14 +64,16 @@ class Scene {
     this._layerIds.add(id);
     this._layers[id] = layer;
 
-    if (alias != undefined) {
+    if (alias) {
       this._layerAliases[alias] = id;
     }
     return layer;
   }
 
   removeLayer(idOrAlias) {
-    let id = this._layers[idOrAlias] ? id : this._layerAliases[idOrAlias];
+    let id = this._layers[idOrAlias] ?
+      idOrAlias :
+      this._layerAliases[idOrAlias];
 
     this._layerIds.splice(this._layerIds.indexOf(id), 1);
     delete this._layers[id];
