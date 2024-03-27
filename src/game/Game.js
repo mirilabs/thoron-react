@@ -1,6 +1,10 @@
 import CoordinateConverter from '../lib/CoordinateConverter';
 import Scene from '../engine/Scene';
-import { Background, Grid, Unit } from './entities';
+import {
+  createBackground,
+  createGrid,
+  createUnit
+} from './entities';
 import EventEmitter from '../lib/EventEmitter';
 
 class Game {
@@ -40,18 +44,21 @@ class Game {
     let scene = this.scene;
     let { width, height } = this.canvas;
 
-    let bg = Background(width, height, null)
+    let bg = createBackground(width, height, null);
     scene.addLayer(0, 'background') 
-      .addEntity('BACKGROUND', bg)
+      .addEntity('BACKGROUND', bg);
 
-    let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight)
+    let grid = createGrid(
+      width, height,
+      this.opts.tileWidth, this.opts.tileHeight
+    );
     scene.addLayer(1, 'grid')
-      .addEntity('GRID', grid)
+      .addEntity('GRID', grid);
 
     scene.addLayer(2, 'units');
     this.chapter.units.forEach(unit => {
       // Create entity
-      let ent = Unit(unit, this.uiEvents, this.opts);
+      let ent = createUnit(unit, this.uiEvents, this.opts);
       scene.layer('units').addEntity(unit.id, ent);
       
       // Move to initial position
