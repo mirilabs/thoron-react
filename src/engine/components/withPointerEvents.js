@@ -1,5 +1,5 @@
 function withPointerEvents() {
-  this.withBehavior({
+  this.withEventHandlers({
     onInit() {
       this.onMouseDown = this.onMouseDown.bind(this);
       this.onMouseMove = this.onMouseMove.bind(this);
