@@ -1,69 +1,59 @@
-import withPosition from './components/withPosition';
-import withDraw from './components/withDraw';
-import withRect from './components/withRect';
-import withSprite from './components/withSprite';
-import withPointerEvents from './components/withPointerEvents';
+import Node from './Node';
+import DrawComponent from './components/DrawComponent';
+import Rectangle from './components/Rectangle';
+import Sprite from './components/Sprite';
+import PointerEventTarget from './components/PointerEventTarget';
+import Position from './components/Position';
 
-class Entity {
-  constructor(opts) {
-    Object.assign(this, opts);
+class Entity extends Node {
+  components = new Map();
+
+  addComponent(component) {
+    this.addChild(component);
+    this.components.set(component.constructor, component);
   }
 
-  static addMixin(mixin) {
-    this.prototype[mixin.name] = mixin;
+  addComponents(...components) {
+    components.forEach(cmp => this.addComponent(cmp));
   }
 
-  static {
-    this.prototype._behaviors = {}
+  getComponent(ComponentType) {
+    return this.components.get(ComponentType);
   }
 
-  static addEvent(eventName) {
-    // add array of behavior callbacks
-    this.prototype._behaviors[eventName] = [];
-
-    // add function to call all behavior callbacks associated with this event
-    this.prototype[eventName] = function (...args) {
-      this._callBehavior(eventName, args);
-    }
+  removeComponent(component) {
+    this.removeChild(component);
+    this.components.delete(component.constructor);
   }
+}
 
-  _callBehavior(eventName, args) {
-    this._behaviors[eventName].forEach(cb => {
-      cb(...args)
-    })
-  }
+const builderMethods = {
+  withPosition(x, y) {
+    this.addComponent(new Position(x, y));
+    return this;
+  },
 
-  /**
-   * Add behavior to an Entity
-   * @param {*} behavior Object with key: event, value: the function to be
-   *  called when the event occurs. Example: `{ onInit() { this.draw() } }`
-   */
-  withEventHandlers(behavior) {
-    Object.keys(behavior).forEach(event => {
-      let callback = behavior[event].bind(this);
-      this._behaviors[event].push(callback);
-    });
+  withRect(width, height) {
+    this.addComponent(new Rectangle(this, width, height));
+    return this;
+  },
 
+  withDraw(zIndex, drawFn) {
+    this.addComponent(new DrawComponent(zIndex, drawFn));
+    return this;
+  },
+
+  withSprite(zIndex, spriteUrl) {
+    this.addComponent(new Sprite(this, zIndex, spriteUrl));
+    return this;
+  },
+
+  withPointerEvents() {
+    this.addComponent(new PointerEventTarget(this));
     return this;
   }
 }
 
-[
-  withPosition,
-  withDraw,
-  withRect,
-  withSprite,
-  withPointerEvents
-]
-  .forEach(mixin => Entity.addMixin(mixin));
-
-[
-  'onInit',
-  'onDestroy',
-  'onMouseDown',
-  'onMouseMove',
-  'onMouseUp'
-]
-  .forEach(event => Entity.addEvent(event));
+Object.assign(Entity.prototype, builderMethods);
 
 export default Entity;

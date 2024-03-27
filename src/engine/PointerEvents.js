@@ -1,17 +1,22 @@
 import EventEmitter from '../lib/EventEmitter';
 
+// class PointerEvent {
+//   constructor() {
+
+//   }
+
+
+// }
+
 class PointerEventHandler extends EventEmitter { 
   constructor(scene) {
     super();
-    this.getScene = () => scene;
-    let canvas = scene.canvas;
-    this.canvas = canvas;
+    this.canvas = scene.canvas;
+    this.entities = scene.entities;
 
-    this.target = null;
-
-    canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
-    canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-    canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
+    this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
 
   /**
