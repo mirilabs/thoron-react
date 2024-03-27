@@ -1,13 +1,13 @@
 import Entity from '../engine/Entity';
 
-function Background(width, height, src = null) {
+function createBackground(width, height, src = null) {
   return new Entity()
     .withPosition(0, 0)
     .withRect(width, height)
     .withSprite(src);
 }
 
-function Grid(width, height, tileWidth, tileHeight) {
+function createGrid(width, height, tileWidth, tileHeight) {
   return new Entity()
     .withDraw(ctx => {
       let x, y;
@@ -25,7 +25,7 @@ function Grid(width, height, tileWidth, tileHeight) {
     })
 }
 
-function Unit(unit, eventEmitter, {tileWidth, tileHeight}) {
+function createUnit(unit, eventEmitter, {tileWidth, tileHeight}) {
   let spriteUrl = unit.record['sprite'];
 
   return new Entity({
@@ -37,7 +37,7 @@ function Unit(unit, eventEmitter, {tileWidth, tileHeight}) {
     .withSprite(spriteUrl)
 
     .withPointerEvents()
-    .withBehavior({
+    .withEventHandlers({
       onMouseDown({ x, y, target }) {
         if (target === this)
           eventEmitter.emit('select_unit', this.unit);
@@ -46,7 +46,7 @@ function Unit(unit, eventEmitter, {tileWidth, tileHeight}) {
 }
 
 export {
-  Background,
-  Grid,
-  Unit
+  createBackground,
+  createGrid,
+  createUnit
 }
