@@ -12,6 +12,9 @@ function Unit(unitRecord, eventEmitter, { tileWidth, tileHeight }) {
     },
     sprite: {
       url: unitRecord.record['sprite']
+    },
+    cursorEvents: {
+      
     }
   })
 }

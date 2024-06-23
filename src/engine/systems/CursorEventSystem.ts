@@ -1,8 +1,14 @@
 import Scene from "../Scene";
-import { IPosition, IRectangle } from "../components";
+import { ComponentSchema } from "../components";
 import System from "./System";
 
 class CursorEventSystem extends System {
+    signature: Set<keyof ComponentSchema> = new Set([
+        'position',
+        'rectangle',
+        'cursorEvents'
+    ]);
+
     constructor(scene: Scene) {
         super(scene);
 
@@ -33,14 +39,14 @@ class CursorEventSystem extends System {
         
         console.log(x, y);
 
-        this.componentMap.components['cursorEvents']
-            .forEach((eventHandler, entityId) => {
-                let entity = this.scene.getEntity(entityId);
-                let pos = entity.getComponent<IPosition>('position');
-                let rect = entity.getComponent<IRectangle>('rectangle');
-                
-                
-            })
+        this.components.forEach(({ position, rectangle, cursorEvents }) => {
+            if (
+                x >= position.x && x <= position.x + rectangle.width &&
+                y >= position.y && y <= position.y + rectangle.height
+            ) {
+                console.log('u clicked me!!');
+            }
+        });
     }
 
     onMouseMove(event: MouseEvent) {

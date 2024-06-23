@@ -1,10 +1,9 @@
 import { EntityId } from "./Entity";
-import ComponentSchema from "./components";
-
-type ComponentId = keyof ComponentSchema;
-type Component = ComponentSchema[ComponentId];
-
-type ComponentSet = Partial<{ [key in ComponentId]: Component }>;
+import {
+    ComponentSchema,
+    ComponentId,
+    Component
+} from "./components";
 
 type AttributeMap<T> = Map<EntityId, T>;
 type ComponentState = {
@@ -51,8 +50,3 @@ class ComponentMap {
 }
 
 export default ComponentMap;
-export {
-    ComponentId,
-    Component,
-    ComponentSet
-}
