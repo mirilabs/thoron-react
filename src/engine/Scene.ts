@@ -3,6 +3,7 @@ import Entity, { EntityId } from "./Entity";
 import System from "./systems/System";
 import CursorEventSystem from "./systems/CursorEventSystem";
 import DrawSystem from "./systems/DrawSystem";
+import SpriteSystem from "./systems/SpriteSystem";
 
 class Scene {
     canvas: HTMLCanvasElement;
@@ -11,6 +12,7 @@ class Scene {
 
     systems: System[];
     drawSystem: DrawSystem;
+    spriteSystem: SpriteSystem;
     cursorEventSystem: CursorEventSystem;
 
     constructor(canvas: HTMLCanvasElement) {
@@ -18,9 +20,11 @@ class Scene {
 
         this.drawSystem = new DrawSystem(this);
         this.cursorEventSystem = new CursorEventSystem(this);
+        this.spriteSystem = new SpriteSystem(this);
         this.systems = [
             this.drawSystem,
-            this.cursorEventSystem
+            this.cursorEventSystem,
+            this.spriteSystem
         ]
     }
 
@@ -41,6 +45,7 @@ class Scene {
     
     draw() {
         this.drawSystem.draw();
+        this.spriteSystem.draw();
     }
 }
 

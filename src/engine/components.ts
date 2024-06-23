@@ -29,14 +29,21 @@ type ComponentSchema = {
     rectangle: IRectangle,
     sprite: ISprite,
     draw: IDraw,
-    cursorEvents: ICursorEventHandler
+    cursorEvents: Partial<ICursorEventHandler>
 }
 
-export default ComponentSchema;
+type ComponentSet = Partial<ComponentSchema>;
+type ComponentId = keyof ComponentSchema;
+type Component = ComponentSchema[ComponentId];
+
 export {
     IPosition,
     IRectangle,
     ISprite,
     IDraw,
-    ICursorEventHandler
+    ICursorEventHandler,
+    ComponentSchema,
+    ComponentSet,
+    ComponentId,
+    Component,
 }
