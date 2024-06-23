@@ -1,0 +1,91 @@
+import CoordinateConverter from '../lib/CoordinateConverter';
+import Scene from '../engine/Scene';
+import { Background, Grid, Unit } from './entities';
+import EventEmitter from '../lib/EventEmitter';
+
+interface IGameSettings {
+  tileSize: number;
+}
+
+class Game {
+  chapter;
+  opts;
+  coords: CoordinateConverter;
+  uiEvents: EventEmitter;
+  canvas: HTMLCanvasElement;
+  scene: Scene;
+
+  constructor(chapter, opts: Partial<IGameSettings> = {}) {
+    this.chapter = chapter;
+    this.opts = {
+      tileWidth: opts.tileSize ?? 64,
+      tileHeight: opts.tileSize ?? 64,
+      ...opts
+    }
+    this.coords = new CoordinateConverter(
+      this.tileWidth,
+      this.tileHeight,
+      {
+        width: this.chapter.terrain.width * this.tileWidth,
+        height: this.chapter.terrain.height * this.tileHeight
+      }
+    );
+    this.uiEvents = new EventEmitter();
+  }
+
+  get tileWidth() { return this.opts.tileWidth }
+  get tileHeight() { return this.opts.tileHeight }
+
+  setCanvas(canvas) {
+    this.canvas = canvas;
+    this.scene = new Scene(canvas);
+    this.init();
+  }
+
+  unsetCanvas() {
+    delete this.canvas;
+    delete this.scene;
+  }
+
+  init() {
+    let scene = this.scene;
+    let { width, height } = this.canvas;
+
+    let bg = Background(width, height, null);
+    bg.instantiate(scene);
+
+    let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight);
+    grid.instantiate(scene);
+
+    this.chapter.units.forEach(unit => {
+      let unitPrototype = Unit(unit, this.uiEvents, this.opts);
+      unitPrototype.instantiate(scene);
+
+      // move to initial position
+    })
+
+    this.scene.drawSystem.draw();
+
+    // let bg = Background(width, height, null)
+    // scene.addLayer(0, 'background') 
+    //   .addEntity('BACKGROUND', bg)
+
+    // let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight)
+    // scene.addLayer(1, 'grid')
+    //   .addEntity('GRID', grid)
+
+    // scene.addLayer(2, 'units');
+    // this.chapter.units.forEach(unit => {
+    //   // Create entity
+    //   let ent = Unit(unit, this.uiEvents, this.opts);
+    //   scene.layer('units').addEntity(unit.id, ent);
+      
+    //   // Move to initial position
+    //   let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
+    //   [x, y] = this.coords.toPixels(x, y, 'topLeft');
+    //   ent.moveTo(x, y);
+    // })
+  }
+}
+
+export default Game;
