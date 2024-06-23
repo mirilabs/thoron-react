@@ -1,18 +1,6 @@
-import ComponentMap from "../ComponentMap";
 import Scene from "../Scene";
+import System from "./System";
 import { IPosition, IRectangle } from "../components";
-
-class System {
-    scene: Scene;
-    
-    constructor(scene: Scene) {
-        this.scene = scene;
-    }
-
-    get componentMap(): ComponentMap {
-        return this.scene.componentMap;
-    }
-}
 
 class DrawSystem extends System {
     ctx: CanvasRenderingContext2D;
@@ -38,7 +26,14 @@ class DrawSystem extends System {
         })
     }
 
+    clearCanvas() {
+        let { width, height } = this.scene.canvas;
+        this.ctx.clearRect(0, 0, width, height);
+    }
+
     draw() {
+        this.clearCanvas();
+
         // draw 'draw function' components
         let drawFns = this.componentMap.components['draw'];
         drawFns.forEach((drawFn, entityId) => {
@@ -50,10 +45,10 @@ class DrawSystem extends System {
         
         sprites.forEach((sprite, entityId) => {
             let entity = this.scene.getEntity(entityId);
+            let pos = entity.getComponent<IPosition>('position');
             let rect = entity.getComponent<IRectangle>('rectangle');
 
             if (sprite.image) {
-                let pos = entity.getComponent<IPosition>('position');
                 this.ctx.drawImage(
                     sprite.image,
                     pos.x, pos.y,
@@ -61,6 +56,9 @@ class DrawSystem extends System {
                 );
             }
             else {
+                // draw placeholder
+                this.ctx.fillText("?", pos.x, pos.y, rect.width);
+
                 DrawSystem.loadSprite(
                     sprite.url, rect.width, rect.height
                 )
