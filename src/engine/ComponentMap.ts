@@ -6,8 +6,9 @@ type Component = ComponentSchema[ComponentId];
 
 type ComponentSet = Partial<{ [key in ComponentId]: Component }>;
 
+type AttributeMap<T> = Map<EntityId, T>;
 type ComponentState = {
-    [K in keyof ComponentSchema]: Map<EntityId, ComponentSchema[K]>;
+    [K in keyof ComponentSchema]: AttributeMap<ComponentSchema[K]>;
 }
 
 class ComponentMap {
@@ -15,19 +16,17 @@ class ComponentMap {
         position: new Map(),
         rectangle: new Map(),
         sprite: new Map(),
-        draw: new Map()
+        draw: new Map(),
+        cursorEvents: new Map()
     };
 
-    addComponents(
+    addComponent<CId extends ComponentId>(
         entityId: EntityId,
-        components: ComponentSet
+        componentId: CId,
+        component: ComponentSchema[CId]
     ) {
-        for (const componentId in components) {
-            let component = components[componentId];
-
-            // make component instance accessible via entityId & componentId
-            this.components[componentId].set(entityId, component);
-        }
+        let componentInstanceMap = this.components[componentId];
+        componentInstanceMap.set(entityId, component);
     }
 
     getComponent<T extends Component> (
@@ -44,7 +43,7 @@ class ComponentMap {
         this.components[componentId].delete(entityId);
     }
 
-    removeEntity(entityId: EntityId) {
+    onEntityDestroyed(entityId: EntityId) {
         for (const componentId in this.components) {
             this.components[componentId].delete(entityId);
         }

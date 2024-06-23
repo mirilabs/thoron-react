@@ -1,5 +1,5 @@
 import Scene from "./Scene";
-import { Component, ComponentId } from "./ComponentMap";
+import { Component, ComponentId, ComponentSet } from "./ComponentMap";
 
 type EntityId = Entity['id'];
 
@@ -19,6 +19,14 @@ class Entity {
 
     getComponent<T extends Component>(componentId: ComponentId): T {
         return this.scene.componentMap.getComponent(this.id, componentId);
+    }
+
+    addComponent(cId: ComponentId, component: Component) {
+        this.scene.componentMap.addComponent(this.id, cId, component);
+
+        this.scene.systems.forEach(sys => {
+            sys.onComponentAdded(this, cId, component);
+        })
     }
 }
 

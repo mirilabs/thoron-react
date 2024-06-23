@@ -1,5 +1,5 @@
 import Entity from "./Entity";
-import { ComponentSet } from "./ComponentMap";
+import { Component, ComponentId, ComponentSet } from "./ComponentMap";
 import Scene from "./Scene";
 
 class Prototype {
@@ -13,7 +13,10 @@ class Prototype {
         let entity = scene.createEntity();
         let componentMap = scene.componentMap;
 
-        componentMap.addComponents(entity.id, this.components);
+        for (const cId in this.components) {
+            const component = this.components[cId];
+            componentMap.addComponent(entity.id, cId as ComponentId, component);
+        }
 
         return entity;
     }
