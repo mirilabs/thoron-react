@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ThoronContext } from './ThoronContext.js';
-import Game from '../game/Game.js';
+import { ThoronContext } from './ThoronContext';
+import Game from '../game/Game';
 
 function Provider({ chapter, children }) {
   let [canvas, setCanvas] = useState(null);

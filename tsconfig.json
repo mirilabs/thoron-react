@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "ES6",
+    "allowJs": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": [ "./src/**/*" ]
+}

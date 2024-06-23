@@ -1,0 +1,28 @@
+import Scene from "./Scene";
+import { Component, ComponentId } from "./ComponentMap";
+
+type EntityId = Entity['id'];
+
+class Entity {
+    static nextId: number = 0;
+    id: number; // unique ID
+    scene: Scene;
+    
+    constructor(scene: Scene) {
+        this.id = Entity.generateId();
+        this.scene = scene;
+    }
+
+    static generateId() {
+        return this.nextId++;
+    }
+
+    getComponent<T extends Component>(componentId: ComponentId): T {
+        return this.scene.componentMap.getComponent(this.id, componentId);
+    }
+}
+
+export default Entity;
+export {
+    EntityId
+}
