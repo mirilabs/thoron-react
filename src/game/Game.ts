@@ -59,32 +59,15 @@ class Game {
 
     this.chapter.units.forEach(unit => {
       let unitPrototype = Unit(unit, this.uiEvents, this.opts);
-      unitPrototype.instantiate(scene);
-
+      let unitEntity = unitPrototype.instantiate(scene);
+      
       // move to initial position
+      let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
+      [x, y] = this.coords.toPixels(x, y, 'topLeft');
+      Object.assign(unitEntity.getComponent('position'), { x, y });
     })
 
-    this.scene.drawSystem.draw();
-
-    // let bg = Background(width, height, null)
-    // scene.addLayer(0, 'background') 
-    //   .addEntity('BACKGROUND', bg)
-
-    // let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight)
-    // scene.addLayer(1, 'grid')
-    //   .addEntity('GRID', grid)
-
-    // scene.addLayer(2, 'units');
-    // this.chapter.units.forEach(unit => {
-    //   // Create entity
-    //   let ent = Unit(unit, this.uiEvents, this.opts);
-    //   scene.layer('units').addEntity(unit.id, ent);
-      
-    //   // Move to initial position
-    //   let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
-    //   [x, y] = this.coords.toPixels(x, y, 'topLeft');
-    //   ent.moveTo(x, y);
-    // })
+    this.scene.draw();
   }
 }
 

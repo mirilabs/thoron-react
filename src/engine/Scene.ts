@@ -1,5 +1,6 @@
 import ComponentMap from "./ComponentMap";
 import Entity, { EntityId } from "./Entity";
+import CursorEventSystem from "./systems/CursorEventSystem";
 import DrawSystem from "./systems/DrawSystem";
 
 class Scene {
@@ -8,6 +9,7 @@ class Scene {
     componentMap: ComponentMap = new ComponentMap();
 
     drawSystem: DrawSystem;
+    cursorEventSystem: CursorEventSystem;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -27,6 +29,10 @@ class Scene {
     removeEntity(id: EntityId) {
         this.componentMap.removeEntity(id);
         this.entities.delete(id);
+    }
+
+    draw() {
+        this.drawSystem.draw();
     }
 }
 
