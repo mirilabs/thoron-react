@@ -17,11 +17,19 @@ interface ISprite {
 
 type IDraw = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
 
+type CursorEventHandler = (isTarget: boolean, x?: number, y?: number) => null;
+interface ICursorEventHandler {
+    onMouseDown: CursorEventHandler;
+    onMouseMove: CursorEventHandler;
+    onMouseUp: CursorEventHandler;
+}
+
 type ComponentSchema = {
     position: IPosition,
     rectangle: IRectangle,
     sprite: ISprite,
-    draw: IDraw
+    draw: IDraw,
+    cursorEvents: ICursorEventHandler
 }
 
 export default ComponentSchema;
@@ -29,5 +37,6 @@ export {
     IPosition,
     IRectangle,
     ISprite,
-    IDraw
+    IDraw,
+    ICursorEventHandler
 }

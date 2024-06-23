@@ -1,4 +1,5 @@
-import ComponentMap from "../ComponentMap";
+import ComponentMap, { Component, ComponentId } from "../ComponentMap";
+import Entity from "../Entity";
 import Scene from "../Scene";
 
 class System {
@@ -10,6 +11,14 @@ class System {
 
     get componentMap(): ComponentMap {
         return this.scene.componentMap;
+    }
+
+    onComponentAdded(
+        entity: Entity,
+        componentId: ComponentId,
+        component: Component
+    ) {
+        
     }
 }
 
