@@ -1,5 +1,6 @@
 import Scene from "../Scene";
-import { ComponentSchema } from "../components";
+import { ComponentSchema, IPosition } from "../components";
+import Rect from "../utils/Rect";
 import System from "./System";
 
 class CursorEventSystem extends System {
@@ -28,22 +29,19 @@ class CursorEventSystem extends System {
         element.addEventListener('mouseup', this.onMouseUp);
     }
 
-    getCoords(event: MouseEvent): { x: number, y: number } {
+    getCoords(event: MouseEvent): IPosition {
         let x = event.pageX - this.canvas.offsetLeft;
         let y = event.pageY - this.canvas.offsetTop;
         return { x, y }
     }
 
     onMouseDown(event: MouseEvent) {
-        let { x, y } = this.getCoords(event);
-        
-        console.log(x, y);
+        let mousePos = this.getCoords(event);
 
         this.components.forEach(({ position, rectangle, cursorEvents }) => {
-            if (
-                x >= position.x && x <= position.x + rectangle.width &&
-                y >= position.y && y <= position.y + rectangle.height
-            ) {
+            let rect = new Rect(position, rectangle);
+
+            if (rect.collidePoint(mousePos)) {
                 console.log('u clicked me!!');
             }
         });
