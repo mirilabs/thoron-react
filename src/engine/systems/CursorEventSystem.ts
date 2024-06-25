@@ -1,5 +1,10 @@
 import Scene from "../Scene";
-import { ComponentSchema, IPosition } from "../components";
+import {
+    ComponentSchema,
+    CursorEventHandler,
+    ICursorEventHandlers,
+    IPosition
+} from "../components";
 import Rect from "../utils/Rect";
 import System from "./System";
 
@@ -10,12 +15,16 @@ class CursorEventSystem extends System {
         'cursorEvents'
     ]);
 
+    onMouseDown: (event: MouseEvent) => void;
+    onMouseMove: (event: MouseEvent) => void;
+    onMouseUp: (event: MouseEvent) => void;
+
     constructor(scene: Scene) {
         super(scene);
 
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onMouseMove = this.onMouseMove.bind(this);
-        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseDown = this.cursorEventCallback('onMouseDown').bind(this);
+        this.onMouseMove = this.cursorEventCallback('onMouseMove').bind(this);
+        this.onMouseUp = this.cursorEventCallback('onMouseUp').bind(this);
         this.bindCursorEvents(scene.canvas);
     }
     
@@ -29,30 +38,39 @@ class CursorEventSystem extends System {
         element.addEventListener('mouseup', this.onMouseUp);
     }
 
+    unbindCursorEvents(element: HTMLElement) {
+        element.removeEventListener('mousedown', this.onMouseDown);
+        element.removeEventListener('mousemove', this.onMouseMove);
+        element.removeEventListener('mouseup', this.onMouseUp);
+    }
+
     getCoords(event: MouseEvent): IPosition {
         let x = event.pageX - this.canvas.offsetLeft;
         let y = event.pageY - this.canvas.offsetTop;
         return { x, y }
     }
 
-    onMouseDown(event: MouseEvent) {
-        let mousePos = this.getCoords(event);
+    /**
+     * Generate a callback to attach to the scene canvas
+     * @param callbackId The key of the cursorEventHandler method to be called
+     * @returns An event callback that passes events to this system's entities
+     */
+    cursorEventCallback(
+        callbackId: keyof ICursorEventHandlers
+    ):(event: MouseEvent) => void {
+        return function(event: MouseEvent) {
+            let mousePos = this.getCoords(event);
 
-        this.components.forEach(({ position, rectangle, cursorEvents }) => {
-            let rect = new Rect(position, rectangle);
+            this.components.forEach(({ position, rectangle, cursorEvents }) => {
+                let rect: Rect = new Rect(position, rectangle);
+                let isTarget = rect.collidePoint(mousePos);
 
-            if (rect.collidePoint(mousePos)) {
-                console.log('u clicked me!!');
-            }
-        });
-    }
-
-    onMouseMove(event: MouseEvent) {
-
-    }
-
-    onMouseUp(event: MouseEvent) {
-        
+                let eventHandler: CursorEventHandler = cursorEvents[callbackId];
+                if (eventHandler) {
+                    eventHandler(isTarget, mousePos.x, mousePos.y);
+                }
+            });
+        }
     }
 }
 
