@@ -4,28 +4,31 @@ import System from "./systems/System";
 import CursorEventSystem from "./systems/CursorEventSystem";
 import DrawSystem from "./systems/DrawSystem";
 import SpriteSystem from "./systems/SpriteSystem";
+import EventSystem from "./systems/EventSystem";
 
 class Scene {
     canvas: HTMLCanvasElement;
     entities: Map<EntityId, Entity> = new Map();
     componentMap: ComponentMap = new ComponentMap();
 
-    systems: System[];
+    systems: System[] = [];
     drawSystem: DrawSystem;
     spriteSystem: SpriteSystem;
-    cursorEventSystem: CursorEventSystem;
+    eventSystem: EventSystem;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
 
-        this.drawSystem = new DrawSystem(this);
-        this.cursorEventSystem = new CursorEventSystem(this);
-        this.spriteSystem = new SpriteSystem(this);
-        this.systems = [
+        this.drawSystem = new DrawSystem();
+        this.spriteSystem = new SpriteSystem();
+        this.eventSystem = new EventSystem();
+
+        this.addSystems(
             this.drawSystem,
-            this.cursorEventSystem,
-            this.spriteSystem
-        ]
+            this.spriteSystem,
+            this.eventSystem,
+            new CursorEventSystem()         
+        );
     }
 
     createEntity(): Entity {
@@ -46,6 +49,23 @@ class Scene {
     draw() {
         this.drawSystem.draw();
         this.spriteSystem.draw();
+    }
+
+    addSystem(system: System) {
+        this.systems.push(system);
+        system.mount(this);
+    }
+
+    addSystems(...systems: System[]) {
+        systems.forEach(system => this.addSystem(system));
+    }
+
+    removeSystem(system: System) {
+        let index = this.systems.indexOf(system);
+        if (index < 0) return;
+
+        this.systems.splice(index, 1);
+        system.unmount();
     }
 }
 
