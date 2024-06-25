@@ -19,9 +19,7 @@ class CursorEventSystem extends System {
     onMouseMove: (event: MouseEvent) => void;
     onMouseUp: (event: MouseEvent) => void;
 
-    constructor(scene: Scene) {
-        super(scene);
-
+    onMount(scene: Scene) {
         this.onMouseDown = this.cursorEventCallback('onMouseDown').bind(this);
         this.onMouseMove = this.cursorEventCallback('onMouseMove').bind(this);
         this.onMouseUp = this.cursorEventCallback('onMouseUp').bind(this);

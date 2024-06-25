@@ -1,4 +1,3 @@
-import ComponentMap from "../ComponentMap";
 import {
     ComponentSet,
     ComponentId,
@@ -9,7 +8,7 @@ import Scene from "../Scene";
 
 abstract class System {
     scene: Scene;
-
+    
     // Set of components that this System cares about
     signature: Set<ComponentId> = new Set();
 
@@ -19,17 +18,20 @@ abstract class System {
 
     // Components that match signature and belong to tracked entities
     components: ComponentSet[] = [];
-    
-    constructor(scene: Scene) {
+
+    mount(scene: Scene) {
         this.scene = scene;
+        this.onMount(scene);
     }
 
-    /**
-     * Get the componentMap associated with the scene this system is part of
-     */
-    get componentMap(): ComponentMap {
-        return this.scene.componentMap;
+    onMount(scene?: Scene) {}
+
+    unmount() {
+        this.onUnmount(this.scene);
+        delete this.scene;
     }
+
+    onUnmount(scene?: Scene) {}
 
     /**
      * Callback for when a component is added to an entity. Starts tracking

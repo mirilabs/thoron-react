@@ -8,8 +8,7 @@ class DrawSystem extends System {
     ]);
     ctx: CanvasRenderingContext2D;
 
-    constructor(scene: Scene) {
-        super(scene);
+    onMount(scene: Scene) {
         this.ctx = scene.canvas.getContext('2d');
     }
 
