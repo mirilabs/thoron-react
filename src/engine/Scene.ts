@@ -15,20 +15,40 @@ class Scene {
     drawSystem: DrawSystem;
     spriteSystem: SpriteSystem;
     eventSystem: EventSystem;
+    cursorEventSystem: CursorEventSystem;
 
     constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas;
-
         this.drawSystem = new DrawSystem();
         this.spriteSystem = new SpriteSystem();
         this.eventSystem = new EventSystem();
+        this.cursorEventSystem = new CursorEventSystem();
 
         this.addSystems(
             this.drawSystem,
             this.spriteSystem,
             this.eventSystem,
-            new CursorEventSystem()         
+            this.cursorEventSystem,   
         );
+        
+        this.setCanvas(canvas);
+    }
+
+    setCanvas(canvas: HTMLCanvasElement) {
+        // cleanup bindings from previous canvas
+        this.unsetCanvas();
+
+        // bind to new canvas
+        this.drawSystem.setCanvas(canvas);
+        this.spriteSystem.setCanvas(canvas);
+        this.cursorEventSystem.bindCursorEvents(canvas);
+        this.canvas = canvas;
+    }
+
+    unsetCanvas() {
+        if (this.canvas) {
+            this.cursorEventSystem.unbindCursorEvents(this.canvas);
+            delete this.canvas;
+        }
     }
 
     createEntity(): Entity {

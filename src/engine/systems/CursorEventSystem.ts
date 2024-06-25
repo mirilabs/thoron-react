@@ -1,4 +1,3 @@
-import Scene from "../Scene";
 import {
     ComponentSchema,
     CursorEventHandler,
@@ -19,11 +18,11 @@ class CursorEventSystem extends System {
     onMouseMove: (event: MouseEvent) => void;
     onMouseUp: (event: MouseEvent) => void;
 
-    onMount(scene: Scene) {
+    constructor() {
+        super();
         this.onMouseDown = this.cursorEventCallback('onMouseDown').bind(this);
         this.onMouseMove = this.cursorEventCallback('onMouseMove').bind(this);
         this.onMouseUp = this.cursorEventCallback('onMouseUp').bind(this);
-        this.bindCursorEvents(scene.canvas);
     }
     
     get canvas(): HTMLCanvasElement {

@@ -1,5 +1,4 @@
 import { ComponentId } from "../components";
-import Scene from "../Scene";
 import System from "./System";
 
 class DrawSystem extends System {
@@ -8,8 +7,8 @@ class DrawSystem extends System {
     ]);
     ctx: CanvasRenderingContext2D;
 
-    onMount(scene: Scene) {
-        this.ctx = scene.canvas.getContext('2d');
+    setCanvas(canvas: HTMLCanvasElement) {
+        this.ctx = canvas.getContext('2d');
     }
 
     clearCanvas() {

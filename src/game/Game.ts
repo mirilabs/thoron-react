@@ -43,8 +43,9 @@ class Game {
   }
 
   unsetCanvas() {
-    delete this.canvas;
+    this.scene.unsetCanvas();
     delete this.scene;
+    delete this.canvas;
   }
 
   init() {
