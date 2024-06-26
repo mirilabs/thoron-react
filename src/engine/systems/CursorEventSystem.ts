@@ -1,6 +1,7 @@
 import {
     ComponentSchema,
     CursorEventHandler,
+    ICursorEvent,
     ICursorEventHandlers,
     IPosition
 } from "../components";
@@ -56,17 +57,28 @@ class CursorEventSystem extends System {
         callbackId: keyof ICursorEventHandlers
     ):(event: MouseEvent) => void {
         return function(event: MouseEvent) {
-            let mousePos = this.getCoords(event);
+            let mousePos: IPosition = this.getCoords(event);
 
-            this.components.forEach(({ position, rectangle, cursorEvents }) => {
-                let rect: Rect = new Rect(position, rectangle);
-                let isTarget = rect.collidePoint(mousePos);
+            for (const components of this.components) {
+                let {
+                    position,
+                    rectangle,
+                    cursorEvents
+                } = components as ComponentSchema;
+                let rect = new Rect(position, rectangle);
+
+                let cEvent: ICursorEvent = {
+                    ...event,
+                    x: mousePos.x,
+                    y: mousePos.y,
+                    isTarget: rect.collidePoint(mousePos)
+                }
 
                 let eventHandler: CursorEventHandler = cursorEvents[callbackId];
                 if (eventHandler) {
-                    eventHandler(isTarget, mousePos.x, mousePos.y);
+                    eventHandler(cEvent);
                 }
-            });
+            }
         }
     }
 }
