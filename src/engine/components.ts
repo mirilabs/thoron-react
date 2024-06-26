@@ -17,7 +17,16 @@ interface ISprite {
 
 type IDraw = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
 
-type CursorEventHandler = (isTarget: boolean, x?: number, y?: number) => void;
+interface ICursorEvent extends IPosition {
+    altKey: boolean,
+    ctrlKey: boolean,
+    shiftKey: boolean,
+    movementX: number,
+    movementY: number,
+    isTarget: boolean
+}
+
+type CursorEventHandler = (event: ICursorEvent) => void;
 interface ICursorEventHandlers {
     onMouseDown: CursorEventHandler;
     onMouseMove: CursorEventHandler;
@@ -41,6 +50,7 @@ export {
     IRectangle,
     ISprite,
     IDraw,
+    ICursorEvent,
     CursorEventHandler,
     ICursorEventHandlers,
     ComponentSchema,

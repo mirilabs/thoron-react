@@ -14,7 +14,7 @@ function Unit(unitRecord, eventEmitter, { tileWidth, tileHeight }) {
       url: unitRecord.record['sprite']
     },
     cursorEvents: {
-      onMouseDown(isTarget: boolean, x: number, y: number) {
+      onMouseDown({ isTarget }) {
         if (isTarget) {
           console.log('u clicked me!!')
         }
