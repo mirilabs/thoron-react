@@ -1,4 +1,16 @@
+import { IPosition } from "../../engine/components";
+
+enum RectMode {
+  TOPLEFT,
+  CENTER
+}
+
 class CoordinateConverter {
+  tileWidth: number;
+  tileHeight: number;
+  maxWidth: number;
+  maxHeight: number;
+
   constructor(tileWidth, tileHeight, { width, height }) {
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
@@ -11,7 +23,7 @@ class CoordinateConverter {
    * @param {number} x 
    * @param {number} y 
    */
-  toTiles(x, y) {
+  toTiles(x: number, y: number): IPosition {
     if (x < 0 || x > this.maxWidth || y < 0 || y > this.maxHeight) {
       return null
     }
@@ -19,7 +31,7 @@ class CoordinateConverter {
     let { tileWidth, tileHeight } = this;
     x = Math.floor(x / tileWidth);
     y = Math.floor(y / tileHeight);
-    return [x, y]
+    return { x, y }
   }
 
   /**
@@ -28,22 +40,26 @@ class CoordinateConverter {
    * @param {number} y
    * @param {string} mode One of `'topLeft'`, `'center'`
    */
-  toPixels(x, y, mode = 'center') {
+  toPixels(
+    x: number,
+    y: number,
+    mode: RectMode = RectMode.TOPLEFT
+  ): IPosition {
     let { tileWidth, tileHeight } = this;
 
     switch(mode) {
-      case 'topLeft':
+      case RectMode.TOPLEFT:
         x = x * tileWidth;
         y = y * tileHeight;
         break;
-      case 'center':
+      case RectMode.CENTER:
         x = (x + 0.5) * tileWidth;
         y = (y + 0.5) * tileHeight;
         break;
       default:
         throw new Error('Invalid mode');
     }
-    return [x, y]
+    return { x, y }
   }
 }
 

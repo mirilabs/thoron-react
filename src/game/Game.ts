@@ -1,7 +1,8 @@
-import CoordinateConverter from '../lib/CoordinateConverter';
+import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid, Unit } from './entities';
 import EventEmitter from '../lib/EventEmitter';
+import Pointer from './entities/Pointer';
 
 interface IGameSettings {
   tileSize: number;
@@ -58,14 +59,17 @@ class Game {
     let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight);
     grid.instantiate(scene);
 
+    let pointer = Pointer(this);
+    pointer.instantiate(scene);
+
     this.chapter.units.forEach(unit => {
       let unitPrototype = Unit(unit, this.uiEvents, this.opts);
       let unitEntity = unitPrototype.instantiate(scene);
       
       // move to initial position
       let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
-      [x, y] = this.coords.toPixels(x, y, 'topLeft');
-      Object.assign(unitEntity.getComponent('position'), { x, y });
+      let pixelCoords = this.coords.toPixels(x, y);
+      Object.assign(unitEntity.getComponent('position'), pixelCoords);
     })
 
     this.scene.draw();
