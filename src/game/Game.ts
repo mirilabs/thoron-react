@@ -2,42 +2,52 @@ import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid, Unit } from './entities';
 import EventEmitter from '../lib/EventEmitter';
-import Pointer from './entities/Pointer';
+import Pointer from './entities/ui/Pointer';
 
-interface IGameSettings {
-  tileSize: number;
+interface IGameConfig {
+  tileWidth: number;
+  tileHeight: number;
+  moveColor: string;
+  attackColor: string;
+  healColor: string;
+  interactColor: string;
+}
+
+const defaultConfig: IGameConfig = {
+  tileWidth: 64,
+  tileHeight: 64,
+  moveColor: '#0000ff',
+  attackColor: '#ff0000',
+  healColor: '#00ff00',
+  interactColor: 'ff00ff'
 }
 
 class Game {
   chapter;
-  opts;
+  config: IGameConfig;
   coords: CoordinateConverter;
   uiEvents: EventEmitter;
   canvas: HTMLCanvasElement;
   scene: Scene;
 
-  constructor(chapter, opts: Partial<IGameSettings> = {}) {
+  constructor(chapter, cfg: Partial<IGameConfig> = {}) {
     this.chapter = chapter;
-    this.opts = {
-      tileWidth: opts.tileSize ?? 64,
-      tileHeight: opts.tileSize ?? 64,
-      ...opts
+    this.config = {
+      ...defaultConfig,
+      ...cfg
     }
     this.coords = new CoordinateConverter(
-      this.tileWidth,
-      this.tileHeight,
+      this.config.tileWidth,
+      this.config.tileHeight,
       {
-        width: this.chapter.terrain.width * this.tileWidth,
-        height: this.chapter.terrain.height * this.tileHeight
+        width: this.chapter.terrain.width * this.config.tileWidth,
+        height: this.chapter.terrain.height * this.config.tileHeight
       }
     );
     this.uiEvents = new EventEmitter();
   }
 
-  get tileWidth() { return this.opts.tileWidth }
-  get tileHeight() { return this.opts.tileHeight }
-
-  setCanvas(canvas) {
+  setCanvas(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.scene = new Scene(canvas);
     this.init();
@@ -53,18 +63,18 @@ class Game {
     let scene = this.scene;
     let { width, height } = this.canvas;
 
-    let bg = Background(width, height, null);
-    bg.instantiate(scene);
+    let bg = new Background(width, height, null);
+    bg.addToScene(scene);
 
-    let grid = Grid(width, height, this.opts.tileWidth, this.opts.tileHeight);
-    grid.instantiate(scene);
+    let grid = new Grid(width, height, this.config);
+    grid.addToScene(scene);
 
-    let pointer = Pointer(this);
-    pointer.instantiate(scene);
+    let pointer = new Pointer(this);
+    pointer.addToScene(scene);
 
     this.chapter.units.forEach(unit => {
-      let unitPrototype = Unit(unit, this.uiEvents, this.opts);
-      let unitEntity = unitPrototype.instantiate(scene);
+      let unitPrototype = new Unit(unit, this.config);
+      let unitEntity = unitPrototype.addToScene(scene);
       
       // move to initial position
       let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
@@ -77,3 +87,6 @@ class Game {
 }
 
 export default Game;
+export {
+  IGameConfig
+}
