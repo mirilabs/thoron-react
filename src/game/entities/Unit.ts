@@ -12,13 +12,6 @@ function Unit(unitRecord, eventEmitter, { tileWidth, tileHeight }) {
     },
     sprite: {
       url: unitRecord.record['sprite']
-    },
-    cursorEvents: {
-      onMouseDown({ isTarget }) {
-        if (isTarget) {
-          console.log('u clicked me!!')
-        }
-      }
     }
   })
 }

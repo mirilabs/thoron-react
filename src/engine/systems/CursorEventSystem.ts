@@ -5,13 +5,10 @@ import {
     ICursorEventHandlers,
     IPosition
 } from "../components";
-import Rect from "../utils/Rect";
 import System from "./System";
 
 class CursorEventSystem extends System {
     signature: Set<keyof ComponentSchema> = new Set([
-        'position',
-        'rectangle',
         'cursorEvents'
     ]);
 
@@ -61,17 +58,13 @@ class CursorEventSystem extends System {
 
             for (const components of this.components) {
                 let {
-                    position,
-                    rectangle,
                     cursorEvents
                 } = components as ComponentSchema;
-                let rect = new Rect(position, rectangle);
 
                 let cEvent: ICursorEvent = {
                     ...event,
                     x: mousePos.x,
-                    y: mousePos.y,
-                    isTarget: rect.collidePoint(mousePos)
+                    y: mousePos.y
                 }
 
                 let eventHandler: CursorEventHandler = cursorEvents[callbackId];
