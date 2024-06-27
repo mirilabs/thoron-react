@@ -5,14 +5,11 @@ import {
     ComponentId
 } from "./components";
 
-class Prototype {
+abstract class GameObject {
     components: ComponentSet;
+    entity: Entity;
 
-    constructor(components: ComponentSet) {
-        this.components = components;
-    }
-
-    instantiate(scene: Scene): Entity {
+    addToScene(scene: Scene): Entity {
         let entity = scene.createEntity();
 
         for (const cId in this.components) {
@@ -22,6 +19,13 @@ class Prototype {
 
         return entity;
     }
+
+    destroy() {
+        if (!this.entity) return;
+        
+        this.entity.destroy();
+        delete this.entity;
+    }
 }
 
-export default Prototype;
+export default GameObject;
