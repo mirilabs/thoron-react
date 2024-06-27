@@ -22,8 +22,7 @@ interface ICursorEvent extends IPosition {
     ctrlKey: boolean,
     shiftKey: boolean,
     movementX: number,
-    movementY: number,
-    isTarget: boolean
+    movementY: number
 }
 
 type CursorEventHandler = (event: ICursorEvent) => void;
