@@ -41,6 +41,12 @@ class Entity {
             sys.onComponentRemoved(this, cId);
         });
     }
+
+    destroy() {
+        this.scene.systems.forEach(system => {
+            system.removeEntity(this);
+        });
+    }
 }
 
 export default Entity;
