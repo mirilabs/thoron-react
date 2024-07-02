@@ -3,6 +3,7 @@ import Scene from '../engine/Scene';
 import { Background, Grid, Unit } from './entities';
 import EventEmitter from '../lib/EventEmitter';
 import Pointer from './entities/ui/Pointer';
+import UnitRange from './entities/ui/UnitRange';
 
 interface IGameConfig {
   tileWidth: number;
@@ -11,6 +12,7 @@ interface IGameConfig {
   attackColor: string;
   healColor: string;
   interactColor: string;
+  highlightAlpha: number;
 }
 
 const defaultConfig: IGameConfig = {
@@ -19,7 +21,8 @@ const defaultConfig: IGameConfig = {
   moveColor: '#0000ff',
   attackColor: '#ff0000',
   healColor: '#00ff00',
-  interactColor: 'ff00ff'
+  interactColor: 'ff00ff',
+  highlightAlpha: 0.2,
 }
 
 class Game {
@@ -80,7 +83,10 @@ class Game {
       let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
       let pixelCoords = this.coords.toPixels(x, y);
       Object.assign(unitEntity.getComponent('position'), pixelCoords);
-    })
+    });
+
+    let unitRange = new UnitRange(this);
+    unitRange.addToScene(scene);
 
     this.scene.draw();
   }

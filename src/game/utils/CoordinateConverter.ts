@@ -6,6 +6,8 @@ enum RectMode {
 }
 
 class CoordinateConverter {
+  static RectMode = RectMode;
+  
   tileWidth: number;
   tileHeight: number;
   maxWidth: number;

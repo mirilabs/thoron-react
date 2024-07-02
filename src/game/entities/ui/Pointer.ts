@@ -1,21 +1,63 @@
 import GameObject from "../../../engine/GameObject";
 import Game from "../../Game";
-import EventEmitter from "../../../lib/EventEmitter";
-import CoordinateConverter from "../../utils/CoordinateConverter";
-import { ICursorEvent } from "../../../engine/components";
+import { ICursorEvent, IPosition } from "../../../engine/components";
+
+class PointerState {
+  pointer: Pointer;
+  game: Game;
+  setState: (NextState: typeof PointerState) => void;
+
+  constructor(pointer: Pointer) {
+    this.bindPointer(pointer);
+  }
+
+  bindPointer(pointer: Pointer) {
+    this.pointer = pointer;
+    this.game = pointer.game;
+    this.setState = pointer.setState.bind(pointer);
+  }
+
+  onEnter() {}
+  onExit() {}
+  onMouseDown(tileCoords: IPosition) {}
+  onMouseMove(tileCoords: IPosition) {}
+  onMouseUp(tileCoords: IPosition) {}
+}
+
+class IdleState extends PointerState {
+  onMouseDown(tileCoords: IPosition): void {
+    const {
+      chapter,
+      uiEvents
+    } = this.game;
+
+    // set selected tile in ui
+    let tile = chapter.terrain.getTile(tileCoords.x, tileCoords.y);
+    uiEvents.emit('select_tile', tile);
+    
+    // set selected unit in ui
+    let unit = chapter.getUnitAt(tileCoords);
+    if (unit)
+      this.selectUnit(unit);
+    else
+      this.selectUnit(null);
+  }
+
+  selectUnit(unit) {
+    this.game.uiEvents.emit('select_unit', unit);
+  }
+}
 
 class Pointer extends GameObject {
   chapter;
-  coords: CoordinateConverter;
-  uiEvents: EventEmitter;
+  game: Game;
   lastX: number;
   lastY: number;
+  currentState: PointerState;
 
   constructor(game: Game) {
     super();
-    this.chapter = game.chapter;
-    this.coords = game.coords;
-    this.uiEvents = game.uiEvents;
+    this.game = game;
 
     this.components = {
       position: { x: 0, y: 0 },
@@ -23,23 +65,39 @@ class Pointer extends GameObject {
         onMouseDown: this.onMouseDown.bind(this)
       }
     }
+    
+    this.setState(IdleState);
   }
 
-  onMouseDown({ x, y }: ICursorEvent) {
-    let tileCoords = this.coords.toTiles(x, y);
-    if (tileCoords.x === this.lastX && tileCoords.y === this.lastY) return;
-    
-    // set selected tile in ui
-    let tile = this.chapter.terrain.getTile(tileCoords.x, tileCoords.y);
-    this.uiEvents.emit('select_tile', tile);
-    
-    // set selected unit in ui
-    let unit = this.chapter.getUnitAt(tileCoords);
-    if (unit)
-      this.uiEvents.emit('select_unit', unit);
+  setState(State: typeof PointerState) {
+    if (this.currentState) this.currentState.onExit();
+    this.currentState = new State(this);
+    this.currentState.onEnter();
+  }
 
+  passCursorEvent(
+    { x, y }: ICursorEvent,
+    cb: (tileCoords: IPosition) => void
+  ) {
+    let tileCoords = this.game.coords.toTiles(x, y);
+
+    if (tileCoords.x === this.lastX && tileCoords.y === this.lastY) return;
     this.lastX = tileCoords.x;
     this.lastY = tileCoords.y;
+
+    cb.call(this.currentState, tileCoords);
+  }
+
+  onMouseDown(event: ICursorEvent) {
+    this.passCursorEvent(event, this.currentState.onMouseDown);
+  }
+
+  onMouseMove(event: ICursorEvent) {
+    this.passCursorEvent(event, this.currentState.onMouseMove);
+  }
+
+  onMouseUp(event: ICursorEvent) {
+    this.passCursorEvent(event, this.currentState.onMouseUp);
   }
 }
 

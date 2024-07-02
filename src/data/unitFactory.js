@@ -30,12 +30,20 @@ const unitFactory = () => ({
     def: randomInt(100),
     res: randomInt(100)
   },
-  mov: 2,
+  movement: 2,
   move_type: ['infantry'],
   weapon_profiency: {
     'sword': 0
   },
-  inventory: [],
+  items: [
+    {
+      name: 'Iron Sword',
+      weapon: {
+        minRange: 1,
+        maxRange: 1
+      }
+    }
+  ],
   skills: [],
   sprite: 'https://cdn.discordapp.com/emojis/1107849361691529227.webp'
 })
