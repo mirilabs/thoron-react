@@ -25,6 +25,16 @@ class Rect {
     return this.pos.y + this.rect.height;
   }
 
+  move(x: number, y: number): void {
+    this.pos.x += x;
+    this.pos.y += y;
+  }
+
+  moveTo(x: number, y: number): void {
+    this.pos.x = x;
+    this.pos.y = y;
+  }
+
   collidePoint(p: IPosition): boolean {
     let { x, y } = p;
 

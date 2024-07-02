@@ -1,9 +1,10 @@
 import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid, Unit } from './entities';
-import EventEmitter from '../lib/EventEmitter';
 import Pointer from './entities/ui/Pointer';
 import UnitRange from './entities/ui/UnitRange';
+import Entity from '../engine/Entity';
+import UIEventEmitter from './entities/ui/UIEventEmitter';
 
 interface IGameConfig {
   tileWidth: number;
@@ -29,9 +30,12 @@ class Game {
   chapter;
   config: IGameConfig;
   coords: CoordinateConverter;
-  uiEvents: EventEmitter;
+  uiEvents: UIEventEmitter;
   canvas: HTMLCanvasElement;
   scene: Scene;
+
+  _selectedUnit: any;
+  unitEntities: Map<any, Entity> = new Map();
 
   constructor(chapter, cfg: Partial<IGameConfig> = {}) {
     this.chapter = chapter;
@@ -40,14 +44,16 @@ class Game {
       ...cfg
     }
     this.coords = new CoordinateConverter(
+      this.chapter.terrain.width,
+      this.chapter.terrain.height,
       this.config.tileWidth,
-      this.config.tileHeight,
-      {
-        width: this.chapter.terrain.width * this.config.tileWidth,
-        height: this.chapter.terrain.height * this.config.tileHeight
-      }
+      this.config.tileHeight
     );
-    this.uiEvents = new EventEmitter();
+
+    this.uiEvents = new UIEventEmitter();
+    this.uiEvents.on('select_unit', (unit) => {
+      this._selectedUnit = unit
+    });
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -75,20 +81,33 @@ class Game {
     let pointer = new Pointer(this);
     pointer.addToScene(scene);
 
-    this.chapter.units.forEach(unit => {
-      let unitPrototype = new Unit(unit, this.config);
-      let unitEntity = unitPrototype.addToScene(scene);
-      
-      // move to initial position
-      let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
-      let pixelCoords = this.coords.toPixels(x, y);
-      Object.assign(unitEntity.getComponent('position'), pixelCoords);
-    });
+    this.chapter.units.forEach(this.addUnit.bind(this));
 
     let unitRange = new UnitRange(this);
     unitRange.addToScene(scene);
 
     this.scene.draw();
+  }
+
+  addUnit(unit) {
+    let unitPrototype = new Unit(this, unit);
+    let unitEntity = unitPrototype.addToScene(this.scene);
+
+    // move to initial position
+    let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
+    let pixelCoords = this.coords.toPixels(x, y);
+    Object.assign(unitEntity.getComponent('position'), pixelCoords);
+
+    // add to entity lookup
+    this.unitEntities.set(unit, unitEntity);
+  }
+
+  getSelectedUnit() {
+    return this._selectedUnit;
+  }
+
+  getUnitEntity(unit) {
+    return this.unitEntities.get(unit);
   }
 }
 

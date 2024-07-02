@@ -1,11 +1,12 @@
 import GameObject from "../../../engine/GameObject";
 import Game from "../../Game";
 import { ICursorEvent, IPosition } from "../../../engine/components";
+import Entity from "../../../engine/Entity";
 
 class PointerState {
   pointer: Pointer;
   game: Game;
-  setState: (NextState: typeof PointerState) => void;
+  setState: (NextState: typeof PointerState, ...args: any[]) => void;
 
   constructor(pointer: Pointer) {
     this.bindPointer(pointer);
@@ -17,7 +18,7 @@ class PointerState {
     this.setState = pointer.setState.bind(pointer);
   }
 
-  onEnter() {}
+  onEnter(...args: any[]) {}
   onExit() {}
   onMouseDown(tileCoords: IPosition) {}
   onMouseMove(tileCoords: IPosition) {}
@@ -25,22 +26,32 @@ class PointerState {
 }
 
 class IdleState extends PointerState {
-  onMouseDown(tileCoords: IPosition): void {
+  onEnter(...args: any[]): void {
+    this.game.uiEvents.emit('pointer_state', 'idle');
+  }
+
+  onMouseDown(event: ICursorEvent): void {
     const {
       chapter,
       uiEvents
     } = this.game;
 
     // set selected tile in ui
+    let tileCoords = this.game.coords.toTiles(event.x, event.y);
     let tile = chapter.terrain.getTile(tileCoords.x, tileCoords.y);
     uiEvents.emit('select_tile', tile);
     
     // set selected unit in ui
     let unit = chapter.getUnitAt(tileCoords);
-    if (unit)
+    let ent = this.game.getUnitEntity(unit);
+
+    if (unit) {
       this.selectUnit(unit);
-    else
+      this.setState(DraggingState, unit, ent);
+    }
+    else {
       this.selectUnit(null);
+    }
   }
 
   selectUnit(unit) {
@@ -48,13 +59,57 @@ class IdleState extends PointerState {
   }
 }
 
+class DraggingState extends PointerState {
+  selectedUnit: any;
+  entityPos: IPosition;
+  lastX: number;
+  lastY: number;
+
+  onEnter(unit: any, entity: Entity): void {
+    this.game.uiEvents.emit('pointer_state', 'dragging');
+
+    this.selectedUnit = unit;
+    this.entityPos = entity.getComponent('position');
+  }
+
+  moveEntity(x: number, y: number) {
+    this.entityPos.x = x;
+    this.entityPos.y = y;
+  }
+
+  onMouseMove(event: ICursorEvent): void {    
+    // update currently hovering tile coords
+    let tileCoords: IPosition = this.game.coords.toTiles(event.x, event.y);
+    let { x, y } = tileCoords;
+
+    if (x !== this.lastX || y !== this.lastY) {
+      console.log(x, y);
+    }
+    this.lastX = x;
+    this.lastY = y;
+
+    // unit sprite follows cursor
+    this.moveEntity(
+      event.x - this.game.config.tileWidth / 2,
+      event.y - this.game.config.tileHeight / 2
+    );
+    this.game.scene.draw();
+  }
+
+  onMouseUp(event: ICursorEvent) {
+    let tileCoords = this.game.coords.toTiles(event.x, event.y);
+    let targetPos = this.game.coords.toPixels(tileCoords.x, tileCoords.y);
+    this.moveEntity(targetPos.x, targetPos.y);
+
+    this.setState(IdleState);
+  }
+}
+
 class Pointer extends GameObject {
   chapter;
   game: Game;
-  lastX: number;
-  lastY: number;
   currentState: PointerState;
-
+  
   constructor(game: Game) {
     super();
     this.game = game;
@@ -62,42 +117,31 @@ class Pointer extends GameObject {
     this.components = {
       position: { x: 0, y: 0 },
       cursorEvents: {
-        onMouseDown: this.onMouseDown.bind(this)
+        onMouseDown: this.onMouseDown.bind(this),
+        onMouseMove: this.onMouseMove.bind(this),
+        onMouseUp: this.onMouseUp.bind(this)
       }
     }
     
     this.setState(IdleState);
   }
 
-  setState(State: typeof PointerState) {
+  setState(State: typeof PointerState, ...nextStateArgs: any[]) {
     if (this.currentState) this.currentState.onExit();
     this.currentState = new State(this);
-    this.currentState.onEnter();
-  }
-
-  passCursorEvent(
-    { x, y }: ICursorEvent,
-    cb: (tileCoords: IPosition) => void
-  ) {
-    let tileCoords = this.game.coords.toTiles(x, y);
-
-    if (tileCoords.x === this.lastX && tileCoords.y === this.lastY) return;
-    this.lastX = tileCoords.x;
-    this.lastY = tileCoords.y;
-
-    cb.call(this.currentState, tileCoords);
+    this.currentState.onEnter(...nextStateArgs);
   }
 
   onMouseDown(event: ICursorEvent) {
-    this.passCursorEvent(event, this.currentState.onMouseDown);
+    this.currentState.onMouseDown(event);
   }
 
   onMouseMove(event: ICursorEvent) {
-    this.passCursorEvent(event, this.currentState.onMouseMove);
+    this.currentState.onMouseMove(event);
   }
 
   onMouseUp(event: ICursorEvent) {
-    this.passCursorEvent(event, this.currentState.onMouseUp);
+    this.currentState.onMouseUp(event);
   }
 }
 

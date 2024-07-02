@@ -1,5 +1,7 @@
 import Entity from "./Entity";
 
+// COMPONENTS
+
 interface IPosition {
   x: number;
   y: number;
@@ -31,6 +33,8 @@ interface ICursorEventHandlers {
   onMouseMove: CursorEventHandler;
   onMouseUp: CursorEventHandler;
 }
+
+// SCHEMA
 
 type ComponentSchema = {
   position: IPosition,
