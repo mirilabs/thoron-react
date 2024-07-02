@@ -17,6 +17,7 @@ abstract class GameObject {
       entity.addComponent(cId as ComponentId, component);
     }
 
+    this.entity = entity;
     return entity;
   }
 

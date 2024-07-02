@@ -12,7 +12,7 @@ function UnitList({ render }) {
   
   const [selected, setSelected] = useState(null);
   useEventListener(uiEvents, 'select_unit', unit => {
-    setSelected(unit.id);
+    setSelected(unit?.id ?? null);
   });
 
   const data = {
