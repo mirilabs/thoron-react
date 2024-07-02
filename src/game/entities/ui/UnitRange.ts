@@ -26,37 +26,45 @@ class UnitRange extends GameObject {
     this.unit = unit;
     this.entity.scene.draw();
   }
-
-  highlightTiles(
-    ctx: CanvasRenderingContext2D,
-    tileCoords: { x: number, y: number }[],
-    color: string
-  ) {
-    let { tileWidth, tileHeight, highlightAlpha } = this.config;
-    ctx.save();
-    
-    ctx.fillStyle = color;
-    ctx.globalAlpha = highlightAlpha;
-
-    for (const coords of tileCoords) {
-      let { x, y } = this.coords.toPixels(coords.x, coords.y);
-      ctx.fillRect(x, y, tileWidth, tileHeight);
-    }
-
-    ctx.restore();
-  }
-
+  
   draw(ctx: CanvasRenderingContext2D) {
     const unit = this.unit;
     if (!unit) return;
 
     const {
+      tileWidth,
+      tileHeight,
       attackColor,
-      moveColor
+      moveColor,
+      highlightAlpha
     } = this.config;
 
-    this.highlightTiles(ctx, unit.getAttackRange(), attackColor);
-    this.highlightTiles(ctx, unit.getMoveRange(), moveColor);
+    // store what color to paint each tile
+    // higher-priority ranges are painted later, overwriting the
+    // previously queued color
+    let paintQueue: Map<string, string> = new Map();
+
+    unit.getAttackRange().forEach(({ x, y }) => {
+      paintQueue.set(`${x},${y}`, attackColor);
+    });
+
+    unit.getMoveRange().forEach(({ x, y }) => {
+      paintQueue.set(`${x},${y}`, moveColor);
+    });
+
+    // paint tiles
+    ctx.save();
+    ctx.globalAlpha = highlightAlpha;
+
+    for (const [coords, color] of paintQueue.entries()) {
+      let [x, y] = coords.split(',').map(n => parseInt(n));
+      let pixelCoords = this.coords.toPixels(x, y);
+
+      ctx.fillStyle = color;
+      ctx.fillRect(pixelCoords.x, pixelCoords.y, tileWidth, tileHeight);
+    }
+
+    ctx.restore();
   }
 }
 
