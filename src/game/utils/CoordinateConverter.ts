@@ -8,16 +8,33 @@ enum RectMode {
 class CoordinateConverter {
   static RectMode = RectMode;
   
+  mapWidth: number;
+  mapHeight: number;
   tileWidth: number;
   tileHeight: number;
-  maxWidth: number;
-  maxHeight: number;
 
-  constructor(tileWidth, tileHeight, { width, height }) {
+  constructor(
+    mapWidth: number,
+    mapHeight: number,
+    tileWidth: number,
+    tileHeight: number
+  ) {
+    this.mapWidth = mapWidth;
+    this.mapHeight = mapHeight;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
-    this.maxWidth = width ?? Number.POSITIVE_INFINITY;
-    this.maxHeight = height ?? Number.POSITIVE_INFINITY;
+  }
+
+  /**
+   * Clamp tile coordinates to the dimensions of the map
+   * @param x 
+   * @param y 
+   * @returns a tile coordinate pair
+   */
+  clampTileCoords(x: number, y: number) {
+    x = Math.max(0, Math.min(x, this.mapWidth - 1));
+    y = Math.max(0, Math.min(y, this.mapHeight - 1));
+    return { x, y }
   }
 
   /**
@@ -26,14 +43,10 @@ class CoordinateConverter {
    * @param {number} y 
    */
   toTiles(x: number, y: number): IPosition {
-    if (x < 0 || x > this.maxWidth || y < 0 || y > this.maxHeight) {
-      return null
-    }
-
     let { tileWidth, tileHeight } = this;
     x = Math.floor(x / tileWidth);
     y = Math.floor(y / tileHeight);
-    return { x, y }
+    return this.clampTileCoords(x, y);
   }
 
   /**

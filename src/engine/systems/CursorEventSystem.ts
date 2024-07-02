@@ -62,9 +62,13 @@ class CursorEventSystem extends System {
         } = components as ComponentSchema;
 
         let cEvent: ICursorEvent = {
-          ...event,
           x: mousePos.x,
-          y: mousePos.y
+          y: mousePos.y,
+          movementX: event.movementX,
+          movementY: event.movementY,
+          altKey: event.altKey,
+          shiftKey: event.shiftKey,
+          ctrlKey: event.ctrlKey
         }
 
         let eventHandler: CursorEventHandler = cursorEvents[callbackId];

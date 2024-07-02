@@ -1,20 +1,20 @@
 import GameObject from '../../engine/GameObject';
-import { IGameConfig } from '../Game';
+import Game from '../Game';
 
 class Unit extends GameObject {
   constructor(
-    unitRecord,
-    cfg: IGameConfig
+    game: Game,
+    unit
   ) {
     super();
     this.components = {
       position: { x: 0, y: 0 },
       rectangle: {
-        width: cfg.tileWidth,
-        height: cfg.tileHeight
+        width: game.config.tileWidth,
+        height: game.config.tileHeight
       },
       sprite: {
-        url: unitRecord.record['sprite']
+        url: unit.record['sprite']
       }
     }
   }

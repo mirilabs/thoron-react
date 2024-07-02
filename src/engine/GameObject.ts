@@ -9,6 +9,9 @@ abstract class GameObject {
   components: ComponentSet;
   entity: Entity;
 
+  onInit(scene: Scene) {}
+  onDestroy() {}
+
   addToScene(scene: Scene): Entity {
     let entity = scene.createEntity();
 
@@ -18,6 +21,7 @@ abstract class GameObject {
     }
 
     this.entity = entity;
+    this.onInit(scene);
     return entity;
   }
 
@@ -25,6 +29,7 @@ abstract class GameObject {
     if (!this.entity) return;
     
     this.entity.destroy();
+    this.onDestroy();
     delete this.entity;
   }
 }

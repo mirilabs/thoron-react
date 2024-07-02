@@ -7,6 +7,7 @@ class UnitRange extends GameObject {
   unit: any;
   coords: CoordinateConverter;
   config: IGameConfig;
+  isActive: boolean;
   
   constructor(game: Game) {
     super();
@@ -17,19 +18,19 @@ class UnitRange extends GameObject {
     this.components = {
       draw: this.draw.bind(this)
     }
-
-    this.setUnit = this.setUnit.bind(this);
-    game.uiEvents.on('select_unit', this.setUnit);
+    
+    game.uiEvents.on('select_unit', (unit) => {
+      this.unit = unit;
+    });
+    game.uiEvents.on('pointer_state', (state: string) => {
+      this.isActive = (state === 'dragging');
+      this.entity.scene.draw();
+    });
   }
 
-  setUnit(unit) {
-    this.unit = unit;
-    this.entity.scene.draw();
-  }
-  
   draw(ctx: CanvasRenderingContext2D) {
     const unit = this.unit;
-    if (!unit) return;
+    if (!unit || !this.isActive) return;
 
     const {
       tileWidth,
