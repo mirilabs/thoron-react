@@ -1,6 +1,6 @@
 import {
-  IRectangle,
-  ISprite,
+  Rectangle,
+  Sprite,
   ComponentId,
   Component
 } from "../components";
@@ -39,8 +39,8 @@ class SpriteSystem extends DrawSystem {
 
     if (componentId === 'sprite') {
       // load sprite
-      let sprite: ISprite = component as ISprite;
-      let rect: IRectangle = entity.getComponent('rectangle');
+      let sprite: Sprite = component as Sprite;
+      let rect: Rectangle = entity.getComponent('rectangle');
 
       SpriteSystem.loadSprite(
         sprite.url, rect.width, rect.height
