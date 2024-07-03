@@ -13,10 +13,11 @@ type ComponentState = {
 class ComponentMap {
   components: ComponentState = {
     position: new Map(),
+    velocity: new Map(),
     rectangle: new Map(),
     sprite: new Map(),
     draw: new Map(),
-    cursorEvents: new Map()
+    cursorEvents: new Map(),
   };
 
   addComponent<CId extends ComponentId>(

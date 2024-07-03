@@ -38,6 +38,7 @@ interface ICursorEventHandlers {
 
 type ComponentSchema = {
   position: IPosition,
+  velocity: IPosition,
   rectangle: IRectangle,
   sprite: ISprite,
   draw: IDraw,

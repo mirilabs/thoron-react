@@ -4,6 +4,7 @@ import System from "./systems/System";
 import CursorEventSystem from "./systems/CursorEventSystem";
 import DrawSystem from "./systems/DrawSystem";
 import SpriteSystem from "./systems/SpriteSystem";
+import MotionSystem from "./systems/MotionSystem";
 
 class Scene {
   canvas: HTMLCanvasElement;
@@ -11,19 +12,17 @@ class Scene {
   componentMap: ComponentMap = new ComponentMap();
 
   systems: System[] = [];
-  drawSystem: DrawSystem;
-  spriteSystem: SpriteSystem;
-  cursorEventSystem: CursorEventSystem;
+  drawSystem: DrawSystem = new DrawSystem();
+  spriteSystem: SpriteSystem = new SpriteSystem();
+  cursorEventSystem: CursorEventSystem = new CursorEventSystem();
+  motionSystem: MotionSystem = new MotionSystem();
 
   constructor(canvas: HTMLCanvasElement) {
-    this.drawSystem = new DrawSystem();
-    this.spriteSystem = new SpriteSystem();
-    this.cursorEventSystem = new CursorEventSystem();
-
     this.addSystems(
       this.drawSystem,
       this.spriteSystem,
-      this.cursorEventSystem,   
+      this.cursorEventSystem,
+      this.motionSystem
     );
     
     this.setCanvas(canvas);
