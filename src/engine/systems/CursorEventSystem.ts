@@ -3,7 +3,7 @@ import {
   CursorEventHandler,
   ICursorEvent,
   ICursorEventHandlers,
-  IPosition
+  Vector2
 } from "../components";
 import System from "./System";
 
@@ -39,7 +39,7 @@ class CursorEventSystem extends System {
     element.removeEventListener('mouseup', this.onMouseUp);
   }
 
-  getCoords(event: MouseEvent): IPosition {
+  getCoords(event: MouseEvent): Vector2 {
     let x = event.pageX - this.canvas.offsetLeft;
     let y = event.pageY - this.canvas.offsetTop;
     return { x, y }
@@ -54,7 +54,7 @@ class CursorEventSystem extends System {
     callbackId: keyof ICursorEventHandlers
   ):(event: MouseEvent) => void {
     return function(event: MouseEvent) {
-      let mousePos: IPosition = this.getCoords(event);
+      let mousePos: Vector2 = this.getCoords(event);
 
       for (const components of this.components) {
         let {

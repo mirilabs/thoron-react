@@ -1,4 +1,4 @@
-import { IPosition } from "../../engine/components";
+import { Vector2 } from "../../engine/components";
 
 enum RectMode {
   TOPLEFT,
@@ -42,7 +42,7 @@ class CoordinateConverter {
    * @param {number} x 
    * @param {number} y 
    */
-  toTiles(x: number, y: number): IPosition {
+  toTiles(x: number, y: number): Vector2 {
     let { tileWidth, tileHeight } = this;
     x = Math.floor(x / tileWidth);
     y = Math.floor(y / tileHeight);
@@ -59,7 +59,7 @@ class CoordinateConverter {
     x: number,
     y: number,
     mode: RectMode = RectMode.TOPLEFT
-  ): IPosition {
+  ): Vector2 {
     let { tileWidth, tileHeight } = this;
 
     switch(mode) {
