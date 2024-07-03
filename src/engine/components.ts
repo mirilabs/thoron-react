@@ -2,7 +2,7 @@ import Entity from "./Entity";
 
 // COMPONENTS
 
-interface IPosition {
+interface Vector2 {
   x: number;
   y: number;
 }
@@ -19,7 +19,7 @@ interface ISprite {
 
 type IDraw = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
 
-interface ICursorEvent extends IPosition {
+interface ICursorEvent extends Vector2 {
   altKey: boolean,
   ctrlKey: boolean,
   shiftKey: boolean,
@@ -37,8 +37,8 @@ interface ICursorEventHandlers {
 // SCHEMA
 
 type ComponentSchema = {
-  position: IPosition,
-  velocity: IPosition,
+  position: Vector2,
+  velocity: Vector2,
   rectangle: IRectangle,
   sprite: ISprite,
   draw: IDraw,
@@ -50,7 +50,7 @@ type ComponentId = keyof ComponentSchema;
 type Component = ComponentSchema[ComponentId];
 
 export {
-  IPosition,
+  Vector2,
   IRectangle,
   ISprite,
   IDraw,

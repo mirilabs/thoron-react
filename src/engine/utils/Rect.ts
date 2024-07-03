@@ -1,10 +1,10 @@
-import { IPosition, IRectangle } from "../components";
+import { Vector2, IRectangle } from "../components";
 
 class Rect {
-  pos: IPosition;
+  pos: Vector2;
   rect: IRectangle;
 
-  constructor(pos: IPosition, rect: IRectangle) {
+  constructor(pos: Vector2, rect: IRectangle) {
     this.pos = pos;
     this.rect = rect;
   }
@@ -35,7 +35,7 @@ class Rect {
     this.pos.y = y;
   }
 
-  collidePoint(p: IPosition): boolean {
+  collidePoint(p: Vector2): boolean {
     let { x, y } = p;
 
     return x > this.left() &&

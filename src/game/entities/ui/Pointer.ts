@@ -1,6 +1,6 @@
 import GameObject from "../../../engine/GameObject";
 import Game from "../../Game";
-import { ICursorEvent, IPosition } from "../../../engine/components";
+import { ICursorEvent, Vector2 } from "../../../engine/components";
 import Entity from "../../../engine/Entity";
 
 class PointerState {
@@ -20,9 +20,9 @@ class PointerState {
 
   onEnter(...args: any[]) {}
   onExit() {}
-  onMouseDown(tileCoords: IPosition) {}
-  onMouseMove(tileCoords: IPosition) {}
-  onMouseUp(tileCoords: IPosition) {}
+  onMouseDown(tileCoords: Vector2) {}
+  onMouseMove(tileCoords: Vector2) {}
+  onMouseUp(tileCoords: Vector2) {}
 }
 
 class IdleState extends PointerState {
@@ -61,7 +61,7 @@ class IdleState extends PointerState {
 
 class DraggingState extends PointerState {
   selectedUnit: any;
-  entityPos: IPosition;
+  entityPos: Vector2;
   lastX: number;
   lastY: number;
 
@@ -79,7 +79,7 @@ class DraggingState extends PointerState {
 
   onMouseMove(event: ICursorEvent): void {    
     // update currently hovering tile coords
-    let tileCoords: IPosition = this.game.coords.toTiles(event.x, event.y);
+    let tileCoords: Vector2 = this.game.coords.toTiles(event.x, event.y);
     let { x, y } = tileCoords;
 
     if (x !== this.lastX || y !== this.lastY) {
