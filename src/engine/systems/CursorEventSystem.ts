@@ -1,8 +1,8 @@
 import {
   ComponentSchema,
   CursorEventHandler,
-  ICursorEvent,
-  ICursorEventHandlers,
+  CursorEvent,
+  CursorEventHandlers,
   Vector2
 } from "../components";
 import System from "./System";
@@ -51,7 +51,7 @@ class CursorEventSystem extends System {
    * @returns An event callback that passes events to this system's entities
    */
   cursorEventCallback(
-    callbackId: keyof ICursorEventHandlers
+    callbackId: keyof CursorEventHandlers
   ):(event: MouseEvent) => void {
     return function(event: MouseEvent) {
       let mousePos: Vector2 = this.getCoords(event);
@@ -61,7 +61,7 @@ class CursorEventSystem extends System {
           cursorEvents
         } = components as ComponentSchema;
 
-        let cEvent: ICursorEvent = {
+        let cEvent: CursorEvent = {
           x: mousePos.x,
           y: mousePos.y,
           movementX: event.movementX,

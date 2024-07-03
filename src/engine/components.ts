@@ -7,19 +7,19 @@ interface Vector2 {
   y: number;
 }
 
-interface IRectangle {
+interface Rectangle {
   width: number;
   height: number;
 }
 
-interface ISprite {
+interface Sprite {
   url: string;
   image?: HTMLImageElement;
 }
 
-type IDraw = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
+type DrawFn = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
 
-interface ICursorEvent extends Vector2 {
+interface CursorEvent extends Vector2 {
   altKey: boolean,
   ctrlKey: boolean,
   shiftKey: boolean,
@@ -27,8 +27,8 @@ interface ICursorEvent extends Vector2 {
   movementY: number
 }
 
-type CursorEventHandler = (event: ICursorEvent) => void;
-interface ICursorEventHandlers {
+type CursorEventHandler = (event: CursorEvent) => void;
+interface CursorEventHandlers {
   onMouseDown: CursorEventHandler;
   onMouseMove: CursorEventHandler;
   onMouseUp: CursorEventHandler;
@@ -39,10 +39,10 @@ interface ICursorEventHandlers {
 type ComponentSchema = {
   position: Vector2,
   velocity: Vector2,
-  rectangle: IRectangle,
-  sprite: ISprite,
-  draw: IDraw,
-  cursorEvents: Partial<ICursorEventHandlers>
+  rectangle: Rectangle,
+  sprite: Sprite,
+  draw: DrawFn,
+  cursorEvents: Partial<CursorEventHandlers>
 }
 
 type ComponentSet = Partial<ComponentSchema>;
@@ -51,12 +51,12 @@ type Component = ComponentSchema[ComponentId];
 
 export {
   Vector2,
-  IRectangle,
-  ISprite,
-  IDraw,
-  ICursorEvent,
+  Rectangle,
+  Sprite,
+  DrawFn,
+  CursorEvent,
   CursorEventHandler,
-  ICursorEventHandlers,
+  CursorEventHandlers,
   ComponentSchema,
   ComponentSet,
   ComponentId,

@@ -1,6 +1,6 @@
 import GameObject from "../../../engine/GameObject";
 import Game from "../../Game";
-import { ICursorEvent, Vector2 } from "../../../engine/components";
+import { CursorEvent, Vector2 } from "../../../engine/components";
 import Entity from "../../../engine/Entity";
 
 class PointerState {
@@ -30,7 +30,7 @@ class IdleState extends PointerState {
     this.game.uiEvents.emit('pointer_state', 'idle');
   }
 
-  onMouseDown(event: ICursorEvent): void {
+  onMouseDown(event: CursorEvent): void {
     const {
       chapter,
       uiEvents
@@ -77,7 +77,7 @@ class DraggingState extends PointerState {
     this.entityPos.y = y;
   }
 
-  onMouseMove(event: ICursorEvent): void {    
+  onMouseMove(event: CursorEvent): void {    
     // update currently hovering tile coords
     let tileCoords: Vector2 = this.game.coords.toTiles(event.x, event.y);
     let { x, y } = tileCoords;
@@ -96,7 +96,7 @@ class DraggingState extends PointerState {
     this.game.scene.draw();
   }
 
-  onMouseUp(event: ICursorEvent) {
+  onMouseUp(event: CursorEvent) {
     let tileCoords = this.game.coords.toTiles(event.x, event.y);
     let targetPos = this.game.coords.toPixels(tileCoords.x, tileCoords.y);
     this.moveEntity(targetPos.x, targetPos.y);
@@ -132,15 +132,15 @@ class Pointer extends GameObject {
     this.currentState.onEnter(...nextStateArgs);
   }
 
-  onMouseDown(event: ICursorEvent) {
+  onMouseDown(event: CursorEvent) {
     this.currentState.onMouseDown(event);
   }
 
-  onMouseMove(event: ICursorEvent) {
+  onMouseMove(event: CursorEvent) {
     this.currentState.onMouseMove(event);
   }
 
-  onMouseUp(event: ICursorEvent) {
+  onMouseUp(event: CursorEvent) {
     this.currentState.onMouseUp(event);
   }
 }

@@ -1,10 +1,10 @@
-import { Vector2, IRectangle } from "../components";
+import { Vector2, Rectangle } from "../components";
 
 class Rect {
   pos: Vector2;
-  rect: IRectangle;
+  rect: Rectangle;
 
-  constructor(pos: Vector2, rect: IRectangle) {
+  constructor(pos: Vector2, rect: Rectangle) {
     this.pos = pos;
     this.rect = rect;
   }
