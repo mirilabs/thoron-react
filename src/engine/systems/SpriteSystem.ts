@@ -58,6 +58,10 @@ class SpriteSystem extends DrawSystem {
 
   draw() {
     this.components.forEach(({ position, rectangle, sprite }) => {
+      if (sprite.preprocess) {
+        sprite.preprocess(this.ctx);
+      }
+
       if (sprite.image) {
         this.ctx.drawImage(
           sprite.image,
