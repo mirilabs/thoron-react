@@ -8,6 +8,7 @@ class UnitMoveRange extends GameObject {
   unit: any;
   coords: CoordinateConverter;
   config: IGameConfig;
+  targetPos: Vector2;
   
   constructor(game: Game, unit: any) {
     super();

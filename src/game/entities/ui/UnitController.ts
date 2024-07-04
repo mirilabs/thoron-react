@@ -7,6 +7,7 @@ import Scene from "../../../engine/Scene";
 import CoordinateConverter from "../../utils/CoordinateConverter";
 import UnitPiece from "../UnitPiece";
 import UIEventEmitter from "../../utils/UIEventEmitter";
+import UnitPath from "./UnitPath";
 
 class ControllerState {
   controller: UnitController;
@@ -58,11 +59,13 @@ class IdleState extends ControllerState {
 }
 
 class MovingState extends ControllerState {
-  entityPos: IVector2;
-  dragOffset: IVector2;
   moveRangeEnt: UnitMoveRange;
+  pathEnt: UnitPath
+  
   selectedPiece: UnitPiece;
   selectedUnit: any;
+  entityPos: IVector2;
+
   lastX: number;
   lastY: number;
 
@@ -74,6 +77,10 @@ class MovingState extends ControllerState {
 
     this.moveRangeEnt = new UnitMoveRange(game, selectedPiece.unit);
     this.moveRangeEnt.addToScene(controller.scene);
+    
+    this.pathEnt = new UnitPath(game, selectedPiece.unit);
+    this.pathEnt.addToScene(controller.scene);
+
     controller.scene.draw();
 
     this.entityPos = this.selectedPiece.entity.getComponent('position');
@@ -81,6 +88,7 @@ class MovingState extends ControllerState {
 
   onExit(): void {
     this.moveRangeEnt.destroy();
+    this.pathEnt.destroy();
   }
 
   moveEntity(x: number, y: number) {
@@ -89,23 +97,23 @@ class MovingState extends ControllerState {
   }
 
   onMouseMove(event: CursorEvent): void {   
-    // // if hovering over a new tile that can be moved to, update targetPos
-    // let tileCoords = this.controller.coords.toTiles(event.x, event.y);
-    // if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
-    //   let range = this.selectedUnit.getMoveRange();
+    // if hovering over a new tile that can be moved to, update targetPos
+    let tileCoords = this.controller.coords.toTiles(event.x, event.y);
+    if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
+      let range = this.selectedUnit.getMoveRange();
       
-    //   // TODO add a better way to get this conditional in thoron
-    //   let inRange = false;
-    //   range.forEach(({ x, y }) => {
-    //     inRange = inRange || (x === tileCoords.x && y === tileCoords.y);
-    //   });
+      // TODO add a better way to get this conditional in thoron
+      let inRange = false;
+      range.forEach(({ x, y }) => {
+        inRange = inRange || (x === tileCoords.x && y === tileCoords.y);
+      });
       
-    //   if (inRange) {
-    //     console.log(tileCoords);
-    //   }
-    // }
-    // this.lastX = tileCoords.x;
-    // this.lastY = tileCoords.y;
+      if (inRange) {
+        this.pathEnt.updateTargetPos(tileCoords);
+      }
+    }
+    this.lastX = tileCoords.x;
+    this.lastY = tileCoords.y;
     
     // unit sprite follows cursor
     this.moveEntity(
