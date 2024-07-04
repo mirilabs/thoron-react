@@ -12461,21 +12461,21 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-scripts: ^5.0.1
-    thoron: ^2.0.3
+    thoron: ^2.0.4
     typescript: ^5.5.2
     web-vitals: ^2.1.4
   languageName: unknown
   linkType: soft
 
-"thoron@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "thoron@npm:2.0.3"
+"thoron@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "thoron@npm:2.0.4"
   dependencies:
     ajv: ^8.11.0
     events: ^3.3.0
     heap-js: ^2.3.0
     lodash: ^4.17.21
-  checksum: 2cb922f9291b8b1df9f9b8a366c63bdff946c6ba02fb0d573d67f3a6955366527063aafb1ce8200921d1ee9708e72973f3d458c32fdab3a35ba967e8ca36fb35
+  checksum: 671e0b7e3033d57dee2d627dba18dfce2fed13c2885d61f4e69c0a93dfd4d097234c34b13aa5c43b6faa7370db0155bd3368e7617daf12b193258e2882ff2cb7
   languageName: node
   linkType: hard
 
