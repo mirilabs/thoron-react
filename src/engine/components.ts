@@ -15,6 +15,7 @@ interface Rectangle {
 interface Sprite {
   url: string;
   image?: HTMLImageElement;
+  preprocess?: (ctx: CanvasRenderingContext2D) => void;
 }
 
 type DrawFn = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
