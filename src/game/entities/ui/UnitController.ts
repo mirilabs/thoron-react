@@ -6,7 +6,7 @@ import UnitMoveRange from "./UnitMoveRange";
 import Scene from "../../../engine/Scene";
 import CoordinateConverter from "../../utils/CoordinateConverter";
 import UnitPiece from "../UnitPiece";
-import UIEventEmitter from "./UIEventEmitter";
+import UIEventEmitter from "../../utils/UIEventEmitter";
 
 class ControllerState {
   controller: UnitController;
@@ -92,7 +92,7 @@ class MovingState extends ControllerState {
     // // if hovering over a new tile that can be moved to, update targetPos
     // let tileCoords = this.controller.coords.toTiles(event.x, event.y);
     // if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
-    //   let range = this.controller..getMoveRange();
+    //   let range = this.selectedUnit.getMoveRange();
       
     //   // TODO add a better way to get this conditional in thoron
     //   let inRange = false;
@@ -101,7 +101,7 @@ class MovingState extends ControllerState {
     //   });
       
     //   if (inRange) {
-
+    //     console.log(tileCoords);
     //   }
     // }
     // this.lastX = tileCoords.x;
