@@ -8,22 +8,19 @@ import CoordinateConverter from "../../utils/CoordinateConverter";
 import UnitPiece from "../UnitPiece";
 import UIEventEmitter from "../../utils/UIEventEmitter";
 import UnitPath from "./UnitPath";
+import UnitActionRange from "./UnitActionRange";
 
-class ControllerState {
+abstract class ControllerState {
   controller: UnitController;
-  setState: (NextState: typeof ControllerState, ...args: any[]) => void;
-
-  constructor(controller: UnitController) {
-    this.bindController(controller);
-  }
+  setState: (state: ControllerState) => void;
 
   bindController(controller: UnitController) {
     this.controller = controller;
     this.setState = controller.setState.bind(controller);
   }
 
-  onEnter() {}
-  onExit() {}
+  onEnter(controller: UnitController, prevState: ControllerState) {}
+  onExit(controller: UnitController, prevState: ControllerState) {}
   onMouseDown(tileCoords: IVector2) {}
   onMouseMove(tileCoords: IVector2) {}
   onMouseUp(tileCoords: IVector2) {}
@@ -31,7 +28,7 @@ class ControllerState {
 
 class IdleState extends ControllerState {
   onEnter(...args: any[]): void {
-    this.controller.uiEvents.emit('pointer_state', 'idle');
+    this.controller.scene.draw();
   }
 
   onMouseDown(event: CursorEvent): void {
@@ -50,7 +47,7 @@ class IdleState extends ControllerState {
 
     if (unit) {
       this.controller.selectUnit(unit);
-      this.setState(MovingState);
+      this.setState(new MovingState());
     }
     else {
       this.controller.selectUnit(null);
@@ -69,8 +66,7 @@ class MovingState extends ControllerState {
   lastX: number;
   lastY: number;
 
-  constructor(controller: UnitController) {
-    super(controller);
+  onEnter(controller: UnitController, prevState: ControllerState) {
     const { game, selectedPiece } = controller;
     this.selectedPiece = selectedPiece;
     this.selectedUnit = selectedPiece.unit;
@@ -124,27 +120,41 @@ class MovingState extends ControllerState {
   }
 
   onMouseUp(event: CursorEvent) {
-    let { x, y } = this.selectedUnit.getPosition();
-    let originalPos = this.controller.coords.toPixels(x, y);
-    
-    this.moveEntity(originalPos.x, originalPos.y);
-    this.setState(IdleState);
-    this.controller.scene.draw();
-
-    // let tileCoords = this.controller.coords.toTiles(event.x, event.y);
-    // let targetPos = this.controller.coords.toPixels(tileCoords.x, tileCoords.y);
-    // this.moveEntity(targetPos.x, targetPos.y);
-
-    // this.setState(AttackingState, tileCoords);
+    let targetPos = this.pathEnt.getLastNode();
+    let pixelCoords = this.controller.coords.toPixels(targetPos.x, targetPos.y);
+    this.moveEntity(pixelCoords.x, pixelCoords.y);
+    this.setState(new ActingState(targetPos));
   }
 }
 
-class AttackingState extends ControllerState {
+class ActingState extends ControllerState {s
+  selectedPiece: UnitPiece;
   selectedUnit: any;
   moveTarget: IVector2;  // coords from which the unit will attack
+  actionRangeEnt: UnitActionRange;
 
-  onEnter() {
-    // this.moveTarget = moveTarget;
+  constructor(moveTarget: IVector2) {
+    super();
+    this.moveTarget = moveTarget;
+  }
+
+  onEnter(controller: UnitController, prevState: ControllerState) {
+    const { game, selectedPiece } = controller;
+    this.selectedPiece = selectedPiece;
+    this.selectedUnit = selectedPiece.unit;
+    
+    this.actionRangeEnt = new UnitActionRange(
+      game,
+      this.selectedUnit,
+      this.moveTarget
+    );
+    this.actionRangeEnt.addToScene(controller.scene);
+    
+    this.controller.scene.draw();
+  }
+
+  onExit(controller: UnitController, prevState: ControllerState): void {
+    this.actionRangeEnt.destroy();
   }
 
   onMouseDown(event: IVector2): void {
@@ -152,13 +162,19 @@ class AttackingState extends ControllerState {
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
     if (Vector2.eq(tileCoords, this.moveTarget)) {
-      console.log(this.selectedUnit);
+      console.log(this.controller);
     }
-    else if (unit) {
+    else if (unit && unit !== this.selectedUnit) {
       console.log(unit);
     }
     else {
-      this.setState(IdleState);
+      // return to original position
+      let { x, y } = this.selectedUnit.getPosition();
+      let originalPos = this.controller.coords.toPixels(x, y);
+      this.selectedPiece.rect.moveTo(originalPos.x, originalPos.y);
+
+      // reset state
+      this.setState(new IdleState());
     }
   }
 }
@@ -191,7 +207,7 @@ class UnitController extends GameObject {
       }
     }
     
-    this.setState(IdleState);
+    this.setState(new IdleState());
   }
 
   onInit(scene: Scene) {
@@ -229,10 +245,13 @@ class UnitController extends GameObject {
       this.selectedPiece = this.getUnitPiece(unit);
   }
 
-  setState(State: typeof ControllerState) {
-    if (this.currentState) this.currentState.onExit();
-    this.currentState = new State(this);
-    this.currentState.onEnter();
+  setState(nextState: ControllerState) {
+    const prevState = this.currentState;
+    if (this.currentState) this.currentState.onExit(this, nextState);
+
+    nextState.bindController(this);
+    this.currentState = nextState;
+    this.currentState.onEnter(this, prevState);
   }
 
   onMouseDown(event: CursorEvent) {
