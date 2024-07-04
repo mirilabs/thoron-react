@@ -1,10 +1,8 @@
 import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
-import { Background, Grid, Unit } from './entities';
-import Pointer from './entities/ui/Pointer';
-import UnitRange from './entities/ui/UnitRange';
-import Entity from '../engine/Entity';
+import { Background, Grid } from './entities';
 import UIEventEmitter from './entities/ui/UIEventEmitter';
+import UnitController from './entities/ui/UnitController';
 
 interface IGameConfig {
   tileWidth: number;
@@ -19,10 +17,10 @@ interface IGameConfig {
 const defaultConfig: IGameConfig = {
   tileWidth: 64,
   tileHeight: 64,
-  moveColor: '#0000ff',
-  attackColor: '#ff0000',
-  healColor: '#00ff00',
-  interactColor: 'ff00ff',
+  moveColor: '#0000ff',     // blue
+  attackColor: '#ff0000',   // red
+  healColor: '#00ff00',     // green
+  interactColor: 'ff00ff',  // magenta
   highlightAlpha: 0.2,
 }
 
@@ -35,7 +33,6 @@ class Game {
   scene: Scene;
 
   _selectedUnit: any;
-  unitEntities: Map<any, Entity> = new Map();
 
   constructor(chapter, cfg: Partial<IGameConfig> = {}) {
     this.chapter = chapter;
@@ -78,36 +75,10 @@ class Game {
     let grid = new Grid(width, height, this.config);
     grid.addToScene(scene);
 
-    let pointer = new Pointer(this);
+    let pointer = new UnitController(this);
     pointer.addToScene(scene);
-
-    this.chapter.units.forEach(this.addUnit.bind(this));
-
-    let unitRange = new UnitRange(this);
-    unitRange.addToScene(scene);
-
+    
     this.scene.draw();
-  }
-
-  addUnit(unit) {
-    let unitPrototype = new Unit(this, unit);
-    let unitEntity = unitPrototype.addToScene(this.scene);
-
-    // move to initial position
-    let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
-    let pixelCoords = this.coords.toPixels(x, y);
-    Object.assign(unitEntity.getComponent('position'), pixelCoords);
-
-    // add to entity lookup
-    this.unitEntities.set(unit, unitEntity);
-  }
-
-  getSelectedUnit() {
-    return this._selectedUnit;
-  }
-
-  getUnitEntity(unit) {
-    return this.unitEntities.get(unit);
   }
 }
 

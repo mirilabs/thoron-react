@@ -6,7 +6,7 @@ import {
 } from "./components";
 
 abstract class GameObject {
-  components: ComponentSet;
+  components: ComponentSet = {};
   entity: Entity;
 
   onInit(scene: Scene) {}

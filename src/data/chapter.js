@@ -7,5 +7,9 @@ chapter.addUnit({
   record: unitFactory(),
   position: { x: 0, y: 0 }
 });
+chapter.addUnit({
+  record: unitFactory(),
+  position: { x: 2, y: 1 }
+})
 
 export default chapter
