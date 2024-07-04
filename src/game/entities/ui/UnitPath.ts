@@ -64,9 +64,7 @@ class UnitPath extends GameObject {
         this.unit
       );
     }
-    console.log(this.path.map(({ x, y}) => `(${x},${y})`));
     
-
     this.game.scene.draw();
   }
 

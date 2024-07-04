@@ -3,16 +3,13 @@ import GameObject from "../../../engine/GameObject";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
 
-class UnitMoveRange extends GameObject {
-  game: Game;
+class UnitRange extends GameObject {
   unit: any;
   coords: CoordinateConverter;
   config: IGameConfig;
-  targetPos: Vector2;
   
   constructor(game: Game, unit: any) {
     super();
-    this.game = game;
     this.coords = game.coords;
     this.config = game.config;
     this.unit = unit;
@@ -125,4 +122,4 @@ function drawEightPointStar(
   ctx.rect(x - w, y - h, 2*w, 2*h);
 }
 
-export default UnitMoveRange;
+export default UnitRange;
