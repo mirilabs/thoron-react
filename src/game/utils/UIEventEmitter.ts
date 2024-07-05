@@ -2,6 +2,7 @@ import EventEmitter, { IEventSignatures } from "../../lib/EventEmitter";
 
 interface UIEventSignatures extends IEventSignatures {
   select_unit: (unit: any) => void;
+  select_action: (action: string) => void;
 }
 
 class UIEventEmitter extends EventEmitter<UIEventSignatures> {
