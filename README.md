@@ -3,16 +3,16 @@ React client for [thoron](https://github.com/yjn0/thoron).
 
 ## Usage
 ```js
-import { Provider, Map } from 'thoron-react';
+import { ThoronProvider, Map } from 'thoron-react';
 import Chapter from 'thoron';
 
 function MyComponent {
   const chapter = new Chapter(/* ... */)
 
   return (
-    <Provider chapter={chapter}>
+    <ThoronProvider chapter={chapter}>
       <Map />
-    </Provider>
+    </ThoronProvider>
   )
 }
 ```

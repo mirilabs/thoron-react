@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { ThoronContext } from './ThoronContext';
+import ThoronContext from './ThoronContext';
 import useEventListener from './useEventListener';
 
 function UnitList({ render }) {

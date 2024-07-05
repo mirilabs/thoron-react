@@ -3,7 +3,7 @@ import './stylesheets/dev.css';
 
 import chapter from './data/chapter';
 
-import Provider from './components/Provider';
+import { ThoronProvider } from './components/ThoronContext';
 import GameCanvas from './components/GameCanvas';
 import TilePanel from './components/TilePanel';
 import UnitPanel from './components/UnitPanel';
@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="App">
       <main>
-        <Provider chapter={chapter}>
+        <ThoronProvider chapter={chapter}>
           <div className="canvas-container">
             <GameCanvas />
           </div>
@@ -28,7 +28,7 @@ function App() {
             <UnitList render={renderObject} />
             <ActionMenu />
           </div>
-        </Provider>
+        </ThoronProvider>
       </main>
     </div>
   );
