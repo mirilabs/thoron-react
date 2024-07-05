@@ -8,6 +8,7 @@ import GameCanvas from './components/GameCanvas';
 import TilePanel from './components/TilePanel';
 import UnitPanel from './components/UnitPanel';
 import UnitList from './components/UnitList';
+import ActionMenu from './components/ActionMenu';
 
 import renderObject from './utils/renderObject';
 
@@ -25,6 +26,7 @@ function App() {
             <TilePanel render={renderObject} />
             <UnitPanel render={renderObject} />
             <UnitList render={renderObject} />
+            <ActionMenu />
           </div>
         </Provider>
       </main>

@@ -44,8 +44,7 @@ const unitFactory = () => ({
       }
     }
   ],
-  skills: [],
-  sprite: 'https://cdn.discordapp.com/emojis/1107849361691529227.webp'
+  skills: []
 })
 
 export default unitFactory;
