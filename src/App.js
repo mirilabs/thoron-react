@@ -1,25 +1,35 @@
 import './stylesheets/App.css';
-import './stylesheets/components.css';
+import './stylesheets/dev.css';
 
-import map from './data/map.js';
-import Chapter from 'thoron';
+import chapter from './data/chapter';
 
 import Provider from './components/Provider';
 import GameCanvas from './components/GameCanvas';
 import TilePanel from './components/TilePanel';
+import UnitPanel from './components/UnitPanel';
+import UnitList from './components/UnitList';
+import ActionMenu from './components/ActionMenu';
+
+import renderObject from './utils/renderObject';
+
+global.chapter = chapter;
 
 function App() {
-  const chapter = new Chapter({ map: map });
-  // console.log(chapter);
-
   return (
     <div className="App">
-      <header className="App-header">
+      <main>
         <Provider chapter={chapter}>
-          <GameCanvas />
-          <TilePanel />
+          <div className="canvas-container">
+            <GameCanvas />
+          </div>
+          <div className="panels-container">
+            <TilePanel render={renderObject} />
+            <UnitPanel render={renderObject} />
+            <UnitList render={renderObject} />
+            <ActionMenu />
+          </div>
         </Provider>
-      </header>
+      </main>
     </div>
   );
 }

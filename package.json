@@ -4,17 +4,24 @@
   "main": "main.js",
   "license": "MIT",
   "dependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-react-app": "^7.0.1",
     "react": "^18.2.0",
-    "thoron": "^1.0.3"
+    "thoron": "^2.0.5"
   },
   "devDependencies": {
+    "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/node": "^20.11.28",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.5.2",
     "web-vitals": "^2.1.4"
-  },  
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -38,5 +45,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }

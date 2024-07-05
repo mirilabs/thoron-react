@@ -1,11 +1,11 @@
 const data = {
   id: 1,
-  tiles: {
-    0: {
+  tiles: [
+    {
       name: 'plains',
       cost: 1
     },
-    1: {
+    {
       name: 'forest',
       cost: {
         default: 2,
@@ -13,11 +13,11 @@ const data = {
       },
       bonus: {  }
     },
-    2: {
+    {
       name: 'wall',
       cost: 99
     }
-  },
+  ],
   map: [
     [0, 0, 0, 0],
     [0, 1, 0, 0],
