@@ -5,6 +5,7 @@ import CursorEventSystem from "./systems/CursorEventSystem";
 import DrawSystem from "./systems/DrawSystem";
 import SpriteSystem from "./systems/SpriteSystem";
 import MotionSystem from "./systems/MotionSystem";
+import Camera from "./Camera";
 
 class Scene {
   canvas: HTMLCanvasElement;
@@ -16,6 +17,8 @@ class Scene {
   spriteSystem: SpriteSystem = new SpriteSystem();
   cursorEventSystem: CursorEventSystem = new CursorEventSystem();
   motionSystem: MotionSystem = new MotionSystem();
+
+  camera: Camera = new Camera();
 
   constructor(canvas: HTMLCanvasElement) {
     this.addSystems(

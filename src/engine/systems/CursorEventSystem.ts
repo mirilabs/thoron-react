@@ -55,7 +55,12 @@ class CursorEventSystem extends System {
   ):(event: MouseEvent) => void {
     return function(event: MouseEvent) {
       let mousePos: Vector2 = this.getCoords(event);
+      
+      // convert canvas coordinates to game world coordinates
+      // by reversing camera transformation
+      mousePos = this.scene.camera.reverseTransformVector(mousePos);
 
+      // generate event and pass it to components
       for (const components of this.components) {
         let {
           cursorEvents
