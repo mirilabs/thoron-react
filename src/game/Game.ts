@@ -68,11 +68,13 @@ class Game {
   init() {
     let scene = this.scene;
     let { width, height } = this.canvas;
+    let rows = this.chapter.terrain.width;
+    let columns = this.chapter.terrain.height;
 
     let bg = new Background(width, height, null);
     bg.addToScene(scene);
 
-    let grid = new Grid(width, height, this.config);
+    let grid = new Grid(rows, columns, this.config);
     grid.addToScene(scene);
 
     let pointer = new UnitController(this);
