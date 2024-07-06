@@ -1,26 +1,32 @@
-import React, { useCallback, useContext } from 'react';
-import ThoronContext from "./ThoronContext.js";
-import defaults from '../utils/defaults.js';
 import "./GameCanvas.css";
+import React, {
+  useCallback,
+  useContext,
+  useRef
+} from 'react';
+import ThoronContext from "./ThoronContext.js";
 
-function GameWindow({ rendererOpts = {} }) {
+function GameWindow() {
   const {
-    chapter,
     setCanvas
   } = useContext(ThoronContext);
+  
+  // get dimensions from container
+  const containerRef = useRef();
 
+  // make <canvas> accessible to ThoronContext
   const canvasRef = useCallback(node => {
     setCanvas(node);
   }, [setCanvas]);
 
-  // determine size of <canvas>
-  let { width, height } = chapter.terrain.grid;
-  width = width * (rendererOpts.tileWidth || defaults.TILE_SIZE);
-  height = height * (rendererOpts.tileHeight || defaults.TILE_SIZE);
+  let canvasOpts = {
+    width: containerRef.current?.offsetWidth,
+    height: containerRef.current?.offsetHeight
+  }
 
   return (
-    <div id="game-canvas-container">
-      <canvas id="game-canvas" ref={canvasRef} {...{width, height}} />
+    <div id="game-canvas-container" ref={containerRef} >
+      <canvas id="game-canvas" ref={canvasRef} {...canvasOpts} />
     </div>
   )
 }
