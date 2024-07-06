@@ -21,9 +21,9 @@ abstract class ControllerState {
 
   onEnter(controller: UnitController, prevState: ControllerState) {}
   onExit(controller: UnitController, prevState: ControllerState) {}
-  onMouseDown(tileCoords: IVector2) {}
-  onMouseMove(tileCoords: IVector2) {}
-  onMouseUp(tileCoords: IVector2) {}
+  onMouseDown(event: CursorEvent) {}
+  onMouseMove(event: CursorEvent) {}
+  onMouseUp(event: CursorEvent) {}
 }
 
 class IdleState extends ControllerState {
@@ -51,7 +51,24 @@ class IdleState extends ControllerState {
     }
     else {
       this.controller.selectUnit(null);
+      this.setState(new PanningState());
     }
+  }
+}
+
+class PanningState extends ControllerState {
+  onMouseMove(event: CursorEvent): void {
+    let movement = {
+      x: event.movementX,
+      y: event.movementY
+    }
+    this.controller.scene.camera.pan(movement);
+    this.controller.scene.draw();
+  }
+
+  onMouseUp(event: CursorEvent): void {
+    this.setState(new IdleState());
+    this.controller.scene.draw();
   }
 }
 
