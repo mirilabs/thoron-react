@@ -4,7 +4,8 @@
     "target": "ESNext",
     "allowJs": true,
     "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true
   },
   "include": [ "./src/**/*" ]
 }
