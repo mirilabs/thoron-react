@@ -33,14 +33,16 @@ class Scene {
     this.unsetCanvas();
 
     // bind to new canvas
-    this.drawSystem.setCanvas(canvas);
-    this.spriteSystem.setCanvas(canvas);
+    this.drawSystem.bindCanvas(canvas);
+    this.spriteSystem.bindCanvas(canvas);
     this.cursorEventSystem.bindCursorEvents(canvas);
     this.canvas = canvas;
   }
 
   unsetCanvas() {
     if (this.canvas) {
+      this.drawSystem.unbindCanvas();
+      this.spriteSystem.unbindCanvas();
       this.cursorEventSystem.unbindCursorEvents(this.canvas);
       delete this.canvas;
     }
