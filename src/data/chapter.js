@@ -8,7 +8,7 @@ chapter.addUnit({
     ...unitFactory(),
     sprite: 'https://cdn.discordapp.com/emojis/1107849361691529227.webp'
   },
-  position: { x: 0, y: 0 }
+  position: { x: 1, y: 3 }
 });
 chapter.addUnit({
   record: {
@@ -24,7 +24,7 @@ chapter.addUnit({
     ],
     sprite: 'https://cdn.discordapp.com/emojis/1112145799657304104'
   },
-  position: { x: 2, y: 1 }
+  position: { x: 4, y: 3 }
 })
 
 export default chapter
