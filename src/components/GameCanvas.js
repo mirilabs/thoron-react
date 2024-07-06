@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import ThoronContext from "./ThoronContext.js";
 import defaults from '../utils/defaults.js';
+import "./GameCanvas.css";
 
 function GameWindow({ rendererOpts = {} }) {
   const {
@@ -18,8 +19,9 @@ function GameWindow({ rendererOpts = {} }) {
   height = height * (rendererOpts.tileHeight || defaults.TILE_SIZE);
 
   return (
-    <canvas className="thoron__renderer" ref={canvasRef}
-      {...{ width, height }} />
+    <div id="game-canvas-container">
+      <canvas id="game-canvas" ref={canvasRef} {...{width, height}} />
+    </div>
   )
 }
 

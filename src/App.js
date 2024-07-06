@@ -1,4 +1,4 @@
-import './stylesheets/App.css';
+import './App.css';
 import './stylesheets/dev.css';
 
 import chapter from './data/chapter';
@@ -11,26 +11,25 @@ import UnitList from './components/UnitList';
 import ActionMenu from './components/ActionMenu';
 
 import renderObject from './utils/renderObject';
+import { ViewportProvider } from './components/ViewportContext';
 
 global.chapter = chapter;
 
 function App() {
   return (
-    <div className="App">
-      <main>
+    <main className="app">
+      <ViewportProvider>
         <ThoronProvider chapter={chapter}>
-          <div className="canvas-container">
-            <GameCanvas />
-          </div>
-          <div className="panels-container">
+          <GameCanvas />
+          {/* <div className="panels-container">
             <TilePanel render={renderObject} />
             <UnitPanel render={renderObject} />
             <UnitList render={renderObject} />
             <ActionMenu />
-          </div>
+          </div> */}
         </ThoronProvider>
-      </main>
-    </div>
+      </ViewportProvider>
+    </main>
   );
 }
 
