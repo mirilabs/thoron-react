@@ -1,0 +1,49 @@
+$header-height: 32px;
+
+.unit-data-panel {
+  background-color: rgb(48, 26, 53);
+  outline: 1px rgba(255, 192, 203, 0.1) solid;
+  border-top-color: rgba(255, 192, 203, 0.5);
+}
+
+.unit-panel__header {
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  span {
+    @extend .unit-data-panel;
+    pointer-events: all;
+
+    max-width: fit-content;
+    height: $header-height;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .unit-selector {
+    cursor: pointer;
+
+    .portrait {
+      max-width: 64px;
+      max-height: 100%;
+      margin: 0 8px;
+    }
+
+    .name {
+      margin: auto;
+      margin-right: 16px;
+      font-size: medium;
+    }
+  }
+
+  .weapon-selector {
+    .equipped {
+      margin: auto 16px;
+      font-size: medium;
+      font-weight: 100;
+    }
+  }
+}

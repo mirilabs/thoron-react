@@ -16,7 +16,13 @@ chapter.addUnit({
     items: [
       {
         name: 'Iron Bow',
+        type: 'bow',
+        maxUses: 40,
         weapon: {
+          isMagic: false,
+          might: 6,
+          hit: 80,
+          crit: 0,
           minRange: 2,
           maxRange: 2
         }
