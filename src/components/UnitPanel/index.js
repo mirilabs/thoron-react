@@ -1,17 +1,11 @@
 import "./UnitPanel.scss";
-import React, { useState, useContext } from 'react';
-import ThoronContext from '../ThoronContext';
-import useEventListener from '../useEventListener';
+import React from 'react';
 import UnitPanelHeader from "./Header";
 import UnitPanelBody from "./Body";
+import useSelectedUnit from "components/utils/useSelectedUnit";
 
 function UnitPanel() {
-  const { uiEvents } = useContext(ThoronContext);
-  const [unit, setUnit] = useState(null);
-
-  useEventListener(uiEvents, 'select_unit', unit => {
-    if (unit !== null) setUnit(unit);
-  });
+  const unit = useSelectedUnit();
 
   return (
     <div className="unit-panel">
