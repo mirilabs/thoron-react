@@ -1,17 +1,9 @@
-import React, { useState, useContext } from 'react';
-import ThoronContext from './ThoronContext';
-import useEventListener from './useEventListener';
+import React from 'react';
+import useSelectedUnit from './utils/useSelectedUnit';
 
 function UnitDetail({ render }) {
-  const { uiEvents } = useContext(ThoronContext);
-  const [data, setData] = useState(null);
-
-  useEventListener(uiEvents, 'select_unit', unit => {
-    if (unit)
-      setData(unit.serialize());
-    else
-      setData({});
-  });
+  const selectedUnit = useSelectedUnit();
+  const data = selectedUnit ? selectedUnit.serialize() : {};
 
   if (render) {
     return render(data);

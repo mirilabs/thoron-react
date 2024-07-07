@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ThoronContext from './ThoronContext';
 import useEventListener from './useEventListener';
+import useSelectedUnit from './utils/useSelectedUnit';
 
 function UnitList({ render }) {
   const { chapter, uiEvents } = useContext(ThoronContext);
@@ -10,14 +11,11 @@ function UnitList({ render }) {
     setUnits(chapter.getUnits().map(unit => unit.serialize()));
   }, [ chapter ]);
   
-  const [selected, setSelected] = useState(null);
-  useEventListener(uiEvents, 'select_unit', unit => {
-    setSelected(unit?.id ?? null);
-  });
+  const selectedUnit = useSelectedUnit();
 
   const data = {
     units,
-    selected
+    selectedUnit
   }
 
   if (render) {
