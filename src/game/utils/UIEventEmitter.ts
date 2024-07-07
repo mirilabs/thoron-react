@@ -1,4 +1,4 @@
-import EventEmitter, { IEventSignatures } from "../../lib/EventEmitter";
+import EventEmitter, { IEventSignatures } from "../../utils/EventEmitter";
 
 interface UIEventSignatures extends IEventSignatures {
   select_unit: (unit: any) => void;
