@@ -5,7 +5,11 @@
     "allowJs": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src/"
   },
-  "include": [ "./src/**/*" ]
+  "include": [
+    "src",
+    "types"
+  ]
 }
