@@ -21,6 +21,7 @@ function App() {
       <ViewportProvider>
         <ThoronProvider chapter={chapter}>
           <GameCanvas />
+          <UnitPanel />
           {/* <div className="panels-container">
             <TilePanel render={renderObject} />
             <UnitPanel render={renderObject} />

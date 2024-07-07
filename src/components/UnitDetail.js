@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import ThoronContext from './ThoronContext';
 import useEventListener from './useEventListener';
 
-function UnitPanel({ render }) {
+function UnitDetail({ render }) {
   const { uiEvents } = useContext(ThoronContext);
   const [data, setData] = useState(null);
 
@@ -18,11 +18,11 @@ function UnitPanel({ render }) {
   }
   else {
     return (
-      <div>
+      <div className="unit-data">
         {JSON.stringify(data)}
       </div>
     )
   }
 }
 
-export default UnitPanel;
+export default UnitDetail;

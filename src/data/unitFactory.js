@@ -8,10 +8,10 @@ const unitFactory = () => ({
   id: i,
   name: `Unit ${i++}`,
   class: 'dummy',
-  exp: 0,
+  exp: 25,
   level: 1,
   stats: {
-    mhp: randomInt(20),
+    mhp: randomInt(20) + 10,
     str: randomInt(20),
     mag: randomInt(20),
     skl: randomInt(20),
@@ -38,7 +38,13 @@ const unitFactory = () => ({
   items: [
     {
       name: 'Iron Sword',
+      type: 'sword',
+      maxUses: 40,
       weapon: {
+        isMagic: false,
+        might: 5,
+        hit: 90,
+        crit: 0,
         minRange: 1,
         maxRange: 1
       }

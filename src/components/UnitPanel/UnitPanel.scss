@@ -1,0 +1,27 @@
+@import "./Header.scss";
+@import "./Body.scss";
+
+.unit-data-panel {
+  background-color: rgb(48, 26, 53);
+  outline: 1px rgba(255, 192, 203, 0.1) solid;
+  border-top-color: rgba(255, 192, 203, 0.5);
+}
+
+.unit-panel {
+  $gap: 8px;
+  $body-height: 84px;
+
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: $header-height + $gap + $body-height;
+  overflow: scroll;
+  z-index: 10;
+
+  display: grid;
+  grid-template-rows: $header-height;
+  row-gap: $gap;
+
+  // allow pointer events to pass through the transparent portion
+  pointer-events: none;
+}
