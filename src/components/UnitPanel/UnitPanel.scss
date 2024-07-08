@@ -1,6 +1,9 @@
 @import "./Header.scss";
 @import "./Body.scss";
 
+$unit-panel-gap: 8px;
+$unit-panel-height: $header-height + $unit-panel-gap + $body-height;
+
 .unit-data-panel {
   background-color: rgb(48, 26, 53);
   outline: 1px rgba(255, 192, 203, 0.1) solid;
@@ -8,19 +11,16 @@
 }
 
 .unit-panel {
-  $gap: 8px;
-  $body-height: 84px;
-
   position: absolute;
   bottom: 0;
   width: 100vw;
-  height: $header-height + $gap + $body-height;
+  height: $unit-panel-height;
   overflow: scroll;
   z-index: 10;
 
   display: grid;
   grid-template-rows: $header-height;
-  row-gap: $gap;
+  row-gap: $unit-panel-gap;
 
   // allow pointer events to pass through the transparent portion
   pointer-events: none;
