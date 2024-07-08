@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Game from '../game/Game';
-import UIEventEmitter from 'game/utils/UIEventEmitter';
+import UIEventEmitter from '../utils/UIEventEmitter';
 
 const ThoronContext: React.Context<{ uiEvents: UIEventEmitter }> = (
   createContext({ uiEvents: undefined })

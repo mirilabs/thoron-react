@@ -1,15 +1,19 @@
 import "./index.scss";
 import React, { useState } from "react";
 import useSelectedUnit from "../utils/useSelectedUnit";
-import useKeybind from "components/utils/useKeybind";
+import useUIAction from "components/utils/useUIAction";
 import StatView from "./StatView";
 
 function UnitDetail() {
   const [show, setShow] = useState(false);
   const selectedUnit = useSelectedUnit();
 
-  useKeybind("toggle_character_detail_display", () => {
+  useUIAction("toggle_character_detail_display", () => {
     setShow(!show);
+  });
+
+  useUIAction('escape', () => {
+    setShow(false);
   });
 
   if (!selectedUnit) return null;

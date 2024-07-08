@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import ThoronContext from './ThoronContext';
-import useEventListener from './useEventListener';
+import useEventListener from './utils/useEventListener';
 
 function TilePanel({ render }) {
   const { uiEvents } = useContext(ThoronContext);

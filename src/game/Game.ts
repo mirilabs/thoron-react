@@ -1,7 +1,7 @@
 import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid } from './entities';
-import UIEventEmitter from './utils/UIEventEmitter';
+import UIEventEmitter from '../utils/UIEventEmitter';
 import UnitController from './entities/ui/UnitController';
 
 interface IGameConfig {

@@ -6,7 +6,7 @@ import UnitMoveRange from "./UnitMoveRange";
 import Scene from "../../../engine/Scene";
 import CoordinateConverter from "../../utils/CoordinateConverter";
 import UnitPiece from "../UnitPiece";
-import UIEventEmitter from "../../utils/UIEventEmitter";
+import UIEventEmitter from "../../../utils/UIEventEmitter";
 import UnitPath from "./UnitPath";
 import UnitActionRange from "./UnitActionRange";
 

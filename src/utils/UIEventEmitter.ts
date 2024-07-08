@@ -1,9 +1,14 @@
-import EventEmitter, { IEventSignatures } from "../../utils/EventEmitter";
+import EventEmitter, { IEventSignatures } from "./EventEmitter";
 
 interface UIEventSignatures extends IEventSignatures {
+  select_tile: (tile: any) => void;
   select_unit: (unit: any) => void;
   select_action: (action: string) => void;
+  escape: () => void;
+  toggle_character_detail_display: () => void;
 }
+
+type UIAction = keyof UIEventSignatures;
 
 class UIEventEmitter extends EventEmitter<UIEventSignatures> {
   selectedUnit: any;
@@ -16,3 +21,6 @@ class UIEventEmitter extends EventEmitter<UIEventSignatures> {
 }
 
 export default UIEventEmitter;
+export {
+  UIAction
+}

@@ -1,8 +1,13 @@
-type Callback = (...args: any[]) => void;
-
 interface IEventSignatures {
-  [K: string]: Callback;
+  [K: symbol]: (...args: any[]) => void;
 }
+
+// Extract the callback type associated with key K in Signatures
+type ExtractFunctionType<
+  K extends keyof Signatures,
+  Signatures extends IEventSignatures
+> = 
+  Signatures[K] extends (...args: infer P) => any ? Signatures[K] : never;
 
 class EventEmitter<Signatures extends IEventSignatures> {
   listeners: Partial<{
@@ -12,7 +17,7 @@ class EventEmitter<Signatures extends IEventSignatures> {
   on<K extends keyof Signatures>(
     event: K,
     callback: Signatures[K]
-  ) {
+  ) {  
     if (this.listeners[event] === undefined) {
       this.listeners[event] = [];
     }
@@ -37,9 +42,15 @@ class EventEmitter<Signatures extends IEventSignatures> {
 
   emit<K extends keyof Signatures>(
     event: K,
-    ...params: Parameters<Signatures[K]>
+    ...params: Parameters<ExtractFunctionType<K, Signatures>>
   ) {
-    this.listeners[event]?.forEach(callback => callback(...params));
+    let listeners: Array<Signatures[K]> = this.listeners[event];
+    
+    if (listeners === undefined) return;
+
+    listeners.forEach((callback: ExtractFunctionType<K, Signatures>) => {
+      callback(...params);
+    });
   }
 }
 
