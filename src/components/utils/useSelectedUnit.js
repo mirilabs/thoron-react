@@ -1,14 +1,12 @@
-import { useState, useContext } from 'react';
-import ThoronContext from '../ThoronContext';
-import useEventListener from './useEventListener';
+import { useState } from 'react';
+import useUIAction from './useUIAction';
 
 function useSelectedUnit() {
-  const { uiEvents } = useContext(ThoronContext);
   const [unit, setUnit] = useState(null);
 
-  useEventListener(uiEvents, 'select_unit', unit => {
+  useUIAction('select_unit', (unit) => {
     if (unit !== null) setUnit(unit);
-  });
+  })
 
   return unit;
 }
