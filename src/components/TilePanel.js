@@ -1,12 +1,10 @@
-import React, { useState, useContext } from 'react';
-import ThoronContext from './ThoronContext';
-import useEventListener from './utils/useEventListener';
+import React, { useState } from 'react';
+import useUIAction from './utils/useUIAction';
 
 function TilePanel({ render }) {
-  const { uiEvents } = useContext(ThoronContext);
   const [data, setData] = useState(null);
-  
-  useEventListener(uiEvents, 'select_tile', tile => {
+
+  useUIAction('select_tile', (tile) => {
     setData(tile);
   })
 

@@ -22,5 +22,6 @@ class UIEventEmitter extends EventEmitter<UIEventSignatures> {
 
 export default UIEventEmitter;
 export {
+  UIEventSignatures,
   UIAction
 }

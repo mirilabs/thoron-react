@@ -1,7 +1,7 @@
 import ThoronContext from "components/ThoronContext";
-import useEventListener from "./useEventListener";
 import { useContext, useEffect } from "react";
-import { UIAction } from "utils/UIEventEmitter";
+import UIEventEmitter, { UIAction, UIEventSignatures } from "utils/UIEventEmitter";
+import EventEmitter from "utils/EventEmitter";
 
 const defaultKeybinds: { [K: string]: UIAction } = {
   'escape': 'escape',
@@ -37,13 +37,43 @@ function KeybindHandler() {
  * @param action String identifying the action
  * @param callback Callback function (imperative)
  */
-function useUIAction(action: UIAction, callback: () => void): void {
+function useUIAction<K extends UIAction>(
+  action: UIAction,
+  callback: UIEventSignatures[K]
+): void {
   const { uiEvents } = useContext(ThoronContext);
 
-  useEventListener(uiEvents, action, callback);
+  useEffect(() => {
+    if (!uiEvents) return;
+
+    uiEvents.on(action, callback);
+
+    return function cleanup() {
+      uiEvents.off(action, callback);
+    }
+  });
+}
+
+function useUIEmitter<K extends UIAction>(
+  action: UIAction,
+  ...args: Parameters<UIEventSignatures[K]>
+): () => void {
+  const { uiEvents } = useContext(ThoronContext);
+
+  if (!uiEvents) {
+    return () => {
+      throw new Error("uiEventEmitter does not exist");
+    }
+  }
+  else {
+    return () => {
+      uiEvents.emit(action, ...args);
+    }
+  }
 }
 
 export default useUIAction;
 export {
+  useUIEmitter,
   KeybindHandler
 }
