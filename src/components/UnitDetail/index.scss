@@ -1,0 +1,24 @@
+.unit-detail {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 9;
+
+  background-color: rgb(24, 20, 27);
+  width: 100%;
+  height: 85%;
+  border-radius: 16px;
+
+  display: grid;
+  grid-template-rows: 96px auto;
+  grid-template-columns: 50% auto;
+  grid-template-areas:
+    "a a"
+    "b c";
+  row-gap: 8px;
+
+  .title {
+    margin-left: 8px;
+    grid-area: a;
+  }
+}
