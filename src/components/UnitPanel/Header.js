@@ -11,7 +11,7 @@ function UnitPanelHeader({ unit }) {
   return (
     <div className="unit-panel__header">
       <span className="unit-selector">
-        <img className="portrait" src={portrait} alt={name} />
+        <img className="sprite" src={portrait} alt={name} />
         <h1 className="name">{name}</h1>
       </span>
       <span className="weapon-selector">
