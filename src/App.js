@@ -8,6 +8,7 @@ import { ViewportProvider } from './components/ViewportContext';
 import GameCanvas from './components/GameCanvas';
 import UnitPanel from './components/UnitPanel';
 import UnitDetail from 'components/UnitDetail';
+import { KeybindHandler } from 'components/utils/useUIAction';
 
 global.chapter = chapter;
 
@@ -19,6 +20,7 @@ function App() {
           <GameCanvas />
           <UnitPanel />
           <UnitDetail />
+          <KeybindHandler />
         </ThoronProvider>
       </ViewportProvider>
     </main>

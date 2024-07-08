@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import ThoronContext from '../ThoronContext';
-import useEventListener from '../useEventListener';
+import useEventListener from './useEventListener';
 
 function useSelectedUnit() {
   const { uiEvents } = useContext(ThoronContext);
