@@ -4,7 +4,7 @@ import React, {
   useContext,
   useRef
 } from 'react';
-import ThoronContext from "./ThoronContext.js";
+import ThoronContext from "./ThoronContext";
 
 function GameWindow() {
   const {
