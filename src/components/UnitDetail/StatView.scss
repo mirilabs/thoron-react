@@ -1,0 +1,46 @@
+
+.unit-detail__stats {
+  grid-area: b;
+
+  .stat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .stat-name {
+      width: 44px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .stat-value {
+      width: 44px;
+      text-align: center;
+    }
+  
+    meter {
+      height: 0.2rem;
+      width: 64px;
+      border-radius: 0.25rem;
+      background: rgba(255, 192, 203, 0.25);
+  
+      &::-moz-meter-bar,
+      &::-webkit-meter-bar {
+        background: rgba(255, 192, 203, 1);
+      }
+    }
+  }
+
+  .stat-growths {
+    .stat-value {
+      font-size: smaller;
+    }
+
+    meter {
+      &::-moz-meter-bar,
+      &::-webkit-meter-bar {
+        background: rgb(192, 221, 255);
+      }
+    }
+  }
+}
