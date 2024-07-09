@@ -7,9 +7,10 @@ $unit-detail-height: 85%;
   z-index: 9;
 
   background-color: rgb(24, 20, 27);
-  width: 100%;
+  width: calc(100% - 8px);
   height: $unit-detail-height;
   border-radius: 16px;
+  padding: 4px;
 
   display: grid;
   grid-template-rows: 96px auto;

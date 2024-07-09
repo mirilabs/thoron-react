@@ -42,9 +42,6 @@ function Renderer({ unit, ...props }) {
           {StatRow("Res", stats.res)}
         </ul>
       </div>
-      <div className="body-right">
-
-      </div>
     </div>
   );
 }

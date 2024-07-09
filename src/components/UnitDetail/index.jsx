@@ -4,6 +4,7 @@ import useSelectedUnit from "../utils/useSelectedUnit";
 import useUIAction from "components/utils/useUIAction";
 import StatView from "./StatView";
 import { CSSTransition } from "react-transition-group";
+import InventoryView from "./InventoryView";
 
 function UnitDetail() {
   const [show, setShow] = useState(false);
@@ -31,8 +32,9 @@ function UnitDetail() {
           <h1 className="name">{selectedUnit.record.name}</h1>
           
         </div>
-        <StatView stats={selectedUnit.record.stats}
+        <StatView stats={selectedUnit.baseStats}
             growths={selectedUnit.record.growths} />
+        <InventoryView items={selectedUnit.items} />
       </div>
     </CSSTransition>
   )

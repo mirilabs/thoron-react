@@ -1,7 +1,6 @@
 import ThoronContext from "components/ThoronContext";
 import { useContext, useEffect } from "react";
-import UIEventEmitter, { UIAction, UIEventSignatures } from "utils/UIEventEmitter";
-import EventEmitter from "utils/EventEmitter";
+import { UIAction, UIEventSignatures } from "utils/UIEventEmitter";
 
 const defaultKeybinds: { [K: string]: UIAction } = {
   'escape': 'escape',
