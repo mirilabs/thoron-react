@@ -1,12 +1,14 @@
+$unit-detail-height: 85%;
+
 .unit-detail {
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: -$unit-detail-height;
   z-index: 9;
 
   background-color: rgb(24, 20, 27);
   width: 100%;
-  height: 85%;
+  height: $unit-detail-height;
   border-radius: 16px;
 
   display: grid;
@@ -20,5 +22,27 @@
   .title {
     margin-left: 8px;
     grid-area: a;
+  }
+
+  &.unit-detail-enter {
+    bottom: -$unit-detail-height;
+  }
+
+  &.unit-detail-enter-active {
+    bottom: 0;
+    transition: bottom 200ms;
+  }
+
+  &.unit-detail-enter-done {
+    bottom: 0;
+  }
+
+  &.unit-detail-exit {
+    bottom: 0;
+  }
+
+  &.unit-detail-exit-active {
+    bottom: -$unit-detail-height;
+    transition: bottom 200ms;
   }
 }
