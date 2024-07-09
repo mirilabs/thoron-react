@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import useSelectedUnit from "../utils/useSelectedUnit";
 import useUIAction from "components/utils/useUIAction";
 import StatView from "./StatView";
+import { CSSTransition } from "react-transition-group";
 
 function UnitDetail() {
   const [show, setShow] = useState(false);
@@ -16,16 +17,24 @@ function UnitDetail() {
     setShow(false);
   });
 
+  const transitionProps = {
+    in: show,
+    timeout: 200,
+    classNames: 'unit-detail'
+  }
+
   if (!selectedUnit) return null;
   return (
-    <div className="unit-detail" style={{ visibility: show ? 'visible' : 'hidden' }}>
-      <div className="title">
-        <h1 className="name">{selectedUnit.record.name}</h1>
-        
+    <CSSTransition {...transitionProps}>
+      <div className="unit-detail">
+        <div className="title">
+          <h1 className="name">{selectedUnit.record.name}</h1>
+          
+        </div>
+        <StatView stats={selectedUnit.record.stats}
+            growths={selectedUnit.record.growths} />
       </div>
-      <StatView stats={selectedUnit.record.stats}
-          growths={selectedUnit.record.growths} />
-    </div>
+    </CSSTransition>
   )
 }
 
