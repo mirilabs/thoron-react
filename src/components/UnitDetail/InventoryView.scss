@@ -1,0 +1,10 @@
+.unit-detail__inventory {
+  .item {
+    border: 1px white solid;
+    border-radius: 4px;
+    padding: 2px 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
