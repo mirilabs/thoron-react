@@ -12,7 +12,6 @@ function ItemSelector({ index, item }) {
 }
 
 function InventoryView({ items }) {
-  console.log(items);
 
   const rows = items.map((item, i) => (
     <ItemSelector index={i} item={item} key={i} />
@@ -20,6 +19,7 @@ function InventoryView({ items }) {
 
   return (
     <div className="unit-detail__inventory">
+      <div className="title">Items</div>
       {rows}
     </div>
   )

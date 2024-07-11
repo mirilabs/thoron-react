@@ -5,9 +5,9 @@ $unit-panel-gap: 8px;
 $unit-panel-height: $header-height + $unit-panel-gap + $body-height;
 
 .unit-data-panel {
-  background-color: rgb(48, 26, 53);
-  outline: 1px rgba(255, 192, 203, 0.1) solid;
-  border-top-color: rgba(255, 192, 203, 0.5);
+  background-color: var(--bg-color-2);
+  outline: 1px rgba(var(--accent-color), 0.1) solid;
+  border-top-color: rgba(var(--accent-color), 0.5);
 }
 
 .unit-panel {

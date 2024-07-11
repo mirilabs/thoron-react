@@ -1,5 +1,5 @@
 import "./index.scss";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import useSelectedUnit from "../utils/useSelectedUnit";
 import useUIAction from "components/utils/useUIAction";
 import StatView from "./StatView";
@@ -18,16 +18,19 @@ function UnitDetail() {
     setShow(false);
   });
 
+  const nodeRef = useRef();
+
   const transitionProps = {
     in: show,
     timeout: 200,
-    classNames: 'unit-detail'
+    classNames: 'unit-detail',
+    nodeRef
   }
 
   if (!selectedUnit) return null;
   return (
     <CSSTransition {...transitionProps}>
-      <div className="unit-detail">
+      <div className="unit-detail" ref={nodeRef}>
         <div className="title">
           <h1 className="name">{selectedUnit.record.name}</h1>
           
