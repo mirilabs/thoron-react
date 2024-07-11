@@ -6319,7 +6319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.2.0, events@npm:^3.3.0":
+"events@npm:^3.2.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: 10/a3d47e285e28d324d7180f1e493961a2bbb4cad6412090e4dec114f4db1f5b560c7696ee8e758f55e23913ede856e3689cd3aa9ae13c56b5d8314cd3b3ddd1be
@@ -11649,6 +11649,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"seedrandom@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "seedrandom@npm:3.0.5"
+  checksum: 10/acad5e516c04289f61c2fb9848f449b95f58362b75406b79ec51e101ec885293fc57e3675d2f39f49716336559d7190f7273415d185fead8cd27b171ebf7d8fb
+  languageName: node
+  linkType: hard
+
 "select-hose@npm:^2.0.0":
   version: 2.0.0
   resolution: "select-hose@npm:2.0.0"
@@ -12550,21 +12557,21 @@ __metadata:
     react-scripts: "npm:^5.0.1"
     react-transition-group: "npm:^4.4.5"
     sass: "npm:^1.77.6"
-    thoron: "npm:^2.0.8"
+    thoron: "npm:^2.1.1"
     typescript: "npm:^5.5.2"
     web-vitals: "npm:^2.1.4"
   languageName: unknown
   linkType: soft
 
-"thoron@npm:^2.0.8":
-  version: 2.0.8
-  resolution: "thoron@npm:2.0.8"
+"thoron@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "thoron@npm:2.1.1"
   dependencies:
     ajv: "npm:^8.11.0"
-    events: "npm:^3.3.0"
     heap-js: "npm:^2.3.0"
     lodash: "npm:^4.17.21"
-  checksum: 10/26ce8e92bf70a87de9b61532ddf3a45ad960292ff18201417f90f70466a7e4124678b6b91324159fbd2a7c006f2cab01bb3701de0cd8d53286eb31e0b54dff16
+    seedrandom: "npm:^3.0.5"
+  checksum: 10/4c1856d25f9268ea7cc1d259dbf9d891214721141a0e0a3cf1ca582774abef07c05551fd6d0ad58d148379a957b37e9281a0c362c0dd1997a63c91d3bf1af16b
   languageName: node
   linkType: hard
 
