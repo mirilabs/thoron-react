@@ -1,0 +1,19 @@
+:root {
+  &.theme-ourple {
+    --bg-color: rgb(24, 20, 27);
+    --bg-color-2: rgb(48, 26, 53);
+    --accent-color: rgb(255, 192, 203);
+    --accent-color-2: rgb(192, 221, 255);
+    --text-color: white;
+    --text-color-2: rgb(235, 197, 219);
+  }
+
+  &.theme-soap {
+    --bg-color: rgb(253, 247, 255);
+    --bg-color-2: rgb(234, 212, 240);
+    --accent-color: rgb(139, 62, 158);
+    --accent-color-2: rgb(83, 140, 206);
+    --text-color: black;
+    --text-color-2: rgb(78, 30, 58);
+  }
+}

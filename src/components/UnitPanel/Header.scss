@@ -1,9 +1,11 @@
+@use "sass:color";
+
 $header-height: 32px;
 
 .unit-data-panel {
-  background-color: rgb(48, 26, 53);
-  outline: 1px rgba(255, 192, 203, 0.1) solid;
-  border-top-color: rgba(255, 192, 203, 0.5);
+  background-color: var(--bg-color-2);
+  outline: 1px rgba(var(--accent-color), 0.1) solid;
+  border-top-color: rgba(var(--accent-color), 0.5);
 }
 
 .unit-panel__header {
@@ -24,22 +26,25 @@ $header-height: 32px;
   }
 
   .unit-selector {
+    background-color: var(--bg-color-2);
     cursor: pointer;
 
     .sprite {
+      opacity: 1;
       max-width: 64px;
       max-height: 100%;
       margin: 0 8px;
     }
 
     .name {
+      opacity: 1;
       margin: auto;
       margin-right: 16px;
       font-size: medium;
     }
-
+    
     &:hover {
-      background-color: rgba(255, 192, 203, 0.25);
+      background-color: rgb(from var(--bg-color-2) r g b / 0.5);
       transition: background-color 200ms;
     }
   }

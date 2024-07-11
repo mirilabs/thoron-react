@@ -1,6 +1,13 @@
 .unit-detail__inventory {
+  .title {
+    margin-left: 0;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: var(--text-color-2);
+  }
+
   .item {
-    border: 1px white solid;
+    background-color: var(--bg-color-2);
     border-radius: 4px;
     padding: 2px 4px;
     display: flex;
