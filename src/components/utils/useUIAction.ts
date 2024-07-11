@@ -16,6 +16,8 @@ function KeybindHandler() {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const key = event.key.toLowerCase();
+    if (event.shiftKey || event.ctrlKey || event.altKey) return;
+
     const action = keybinds.get(key);
     uiEvents.emit(action);
   }
