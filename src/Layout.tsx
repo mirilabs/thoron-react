@@ -1,3 +1,4 @@
+import "./Layout.scss";
 import React from "react";
 import useResponsive from "components/utils/useResponsive";
 import { WindowSize } from "components/ViewportContext";
@@ -15,12 +16,12 @@ function Layout() {
     case WindowSize.SMALL:
     default:
       return (
-        <>
+        <div className="layout-mobile">
           <SideMenuToggle />
           <GameCanvas />
           <UnitPanel />
           <UnitDetail />
-        </>
+        </div>
       );
   }
 }

@@ -1,13 +1,12 @@
-@import "./Header.scss";
-@import "./Body.scss";
-
+$header-height: 32px;
 $unit-panel-gap: 8px;
+$body-height: 84px;
 $unit-panel-height: $header-height + $unit-panel-gap + $body-height;
 
 .unit-data-panel {
   background-color: var(--bg-color-2);
-  outline: 1px rgba(var(--accent-color), 0.1) solid;
-  border-top-color: rgba(var(--accent-color), 0.5);
+  outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
+  border-top: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
 }
 
 .unit-panel {

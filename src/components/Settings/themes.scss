@@ -1,5 +1,5 @@
 :root {
-  &.theme-ourple {
+  &.theme-ourple, .theme-selector.theme-ourple {
     --bg-color: rgb(24, 20, 27);
     --bg-color-2: rgb(48, 26, 53);
     --accent-color: rgb(255, 192, 203);
@@ -8,7 +8,7 @@
     --text-color-2: rgb(235, 197, 219);
   }
 
-  &.theme-soap {
+  &.theme-soap, .theme-selector.theme-soap {
     --bg-color: rgb(253, 247, 255);
     --bg-color-2: rgb(234, 212, 240);
     --accent-color: rgb(139, 62, 158);
@@ -16,4 +16,17 @@
     --text-color: black;
     --text-color-2: rgb(78, 30, 58);
   }
+}
+
+.theme-selector {
+  padding: 4px;
+  margin: 4px;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 8px;
+
+  background-color: var(--bg-color);
+  outline: 2px var(--bg-color-2) solid;
+  color: var(--text-color);
+  box-shadow: inset 2px -8px 8px -8px var(--accent-color);
 }

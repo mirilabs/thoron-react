@@ -7,8 +7,8 @@ const WindowSize = {
 }
 
 const breakpoints = {
-  MAX_SMALL: 640,
-  MAX_MEDIUM: 1008
+  MAX_SMALL: 480,
+  MAX_MEDIUM: 1080
 }
 
 // This React Context passes the current window size.

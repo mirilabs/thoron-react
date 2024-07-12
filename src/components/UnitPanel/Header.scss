@@ -1,12 +1,5 @@
 @use "sass:color";
-
-$header-height: 32px;
-
-.unit-data-panel {
-  background-color: var(--bg-color-2);
-  outline: 1px rgba(var(--accent-color), 0.1) solid;
-  border-top-color: rgba(var(--accent-color), 0.5);
-}
+@import "./UnitPanel.scss";
 
 .unit-panel__header {
   pointer-events: none;
@@ -45,7 +38,6 @@ $header-height: 32px;
     
     &:hover {
       background-color: rgb(from var(--bg-color-2) r g b / 0.5);
-      transition: background-color 200ms;
     }
   }
 
