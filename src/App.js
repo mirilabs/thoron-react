@@ -5,27 +5,21 @@ import chapter from './data/chapter';
 
 import { ThoronProvider } from './components/ThoronContext';
 import { ViewportProvider } from './components/ViewportContext';
-import GameCanvas from './components/GameCanvas';
-import UnitPanel from './components/UnitPanel';
-import UnitDetail from 'components/UnitDetail';
 import { KeybindHandler } from 'components/utils/useUIAction';
-import SettingsContainer from 'components/Settings';
+import LayoutRoot from 'Layout';
 
 global.chapter = chapter;
 
 function App() {
   return (
-    <main className="app">
-      <ViewportProvider>
-        <ThoronProvider chapter={chapter}>
-          <SettingsContainer />
-          <GameCanvas />
-          <UnitPanel />
-          <UnitDetail />
-          <KeybindHandler />
-        </ThoronProvider>
-      </ViewportProvider>
-    </main>
+    <ViewportProvider>
+      <ThoronProvider chapter={chapter}>
+        <main className="app">
+          <LayoutRoot />
+        </main>
+        <KeybindHandler />
+      </ThoronProvider>
+    </ViewportProvider>
   );
 }
 
