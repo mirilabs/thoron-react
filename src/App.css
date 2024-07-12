@@ -10,6 +10,11 @@ body {
   height: 100vh;
 }
 
+.app * {
+  transition: color 250ms;
+  transition: background-color 200ms;
+}
+
 .app-header {
   background-color: #282c34;
   min-height: 100vh;

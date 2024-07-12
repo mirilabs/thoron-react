@@ -1,6 +1,8 @@
 import Settings from "./Settings";
 import "./SideMenu.scss";
 import React, { useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 
 function SideMenu({ onClose }: {
   onClose: () => void
@@ -8,7 +10,21 @@ function SideMenu({ onClose }: {
 
   return (
     <div className="side-menu">
-      <Settings />
+      <Tabs>
+        <TabList>
+          <Tab>Settings</Tab>
+          {
+            onClose !== undefined &&
+            <span className="close-button" onClick={onClose}>
+              <i className="fas fa-chevron-right" />
+            </span>
+          }
+        </TabList>
+
+        <TabPanel>
+          <Settings />
+        </TabPanel>
+      </Tabs>
     </div>
   )
 }
@@ -20,8 +36,8 @@ function SideMenuToggle() {
     <SideMenu onClose={() => setShow(false)} />
   )
   else return (
-    <div className="side-menu" onClick={() => setShow(true)}>
-      {"<<"}
+    <div className="side-menu-toggle" onClick={() => setShow(true)}>
+      <i className="fas fa-chevron-left" />
     </div>
   );
 }

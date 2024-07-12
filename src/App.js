@@ -7,8 +7,9 @@ import { ThoronProvider } from './components/ThoronContext';
 import { ViewportProvider } from './components/ViewportContext';
 import { KeybindHandler } from 'components/utils/useUIAction';
 import LayoutRoot from 'Layout';
+import { initializeUserSettings } from 'components/Settings/useUserSettings';
 
-global.chapter = chapter;
+initializeUserSettings();
 
 function App() {
   return (

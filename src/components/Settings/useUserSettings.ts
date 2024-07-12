@@ -1,12 +1,12 @@
 import "./themes.scss";
 
 const options = {
-  themes: [
+  theme: [
     "ourple",
     "soap"
   ]
 } as const;
-type Theme = typeof options.themes[number];
+type Theme = typeof options.theme[number];
 
 type Settings = {
   theme: Theme;
@@ -27,19 +27,16 @@ const defaults: Readonly<Settings> = {
   theme: "ourple"
 };
 
-// apply initial settings
-applySetting("theme", defaults.theme);
-
 const settingsController = {
   get(key: keyof Settings) {
     return localStorage.getItem(`settings.${key}`) ?? defaults[key];
   },
 
   set<K extends keyof Settings>(
-    key: keyof Settings,
+    key: K,
     value: Settings[K]
   ): boolean {
-    if (options[key].includes(value)) {
+    if (options[key as keyof Settings].includes(value)) {
       localStorage.setItem(`settings.${key}`, value);
       applySetting(key, value);
       return true;
@@ -47,9 +44,18 @@ const settingsController = {
     else return false;
   }
 }
+type SettingsController = typeof settingsController;
 
-function useUserSettings() {
+export default function useUserSettings(): SettingsController {
   return settingsController;
 }
 
-export default useUserSettings;
+export function initializeUserSettings() {
+  applySetting("theme", defaults.theme);
+}
+
+export {
+  options,
+  Theme,
+  SettingsController
+}
