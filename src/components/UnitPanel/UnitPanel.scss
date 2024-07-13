@@ -1,24 +1,24 @@
 $header-height: 32px;
-$unit-panel-gap: 8px;
+$unit-panel-gap: 6px;
 $body-height: 84px;
-$unit-panel-height: $header-height + $unit-panel-gap + $body-height;
+$unit-panel-height: $header-height + $unit-panel-gap + $body-height + 2px;
 
 .unit-data-panel {
   background-color: var(--bg-color-2);
   outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
-  border-top: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
+  border-bottom: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
 }
 
 .unit-panel {
   position: absolute;
-  bottom: 0;
+  top: 0;
   width: 100vw;
   height: $unit-panel-height;
   overflow: scroll;
   z-index: 10;
 
   display: grid;
-  grid-template-rows: $header-height;
+  grid-template-rows: $body-height $header-height;
   row-gap: $unit-panel-gap;
 
   // allow pointer events to pass through the transparent portion

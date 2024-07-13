@@ -14,9 +14,7 @@ function UnitDetail() {
     setShow(!show);
   });
 
-  useUIAction('escape', () => {
-    setShow(false);
-  });
+  useUIAction("cancel", () => setShow(false));
 
   const nodeRef = useRef();
 

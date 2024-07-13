@@ -1,3 +1,6 @@
+@import "../UnitPanel/UnitPanel.scss";
+
+$unit-detail-top-offset: $unit-panel-height + 4px;
 $unit-detail-height: 85%;
 
 .unit-detail {
@@ -8,9 +11,10 @@ $unit-detail-height: 85%;
 
   background-color: var(--bg-color);
   width: calc(100% - 8px);
-  height: $unit-detail-height;
-  border-radius: 16px;
-  padding: 4px;
+  height: calc(100% - $unit-panel-height);
+  border-radius: 0;
+  padding: 0 4px;
+  padding-top: $header-height + $unit-panel-gap;
 
   display: grid;
   grid-template-rows: 96px auto;
@@ -32,7 +36,7 @@ $unit-detail-height: 85%;
 
   &.unit-detail-enter-active {
     bottom: 0;
-    transition: bottom 200ms;
+    transition: bottom 200ms ease-in-out;
   }
 
   &.unit-detail-enter-done {

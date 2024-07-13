@@ -4,8 +4,14 @@
   @extend .unit-data-panel;
   pointer-events: all;
 
+  position: relative;
+  top: 0;
   width: 100%;
   min-width: 320px;
+  height: $body-height;
+  overflow: scroll;
+  z-index: 10;
+
   overflow: scroll;
   display: flex;
   flex-direction: row;
