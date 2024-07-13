@@ -3,6 +3,7 @@ import "./SideMenu.scss";
 import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+import useUIAction from "./utils/useUIAction";
 
 function SideMenu({ onClose }: {
   onClose: () => void
@@ -16,7 +17,7 @@ function SideMenu({ onClose }: {
           {
             onClose !== undefined &&
             <span className="close-button" onClick={onClose}>
-              <i className="fas fa-chevron-right" />
+              <i className="fas fa-chevron-left" />
             </span>
           }
         </TabList>
@@ -31,13 +32,14 @@ function SideMenu({ onClose }: {
 
 function SideMenuToggle() {
   const [show, setShow] = useState(false);
+  useUIAction("cancel", () => setShow(false));
 
   if (show) return (
     <SideMenu onClose={() => setShow(false)} />
   )
   else return (
     <div className="side-menu-toggle" onClick={() => setShow(true)}>
-      <i className="fas fa-chevron-left" />
+      <i className="fas fa-chevron-right" />
     </div>
   );
 }

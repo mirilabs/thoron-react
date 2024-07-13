@@ -9,8 +9,8 @@ function UnitPanel() {
 
   return (
     <div className="unit-panel">
-      <UnitPanelHeader unit={unit} />
       <UnitPanelBody unit={unit} />
+      <UnitPanelHeader unit={unit} />
     </div>
   )
 }

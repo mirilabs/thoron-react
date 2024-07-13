@@ -8,6 +8,7 @@ import { SideMenuToggle } from "components/SideMenu";
 import GameCanvas from './components/GameCanvas';
 import UnitPanel from './components/UnitPanel';
 import UnitDetail from 'components/UnitDetail';
+import ActionMenuToggle from "components/ActionMenu";
 
 function Layout() {
   let { size } = useResponsive();
@@ -17,9 +18,10 @@ function Layout() {
     default:
       return (
         <div className="layout-mobile">
+          <UnitPanel />
           <SideMenuToggle />
           <GameCanvas />
-          <UnitPanel />
+          <ActionMenuToggle />
           <UnitDetail />
         </div>
       );

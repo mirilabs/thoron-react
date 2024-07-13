@@ -2,6 +2,10 @@
 @import "./UnitPanel.scss";
 
 .unit-panel__header {
+  position: relative;
+  z-index: 6;
+  
+  // allow pointer events to pass through the transparent portion
   pointer-events: none;
 
   display: flex;
