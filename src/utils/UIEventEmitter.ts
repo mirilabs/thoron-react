@@ -2,7 +2,7 @@ import EventEmitter, { IEventSignatures } from "./EventEmitter";
 
 interface UIEventSignatures extends IEventSignatures {
   // gameplay
-  select_tile: (tile: any) => void;
+  select_position: (pos: { x: number, y: number }) => void;
   select_unit: (unit: any) => void;
   set_equipped_index: (index: number) => void;
 
