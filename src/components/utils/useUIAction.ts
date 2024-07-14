@@ -3,8 +3,14 @@ import { useContext, useEffect } from "react";
 import { UIAction, UIEventSignatures } from "utils/UIEventEmitter";
 
 const defaultKeybinds: { [K: string]: UIAction } = {
-  'escape': 'escape',
-  'c':      'toggle_character_detail_display'
+  'escape': 'cancel',
+  'z':      'confirm',
+  'x':      'cancel',
+  'c':      'toggle_character_detail_display',
+  'left':   'left',
+  'right':  'right',
+  'up':     'up',
+  'down':   'down'
 }
 
 const keybinds = new Map(Object.entries(defaultKeybinds));

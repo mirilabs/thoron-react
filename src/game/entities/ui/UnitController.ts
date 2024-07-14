@@ -11,23 +11,31 @@ import UnitPath from "./UnitPath";
 import UnitActionRange from "./UnitActionRange";
 
 abstract class ControllerState {
-  controller: UnitController;
+  private _controller: WeakRef<UnitController>;
+  get controller(): UnitController {
+    return this._controller.deref();
+  }
+
   setState: (state: ControllerState) => void;
 
   bindController(controller: UnitController) {
-    this.controller = controller;
+    this._controller = new WeakRef(controller);
     this.setState = controller.setState.bind(controller);
   }
 
-  onEnter(controller: UnitController, prevState: ControllerState) {}
-  onExit(controller: UnitController, prevState: ControllerState) {}
+  getTileCoords(vec: IVector2): IVector2 {
+    return this.controller.coords.toTiles(vec.x, vec.y);
+  }
+
+  onEnter(prevState: ControllerState) {}
+  onExit(nextState: ControllerState) {}
   onMouseDown(event: CursorEvent) {}
   onMouseMove(event: CursorEvent) {}
   onMouseUp(event: CursorEvent) {}
 }
 
 class IdleState extends ControllerState {
-  onEnter(...args: any[]): void {
+  onEnter(): void {
     this.controller.scene.draw();
   }
 
@@ -38,7 +46,7 @@ class IdleState extends ControllerState {
     } = this.controller;
 
     // set selected tile in ui
-    let tileCoords = this.controller.coords.toTiles(event.x, event.y);
+    let tileCoords = this.getTileCoords(event);
     let tile = chapter.terrain.getTile(tileCoords.x, tileCoords.y);
     uiEvents.emit('select_tile', tile);
     
@@ -74,7 +82,7 @@ class PanningState extends ControllerState {
 
 class MovingState extends ControllerState {
   moveRangeEnt: UnitMoveRange;
-  pathEnt: UnitPath
+  pathEnt: UnitPath;
   
   selectedPiece: UnitPiece;
   selectedUnit: any;
@@ -83,45 +91,57 @@ class MovingState extends ControllerState {
   lastX: number;
   lastY: number;
 
-  onEnter(controller: UnitController, prevState: ControllerState) {
+  onEnter(prevState: ControllerState) {
+    const controller = this.controller;
+    const scene = controller.scene;
+
     const { game, selectedPiece } = controller;
     this.selectedPiece = selectedPiece;
     this.selectedUnit = selectedPiece.unit;
 
-    this.moveRangeEnt = new UnitMoveRange(game, selectedPiece.unit);
-    this.moveRangeEnt.addToScene(controller.scene);
-    
-    this.pathEnt = new UnitPath(game, selectedPiece.unit);
-    this.pathEnt.addToScene(controller.scene);
-
-    controller.scene.draw();
-
     this.entityPos = this.selectedPiece.entity.getComponent('position');
+
+    if (prevState instanceof ActionSelectingState) {
+      // if moveRange and path entities existed on previous state,
+      // get their references
+      this.moveRangeEnt = prevState.moveRangeEnt;
+      this.pathEnt = prevState.pathEnt;
+    }
+    else {
+      // construct new moveRange and path entities
+      this.moveRangeEnt = new UnitMoveRange(game, selectedPiece.unit);
+      this.moveRangeEnt.addToScene(scene);
+      
+      this.pathEnt = new UnitPath(game, selectedPiece.unit);
+      this.pathEnt.addToScene(scene);
+      scene.draw();
+    }
   }
 
-  onExit(): void {
-    this.moveRangeEnt.destroy();
-    this.pathEnt.destroy();
+  onExit(nextState: ControllerState): void {
+    if (!(nextState instanceof ActionSelectingState)) {
+      this.moveRangeEnt.destroy();
+      this.pathEnt.destroy();
+    }
   }
 
   moveEntity(x: number, y: number) {
     this.entityPos.x = x;
     this.entityPos.y = y;
+    this.controller.scene.draw();
+  }
+
+  onMouseDown(event: CursorEvent): void {
+    this.onMouseMove(event);
   }
 
   onMouseMove(event: CursorEvent): void {   
     // if hovering over a new tile that can be moved to, update targetPos
-    let tileCoords = this.controller.coords.toTiles(event.x, event.y);
+    let tileCoords = this.getTileCoords(event);
     if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
       let range = this.selectedUnit.getMoveRange();
-      
-      // TODO add a better way to get this conditional in thoron
-      let inRange = false;
-      range.forEach(({ x, y }) => {
-        inRange = inRange || (x === tileCoords.x && y === tileCoords.y);
-      });
-      
-      if (inRange) {
+
+      if (range.includes(tileCoords)) {
         this.pathEnt.updateTargetPos(tileCoords);
       }
     }
@@ -133,19 +153,75 @@ class MovingState extends ControllerState {
       event.x - this.controller.config.tileWidth / 2,
       event.y - this.controller.config.tileHeight / 2
     );
-    this.controller.scene.draw();
   }
 
   onMouseUp(event: CursorEvent) {
     let targetPos = this.pathEnt.getLastNode();
     let pixelCoords = this.controller.coords.toPixels(targetPos.x, targetPos.y);
     this.moveEntity(pixelCoords.x, pixelCoords.y);
-    this.setState(new ActingState(targetPos));
+    this.setState(new ActionSelectingState());
   }
 }
 
-class ActingState extends ControllerState {s
-  selectedPiece: UnitPiece;
+class ActionSelectingState extends ControllerState {
+  moveRangeEnt: UnitMoveRange;
+  pathEnt: UnitPath
+  unitEnt: UnitPiece;
+
+  constructor() {
+    super();
+    this.onActionSelected = this.onActionSelected.bind(this);
+  }
+
+  onEnter(prevState: MovingState) {
+    this.moveRangeEnt = prevState.moveRangeEnt;
+    this.pathEnt = prevState.pathEnt;
+    this.unitEnt = this.controller.selectedPiece;
+
+    this.controller.uiEvents.emit("open_action_menu");
+    this.controller.uiEvents.on("select_action", this.onActionSelected);
+  }
+
+  onExit(nextState: ActingState) {
+    if (!(nextState instanceof MovingState)) {
+      this.moveRangeEnt.destroy();
+      this.pathEnt.destroy();
+    }
+    
+    if (nextState instanceof IdleState) {
+      // return unitEnt to original position
+      let { x, y } = this.unitEnt.unit.getPosition();
+      let originalPos = this.controller.coords.toPixels(x, y);
+      this.unitEnt.rect.moveTo(originalPos.x, originalPos.y);
+    }
+
+    this.controller.uiEvents.emit("close_action_menu");
+    this.controller.uiEvents.off("select_action", this.onActionSelected);
+  }
+
+  onMouseDown(event: CursorEvent): void {
+    let tileCoords = this.getTileCoords(event);
+    
+    if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
+      this.setState(new MovingState());
+      
+      // pass mousedown event to next state
+      this.controller.currentState.onMouseDown(event);
+    }
+    else {
+      this.setState(new IdleState());
+    }
+  }
+
+  onActionSelected(action: string) {
+    if (action === "cancel") {
+      this.setState(new IdleState());
+    }
+  }
+}
+
+class ActingState extends ControllerState {
+  unitEnt: UnitPiece;
   selectedUnit: any;
   moveTarget: IVector2;  // coords from which the unit will attack
   actionRangeEnt: UnitActionRange;
@@ -155,9 +231,9 @@ class ActingState extends ControllerState {s
     this.moveTarget = moveTarget;
   }
 
-  onEnter(controller: UnitController, prevState: ControllerState) {
-    const { game, selectedPiece } = controller;
-    this.selectedPiece = selectedPiece;
+  onEnter(prevState: ControllerState) {
+    const { game, selectedPiece, scene } = this.controller;
+    this.unitEnt = selectedPiece;
     this.selectedUnit = selectedPiece.unit;
     
     this.actionRangeEnt = new UnitActionRange(
@@ -165,12 +241,11 @@ class ActingState extends ControllerState {s
       this.selectedUnit,
       this.moveTarget
     );
-    this.actionRangeEnt.addToScene(controller.scene);
-    
-    this.controller.scene.draw();
+    this.actionRangeEnt.addToScene(scene);
+    scene.draw();
   }
 
-  onExit(controller: UnitController, prevState: ControllerState): void {
+  onExit(prevState: ControllerState): void {
     this.actionRangeEnt.destroy();
   }
 
@@ -188,7 +263,7 @@ class ActingState extends ControllerState {s
       // return to original position
       let { x, y } = this.selectedUnit.getPosition();
       let originalPos = this.controller.coords.toPixels(x, y);
-      this.selectedPiece.rect.moveTo(originalPos.x, originalPos.y);
+      this.unitEnt.rect.moveTo(originalPos.x, originalPos.y);
 
       // reset state
       this.setState(new IdleState());
@@ -264,11 +339,11 @@ class UnitController extends GameObject {
 
   setState(nextState: ControllerState) {
     const prevState = this.currentState;
-    if (this.currentState) this.currentState.onExit(this, nextState);
+    if (this.currentState) this.currentState.onExit(nextState);
 
     nextState.bindController(this);
     this.currentState = nextState;
-    this.currentState.onEnter(this, prevState);
+    this.currentState.onEnter(prevState);
   }
 
   onMouseDown(event: CursorEvent) {
