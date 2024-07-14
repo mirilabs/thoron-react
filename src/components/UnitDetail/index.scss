@@ -6,7 +6,7 @@ $unit-detail-height: 85%;
 .unit-detail {
   position: absolute;
   left: 0;
-  bottom: -$unit-detail-height;
+  bottom: -100%;
   z-index: 9;
 
   background-color: var(--bg-color);
