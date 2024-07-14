@@ -1,13 +1,12 @@
 import React from "react";
 import "./themes.scss";
-import useUserSettings, {
+import settingsController, {
   options,
-  SettingsController,
   Theme
-} from "./useUserSettings";
+} from "../config/userSettings";
 
 function ThemeSelector({ settings, theme }: {
-  settings: SettingsController,
+  settings: typeof settingsController,
   theme: Theme
 }) {
   return (
@@ -19,7 +18,7 @@ function ThemeSelector({ settings, theme }: {
 }
 
 function Settings() {
-  let settings = useUserSettings();
+  let settings = settingsController;
 
   let themeSelectors = options.theme.map(theme => (
     <ThemeSelector settings={settings} theme={theme} key={theme} />
