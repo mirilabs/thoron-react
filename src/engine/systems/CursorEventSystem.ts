@@ -29,14 +29,14 @@ class CursorEventSystem extends System {
 
   bindCursorEvents(element: HTMLElement) {
     element.addEventListener('mousedown', this.onMouseDown);
-    element.addEventListener('mousemove', this.onMouseMove);
-    element.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
   }
 
   unbindCursorEvents(element: HTMLElement) {
     element.removeEventListener('mousedown', this.onMouseDown);
-    element.removeEventListener('mousemove', this.onMouseMove);
-    element.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mouseup', this.onMouseUp);
   }
 
   getCoords(event: MouseEvent): Vector2 {
