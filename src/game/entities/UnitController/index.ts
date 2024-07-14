@@ -46,15 +46,13 @@ class UnitController extends GameObject {
   }
 
   addUnit(unit) {
-    let unitPiece = new UnitPiece(unit, this.config);
-    let entity = unitPiece.addToScene(this.scene);
+    let unitPiece = new UnitPiece(unit, this.coords);
+    unitPiece.addToScene(this.scene);
 
     this.unitPieces.set(unit, unitPiece);
 
     // move to initial position
-    let { x, y } = this.chapter.getUnitById(unit.id).getPosition();
-    let pixelCoords = this.coords.toPixels(x, y);
-    Object.assign(entity.getComponent('position'), pixelCoords);
+    unitPiece.resetPosition();
   }
 
   getUnitPiece(unit) {

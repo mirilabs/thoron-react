@@ -48,9 +48,7 @@ class ActingState extends ControllerState {
     }
     else {
       // return to original position
-      let { x, y } = this.selectedUnit.getPosition();
-      let originalPos = this.controller.coords.toPixels(x, y);
-      this.unitEnt.rect.moveTo(originalPos.x, originalPos.y);
+      this.unitEnt.resetPosition();
 
       // reset state
       this.setState(new IdleState());
