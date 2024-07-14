@@ -47,8 +47,7 @@ class IdleState extends ControllerState {
 
     // set selected tile in ui
     let tileCoords = this.getTileCoords(event);
-    let tile = chapter.terrain.getTile(tileCoords.x, tileCoords.y);
-    uiEvents.emit('select_tile', tile);
+    uiEvents.emit('select_position', tileCoords);
     
     // set selected unit in ui
     let unit = chapter.getUnitAt(tileCoords);
@@ -116,12 +115,15 @@ class MovingState extends ControllerState {
       this.pathEnt.addToScene(scene);
       scene.draw();
     }
+    
+    this.controller.uiEvents.emit("open_action_menu");
   }
 
   onExit(nextState: ControllerState): void {
     if (!(nextState instanceof ActionSelectingState)) {
       this.moveRangeEnt.destroy();
       this.pathEnt.destroy();
+      this.controller.uiEvents.emit("open_action_menu");
     }
   }
 
@@ -135,24 +137,32 @@ class MovingState extends ControllerState {
     this.onMouseMove(event);
   }
 
-  onMouseMove(event: CursorEvent): void {   
-    // if hovering over a new tile that can be moved to, update targetPos
+  onMouseMove(event: CursorEvent): void {
+    // execute onTileChange if hovering over a new tile
     let tileCoords = this.getTileCoords(event);
     if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
-      let range = this.selectedUnit.getMoveRange();
-
-      if (range.includes(tileCoords)) {
-        this.pathEnt.updateTargetPos(tileCoords);
-      }
+      this.onTileChange(tileCoords);
+      this.lastX = tileCoords.x;
+      this.lastY = tileCoords.y;
     }
-    this.lastX = tileCoords.x;
-    this.lastY = tileCoords.y;
     
     // unit sprite follows cursor
     this.moveEntity(
       event.x - this.controller.config.tileWidth / 2,
       event.y - this.controller.config.tileHeight / 2
     );
+  }
+
+  onTileChange(nextCoords: IVector2) {
+    // update pathEnt with new target position
+    let range = this.selectedUnit.getMoveRange();
+    if (range.includes(nextCoords)) {
+      this.pathEnt.updateTargetPos(nextCoords);
+    }
+
+    // update ui with new targetPos
+    let targetPos = this.pathEnt.getLastNode();
+    this.controller.uiEvents.emit("select_position", targetPos);
   }
 
   onMouseUp(event: CursorEvent) {
@@ -178,7 +188,6 @@ class ActionSelectingState extends ControllerState {
     this.pathEnt = prevState.pathEnt;
     this.unitEnt = this.controller.selectedPiece;
 
-    this.controller.uiEvents.emit("open_action_menu");
     this.controller.uiEvents.on("select_action", this.onActionSelected);
   }
 
@@ -186,6 +195,7 @@ class ActionSelectingState extends ControllerState {
     if (!(nextState instanceof MovingState)) {
       this.moveRangeEnt.destroy();
       this.pathEnt.destroy();
+      this.controller.uiEvents.emit("close_action_menu");
     }
     
     if (nextState instanceof IdleState) {
@@ -195,7 +205,6 @@ class ActionSelectingState extends ControllerState {
       this.unitEnt.rect.moveTo(originalPos.x, originalPos.y);
     }
 
-    this.controller.uiEvents.emit("close_action_menu");
     this.controller.uiEvents.off("select_action", this.onActionSelected);
   }
 
@@ -213,9 +222,16 @@ class ActionSelectingState extends ControllerState {
     }
   }
 
+  getTargetPos(): IVector2 {
+    return this.pathEnt.getLastNode();
+  }
+
   onActionSelected(action: string) {
     if (action === "cancel") {
       this.setState(new IdleState());
+    }
+    else {
+      this.setState(new ActingState(this.getTargetPos(), action));
     }
   }
 }
@@ -224,11 +240,13 @@ class ActingState extends ControllerState {
   unitEnt: UnitPiece;
   selectedUnit: any;
   moveTarget: IVector2;  // coords from which the unit will attack
+  action: string;
   actionRangeEnt: UnitActionRange;
 
-  constructor(moveTarget: IVector2) {
+  constructor(moveTarget: IVector2, action: string) {
     super();
     this.moveTarget = moveTarget;
+    this.action = action;
   }
 
   onEnter(prevState: ControllerState) {

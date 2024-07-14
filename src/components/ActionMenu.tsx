@@ -3,6 +3,7 @@ import useUIAction, { useUIEmitter } from "./utils/useUIAction";
 import { CSSTransition } from "react-transition-group";
 import "./ActionMenu.scss";
 import useSelectedUnit from "./utils/useSelectedUnit";
+import useSelectedPosition from "./utils/useSelectedPosition";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -25,13 +26,10 @@ function ActionButton({ unitAction, isSelectable=true }: {
   )
 }
 
-function ActionMenu({ actions }: {
-  actions: string[]
+function ActionMenu({ actions, possibleActions }: {
+  actions: string[],
+  possibleActions: string[]
 }) {
-  let unit = useSelectedUnit();
-  
-  const possibleActions = unit ? unit.getPossibleActions() : {};
-
   const buttons = actions.map((action) => {
     if (possibleActions[action]) return (
       <ActionButton unitAction={action} key={action} />
@@ -72,6 +70,10 @@ function ActionMenuToggle() {
   useUIAction("open_action_menu", () => setShow(true));
   useUIAction("close_action_menu", () => setShow(false));
   useUIAction("cancel", handleClose);
+
+  const unit = useSelectedUnit();
+  const pos = useSelectedPosition();
+  const possibleActions = unit ? unit.getPossibleActions(pos) : {};
   
   let transitionProps = {
     in: show,
@@ -83,10 +85,12 @@ function ActionMenuToggle() {
     <CSSTransition {...transitionProps}>
       <div className="unit-action-menu" ref={nodeRef}>
         <ul className="unit-action-menu__left">
-          <ActionMenu actions={leftActions} />
+          <ActionMenu actions={leftActions}
+            possibleActions={possibleActions} />
         </ul>
         <ul className="unit-action-menu__right">
-          <ActionMenu actions={rightActions} />
+          <ActionMenu actions={rightActions}
+            possibleActions={possibleActions} />
           <li onClick={handleClose}>Cancel</li>
         </ul>
       </div>
