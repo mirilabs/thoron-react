@@ -33,10 +33,7 @@ class ActionSelectingState extends ControllerState {
     }
     
     if (nextState instanceof IdleState) {
-      // return unitEnt to original position
-      let { x, y } = this.unitEnt.unit.getPosition();
-      let originalPos = this.controller.coords.toPixels(x, y);
-      this.unitEnt.rect.moveTo(originalPos.x, originalPos.y);
+      this.unitEnt.resetPosition();
     }
 
     this.controller.uiEvents.off("select_action", this.onActionSelected);
