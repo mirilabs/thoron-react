@@ -1,4 +1,4 @@
-import "./themes.scss";
+import { defaultKeybinds, KeybindSchema } from "./keybinds";
 
 const options = {
   theme: [
@@ -10,6 +10,7 @@ type Theme = typeof options.theme[number];
 
 type Settings = {
   theme: Theme;
+  keybinds: KeybindSchema;
 }
 
 function applySetting<K extends keyof Settings>(key: K, value: Settings[K]) {
@@ -24,12 +25,14 @@ function applySetting<K extends keyof Settings>(key: K, value: Settings[K]) {
 }
 
 const defaults: Readonly<Settings> = {
-  theme: "ourple"
+  theme: "ourple",
+  keybinds: defaultKeybinds
 };
 
 const settingsController = {
   get(key: keyof Settings) {
-    return localStorage.getItem(`settings.${key}`) ?? defaults[key];
+    let item = localStorage.getItem(`settings.${key}`);
+    return JSON.parse(item) ?? defaults[key];
   },
 
   set<K extends keyof Settings>(
@@ -37,18 +40,15 @@ const settingsController = {
     value: Settings[K]
   ): boolean {
     if (options[key as keyof Settings].includes(value)) {
-      localStorage.setItem(`settings.${key}`, value);
+      localStorage.setItem(`settings.${key}`, JSON.stringify(value));
       applySetting(key, value);
       return true;
     }
     else return false;
   }
 }
-type SettingsController = typeof settingsController;
 
-export default function useUserSettings(): SettingsController {
-  return settingsController;
-}
+export default settingsController;
 
 export function initializeUserSettings() {
   applySetting("theme", defaults.theme);
@@ -56,6 +56,5 @@ export function initializeUserSettings() {
 
 export {
   options,
-  Theme,
-  SettingsController
+  Theme
 }

@@ -1,13 +1,13 @@
-import './App.css';
-import './stylesheets/dev.css';
+import "./App.css";
+import "./stylesheets/dev.css";
 
-import chapter from './data/chapter';
+import chapter from "./data/chapter";
 
-import { ThoronProvider } from './components/ThoronContext';
-import { ViewportProvider } from './components/ViewportContext';
-import { KeybindHandler } from 'components/utils/useUIAction';
-import LayoutRoot from 'Layout';
-import { initializeUserSettings } from 'components/Settings/useUserSettings';
+import { ThoronProvider } from "./components/ThoronContext";
+import { ViewportProvider } from "./components/ViewportContext";
+import { KeybindInitializer } from "components/config/keybinds";
+import LayoutRoot from "Layout";
+import { initializeUserSettings } from "components/config/userSettings";
 
 initializeUserSettings();
 
@@ -18,7 +18,9 @@ function App() {
         <main className="app">
           <LayoutRoot />
         </main>
-        <KeybindHandler />
+        <> {/* initializers */}
+          <KeybindInitializer />
+        </>
       </ThoronProvider>
     </ViewportProvider>
   );
