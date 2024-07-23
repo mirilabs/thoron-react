@@ -35,11 +35,26 @@ class UnitPath extends GameObject {
   static nodesAreContiguous(pos1: IVector2, pos2: IVector2): boolean {
     let dx = Math.abs(pos1.x - pos2.x);
     let dy = Math.abs(pos1.y - pos2.y);
+    
     return (dx === 1 && dy === 0) || (dx === 0 && dy === 1);
+  }
+
+  isOnPath(node: IVector2) {
+    if (Vector2.eq(node, this.origin)) return true;
+
+    return this.path.reduce((current, next) => {
+      return current || Vector2.eq(node, next);
+    }, false);
   }
 
   updateTargetPos(target: IVector2) {
     if (Vector2.eq(target, this.getLastNode())) return;
+
+    // determine if target is adjacent to current last node
+    let isContiguous = UnitPath.nodesAreContiguous(target, this.getLastNode());
+
+    // determine if target is already on path
+    let isOnPath = this.isOnPath(target);
 
     // add to path
     this.path.push(target);
@@ -53,11 +68,13 @@ class UnitPath extends GameObject {
 
     // if total path cost exceeds unit movement,
     // or next target is not contiguous with current path,
+    // or next target exists earlier on current path,
     let shouldRegenPath = pathCost > this.unit.movement ||
-      !UnitPath.nodesAreContiguous(target, this.getLastNode())
+      !isContiguous ||
+      isOnPath;
     
+    // recreate path
     if (shouldRegenPath) {
-      // recreate a shorter path
       this.path = this.chapter.terrain.getShortestPath(
         this.origin,
         target,
