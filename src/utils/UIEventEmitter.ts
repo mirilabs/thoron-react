@@ -19,6 +19,7 @@ interface UIEventSignatures extends IEventSignatures {
   close_action_menu: () => void;
   select_action: (action: string) => void;
   toggle_character_detail_display: () => void;
+  open_attack_menu: () => void;
 }
 
 type UIAction = keyof UIEventSignatures;

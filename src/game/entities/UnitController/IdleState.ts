@@ -4,31 +4,50 @@ import PanningState from "./PanningState";
 import MovingState from "./MovingState";
 
 class IdleState extends ControllerState {
+  dragging: boolean = false;
+
   onEnter(): void {
     this.controller.scene.draw();
   }
 
   onMouseDown(event: CursorEvent): void {
-    const {
-      chapter,
-      uiEvents
-    } = this.controller;
+    this.dragging = true;
+
+    let tileCoords = this.getTileCoords(event);
+    let unit = this.controller.chapter.getUnitAt(tileCoords);
 
     // set selected tile in ui
-    let tileCoords = this.getTileCoords(event);
-    uiEvents.emit('select_position', tileCoords);
-    
-    // set selected unit in ui
-    let unit = chapter.getUnitAt(tileCoords);
+    this.controller.uiEvents.emit('select_position', tileCoords);
 
+    // show unit range
     if (unit) {
       this.controller.selectUnit(unit);
-      this.setState(new MovingState());
     }
     else {
       this.controller.selectUnit(null);
+    }
+  }
+
+  onMouseMove(event: CursorEvent): void {
+    if (!this.dragging) return;
+
+    let tileCoords = this.getTileCoords(event);
+    let unit = this.controller.chapter.getUnitAt(tileCoords);
+
+    if (unit) {
+      this.setState(new MovingState());
+    }
+    else {
       this.setState(new PanningState());
     }
+  }
+
+  onMouseUp(event: CursorEvent): void {
+    this.dragging = false;
+  }
+
+  onExit(nextState: ControllerState): void {
+    this.dragging = false;
   }
 }
 

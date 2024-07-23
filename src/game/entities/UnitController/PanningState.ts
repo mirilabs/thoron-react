@@ -1,8 +1,13 @@
 import { CursorEvent } from "engine/components";
 import ControllerState from "./ControllerState";
-import IdleState from "./IdleState";
 
 class PanningState extends ControllerState {
+  prevState: ControllerState
+
+  onEnter(prevState: ControllerState): void {
+    this.prevState = prevState;
+  }
+
   onMouseMove(event: CursorEvent): void {
     let movement = {
       x: event.movementX,
@@ -13,7 +18,7 @@ class PanningState extends ControllerState {
   }
 
   onMouseUp(event: CursorEvent): void {
-    this.setState(new IdleState());
+    this.setState(this.prevState);
     this.controller.scene.draw();
   }
 }

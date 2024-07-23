@@ -14,14 +14,23 @@ class ActingState extends ControllerState {
 
   constructor(moveTarget: IVector2, action: string) {
     super();
+    
     this.moveTarget = moveTarget;
     this.action = action;
+    this.cancel = this.cancel.bind(this);
   }
 
   onEnter(prevState: ControllerState) {
     const { game, selectedPiece, scene } = this.controller;
     this.unitEnt = selectedPiece;
     this.selectedUnit = selectedPiece.unit;
+
+    // replace action menu with attack menu
+    this.controller.uiEvents.emit("close_action_menu");
+    this.controller.uiEvents.emit("open_attack_menu");
+
+    // wait for attack to be selected
+    this.controller.uiEvents.on("cancel", this.cancel);
     
     this.actionRangeEnt = new UnitActionRange(
       game,
@@ -33,6 +42,7 @@ class ActingState extends ControllerState {
   }
 
   onExit(prevState: ControllerState): void {
+    this.controller.uiEvents.off("cancel", this.cancel);
     this.actionRangeEnt.destroy();
   }
 
@@ -47,12 +57,16 @@ class ActingState extends ControllerState {
       console.log(unit);
     }
     else {
-      // return to original position
-      this.unitEnt.resetPosition();
-
-      // reset state
-      this.setState(new IdleState());
+      this.cancel();
     }
+  }
+
+  cancel() {
+    // return to original position
+    this.unitEnt.resetPosition();
+
+    // reset state
+    this.setState(new IdleState());
   }
 }
 

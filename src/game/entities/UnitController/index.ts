@@ -46,7 +46,7 @@ class UnitController extends GameObject {
   }
 
   addUnit(unit) {
-    let unitPiece = new UnitPiece(unit, this.coords);
+    let unitPiece = new UnitPiece(unit, this.game);
     unitPiece.addToScene(this.scene);
 
     this.unitPieces.set(unit, unitPiece);
@@ -68,11 +68,29 @@ class UnitController extends GameObject {
   selectUnit(unit) {
     this.uiEvents.emit('select_unit', unit);
 
-    if (unit)
+    // unselect previous unit
+    if (this.selectedPiece) {
+      this.selectedPiece.hideMoveRange();
+      this.scene.draw();
+    }
+    
+    // set new unit
+    if (unit) {
       this.selectedPiece = this.getUnitPiece(unit);
+      this.selectedPiece.showMoveRange();
+      this.scene.draw();
+    }
+    else {
+      delete this.selectedPiece;
+    }
   }
 
   setState(nextState: ControllerState) {
+    // console.log(
+    //   this.currentState?.constructor.name + " => " +
+    //   nextState.constructor.name
+    // );
+
     const prevState = this.currentState;
     if (this.currentState) this.currentState.onExit(nextState);
 

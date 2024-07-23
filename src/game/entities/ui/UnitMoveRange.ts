@@ -13,7 +13,7 @@ class UnitRange extends GameObject {
     this.coords = game.coords;
     this.config = game.config;
     this.unit = unit;
-
+    
     this.show();
   }
 

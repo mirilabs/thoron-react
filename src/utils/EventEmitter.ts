@@ -40,6 +40,20 @@ class EventEmitter<Signatures extends IEventSignatures> {
     }
   }
 
+  once<K extends keyof Signatures>(
+    event: K,
+    callback: ExtractFunctionType<K, Signatures>
+  ) {
+    type F = typeof callback;
+    const cb = (...args: Parameters<F>) => {
+      callback(...args);
+      this.off(event, cb as F);
+    }
+    this.on(event, cb as F);
+
+    return cb;
+  }
+
   emit<K extends keyof Signatures>(
     event: K,
     ...params: Parameters<ExtractFunctionType<K, Signatures>>
