@@ -1,17 +1,17 @@
 import ControllerState from "./ControllerState";
-import { CursorEvent, Vector2 } from "engine/components";
-import UnitRange from "../ui/UnitMoveRange";
+import { CursorEvent, Vector2 as IVector2 } from "engine/components";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ActionSelectingState from "./ActionSelectingState";
+import Vector2 from "engine/utils/Vector2";
+import IdleState from "./IdleState";
 
 class MovingState extends ControllerState {
-  moveRangeEnt: UnitRange;
   pathEnt: UnitPath;
   
   selectedPiece: UnitPiece;
   selectedUnit: any;
-  entityPos: Vector2;
+  entityPos: IVector2;
 
   lastX: number;
   lastY: number;
@@ -27,29 +27,24 @@ class MovingState extends ControllerState {
     this.entityPos = this.selectedPiece.entity.getComponent('position');
 
     if (prevState instanceof ActionSelectingState) {
-      // if moveRange and path entities existed on previous state,
-      // get their references
-      this.moveRangeEnt = prevState.moveRangeEnt;
+      // if path entity existed on previous state,
+      // get its reference
       this.pathEnt = prevState.pathEnt;
     }
     else {
       // construct new moveRange and path entities
-      this.moveRangeEnt = new UnitRange(game, selectedPiece.unit);
-      this.moveRangeEnt.addToScene(scene);
+      this.selectedPiece.showMoveRange();
       
       this.pathEnt = new UnitPath(game, selectedPiece.unit);
       this.pathEnt.addToScene(scene);
       scene.draw();
     }
-    
-    this.controller.uiEvents.emit("open_action_menu");
   }
 
   onExit(nextState: ControllerState): void {
     if (!(nextState instanceof ActionSelectingState)) {
-      this.moveRangeEnt.destroy();
+      this.selectedPiece.hideMoveRange();
       this.pathEnt.destroy();
-      this.controller.uiEvents.emit("open_action_menu");
     }
   }
 
@@ -79,16 +74,13 @@ class MovingState extends ControllerState {
     );
   }
 
-  onTileChange(nextCoords: Vector2) {
+  onTileChange(nextCoords: IVector2) {
     // update pathEnt with new target position
     let range = this.selectedUnit.getMoveRange();
     if (range.includes(nextCoords)) {
       this.pathEnt.updateTargetPos(nextCoords);
+      this.controller.uiEvents.emit("select_position", nextCoords);
     }
-
-    // update ui with new targetPos
-    let targetPos = this.pathEnt.getLastNode();
-    this.controller.uiEvents.emit("select_position", targetPos);
   }
 
   onMouseUp(event: CursorEvent) {

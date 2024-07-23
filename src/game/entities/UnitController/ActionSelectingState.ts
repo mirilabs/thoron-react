@@ -1,42 +1,46 @@
 import { CursorEvent, Vector2 } from "engine/components";
-import UnitRange from "../ui/UnitMoveRange";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ControllerState from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";
 import ActingState from "./ActingState";
+import PanningState from "./PanningState";
 
 class ActionSelectingState extends ControllerState {
-  moveRangeEnt: UnitRange;
   pathEnt: UnitPath;
   unitEnt: UnitPiece;
 
-  constructor() {
-    super();
-    this.onActionSelected = this.onActionSelected.bind(this);
-  }
-
   onEnter(prevState: MovingState) {
-    this.moveRangeEnt = prevState.moveRangeEnt;
-    this.pathEnt = prevState.pathEnt;
-    this.unitEnt = this.controller.selectedPiece;
+    if (prevState instanceof MovingState) {
+      this.pathEnt = prevState.pathEnt;
+    }
 
+    this.unitEnt = this.controller.selectedPiece;
+    this.controller.uiEvents.emit("open_action_menu");
+
+    this.onActionSelected = this.onActionSelected.bind(this);
     this.controller.uiEvents.on("select_action", this.onActionSelected);
   }
 
-  onExit(nextState: ActingState) {
-    if (!(nextState instanceof MovingState)) {
-      this.moveRangeEnt.destroy();
-      this.pathEnt.destroy();
+  onExit(nextState: ControllerState) {
+    this.controller.uiEvents.off("select_action", this.onActionSelected);
+
+    if (nextState instanceof ActingState || nextState instanceof IdleState) {
+      this.unitEnt.hideMoveRange();
       this.controller.uiEvents.emit("close_action_menu");
+    }
+
+    if (
+      !(nextState instanceof MovingState) &&
+      !(nextState instanceof PanningState)
+    ) {
+      this.pathEnt.destroy();
     }
     
     if (nextState instanceof IdleState) {
       this.unitEnt.resetPosition();
     }
-
-    this.controller.uiEvents.off("select_action", this.onActionSelected);
   }
 
   onMouseDown(event: CursorEvent): void {
@@ -49,7 +53,7 @@ class ActionSelectingState extends ControllerState {
       this.controller.currentState.onMouseDown(event);
     }
     else {
-      this.setState(new IdleState());
+      this.setState(new PanningState());
     }
   }
 
