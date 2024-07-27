@@ -1,6 +1,7 @@
 import { useUIEmitter } from "components/utils/useUIAction";
 import "./Header.scss";
 import React from "react";
+import ItemShow from "./ItemShow";
 
 function UnitPanelHeader({ unit }) {
   const toggleDetail = useUIEmitter('toggle_character_detail_display');
@@ -18,7 +19,7 @@ function UnitPanelHeader({ unit }) {
           <h1 className="name">{name}</h1>
         </span>
         <span className="weapon-selector">
-          <h2 className="equipped">{equipped.name ?? '???'}</h2>
+          <ItemShow item={equipped} />
         </span>
       </div>
     );

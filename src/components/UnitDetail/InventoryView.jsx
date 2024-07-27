@@ -12,7 +12,6 @@ function ItemSelector({ index, item }) {
 }
 
 function InventoryView({ items }) {
-
   const rows = items.map((item, i) => (
     <ItemSelector index={i} item={item} key={i} />
   ));
