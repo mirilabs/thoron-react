@@ -1,18 +1,15 @@
-@import "./UnitPanel.scss";
+@use "./UnitPanel.scss";
 
 .unit-panel__body {
-  @extend .unit-data-panel;
-  pointer-events: all;
-
+  @include UnitPanel.colors;
   position: relative;
   top: 0;
   width: 100%;
   min-width: 320px;
-  height: $body-height;
+  height: UnitPanel.$body-height;
   overflow: scroll;
-  z-index: 10;
+  margin-bottom: UnitPanel.$gap;
 
-  overflow: scroll;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

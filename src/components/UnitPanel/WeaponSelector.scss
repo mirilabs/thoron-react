@@ -1,0 +1,28 @@
+@use "sass:color";
+@use "./UnitPanel.scss";
+
+.weapon-selector {
+  position: relative;
+  max-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  float: right;
+
+  .name {
+    opacity: 1;
+    margin: auto;
+    margin-right: 16px;
+    font-size: medium;
+  }
+
+  & .item-show {
+    @include UnitPanel.colors;
+    height: UnitPanel.$header-height;
+    margin-bottom: UnitPanel.$gap;
+    min-width: 120px;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+}

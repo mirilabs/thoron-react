@@ -1,0 +1,31 @@
+@use "sass:color";
+@use "./UnitPanel.scss";
+
+.unit-detail-toggle {
+  position: relative;
+  max-width: fit-content;
+  height: UnitPanel.$header-height;
+  display: flex;
+  flex-direction: row;
+  float: left;
+
+  @include UnitPanel.colors;
+
+  .sprite {
+    opacity: 1;
+    max-width: 64px;
+    max-height: 100%;
+    margin: 0 8px;
+  }
+
+  .name {
+    opacity: 1;
+    margin: auto;
+    margin-right: 16px;
+    font-size: medium;
+  }
+  
+  &:hover {
+    background-color: rgb(from var(--bg-color-2) r g b / 0.5);
+  }
+}

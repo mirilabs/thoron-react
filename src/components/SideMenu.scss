@@ -1,4 +1,4 @@
-@import "./UnitPanel/UnitPanel.scss";
+@use "./UnitPanel/UnitPanel.scss";
 
 .side-menu-button {
   background-color: var(--bg-color-2);
@@ -13,7 +13,7 @@
 .side-menu-toggle {
   position: relative;
   left: 0;
-  top: $unit-panel-height + 6px;
+  top: UnitPanel.$unit-panel-height + 6px;
   z-index: 4;
 
   @extend .side-menu-button;
