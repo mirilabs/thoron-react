@@ -2,10 +2,10 @@ import { useUIEmitter } from "components/utils/useUIAction";
 import "./InventoryView.scss";
 
 function ItemSelector({ index, item }) {
-  const setEquipped = useUIEmitter('set_equipped_index', index);
+  const setEquipped = useUIEmitter('set_equipped_index');
   
   return (
-    <div className="item" onClick={setEquipped}>
+    <div className="item" onClick={() => setEquipped(index)}>
       {item.name ?? '???'}
     </div>
   );
