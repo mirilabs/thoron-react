@@ -25,18 +25,17 @@ function useUIAction<K extends UIAction>(
 }
 
 function useUIEmitter<K extends UIAction>(
-  action: UIAction,
-  ...args: Parameters<UIEventSignatures[K]>
-): () => void {
+  action: UIAction
+): (...args: Parameters<UIEventSignatures[K]>) => void {
   const { uiEvents } = useContext(ThoronContext);
 
   if (!uiEvents) {
-    return () => {
+    return (..._args) => {
       throw new Error("uiEventEmitter does not exist");
     }
   }
   else {
-    return () => {
+    return (...args) => {
       uiEvents.emit(action, ...args);
     }
   }
