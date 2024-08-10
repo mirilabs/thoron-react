@@ -5,10 +5,17 @@ function useSelectedUnit() {
   const [unit, setUnit] = useState(null);
 
   useUIAction('select_unit', (unit) => {
-    if (unit !== null) setUnit(unit);
+    if (unit === null) return;
+
+    let nextState = {
+      ...unit.serialize(),
+      combatStats: unit.getCombatStats()
+    }
+    setUnit(nextState);
   })
 
-  return unit;
+  if (unit === null) return null;
+  else return unit;
 }
 
 export default useSelectedUnit;

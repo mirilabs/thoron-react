@@ -1,9 +1,7 @@
 import React, { useRef, useState } from "react";
-import useUIAction, { useUIEmitter } from "./utils/useUIAction";
+import useUIAction, { useUIEmitter } from "../utils/useUIAction";
 import { CSSTransition } from "react-transition-group";
 import "./ActionMenu.scss";
-import useSelectedUnit from "./utils/useSelectedUnit";
-import useSelectedPosition from "./utils/useSelectedPosition";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -13,10 +11,10 @@ function ActionButton({ unitAction, isSelectable=true }: {
   unitAction: string,
   isSelectable?: boolean
 }) {
-  const emitAction = useUIEmitter("select_action", unitAction);
+  const emitAction = useUIEmitter("select_action");
 
   const handleClick = () => {
-    if (isSelectable) emitAction();
+    if (isSelectable) emitAction(unitAction);
   }
 
   return (
@@ -28,12 +26,12 @@ function ActionButton({ unitAction, isSelectable=true }: {
 
 function ActionMenu({ actions, possibleActions }: {
   actions: string[],
-  possibleActions: string[]
+  possibleActions: { [K: symbol]: any }
 }) {
   const buttons = actions.map((action) => {
-    if (possibleActions[action]) return (
-      <ActionButton unitAction={action} key={action} />
-    )
+    if (possibleActions[action] !== undefined) {
+      return <ActionButton unitAction={action} key={action} />
+    }
     else return null;
   });
 
@@ -58,22 +56,23 @@ const rightActions = [
 
 function ActionMenuToggle() {
   const [show, setShow] = useState(false);
+  const [possibleActions, setPossibleActions] = useState({});
   const nodeRef = useRef();
 
-  let cancelAction = useUIEmitter("select_action", "cancel");
+  let selectAction = useUIEmitter("select_action");
+  
+  useUIAction("open_action_menu", (actions) => {
+    setPossibleActions(actions);
+    setShow(true)
+  });
+
+  useUIAction("close_action_menu", () => setShow(false));
 
   const handleClose = () => {
     setShow(false);
-    cancelAction();
+    selectAction("cancel");
   }
-  
-  useUIAction("open_action_menu", () => setShow(true));
-  useUIAction("close_action_menu", () => setShow(false));
   useUIAction("cancel", handleClose);
-
-  const unit = useSelectedUnit();
-  const pos = useSelectedPosition();
-  const possibleActions = unit ? unit.getPossibleActions(pos) : {};
   
   let transitionProps = {
     in: show,

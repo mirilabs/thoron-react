@@ -1,5 +1,9 @@
 import EventEmitter, { IEventSignatures } from "./EventEmitter";
 
+interface UnitActions {
+  [ActionType: symbol]: string | Object[];
+}
+
 interface UIEventSignatures extends IEventSignatures {
   // gameplay
   select_position: (pos: { x: number, y: number }) => void;
@@ -15,7 +19,7 @@ interface UIEventSignatures extends IEventSignatures {
   down: () => void;
   
   // menu toggling
-  open_action_menu: () => void;
+  open_action_menu: (actions: UnitActions) => void;
   close_action_menu: () => void;
   select_action: (action: string) => void;
   toggle_character_detail_display: () => void;
@@ -30,7 +34,15 @@ class UIEventEmitter extends EventEmitter<UIEventSignatures> {
   constructor() {
     super();
 
-    this.on('select_unit', (unit) => { this.selectedUnit = unit });
+    this.on('select_unit', (unit) => {
+      this.selectedUnit = unit
+    });
+    
+    this.on("set_equipped_index", (index) => {
+      // todo: check if unit can currently swap equipment
+      this.selectedUnit.equip(index);
+      this.emit("select_unit", this.selectedUnit);
+    });
   }
 }
 
