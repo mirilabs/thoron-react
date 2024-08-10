@@ -33,9 +33,9 @@ function UnitDetail() {
           <h1 className="name">{selectedUnit.record.name}</h1>
           
         </div>
-        <StatView stats={selectedUnit.baseStats}
+        <StatView stats={selectedUnit.record.stats}
             growths={selectedUnit.record.growths} />
-        <InventoryView items={selectedUnit.items} />
+        <InventoryView items={selectedUnit.record.items} />
       </div>
     </CSSTransition>
   )

@@ -14,12 +14,12 @@ function Renderer({ unit, ...props }) {
 
   const level = unit.record.level ?? '?',
     exp = unit.record.exp ?? 0,
-    hp = unit.hp ?? '?',
+    hp = unit.state.hp ?? '?',
     maxHp = unit.record.stats.mhp ?? '?',
-    movement = unit.movement ?? 0,
-    stats = unit.getCombatStats(),
+    movement = unit.record.movement ?? 0,
+    stats = unit.combatStats,
     atk = stats.might + (stats.isMagic ? stats.mag : stats.str);
-
+  
   return (
     <div className="unit-panel__body" {...props}>
       <span className="body-left">

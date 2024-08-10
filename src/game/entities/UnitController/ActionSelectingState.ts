@@ -17,7 +17,10 @@ class ActionSelectingState extends ControllerState {
     }
 
     this.unitEnt = this.controller.selectedPiece;
-    this.controller.uiEvents.emit("open_action_menu");
+
+    let unit = this.unitEnt.unit;
+    let actions = unit.getPossibleActions(this.getTargetPos());
+    this.controller.uiEvents.emit("open_action_menu", actions);
 
     this.onActionSelected = this.onActionSelected.bind(this);
     this.controller.uiEvents.on("select_action", this.onActionSelected);
