@@ -38,7 +38,12 @@ class ActionSelectingState extends ControllerState {
       !(nextState instanceof MovingState) &&
       !(nextState instanceof PanningState)
     ) {
+      // destroy unit moving ui elements
       this.pathEnt.destroy();
+      
+      for (const unitPiece of this.controller.unitPieces.values()) {
+        unitPiece.hideTargetIndicator();
+      }
     }
     
     if (nextState instanceof IdleState) {

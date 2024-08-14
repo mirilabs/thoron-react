@@ -6,16 +6,20 @@ type EntityId = Entity['id'];
 class Entity {
   static nextId: number = 0;
   id: number; // unique ID
-  scene: Scene;
+  private _scene: WeakRef<Scene>;
   signature: Set<ComponentId> = new Set();
   
   constructor(scene: Scene) {
     this.id = Entity.generateId();
-    this.scene = scene;
+    this._scene = new WeakRef(scene);
   }
 
   static generateId() {
     return this.nextId++;
+  }
+
+  get scene() {
+    return this._scene.deref();
   }
 
   getComponent<T extends Component>(componentId: ComponentId): T {
