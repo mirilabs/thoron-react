@@ -3,12 +3,9 @@ import { CursorEvent, Vector2 as IVector2 } from "engine/components";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ActionSelectingState from "./ActionSelectingState";
-import Vector2 from "engine/utils/Vector2";
-import IdleState from "./IdleState";
 
 class MovingState extends ControllerState {
   pathEnt: UnitPath;
-  
   selectedPiece: UnitPiece;
   selectedUnit: any;
   entityPos: IVector2;
@@ -45,6 +42,11 @@ class MovingState extends ControllerState {
     if (!(nextState instanceof ActionSelectingState)) {
       this.selectedPiece.hideMoveRange();
       this.pathEnt.destroy();
+
+      // hide all target indicators
+      for (const unitPiece of this.controller.unitPieces.values()) {
+        unitPiece.hideTargetIndicator();
+      }
     }
   }
 
@@ -76,10 +78,27 @@ class MovingState extends ControllerState {
 
   onTileChange(nextCoords: IVector2) {
     // update pathEnt with new target position
-    let range = this.selectedUnit.getMoveRange();
-    if (range.includes(nextCoords)) {
+    let moveRange = this.selectedUnit.getMoveRange();
+    if (moveRange.includes(nextCoords)) {
       this.pathEnt.updateTargetPos(nextCoords);
       this.controller.uiEvents.emit("select_position", nextCoords);
+    }
+
+    // update target indicators
+    let pos = this.pathEnt.getLastNode();
+    let maxAttackRange = this.selectedUnit.getMaxAttackRange();
+
+    for (const unitPiece of this.controller.unitPieces.values()) {
+      if (unitPiece === this.selectedPiece) continue;
+      
+      let distance = unitPiece.unit.getDistance(pos);
+
+      if (distance <= maxAttackRange) {
+        unitPiece.showTargetIndicator();
+      }
+      else {
+        unitPiece.hideTargetIndicator();
+      }
     }
   }
 

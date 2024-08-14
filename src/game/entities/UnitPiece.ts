@@ -1,8 +1,9 @@
 import GameObject from '../../engine/GameObject';
 import Rect from '../../engine/utils/Rect';
 import CoordinateConverter from 'game/utils/CoordinateConverter';
-import UnitRange from './ui/UnitMoveRange';
 import Game from 'game/Game';
+import UnitRange from './ui/UnitMoveRange';
+import TargetIndicator from './ui/TargetIndicator';
 
 class UnitPiece extends GameObject {
   rect: Rect;
@@ -10,6 +11,7 @@ class UnitPiece extends GameObject {
   _game: WeakRef<Game>;
 
   moveRangeEnt: UnitRange;
+  targetIndicatorEnt: TargetIndicator;
 
   constructor(unit, game: Game) {
     super();
@@ -48,16 +50,26 @@ class UnitPiece extends GameObject {
 
   showMoveRange() {
     if (this.moveRangeEnt !== undefined) return;
-    
     this.moveRangeEnt = new UnitRange(this.game, this.unit);
     this.moveRangeEnt.addToScene(this.game.scene);
   }
 
   hideMoveRange() {
     if (this.moveRangeEnt === undefined) return;
-    
     this.moveRangeEnt.destroy();
     delete this.moveRangeEnt;
+  }
+
+  showTargetIndicator() {
+    if (this.targetIndicatorEnt !== undefined) return;
+    this.targetIndicatorEnt = new TargetIndicator(this);
+    this.targetIndicatorEnt.addToScene(this.game.scene);
+  }
+
+  hideTargetIndicator() {
+    if (this.targetIndicatorEnt === undefined) return;
+    this.targetIndicatorEnt.destroy();
+    delete this.targetIndicatorEnt;
   }
 }
 

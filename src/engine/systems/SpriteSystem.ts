@@ -41,18 +41,20 @@ class SpriteSystem extends DrawSystem {
       // load sprite
       let sprite: Sprite = component as Sprite;
       let rect: Rectangle = entity.getComponent('rectangle');
-
-      SpriteSystem.loadSprite(
-        sprite.url, rect.width, rect.height
-      )
-        .then((image) => { sprite.image = image; })
-        .then(() => {
-          console.log("Loaded image: " + sprite.url);
-
-          // redraw scene with newly loaded image
-          this.scene.draw();
-        })
-        .catch((e) => { throw e; })
+      
+      if (sprite.url) {
+        SpriteSystem.loadSprite(
+          sprite.url, rect.width, rect.height
+        )
+          .then((image) => { sprite.image = image; })
+          .then(() => {
+            console.log("Loaded image: " + sprite.url);
+  
+            // redraw scene with newly loaded image
+            this.scene.draw();
+          })
+          .catch((e) => { throw e; })
+      }
     }
   }
 
