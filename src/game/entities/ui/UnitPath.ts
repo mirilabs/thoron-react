@@ -15,6 +15,7 @@ class UnitPath extends GameObject {
 
   origin: IVector2;
   path: IVector2[] = [];
+  hasLeftOrigin: boolean = false;
   
   constructor(game: Game, unit: any) {
     super();
@@ -82,6 +83,7 @@ class UnitPath extends GameObject {
       );
     }
     
+    this.hasLeftOrigin = true;
     this.game.scene.draw();
   }
 
