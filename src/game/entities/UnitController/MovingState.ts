@@ -3,6 +3,7 @@ import { CursorEvent, Vector2 as IVector2 } from "engine/components";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ActionSelectingState from "./ActionSelectingState";
+import IdleState from "./IdleState";
 
 class MovingState extends ControllerState {
   pathEnt: UnitPath;
@@ -12,6 +13,7 @@ class MovingState extends ControllerState {
 
   lastX: number;
   lastY: number;
+  dragging: boolean = false;
 
   onEnter(prevState: ControllerState) {
     const controller = this.controller;
@@ -57,10 +59,28 @@ class MovingState extends ControllerState {
   }
 
   onMouseDown(event: CursorEvent): void {
-    this.onMouseMove(event);
+    let tileCoords = this.getTileCoords(event);
+    let moveRange = this.selectedUnit.getMoveRange();
+
+    if (moveRange.includes(tileCoords)) {
+      // start moving unit if clicked within moveRange
+      this.onMouseDrag(event);
+      this.dragging = true;
+    }
+    else {
+      // else return to idle
+      this.setState(new IdleState());
+      this.controller.currentState.onMouseDown(event);
+    }
   }
 
   onMouseMove(event: CursorEvent): void {
+    if (this.dragging) {
+      this.onMouseDrag(event);
+    }
+  }
+
+  onMouseDrag(event: CursorEvent): void {
     // execute onTileChange if hovering over a new tile
     let tileCoords = this.getTileCoords(event);
     if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
@@ -103,10 +123,22 @@ class MovingState extends ControllerState {
   }
 
   onMouseUp(event: CursorEvent) {
-    let targetPos = this.pathEnt.getLastNode();
-    let pixelCoords = this.controller.coords.toPixels(targetPos.x, targetPos.y);
-    this.moveEntity(pixelCoords.x, pixelCoords.y);
-    this.setState(new ActionSelectingState());
+    if (this.pathEnt.hasLeftOrigin) {
+      let targetPos = this.pathEnt.getLastNode();
+      let pixelCoords = this.controller.coords.toPixels(
+        targetPos.x,
+        targetPos.y
+      );
+
+      this.moveEntity(pixelCoords.x, pixelCoords.y);
+      this.setState(new ActionSelectingState());
+    }
+    else {
+      this.selectedPiece.resetPosition();
+      this.controller.scene.draw();
+    }
+
+    this.dragging = false;
   }
 }
 

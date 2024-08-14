@@ -1,7 +1,6 @@
 import GameObject from "engine/GameObject";
 import UnitPiece from "../UnitPiece";
 import CombatTargetIcon from "icons/target_combat.svg";
-import Scene from "engine/Scene";
 
 const ICON_SCALE = 0.7;
 const OFFSET_SCALE = {
