@@ -16,6 +16,7 @@ class ComponentMap {
     velocity: new Map(),
     rectangle: new Map(),
     sprite: new Map(),
+    update: new Map(),
     draw: new Map(),
     cursorEvents: new Map(),
   };

@@ -44,6 +44,7 @@ type ComponentSchema = {
   velocity: Vector2,
   rectangle: Rectangle,
   sprite: Sprite,
+  update: UpdateFn,
   draw: DrawFn,
   cursorEvents: Partial<CursorEventHandlers>
 }
