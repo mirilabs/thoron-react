@@ -1,30 +1,43 @@
 import GameObject from "engine/GameObject";
 import UnitPiece from "../UnitPiece";
 import CombatTargetIcon from "icons/target_combat.svg";
+import Vector2 from "engine/utils/Vector2";
+import MotionPath from "engine/utils/MotionPath";
 
 const ICON_SCALE = 0.7;
-const OFFSET_SCALE = {
+
+const TOP_OFFSET = {
   x: 0.2,
-  y: -0.2
+  y: -0.4
+}
+const BOTTOM_OFFSET = {
+  x: 0.2,
+  y: -0.3
 }
 
 class TargetIndicator extends GameObject {
-  offset: { x: number, y: number }
+  topPosition: Vector2;
+  bottomPosition: Vector2;
 
   constructor(unitPiece: UnitPiece) {
     super();
 
     const { tileWidth, tileHeight } = unitPiece.game.coords;
+    const position = unitPiece.components.position;
 
-    const offset = {
-      x: tileWidth * OFFSET_SCALE.x,
-      y: tileHeight * OFFSET_SCALE.y
-    }
+    this.topPosition = Vector2.sum(position, {
+      x: TOP_OFFSET.x * tileWidth,
+      y: TOP_OFFSET.y * tileHeight
+    });
+    this.bottomPosition = Vector2.sum(position, {
+      x: BOTTOM_OFFSET.x * tileWidth,
+      y: BOTTOM_OFFSET.y * tileHeight
+    });
 
     this.components = {
       position: {
-        x: unitPiece.components.position.x + offset.x,
-        y: unitPiece.components.position.y + offset.y
+        x: this.bottomPosition.x,
+        y: this.bottomPosition.y
       },
       rectangle: {
         width: tileWidth * ICON_SCALE,
@@ -34,6 +47,14 @@ class TargetIndicator extends GameObject {
         url: CombatTargetIcon
       }
     }
+  }
+
+  onInit(): void {
+    let path = new MotionPath(this.entity);
+    path.addNode(this.topPosition, 1000);
+    path.addNode(this.bottomPosition, 1000);
+    path.repeat = true;
+    path.start();
   }
 }
 
