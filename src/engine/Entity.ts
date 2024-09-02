@@ -6,8 +6,12 @@ type EntityId = Entity['id'];
 class Entity {
   static nextId: number = 0;
   id: number; // unique ID
+
   private _scene: WeakRef<Scene>;
   signature: Set<ComponentId> = new Set();
+
+  private _parent: WeakRef<Entity>;
+  children: Set<Entity> = new Set();
   
   constructor(scene: Scene) {
     this.id = Entity.generateId();
@@ -20,6 +24,10 @@ class Entity {
 
   get scene() {
     return this._scene.deref();
+  }
+
+  get parent() {
+    return this._parent ? this._parent.deref() : undefined;
   }
 
   getComponent<T extends Component>(componentId: ComponentId): T {
@@ -46,7 +54,27 @@ class Entity {
     });
   }
 
+  addChild() {
+    let child = this.scene.createEntity();
+    this.children.add(child);
+    return child;
+  }
+
+  removeChild(child: Entity) {
+    this.children.delete(child);
+  }
+
   destroy() {
+    this.children.forEach((child) => {
+      // remove parent reference before destroying to prevent infinite loop
+      delete child._parent;
+      child.destroy();
+    });
+
+    if (this.parent) {
+      this.parent.removeChild(this);
+    }
+    
     this.scene.systems.forEach(system => {
       system.removeEntity(this);
     });
