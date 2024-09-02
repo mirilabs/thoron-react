@@ -1,4 +1,4 @@
-import { Component, ComponentId } from "../components";
+import { ComponentId } from "../components";
 import Entity from "../Entity";
 import System from "./System";
 
@@ -16,21 +16,17 @@ class MotionSystem extends System {
     this.update = this.update.bind(this);
   }
 
-  onComponentAdded(
-    entity: Entity,
-    componentId: ComponentId,
-    component: Component
-  ): void {
-    super.onComponentAdded(entity, componentId, component);
+  addEntity(entity: Entity): void {
+    super.addEntity(entity);
 
     if (this.entities.size > 0) {
       this.setActive(true);
     }
   }
 
-  onComponentRemoved(entity: Entity, componentId: ComponentId): void {
-    super.onComponentRemoved(entity, componentId);
-
+  removeEntity(entity: Entity): void {
+    super.removeEntity(entity);
+    
     if (this.entities.size === 0) {
       this.setActive(false);
     }
@@ -40,10 +36,12 @@ class MotionSystem extends System {
     const dT = timeStamp - (this.prevTimeStamp ?? timeStamp);
     this.prevTimeStamp = timeStamp;
     
-    this.components.forEach(({ position, velocity }) => {
+    this.componentSets.forEach(({ position, velocity }) => {
       position.x += velocity.x * dT;
       position.y += velocity.y * dT;
     });
+
+    this.scene.draw();
 
     if (this.isActive)
       window.requestAnimationFrame(this.update);

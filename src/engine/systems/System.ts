@@ -17,7 +17,7 @@ abstract class System {
   entities: Set<EntityId> = new Set();
 
   // Components that match signature and belong to tracked entities
-  components: ComponentSet[] = [];
+  componentSets: ComponentSet[] = [];
 
   mount(scene: Scene) {
     this.scene = scene;
@@ -82,7 +82,7 @@ abstract class System {
       let component = entity.getComponent(componentId as ComponentId);
       componentSet[componentId] = component;
     }
-    this.components.push(componentSet);
+    this.componentSets.push(componentSet);
   }
 
   /**
@@ -109,7 +109,7 @@ abstract class System {
     if (index < 0) return;
 
     this.entities.delete(entity.id);
-    this.components.splice(index, 1);
+    this.componentSets.splice(index, 1);
   }
 
   /**
@@ -120,7 +120,7 @@ abstract class System {
    */
   getComponents(entity: Entity): ComponentSet {
     let i = this.getEntityIndex(entity.id);
-    return this.components[i];
+    return this.componentSets[i];
   }
 }
 

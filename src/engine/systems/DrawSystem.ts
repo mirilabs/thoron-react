@@ -28,7 +28,7 @@ class DrawSystem extends System {
     this.clearCanvas();
     this.scene.camera.transformContext(this.ctx);
 
-    this.components.forEach(({ draw }) => {
+    this.componentSets.forEach(({ draw }) => {
       draw(this.ctx);
     });
   }

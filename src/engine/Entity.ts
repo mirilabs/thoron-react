@@ -41,8 +41,8 @@ class Entity {
 
     this.scene.componentMap.removeComponent(this.id, cId);
 
-    this.scene.systems.forEach(sys => {
-      sys.onComponentRemoved(this, cId);
+    this.scene.systems.forEach(system => {
+      system.onComponentRemoved(this, cId);
     });
   }
 
