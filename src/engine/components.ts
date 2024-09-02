@@ -18,6 +18,8 @@ interface Sprite {
   preprocess?: (ctx: CanvasRenderingContext2D) => void;
 }
 
+type UpdateFn = (deltaTime: number) => void;
+
 type DrawFn = (ctx: CanvasRenderingContext2D, entity?: Entity) => void;
 
 interface CursorEvent extends Vector2 {
@@ -54,6 +56,7 @@ export {
   Vector2,
   Rectangle,
   Sprite,
+  UpdateFn,
   DrawFn,
   CursorEvent,
   CursorEventHandler,

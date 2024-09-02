@@ -61,7 +61,7 @@ class CursorEventSystem extends System {
       mousePos = this.scene.camera.reverseTransformVector(mousePos);
 
       // generate event and pass it to components
-      for (const components of this.components) {
+      for (const components of this.componentSets) {
         let {
           cursorEvents
         } = components as ComponentSchema;
