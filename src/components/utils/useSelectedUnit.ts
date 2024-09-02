@@ -5,8 +5,6 @@ function useSelectedUnit() {
   const [unit, setUnit] = useState(null);
 
   useUIAction('select_unit', (unit) => {
-    if (unit === null) return;
-
     let nextState = {
       ...unit.serialize(),
       combatStats: unit.getCombatStats()

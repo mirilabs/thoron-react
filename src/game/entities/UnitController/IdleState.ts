@@ -23,7 +23,6 @@ class IdleState extends ControllerState {
       this.controller.currentState.onMouseDown(event);
     }
     else {
-      this.controller.selectUnit(null);
       this.setState(new PanningState());
     }
   }
