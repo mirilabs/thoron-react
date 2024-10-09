@@ -4,7 +4,7 @@ import {
   useEffect
 } from "react";
 import ThoronContext from "components/ThoronContext";
-import { UIAction } from "utils/UIEventEmitter";
+import { UIAction } from "shared/UIEventEmitter";
 
 type KeybindSchema = { [K: string]: UIAction };
 

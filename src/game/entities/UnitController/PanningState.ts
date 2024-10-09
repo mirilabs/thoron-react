@@ -1,7 +1,9 @@
 import { CursorEvent } from "engine/components";
-import ControllerState from "./ControllerState";
+import ControllerState, { ControllerPhase } from "./ControllerState";
 
 class PanningState extends ControllerState {
+  id = ControllerPhase.PANNING;
+
   prevState: ControllerState
 
   onEnter(prevState: ControllerState): void {

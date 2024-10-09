@@ -1,7 +1,17 @@
 import UnitController from ".";
 import { CursorEvent, Vector2 } from "engine/components";
 
+export enum ControllerPhase {
+  IDLE,
+  MOVING,
+  PANNING,
+  ACTION_SELECT,
+  TARGET_SELECT
+}
+
 abstract class ControllerState {
+  id: ControllerPhase;
+
   private _controller: WeakRef<UnitController>;
   get controller(): UnitController {
     return this._controller.deref();

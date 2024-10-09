@@ -4,7 +4,7 @@ import React from "react";
 
 function UnitDetailToggle({ unit }) {
   const toggleDetail = useUIEmitter('toggle_character_detail_display');
-    
+  
   if (!unit) return null;
   else {
     const portrait = unit.record.sprite,

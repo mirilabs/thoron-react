@@ -1,10 +1,14 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Game from '../game/Game';
-import UIEventEmitter from '../utils/UIEventEmitter';
+import UIEventEmitter from '../shared/UIEventEmitter';
 
-const ThoronContext: React.Context<{ uiEvents: UIEventEmitter }> = (
-  createContext({ uiEvents: undefined })
-);
+const ThoronContext: React.Context<{
+  chapter: any,
+  uiEvents: UIEventEmitter
+}> = createContext({
+  chapter: null,
+  uiEvents: null
+});
 
 function ThoronProvider({ chapter, children }) {
   let [canvas, setCanvas] = useState(null);

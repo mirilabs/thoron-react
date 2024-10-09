@@ -1,11 +1,14 @@
-import ControllerState from "./ControllerState";
+import ControllerState, { ControllerPhase } from "./ControllerState";
 import { CursorEvent, Vector2 as IVector2 } from "engine/components";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
-import ActionSelectingState from "./ActionSelectingState";
+import ActionSelectState from "./ActionSelectState";
 import IdleState from "./IdleState";
+import controllerStore, { destinationSelected, positionSelected } from "shared/store";
 
 class MovingState extends ControllerState {
+  id = ControllerPhase.MOVING;
+  
   pathEnt: UnitPath;
   selectedPiece: UnitPiece;
   selectedUnit: any;
@@ -25,7 +28,7 @@ class MovingState extends ControllerState {
 
     this.entityPos = this.selectedPiece.entity.getComponent('position');
 
-    if (prevState instanceof ActionSelectingState) {
+    if (prevState instanceof ActionSelectState) {
       // if path entity existed on previous state,
       // get its reference
       this.pathEnt = prevState.pathEnt;
@@ -41,7 +44,7 @@ class MovingState extends ControllerState {
   }
 
   onExit(nextState: ControllerState): void {
-    if (!(nextState instanceof ActionSelectingState)) {
+    if (!(nextState instanceof ActionSelectState)) {
       this.selectedPiece.hideMoveRange();
       this.pathEnt.destroy();
 
@@ -83,6 +86,8 @@ class MovingState extends ControllerState {
   onMouseDrag(event: CursorEvent): void {
     // execute onTileChange if hovering over a new tile
     let tileCoords = this.getTileCoords(event);
+
+    // if new tile is within move range, call onTileChange
     if (tileCoords.x !== this.lastX || tileCoords.y !== this.lastY) {
       this.onTileChange(tileCoords);
       this.lastX = tileCoords.x;
@@ -101,8 +106,11 @@ class MovingState extends ControllerState {
     let moveRange = this.selectedUnit.getMoveRange();
     if (moveRange.includes(nextCoords)) {
       this.pathEnt.updateTargetPos(nextCoords);
-      this.controller.uiEvents.emit("select_position", nextCoords);
+      controllerStore.dispatch(positionSelected(nextCoords));
     }
+
+    // update destination in store
+    controllerStore.dispatch(destinationSelected(nextCoords));
 
     // update target indicators
     let pos = this.pathEnt.getLastNode();
@@ -131,7 +139,7 @@ class MovingState extends ControllerState {
       );
 
       this.moveEntity(pixelCoords.x, pixelCoords.y);
-      this.setState(new ActionSelectingState());
+      this.setState(new ActionSelectState());
     }
     else {
       this.selectedPiece.resetPosition();

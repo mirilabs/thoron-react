@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
-import useUIAction, { useUIEmitter } from "../utils/useUIAction";
+import React, { useRef } from "react";
+import { useUIEmitter } from "../../utils/useUIAction";
 import { CSSTransition } from "react-transition-group";
 import "./ActionMenu.scss";
+import { useSelectedUnit } from "components/utils/useUnit";
+import { useControllerSelector } from "components/utils/reduxHooks";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -54,28 +56,21 @@ const rightActions = [
   "rally"
 ]
 
-function ActionMenuToggle() {
-  const [show, setShow] = useState(false);
-  const [possibleActions, setPossibleActions] = useState({});
+function ActionMenuToggle(props: {
+  display: boolean
+}) {
   const nodeRef = useRef();
 
-  let selectAction = useUIEmitter("select_action");
-  
-  useUIAction("open_action_menu", (actions) => {
-    setPossibleActions(actions);
-    setShow(true)
-  });
+  let unit = useSelectedUnit();
+  let destination = useControllerSelector(state => state.destination);
+  let possibleActions = unit && destination ?
+    unit.getPossibleActions(destination) :
+    [];
 
-  useUIAction("close_action_menu", () => setShow(false));
-
-  const handleClose = () => {
-    setShow(false);
-    selectAction("cancel");
-  }
-  useUIAction("cancel", handleClose);
+  const handleClose = useUIEmitter("reset_controller_state");
   
   let transitionProps = {
-    in: show,
+    in: props.display,
     timeout: 100,
     nodeRef
   }

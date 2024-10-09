@@ -1,37 +1,42 @@
 import { CursorEvent, Vector2 } from "engine/components";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
-import ControllerState from "./ControllerState";
+import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";
-import ActingState from "./ActingState";
+import TargetSelectState from "./TargetSelectState";
 import PanningState from "./PanningState";
+import controllerStore, { targetSelected } from "shared/store";
 
-class ActionSelectingState extends ControllerState {
+class ActionSelectState extends ControllerState {
+  id = ControllerPhase.ACTION_SELECT;
   pathEnt: UnitPath;
   unitEnt: UnitPiece;
 
   onEnter(prevState: MovingState) {
-    if (prevState instanceof MovingState) {
-      this.pathEnt = prevState.pathEnt;
-    }
+    super.onEnter(prevState);
 
     this.unitEnt = this.controller.selectedPiece;
 
-    let unit = this.unitEnt.unit;
-    let actions = unit.getPossibleActions(this.getTargetPos());
-    this.controller.uiEvents.emit("open_action_menu", actions);
-
+    if (prevState instanceof MovingState) {
+      this.pathEnt = prevState.pathEnt;
+    }
+    
     this.onActionSelected = this.onActionSelected.bind(this);
     this.controller.uiEvents.on("select_action", this.onActionSelected);
+
+    this.onCancel = this.onCancel.bind(this);
+    this.controller.uiEvents.on("reset_controller_state", this.onCancel);
   }
 
   onExit(nextState: ControllerState) {
-    this.controller.uiEvents.off("select_action", this.onActionSelected);
+    super.onExit(nextState);
 
-    if (nextState instanceof ActingState || nextState instanceof IdleState) {
+    this.controller.uiEvents.off("select_action", this.onActionSelected);
+    this.controller.uiEvents.off("reset_controller_state", this.onCancel);
+
+    if (nextState instanceof TargetSelectState || nextState instanceof IdleState) {
       this.unitEnt.hideMoveRange();
-      this.controller.uiEvents.emit("close_action_menu");
     }
 
     if (
@@ -53,8 +58,12 @@ class ActionSelectingState extends ControllerState {
 
   onMouseDown(event: CursorEvent): void {
     let tileCoords = this.getTileCoords(event);
-    
-    if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
+    let target = this.controller.chapter.getUnitAt(tileCoords);
+
+    if (target && target !== this.unitEnt.unit) {
+      controllerStore.dispatch(targetSelected(target.id));
+    }
+    else if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
       this.setState(new MovingState());
       
       // pass mousedown event to next state
@@ -71,12 +80,16 @@ class ActionSelectingState extends ControllerState {
 
   onActionSelected(action: string) {
     if (action === "cancel") {
-      this.setState(new IdleState());
+      this.onCancel();
     }
     else {
-      this.setState(new ActingState(this.getTargetPos(), action));
+      this.setState(new TargetSelectState());
     }
+  }
+
+  onCancel() {
+    this.setState(new IdleState());
   }
 }
 
-export default ActionSelectingState;
+export default ActionSelectState;

@@ -2,11 +2,12 @@ import GameObject from "engine/GameObject";
 import Scene from "engine/Scene";
 import Game, { IGameConfig } from "game/Game";
 import CoordinateConverter from "game/utils/CoordinateConverter";
-import UIEventEmitter from "utils/UIEventEmitter";
+import UIEventEmitter from "shared/UIEventEmitter";
 import UnitPiece from "../UnitPiece";
 import { CursorEvent } from "engine/components";
 import ControllerState from "./ControllerState";
 import IdleState from "./IdleState";
+import controllerStore, { phaseChanged, unitSelected } from "shared/store";
 
 class UnitController extends GameObject {
   game: Game;
@@ -35,7 +36,7 @@ class UnitController extends GameObject {
         onMouseUp: this.onMouseUp.bind(this)
       }
     }
-    
+
     this.setState(new IdleState());
   }
 
@@ -66,14 +67,12 @@ class UnitController extends GameObject {
   }
 
   selectUnit(unit) {
-    this.uiEvents.emit('select_unit', unit);
-
     // unselect previous unit
     if (this.selectedPiece) {
       this.selectedPiece.hideMoveRange();
       this.scene.draw();
     }
-    
+
     // set new unit
     if (unit) {
       this.selectedPiece = this.getUnitPiece(unit);
@@ -83,6 +82,13 @@ class UnitController extends GameObject {
     else {
       delete this.selectedPiece;
     }
+
+    // update store
+    controllerStore.dispatch(unitSelected(unit.id));
+  }
+
+  get selectedUnit() {
+    return this.selectedPiece.unit;
   }
 
   setState(nextState: ControllerState) {
@@ -97,6 +103,8 @@ class UnitController extends GameObject {
     nextState.bindController(this);
     this.currentState = nextState;
     this.currentState.onEnter(prevState);
+
+    controllerStore.dispatch(phaseChanged(nextState.id));
   }
 
   onMouseDown(event: CursorEvent) {

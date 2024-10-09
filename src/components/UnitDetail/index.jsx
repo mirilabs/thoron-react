@@ -1,13 +1,14 @@
 import "./index.scss";
 import React, { useState, useRef } from "react";
-import useSelectedUnit from "../utils/useSelectedUnit";
 import useUIAction from "components/utils/useUIAction";
 import StatView from "./StatView";
 import { CSSTransition } from "react-transition-group";
 import InventoryView from "./InventoryView";
+import { useSelectedUnit } from "components/utils/useUnit";
 
 function UnitDetail() {
   const [show, setShow] = useState(false);
+
   const selectedUnit = useSelectedUnit();
 
   useUIAction("toggle_character_detail_display", () => {

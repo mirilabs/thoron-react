@@ -1,11 +1,16 @@
 import "./WeaponSelector.scss";
 import React, { useState } from "react";
 import ItemShow from "./ItemShow";
-import { useUIEmitter } from "components/utils/useUIAction";
+import { useSelectedUnit } from "components/utils/useUnit";
 
-function WeaponSelector({ unit }) {
+function WeaponSelector({ updateRecord }) {
   const [selecting, setSelecting] = useState(false);
-  const setEquipped = useUIEmitter('set_equipped_index');
+  
+  const unit = useSelectedUnit();
+  const setEquipped = (index) => {
+    unit.equip(index)
+    updateRecord(unit);
+  }
 
   const handleOpenMenu = () => {
     if (unit.record.items.length > 1) {
