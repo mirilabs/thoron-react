@@ -1,7 +1,7 @@
 import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid } from './entities';
-import UIEventEmitter from '../utils/UIEventEmitter';
+import UIEventEmitter from '../shared/UIEventEmitter';
 import UnitController from './entities/UnitController';
 
 interface IGameConfig {
@@ -32,8 +32,6 @@ class Game {
   canvas: HTMLCanvasElement;
   scene: Scene;
 
-  _selectedUnit: any;
-
   constructor(chapter, cfg: Partial<IGameConfig> = {}) {
     this.chapter = chapter;
     this.config = {
@@ -48,9 +46,6 @@ class Game {
     );
 
     this.uiEvents = new UIEventEmitter();
-    this.uiEvents.on('select_unit', (unit) => {
-      this._selectedUnit = unit
-    });
   }
 
   setCanvas(canvas: HTMLCanvasElement) {

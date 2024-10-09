@@ -1,22 +1,21 @@
 import Vector2 from "engine/utils/Vector2";
 import UnitPiece from "../UnitPiece";
-import ControllerState from "./ControllerState";
+import ControllerState, { ControllerPhase } from "./ControllerState";
 import { Vector2 as IVector2 } from "engine/components";
 import UnitActionRange from "../ui/UnitActionRange";
 import IdleState from "./IdleState";
+import store, { targetSelected } from "shared/store";
+import controllerStore from "shared/store";
 
-class ActingState extends ControllerState {
+class TargetSelectState extends ControllerState {
+  id = ControllerPhase.TARGET_SELECT;
+
   unitEnt: UnitPiece;
   selectedUnit: any;
-  moveTarget: IVector2;  // coords from which the unit will attack
-  action: string;
   actionRangeEnt: UnitActionRange;
 
-  constructor(moveTarget: IVector2, action: string) {
+  constructor() {
     super();
-    
-    this.moveTarget = moveTarget;
-    this.action = action;
     this.cancel = this.cancel.bind(this);
   }
 
@@ -25,17 +24,13 @@ class ActingState extends ControllerState {
     this.unitEnt = selectedPiece;
     this.selectedUnit = selectedPiece.unit;
 
-    // replace action menu with attack menu
-    this.controller.uiEvents.emit("close_action_menu");
-    this.controller.uiEvents.emit("open_attack_menu");
-
     // wait for attack to be selected
     this.controller.uiEvents.on("cancel", this.cancel);
     
     this.actionRangeEnt = new UnitActionRange(
       game,
       this.selectedUnit,
-      this.moveTarget
+      store.getState().destination
     );
     this.actionRangeEnt.addToScene(scene);
     scene.draw();
@@ -50,11 +45,11 @@ class ActingState extends ControllerState {
     let tileCoords = this.controller.coords.toTiles(event.x, event.y);
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
-    if (Vector2.eq(tileCoords, this.moveTarget)) {
+    if (Vector2.eq(tileCoords, store.getState().destination)) {
       console.log(this.controller);
     }
     else if (unit && unit !== this.selectedUnit) {
-      console.log(unit);
+      controllerStore.dispatch(targetSelected(unit.id));
     }
     else {
       this.cancel();
@@ -70,4 +65,4 @@ class ActingState extends ControllerState {
   }
 }
 
-export default ActingState;
+export default TargetSelectState;

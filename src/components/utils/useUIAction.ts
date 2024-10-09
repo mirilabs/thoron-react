@@ -1,6 +1,6 @@
 import ThoronContext from "components/ThoronContext";
 import { useContext, useEffect } from "react";
-import { UIAction, UIEventSignatures } from "utils/UIEventEmitter";
+import { UIAction, UIEventSignatures } from "shared/UIEventEmitter";
 
 /**
  * Calls a function when a key that is bound to the desired action is pressed.

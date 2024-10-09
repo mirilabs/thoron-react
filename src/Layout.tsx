@@ -8,7 +8,7 @@ import { SideMenuToggle } from "components/SideMenu";
 import GameCanvas from './components/gameView/GameCanvas';
 import UnitPanel from './components/UnitPanel';
 import UnitDetail from 'components/UnitDetail';
-import ActionMenuToggle from "components/gameView/ActionMenu";
+import ActionUI from "components/gameView/UnitController";
 
 function Layout() {
   let { size } = useResponsive();
@@ -21,7 +21,7 @@ function Layout() {
           <UnitPanel />
           <SideMenuToggle />
           <GameCanvas />
-          <ActionMenuToggle />
+          <ActionUI />
           <UnitDetail />
         </div>
       );
