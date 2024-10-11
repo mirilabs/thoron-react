@@ -26,8 +26,7 @@ interface CursorEvent extends Vector2 {
   altKey: boolean,
   ctrlKey: boolean,
   shiftKey: boolean,
-  movementX: number,
-  movementY: number
+  delta: Vector2
 }
 
 type CursorEventHandler = (event: CursorEvent) => void;

@@ -77,6 +77,12 @@ class Vector2 implements IVector2 {
       y: y * cosT + x * sinT
     }
   }
+
+  static ZERO: { x: 0, y: 0 }
+  static LEFT: { x: -1, y: 0 }
+  static RIGHT: { x: 1, y: 0 }
+  static UP: { x: 0, y: -1 }
+  static DOWN: { x: 0, y: 1 }
 }
 
 export default Vector2;
