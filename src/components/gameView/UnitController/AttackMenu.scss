@@ -1,0 +1,89 @@
+@keyframes flicker {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.attack-menu {
+  position: absolute;
+  padding: 0;
+  width: 100%;
+  
+  // & > span {
+  //   padding-top: 32px;
+  //   padding-bottom: 8px;
+  //   background-image: linear-gradient(rgba(0, 0, 0, 0), var(--bg-color));
+  //   color: var(--text-color);
+  // }
+  padding-top: 32px;
+  padding-bottom: 8px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), var(--bg-color));
+  color: var(--text-color);
+  
+  bottom: -110%;
+  transition: bottom 100ms linear;
+
+  &.enter, &.enter-active, &.exit-done {
+    bottom: -110%;
+  }
+
+  &.enter-done, &.exit-active {
+    bottom: 0;
+  }
+
+  .attack-preview {
+    display: grid;
+    grid-template-columns: 40% auto 40%;
+
+    & > span {
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+
+    .hp-bar {
+      $bg: rgba(from var(--accent-color) r g b/0.25);
+      background-color: $bg;
+      height: 8px;
+      display: flex;
+      flex-direction: row;
+  
+      & > * {
+        height: 8px;
+      }
+  
+      &__remaining {
+        background-color: var(--text-color-2);
+      }
+  
+      &__damage {
+        background-color: var(--text-color-2);
+        animation-name: flicker;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+      }
+    }
+  }
+
+  .attack-input {
+    width: 100%;
+    height: 25%;
+    min-height: 64px;
+    display: grid;
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 50% auto;
+    grid-template-areas:
+      "a b c"
+      "d b e";
+
+    button {
+      background-color: var(--bg-color-2);
+      margin: 2px 4px;
+      border-radius: 4px;
+
+      &.confirm {
+        grid-area: b;
+        background-color: var(--bg-color-3);
+      }
+    }
+  }
+}

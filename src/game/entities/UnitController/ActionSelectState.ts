@@ -4,9 +4,9 @@ import UnitPiece from "../UnitPiece";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";
-import TargetSelectState from "./TargetSelectState";
 import PanningState from "./PanningState";
 import controllerStore, { targetSelected } from "shared/store";
+import ActionConfirmState from "./ActionConfirmState";
 
 class ActionSelectState extends ControllerState {
   id = ControllerPhase.ACTION_SELECT;
@@ -35,7 +35,7 @@ class ActionSelectState extends ControllerState {
     this.controller.uiEvents.off("select_action", this.onActionSelected);
     this.controller.uiEvents.off("reset_controller_state", this.onCancel);
 
-    if (nextState instanceof TargetSelectState || nextState instanceof IdleState) {
+    if (nextState instanceof ActionConfirmState || nextState instanceof IdleState) {
       this.unitEnt.hideMoveRange();
     }
 
@@ -62,6 +62,7 @@ class ActionSelectState extends ControllerState {
 
     if (target && target !== this.unitEnt.unit) {
       controllerStore.dispatch(targetSelected(target.id));
+      this.setState(new ActionConfirmState())
     }
     else if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
       this.setState(new MovingState());
@@ -83,7 +84,7 @@ class ActionSelectState extends ControllerState {
       this.onCancel();
     }
     else {
-      this.setState(new TargetSelectState());
+      this.setState(new ActionConfirmState());
     }
   }
 

@@ -1,9 +1,11 @@
 import React, { useRef } from "react";
 import { useUIEmitter } from "../../utils/useUIAction";
 import { CSSTransition } from "react-transition-group";
-import "./ActionMenu.scss";
+import "./ActionSelectMenu.scss";
 import { useSelectedUnit } from "components/utils/useUnit";
 import { useControllerSelector } from "components/utils/reduxHooks";
+import { useDispatch } from "react-redux";
+import { actionSelected } from "shared/store";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -13,10 +15,14 @@ function ActionButton({ unitAction, isSelectable=true }: {
   unitAction: string,
   isSelectable?: boolean
 }) {
-  const emitAction = useUIEmitter("select_action");
+  const dispatch = useDispatch();
+  const emitSignal = useUIEmitter("select_action");
 
   const handleClick = () => {
-    if (isSelectable) emitAction(unitAction);
+    if (isSelectable) {
+      dispatch(actionSelected(unitAction));
+      emitSignal(unitAction);
+    }
   }
 
   return (

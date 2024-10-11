@@ -7,8 +7,8 @@ import IdleState from "./IdleState";
 import store, { targetSelected } from "shared/store";
 import controllerStore from "shared/store";
 
-class TargetSelectState extends ControllerState {
-  id = ControllerPhase.TARGET_SELECT;
+class ActionConfirmState extends ControllerState {
+  id = ControllerPhase.ACTION_CONFIRM;
 
   unitEnt: UnitPiece;
   selectedUnit: any;
@@ -65,4 +65,4 @@ class TargetSelectState extends ControllerState {
   }
 }
 
-export default TargetSelectState;
+export default ActionConfirmState;
