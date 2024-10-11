@@ -11,11 +11,7 @@ class PanningState extends ControllerState {
   }
 
   onMouseMove(event: CursorEvent): void {
-    let movement = {
-      x: event.movementX,
-      y: event.movementY
-    }
-    this.controller.scene.camera.pan(movement);
+    this.controller.scene.camera.pan(event.delta);
     this.controller.scene.draw();
   }
 
