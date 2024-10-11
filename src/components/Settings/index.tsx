@@ -3,7 +3,7 @@ import "./themes.scss";
 import settingsController, {
   options,
   Theme
-} from "../config/userSettings";
+} from "./userSettings";
 
 function ThemeSelector({ settings, theme }: {
   settings: typeof settingsController,
