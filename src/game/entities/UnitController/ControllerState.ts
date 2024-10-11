@@ -6,7 +6,7 @@ export enum ControllerPhase {
   MOVING,
   PANNING,
   ACTION_SELECT,
-  TARGET_SELECT
+  ACTION_CONFIRM
 }
 
 abstract class ControllerState {

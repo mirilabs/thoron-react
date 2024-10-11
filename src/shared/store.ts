@@ -9,12 +9,14 @@ const initialState: {
   unitId: string,
   position: Vector2,
   destination: Vector2,
+  action: string,
   targetId: string
 } = {
   phase: null,
   unitId: null,
   position: null,
   destination: null,
+  action: null,
   targetId: null
 }
 
@@ -32,6 +34,8 @@ const controllerSlice = createSlice({
       state.destination = action.payload;
     },
 
+    actionSelected: (state, action) => { state.action = action.payload },
+
     targetSelected: (state, action) => { state.targetId = action.payload }
   }
 });
@@ -41,6 +45,7 @@ export const {
   unitSelected,
   positionSelected,
   destinationSelected,
+  actionSelected,
   targetSelected
 } = controllerSlice.actions;
 
