@@ -4,15 +4,16 @@
   border-bottom: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
 }
 
+$unit-summary-height: 100px;
+
 .unit-summary {
   @include colors;
   position: relative;
   top: 0;
-  width: 100%;
   min-width: 320px;
-  min-height: 84px;
+  width: 100%;
+  height: $unit-summary-height;
   overflow: scroll;
-  margin-bottom: 6px;
 
   display: flex;
   flex-direction: row;

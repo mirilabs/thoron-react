@@ -11,7 +11,7 @@ function UnitDetailToggle({ unit }) {
       name = unit.record.name ?? "?";
     
     return (
-      <button className="unit-detail-toggle" onClick={() => toggleDetail()}>
+      <button className="unit-detail-toggle" onClick={toggleDetail}>
         <img className="sprite" src={portrait} alt={name} />
         <h1 className="name">{name}</h1>
       </button>

@@ -1,0 +1,17 @@
+.unit-detail {
+  width: 100%;
+  
+  display: grid;
+  grid-template-rows: 96px auto;
+  grid-template-columns: calc(50% - 4px) auto;
+  grid-template-areas:
+    "a a"
+    "b c";
+  row-gap: 8px;
+  column-gap: 8px;
+
+  .title {
+    margin-left: 8px;
+    grid-area: a;
+  }
+}

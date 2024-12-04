@@ -1,0 +1,40 @@
+.control-panel {
+  .react-tabs {
+    position: absolute;
+    width: inherit;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 36px;
+    padding: 0 4px;
+
+    &__tab-panel {
+      z-index: 14;
+      background-color: var(--bg-color);
+  
+      &.unit-detail {
+        z-index: 7;  // display controls over unit detail panel
+      }
+    }
+
+    &__tab-list {
+      height: 36px;
+      border: none;
+    }
+  }
+
+  button.close {
+    position: absolute;
+    z-index: 17;
+    bottom: 0;
+    right: 0;
+    min-width: 64px;
+    min-height: 64px;
+    background-color: var(--bg-color-2);
+    color: var(--accent-color);
+    transition: background-color 200ms linear;
+
+    &:hover {
+      background-color: var(--bg-color);
+    }
+  }
+}
