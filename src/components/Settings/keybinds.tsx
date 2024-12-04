@@ -12,7 +12,7 @@ const defaultKeybinds: KeybindSchema = {
   'escape': 'cancel',
   'z':      'confirm',
   'x':      'cancel',
-  'c':      'toggle_character_detail_display',
+  'c':      'open_character_detail',
   'left':   'left',
   'right':  'right',
   'up':     'up',

@@ -3,7 +3,7 @@ import "./UnitDetailToggle.scss";
 import React from "react";
 
 function UnitDetailToggle({ unit }) {
-  const toggleDetail = useUIEmitter('toggle_character_detail_display');
+  const toggleDetail = useUIEmitter('open_character_detail');
   
   if (!unit) return null;
   else {

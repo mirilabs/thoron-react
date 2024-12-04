@@ -1,14 +1,18 @@
-@use "./UnitPanel.scss";
+@mixin colors {
+  background-color: var(--bg-color-2);
+  outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
+  border-bottom: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
+}
 
-.unit-panel__body {
-  @include UnitPanel.colors;
+.unit-summary {
+  @include colors;
   position: relative;
   top: 0;
   width: 100%;
   min-width: 320px;
-  height: UnitPanel.$body-height;
+  min-height: 84px;
   overflow: scroll;
-  margin-bottom: UnitPanel.$gap;
+  margin-bottom: 6px;
 
   display: flex;
   flex-direction: row;

@@ -1,15 +1,15 @@
 @use "sass:color";
-@use "./UnitPanel.scss";
+@use "./UnitSummary.scss";
 
 .unit-detail-toggle {
   position: relative;
   max-width: fit-content;
-  height: UnitPanel.$header-height;
+  height: 32px;
   display: flex;
   flex-direction: row;
   float: left;
 
-  @include UnitPanel.colors;
+  @include UnitSummary.colors;
 
   .sprite {
     opacity: 1;

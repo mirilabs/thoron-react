@@ -39,7 +39,7 @@ function SideMenuToggle() {
   )
   else return (
     <div className="side-menu-toggle" onClick={() => setShow(true)}>
-      <i className="fas fa-chevron-right" />
+      <i className="fas fa-chevron-left" />
     </div>
   );
 }
