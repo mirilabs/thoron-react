@@ -1,5 +1,4 @@
 import "./config/polyfills";
-import './stylesheets/index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

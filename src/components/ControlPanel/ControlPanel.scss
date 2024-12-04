@@ -22,19 +22,17 @@
     }
   }
 
-  button.close {
-    position: absolute;
-    z-index: 17;
-    bottom: 0;
-    right: 0;
-    min-width: 64px;
-    min-height: 64px;
-    background-color: var(--bg-color-2);
-    color: var(--accent-color);
-    transition: background-color 200ms linear;
-
-    &:hover {
-      background-color: var(--bg-color);
-    }
+  .control-panel-toggle {
+    z-index: 16;
   }
+}
+
+.control-panel-toggle {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: 0;
+  min-width: 48px;
+  min-height: 48px;
+  color: var(--accent-color);
 }

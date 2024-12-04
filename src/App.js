@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import "./stylesheets/dev.css";
 
 import { ErrorBoundary } from "react-error-boundary";

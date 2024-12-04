@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import UnitDetail from "./UnitDetail";
 import Settings from "components/ControlPanel/Settings";
-import useUIAction from "components/utils/useUIAction";
+import useUIAction, { useUIEmitter } from "components/utils/useUIAction";
 
 function ControlPanel({ show, setShow }) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -26,6 +26,8 @@ function ControlPanel({ show, setShow }) {
       }
     }
   }
+
+  useUIAction("open_control_panel", () => setShow(true));
   
   useUIAction("cancel", () => setShow(false));
 
@@ -48,11 +50,23 @@ function ControlPanel({ show, setShow }) {
           <Tab>Options</Tab>
         </TabList>
       </Tabs>
-      <button className="close" onClick={() => setShow(false)}>
+      <button className="control-panel-toggle" onClick={() => setShow(false)}>
         <i className="fas fa-x" />
       </button>
     </>
   )
 }
 
+function ControlPanelOpener() {
+  let open = useUIEmitter("open_control_panel");
+  return (
+    <button className="control-panel-toggle" onClick={open}>
+      <i className="fas fa-bars" />
+    </button>
+  )
+}
+
 export default ControlPanel;
+export {
+  ControlPanelOpener
+}

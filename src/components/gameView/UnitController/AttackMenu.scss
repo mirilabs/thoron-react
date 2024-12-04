@@ -9,12 +9,6 @@
   padding: 0;
   width: 100%;
   
-  // & > span {
-  //   padding-top: 32px;
-  //   padding-bottom: 8px;
-  //   background-image: linear-gradient(rgba(0, 0, 0, 0), var(--bg-color));
-  //   color: var(--text-color);
-  // }
   padding-top: 32px;
   padding-bottom: 8px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), var(--bg-color));
@@ -40,6 +34,12 @@
       margin-right: 4px;
     }
 
+    .equipped {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
     .hp-bar {
       $bg: rgba(from var(--accent-color) r g b/0.25);
       background-color: $bg;
@@ -61,6 +61,12 @@
         animation-duration: 1s;
         animation-iteration-count: infinite;
       }
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
     }
   }
 

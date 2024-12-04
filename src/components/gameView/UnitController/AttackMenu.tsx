@@ -3,6 +3,7 @@ import { CSSTransition } from "react-transition-group";
 import "./AttackMenu.scss";
 import useUnit, { useSelectedUnit } from "components/utils/useUnit";
 import { useControllerSelector } from "components/utils/reduxHooks";
+import ItemIcon from "components/UnitSummary/ItemIcon";
 
 const HP_BAR_WIDTH_SCALE = 1 / 60; // 60 hp = 100% width
 
@@ -26,37 +27,40 @@ function HPBar({ maxHP, hp, damage }) {
 }
 
 function CombatForecastSide({ unit, forecast, oppForecast }) {
+  let equipped = unit.items[unit.state.equippedIndex];
+
   return (
     <>
       <div className="header">
         <div className="name">{unit.record.name}</div>
         <div className="equipped">
-          {unit.items[unit.state.equippedIndex].name}
+          <ItemIcon item={equipped} />
+          {equipped.name}
         </div>
       </div>
       <div className="body">
         <div className="hp">
           <span className="label">HP</span>
           <span className="value">
-            {unit.hp} → {unit.hp - oppForecast.damage}
+            {unit.hp} → {Math.max(unit.hp - oppForecast.damage, 0)}
           </span>
         </div>
         <HPBar maxHP={unit.getStats().mhp}
           hp={unit.hp}
           damage={oppForecast.damage} />
         <div className="damage">
-          <span className="label">Dmg:</span>
+          <span className="label">Dmg</span>
           <span className="value">
             {forecast.damage}
             {forecast.doubles ? "×2" : ""}
           </span>
         </div>
         <div className="hit">
-          <span className="label">Hit:</span>
+          <span className="label">Hit</span>
           <span className="value">{forecast.hit}</span>
         </div>
         <div className="crit">
-          <span className="label">Crit:</span>
+          <span className="label">Crit</span>
           <span className="value">{forecast.crit}</span>
         </div>
       </div>
