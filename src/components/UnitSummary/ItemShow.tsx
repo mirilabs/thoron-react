@@ -1,11 +1,11 @@
 import "./ItemShow.scss";
 import React from "react";
-import icons from "icons/items";
+import ItemIcon from "./ItemIcon";
 
 function ItemShow({ item, ...props }) {
   return (
     <div className="item-show" {...props}>
-      <img src={icons[item.type] ?? icons["unknown"]} alt={item.type} />
+      <ItemIcon item={item} />
       <h2>{item.name ?? '???'}</h2>
     </div>
   )
