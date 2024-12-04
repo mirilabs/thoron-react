@@ -1,20 +1,16 @@
-@use "../UnitPanel/UnitPanel.scss";
-
-$unit-detail-top-offset: UnitPanel.$unit-panel-height + 4px;
 $unit-detail-height: 85%;
 
 .unit-detail {
-  position: absolute;
+  position: relative;
   left: 0;
   bottom: -100%;
   z-index: 9;
 
   background-color: var(--bg-color);
   width: calc(100% - 8px);
-  height: calc(100% - UnitPanel.$unit-panel-height);
+  height: 100%;
   border-radius: 0;
   padding: 0 4px;
-  padding-top: UnitPanel.$header-height + UnitPanel.$gap;
 
   display: grid;
   grid-template-rows: 96px auto;

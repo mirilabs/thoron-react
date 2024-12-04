@@ -1,5 +1,5 @@
 import React from "react";
-import "./Body.scss";
+import "./UnitSummary.scss";
 
 function StatRow(name, value) {
   return (
@@ -21,7 +21,7 @@ function Renderer({ unit, ...props }) {
     atk = stats.might + (stats.isMagic ? stats.mag : stats.str);
   
   return (
-    <div className="unit-panel__body" {...props}>
+    <div className="unit-summary" {...props}>
       <span className="body-left">
         <div className="hp"><strong>HP</strong> {hp} / {maxHp}</div>
         <div className="unit-class">{unit.record.class}</div>
@@ -47,8 +47,8 @@ function Renderer({ unit, ...props }) {
   );
 }
 
-function UnitPanelBody({ unit }) {
+function UnitSummary({ unit }) {
   return <Renderer unit={unit} />
 }
 
-export default UnitPanelBody;
+export default UnitSummary;

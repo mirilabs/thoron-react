@@ -11,7 +11,7 @@ function UnitDetail() {
 
   const selectedUnit = useSelectedUnit();
 
-  useUIAction("toggle_character_detail_display", () => {
+  useUIAction("open_character_detail", () => {
     setShow(!show);
   });
 
