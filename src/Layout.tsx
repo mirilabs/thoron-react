@@ -7,7 +7,7 @@ import { WindowSize } from "components/ViewportContext";
 import GameCanvas from './components/gameView/GameCanvas';
 import ActionUI from "components/gameView/UnitController";
 import UnitSummary from "components/UnitSummary";
-import ControlPanel from "components/ControlPanel";
+import ControlPanel, { ControlPanelOpener } from "components/ControlPanel";
 
 function Layout() {
   let { size } = useResponsive();
@@ -22,6 +22,7 @@ function Layout() {
           </div>
           <div className="gui-layer">
             <ControlPanel />
+            <ControlPanelOpener />
           </div>
           <div className="gui-layer">
             <ActionUI />
