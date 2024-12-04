@@ -8,9 +8,9 @@ import { ThoronProvider } from "./components/ThoronContext";
 import chapter from "./data/chapter";
 import { Provider as ReduxProvider } from "react-redux";
 import controllerStore from "shared/store";
-import { KeybindInitializer } from "components/Settings/keybinds";
+import { KeybindInitializer } from "components/ControlPanel/Settings/keybinds";
 import LayoutRoot from "Layout";
-import { initializeUserSettings } from "components/Settings/userSettings";
+import { initializeUserSettings } from "components/ControlPanel/Settings/userSettings";
 
 initializeUserSettings();
 

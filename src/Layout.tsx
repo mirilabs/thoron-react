@@ -4,11 +4,10 @@ import useResponsive from "components/utils/useResponsive";
 import { WindowSize } from "components/ViewportContext";
 
 // COMPONENTS
-import { SideMenuToggle } from "components/SideMenu";
 import GameCanvas from './components/gameView/GameCanvas';
 import ActionUI from "components/gameView/UnitController";
 import UnitSummary from "components/UnitSummary";
-import UnitDetail from "components/UnitDetail";
+import ControlPanel from "components/ControlPanel";
 
 function Layout() {
   let { size } = useResponsive();
@@ -20,11 +19,12 @@ function Layout() {
         <div className="layout-mobile">
           <div className="gui-layer">
             <UnitSummary />
-            <UnitDetail />
+          </div>
+          <div className="gui-layer">
+            <ControlPanel />
           </div>
           <div className="gui-layer">
             <ActionUI />
-            <SideMenuToggle />
           </div>
           <GameCanvas />
         </div>
