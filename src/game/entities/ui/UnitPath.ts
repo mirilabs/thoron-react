@@ -17,7 +17,7 @@ class UnitPath extends GameObject {
   path: IVector2[] = [];
   hasLeftOrigin: boolean = false;
   
-  constructor(game: Game, unit: any) {
+  constructor(game: Game, unit: any, initialDestination: IVector2 = null) {
     super();
     this.game = game;
     this.chapter = game.chapter;
@@ -27,6 +27,10 @@ class UnitPath extends GameObject {
     this.origin = unit.getPosition();
 
     this.components.draw = this.draw.bind(this);
+
+    if (initialDestination !== null) {
+      this.updateTargetPos(initialDestination);
+    }
   }
 
   getLastNode() {

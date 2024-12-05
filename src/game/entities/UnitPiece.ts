@@ -4,6 +4,7 @@ import CoordinateConverter from 'game/utils/CoordinateConverter';
 import Game from 'game/Game';
 import UnitRange from './ui/UnitMoveRange';
 import TargetIndicator from './ui/TargetIndicator';
+import UnitPath from './ui/UnitPath';
 
 class UnitPiece extends GameObject {
   rect: Rect;
@@ -11,6 +12,7 @@ class UnitPiece extends GameObject {
   _game: WeakRef<Game>;
 
   moveRangeEnt: UnitRange;
+  pathEnt: UnitPath;
   targetIndicatorEnt: TargetIndicator;
 
   constructor(unit, game: Game) {

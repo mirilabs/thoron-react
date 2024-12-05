@@ -3,9 +3,9 @@ import UnitPiece from "../UnitPiece";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import { Vector2 as IVector2 } from "engine/components";
 import UnitActionRange from "../ui/UnitActionRange";
-import IdleState from "./IdleState";
-import store, { targetSelected } from "shared/store";
-import controllerStore from "shared/store";
+import store, { targetSelected, actionSelected } from "shared/store";
+import PanningState from "./PanningState";
+import ActionSelectState from "./ActionSelectState";
 
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
@@ -49,19 +49,16 @@ class ActionConfirmState extends ControllerState {
       console.log(this.controller);
     }
     else if (unit && unit !== this.selectedUnit) {
-      controllerStore.dispatch(targetSelected(unit.id));
+      store.dispatch(targetSelected(unit.id));
     }
     else {
-      this.cancel();
+      this.setState(new PanningState())
     }
   }
 
   cancel() {
-    // return to original position
-    this.unitEnt.resetPosition();
-
-    // reset state
-    this.setState(new IdleState());
+    store.dispatch(actionSelected(null))
+    this.setState(new ActionSelectState());
   }
 }
 

@@ -1,11 +1,11 @@
-import { CursorEvent, Vector2 } from "engine/components";
+import { CursorEvent } from "engine/components";
 import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";
 import PanningState from "./PanningState";
-import controllerStore, { targetSelected } from "shared/store";
+import controllerStore, { targetSelected, actionSelected } from "shared/store";
 import ActionConfirmState from "./ActionConfirmState";
 
 class ActionSelectState extends ControllerState {
@@ -17,42 +17,49 @@ class ActionSelectState extends ControllerState {
     super.onEnter(prevState);
 
     this.unitEnt = this.controller.selectedPiece;
+    this.unitEnt.showMoveRange();
 
     if (prevState instanceof MovingState) {
       this.pathEnt = prevState.pathEnt;
     }
-    
+    else {
+      this.pathEnt = new UnitPath(
+        this.controller.game,
+        this.unitEnt.unit,
+        controllerStore.getState().destination
+      );
+      this.pathEnt.addToScene(this.controller.scene);
+    }
+
+    // reset selected action state
+    controllerStore.dispatch(actionSelected(null));
+
+    // wait for user to select action in ui
     this.onActionSelected = this.onActionSelected.bind(this);
     this.controller.uiEvents.on("select_action", this.onActionSelected);
 
     this.onCancel = this.onCancel.bind(this);
-    this.controller.uiEvents.on("reset_controller_state", this.onCancel);
+    this.controller.uiEvents.on("cancel", this.onCancel);
   }
 
   onExit(nextState: ControllerState) {
     super.onExit(nextState);
 
     this.controller.uiEvents.off("select_action", this.onActionSelected);
-    this.controller.uiEvents.off("reset_controller_state", this.onCancel);
-
-    if (nextState instanceof ActionConfirmState || nextState instanceof IdleState) {
-      this.unitEnt.hideMoveRange();
-    }
+    this.controller.uiEvents.off("cancel", this.onCancel);
 
     if (
-      !(nextState instanceof MovingState) &&
-      !(nextState instanceof PanningState)
+      nextState instanceof ActionConfirmState ||
+      nextState instanceof IdleState
     ) {
-      // destroy unit moving ui elements
-      this.pathEnt.destroy();
-      
+      this.unitEnt.hideMoveRange();
+
+      if (this.pathEnt)
+        this.pathEnt.destroy();
+
       for (const unitPiece of this.controller.unitPieces.values()) {
         unitPiece.hideTargetIndicator();
       }
-    }
-    
-    if (nextState instanceof IdleState) {
-      this.unitEnt.resetPosition();
     }
   }
 
@@ -75,10 +82,6 @@ class ActionSelectState extends ControllerState {
     }
   }
 
-  getTargetPos(): Vector2 {
-    return this.pathEnt.getLastNode();
-  }
-
   onActionSelected(action: string) {
     if (action === "cancel") {
       this.onCancel();
@@ -89,6 +92,7 @@ class ActionSelectState extends ControllerState {
   }
 
   onCancel() {
+    this.unitEnt.resetPosition();
     this.setState(new IdleState());
   }
 }
