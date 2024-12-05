@@ -78,8 +78,8 @@
     grid-template-columns: 25% auto 25%;
     grid-template-rows: 50% auto;
     grid-template-areas:
-      "a b c"
-      "a b d";
+      "a c d"
+      "b c d";
 
     button {
       background-color: var(--bg-color-2);
@@ -92,22 +92,22 @@
         margin-right: 0.5rem;
       }
 
-      &.back {
+      &.cycle-target {
         grid-area: a;
       }
 
+      &.cycle-weapon {
+        grid-area: b
+      }
+
       &.confirm {
-        grid-area: b;
+        grid-area: c;
         background-color: var(--bg-color-3);
         font-size: 1rem;
       }
 
-      &.cycle-target {
-        grid-area: c;
-      }
-
-      &.cycle-weapon {
-        grid-area: d
+      &.back {
+        grid-area: d;
       }
     }
   }

@@ -1,5 +1,4 @@
 import { CursorEvent } from "engine/components";
-import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
@@ -10,7 +9,6 @@ import ActionConfirmState from "./ActionConfirmState";
 
 class ActionSelectState extends ControllerState {
   id = ControllerPhase.ACTION_SELECT;
-  pathEnt: UnitPath;
   unitEnt: UnitPiece;
 
   onEnter(prevState: MovingState) {
@@ -18,18 +16,7 @@ class ActionSelectState extends ControllerState {
 
     this.unitEnt = this.controller.selectedPiece;
     this.unitEnt.showMoveRange();
-
-    if (prevState instanceof MovingState) {
-      this.pathEnt = prevState.pathEnt;
-    }
-    else {
-      this.pathEnt = new UnitPath(
-        this.controller.game,
-        this.unitEnt.unit,
-        controllerStore.getState().destination
-      );
-      this.pathEnt.addToScene(this.controller.scene);
-    }
+    this.unitEnt.showMovePath();
 
     // reset selected action state
     controllerStore.dispatch(actionSelected(null));
@@ -53,9 +40,7 @@ class ActionSelectState extends ControllerState {
       nextState instanceof IdleState
     ) {
       this.unitEnt.hideMoveRange();
-
-      if (this.pathEnt)
-        this.pathEnt.destroy();
+      this.unitEnt.hideMovePath();
 
       for (const unitPiece of this.controller.unitPieces.values()) {
         unitPiece.hideTargetIndicator();
