@@ -14,18 +14,12 @@ class ActionConfirmState extends ControllerState {
   selectedUnit: any;
   actionRangeEnt: UnitActionRange;
 
-  constructor() {
-    super();
-    this.cancel = this.cancel.bind(this);
-  }
-
   onEnter(prevState: ControllerState) {
+    super.onEnter(prevState);
+
     const { game, selectedPiece, scene } = this.controller;
     this.unitEnt = selectedPiece;
     this.selectedUnit = selectedPiece.unit;
-
-    // wait for attack to be selected
-    this.controller.uiEvents.on("cancel", this.cancel);
     
     this.actionRangeEnt = new UnitActionRange(
       game,
@@ -33,11 +27,13 @@ class ActionConfirmState extends ControllerState {
       store.getState().destination
     );
     this.actionRangeEnt.addToScene(scene);
-    scene.draw();
+
+    this.bindUIEvent("cancel", this.onCancel);
   }
 
-  onExit(prevState: ControllerState): void {
-    this.controller.uiEvents.off("cancel", this.cancel);
+  onExit(nextState: ControllerState): void {
+    super.onExit(nextState);
+
     this.actionRangeEnt.destroy();
   }
 
@@ -56,7 +52,12 @@ class ActionConfirmState extends ControllerState {
     }
   }
 
-  cancel() {
+  cycleItemBack() {}
+  cycleItemForward() {}
+  cycleTargetBack() {}
+  cycleTargetForward() {}
+
+  onCancel() {
     store.dispatch(actionSelected(null))
     this.setState(new ActionSelectState());
   }
