@@ -54,3 +54,10 @@ button, input[type="submit"], input[type="reset"] {
     background-color: var(--bg-color);
   }
 }
+
+.icon {
+  fill: white;
+  filter: var(--icon-filter);
+  max-width: 1.2rem;
+  max-height: 1.2rem;
+}

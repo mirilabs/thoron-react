@@ -79,16 +79,35 @@
     grid-template-rows: 50% auto;
     grid-template-areas:
       "a b c"
-      "d b e";
+      "a b d";
 
     button {
       background-color: var(--bg-color-2);
       margin: 2px 4px;
       border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      
+      & i, & .icon {
+        margin-right: 0.5rem;
+      }
+
+      &.back {
+        grid-area: a;
+      }
 
       &.confirm {
         grid-area: b;
         background-color: var(--bg-color-3);
+        font-size: 1rem;
+      }
+
+      &.cycle-target {
+        grid-area: c;
+      }
+
+      &.cycle-weapon {
+        grid-area: d
       }
     }
   }

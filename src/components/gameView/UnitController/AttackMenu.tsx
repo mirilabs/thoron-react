@@ -86,21 +86,31 @@ function CombatForecast({ attacker, target, combat }) {
   )
 }
 
-function CombatInput() {
+function CombatInput(props: {
+  cancel: () => void,
+  confirm: () => void,
+  changeTarget: () => void,
+  changeWeapon: () => void
+}) {
   return (
     <div className="attack-input">
-      <button className="cycle-weapon">
-        <i className="fas fa-left" />
+      <button className="back" onClick={props.cancel}>
+        <i className="fas fa-arrow-left" />
+        Back
       </button>
-      <button className="cycle-weapon">
-        <i className="fas fa-right" />
+      <button className="confirm" onClick={props.confirm}>
+        <img src="https://www.svgrepo.com/show/254421/sword.svg"
+          alt="attack"
+          className="icon" />
+        Attack
       </button>
-      <button className="confirm">Attack</button>
-      <button className="cycle-target">
-        <i className="fas fa-left" />
+      <button className="cycle-target" onClick={props.changeTarget}>
+        <i className="fas fa-redo-alt" />
+        Target
       </button>
-      <button className="cycle-target">
-        <i className="fas fa-right" />
+      <button className="cycle-weapon" onClick={props.changeWeapon}>
+        <i className="fas fa-redo-alt" />
+        Weapon
       </button>
     </div>
   )
@@ -133,7 +143,11 @@ function AttackMenu(props: {
           combat &&
           <CombatForecast attacker={attacker} target={target} combat={combat} />
         }
-        <CombatInput />
+        <CombatInput
+          confirm={()=>{}}
+          cancel={()=>{}}
+          changeTarget={()=>{}}
+          changeWeapon={()=>{}} />
       </div>
     </CSSTransition>
   )
