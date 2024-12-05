@@ -88,15 +88,15 @@ class MovingState extends ControllerState {
   }
 
   onTileChange(nextCoords: IVector2) {
-    // update pathEnt with new target position
+    // check that new position is within move range
     let moveRange = this.unit.getMoveRange();
+    if (!moveRange.includes(nextCoords)) return;
     
-    if (moveRange.includes(nextCoords)) {
-      this.unitEnt.setDestination(nextCoords);
-      controllerStore.dispatch(positionSelected(nextCoords));
-    }
+    // update pathEnt with new target position
+    this.unitEnt.setDestination(nextCoords);
 
-    // update destination in store
+    // update store
+    controllerStore.dispatch(positionSelected(nextCoords));
     controllerStore.dispatch(destinationSelected(nextCoords));
 
     // update target indicators
