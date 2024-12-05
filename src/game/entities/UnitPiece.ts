@@ -69,7 +69,7 @@ class UnitPiece extends GameObject {
     this.pathEnt = new UnitPath(this.game, this.unit);
     this.pathEnt.addToScene(this.game.scene);
 
-    let initialDest = controllerStore.getState().destination;
+    let initialDest = controllerStore.getState().pendingMove.destination;
     if (initialDest) {
       this.pathEnt.updateTargetPos(initialDest);
     }

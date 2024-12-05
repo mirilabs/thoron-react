@@ -68,7 +68,9 @@ function ActionMenuToggle(props: {
   const nodeRef = useRef();
 
   let unit = useSelectedUnit();
-  let destination = useControllerSelector(state => state.destination);
+  let destination = useControllerSelector(
+    state => state.pendingMove.destination
+  );
   let possibleActions = unit && destination ?
     unit.getPossibleActions(destination) :
     [];
