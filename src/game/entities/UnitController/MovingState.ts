@@ -1,17 +1,18 @@
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import { CursorEvent, Vector2 as IVector2 } from "engine/components";
-import UnitPath from "../ui/UnitPath";
 import UnitPiece from "../UnitPiece";
 import ActionSelectState from "./ActionSelectState";
 import IdleState from "./IdleState";
-import controllerStore, { destinationSelected, positionSelected } from "shared/store";
+import controllerStore, {
+  destinationSelected,
+  positionSelected
+} from "shared/store";
 
 class MovingState extends ControllerState {
   id = ControllerPhase.MOVING;
   
-  pathEnt: UnitPath;
-  selectedPiece: UnitPiece;
-  selectedUnit: any;
+  unitEnt: UnitPiece;
+  unit: any;
   entityPos: IVector2;
 
   lastX: number;
@@ -19,34 +20,19 @@ class MovingState extends ControllerState {
   dragging: boolean = false;
 
   onEnter(prevState: ControllerState) {
-    const controller = this.controller;
-    const scene = controller.scene;
+    this.unitEnt = this.controller.selectedPiece;
+    this.unit = this.unitEnt.unit;
 
-    const { game, selectedPiece } = controller;
-    this.selectedPiece = selectedPiece;
-    this.selectedUnit = selectedPiece.unit;
+    this.entityPos = this.unitEnt.entity.getComponent('position');
 
-    this.entityPos = this.selectedPiece.entity.getComponent('position');
-
-    if (prevState instanceof ActionSelectState) {
-      // if path entity existed on previous state,
-      // get its reference
-      this.pathEnt = prevState.pathEnt;
-    }
-    else {
-      // construct new moveRange and path entities
-      this.selectedPiece.showMoveRange();
-      
-      this.pathEnt = new UnitPath(game, selectedPiece.unit);
-      this.pathEnt.addToScene(scene);
-      scene.draw();
-    }
+    this.unitEnt.showMoveRange();
+    this.unitEnt.showMovePath();
   }
 
   onExit(nextState: ControllerState): void {
     if (!(nextState instanceof ActionSelectState)) {
-      this.selectedPiece.hideMoveRange();
-      this.pathEnt.destroy();
+      this.unitEnt.hideMoveRange();
+      this.unitEnt.hideMovePath();
 
       // hide all target indicators
       for (const unitPiece of this.controller.unitPieces.values()) {
@@ -63,7 +49,7 @@ class MovingState extends ControllerState {
 
   onMouseDown(event: CursorEvent): void {
     let tileCoords = this.getTileCoords(event);
-    let moveRange = this.selectedUnit.getMoveRange();
+    let moveRange = this.unit.getMoveRange();
 
     if (moveRange.includes(tileCoords)) {
       // start moving unit if clicked within moveRange
@@ -71,7 +57,7 @@ class MovingState extends ControllerState {
       this.dragging = true;
     }
     else {
-      // else return to idle
+      // else return to idle state
       this.setState(new IdleState());
       this.controller.currentState.onMouseDown(event);
     }
@@ -103,9 +89,10 @@ class MovingState extends ControllerState {
 
   onTileChange(nextCoords: IVector2) {
     // update pathEnt with new target position
-    let moveRange = this.selectedUnit.getMoveRange();
+    let moveRange = this.unit.getMoveRange();
+    
     if (moveRange.includes(nextCoords)) {
-      this.pathEnt.updateTargetPos(nextCoords);
+      this.unitEnt.setDestination(nextCoords);
       controllerStore.dispatch(positionSelected(nextCoords));
     }
 
@@ -113,26 +100,25 @@ class MovingState extends ControllerState {
     controllerStore.dispatch(destinationSelected(nextCoords));
 
     // update target indicators
-    let pos = this.pathEnt.getLastNode();
-    let maxAttackRange = this.selectedUnit.getMaxAttackRange();
+    let maxAttackRange = this.unit.getMaxAttackRange();
 
-    for (const unitPiece of this.controller.unitPieces.values()) {
-      if (unitPiece === this.selectedPiece) continue;
+    for (const unitEnt of this.controller.unitPieces.values()) {
+      if (unitEnt === this.unitEnt) continue;
       
-      let distance = unitPiece.unit.getDistance(pos);
+      let distance = unitEnt.unit.getDistance(nextCoords);
 
       if (distance <= maxAttackRange) {
-        unitPiece.showTargetIndicator();
+        unitEnt.showTargetIndicator();
       }
       else {
-        unitPiece.hideTargetIndicator();
+        unitEnt.hideTargetIndicator();
       }
     }
   }
 
   onMouseUp(event: CursorEvent) {
-    if (this.pathEnt.hasLeftOrigin) {
-      let targetPos = this.pathEnt.getLastNode();
+    if (this.unitEnt.pathEnt.hasLeftOrigin) {
+      let targetPos = this.unitEnt.getDestination();
       let pixelCoords = this.controller.coords.toPixels(
         targetPos.x,
         targetPos.y
@@ -142,7 +128,7 @@ class MovingState extends ControllerState {
       this.setState(new ActionSelectState());
     }
     else {
-      this.selectedPiece.resetPosition();
+      this.unitEnt.resetPosition();
       this.controller.scene.draw();
     }
 

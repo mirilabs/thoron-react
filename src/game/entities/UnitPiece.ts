@@ -5,6 +5,8 @@ import Game from 'game/Game';
 import UnitRange from './ui/UnitMoveRange';
 import TargetIndicator from './ui/TargetIndicator';
 import UnitPath from './ui/UnitPath';
+import { Vector2 } from 'engine/components';
+import controllerStore from 'shared/store';
 
 class UnitPiece extends GameObject {
   rect: Rect;
@@ -60,6 +62,31 @@ class UnitPiece extends GameObject {
     if (this.moveRangeEnt === undefined) return;
     this.moveRangeEnt.destroy();
     delete this.moveRangeEnt;
+  }
+
+  showMovePath() {
+    if (this.pathEnt !== undefined) return;
+    this.pathEnt = new UnitPath(this.game, this.unit);
+    this.pathEnt.addToScene(this.game.scene);
+
+    let initialDest = controllerStore.getState().destination;
+    if (initialDest) {
+      this.pathEnt.updateTargetPos(initialDest);
+    }
+  }
+
+  hideMovePath() {
+    if (this.pathEnt === undefined) return;
+    this.pathEnt.destroy();
+    delete this.pathEnt;
+  }
+
+  getDestination() {
+    return this.pathEnt.getLastNode();
+  }
+
+  setDestination(dest: Vector2) {
+    this.pathEnt.updateTargetPos(dest);
   }
 
   showTargetIndicator() {

@@ -87,33 +87,31 @@ function CombatForecast({ attacker, target, combat }) {
   )
 }
 
-function CombatInput(props: {
-  cancel: () => void,
-  confirm: () => void,
-  changeTarget: () => void,
-  changeWeapon: () => void
-}) {
+function CombatInput() {
   const cancel = useUIEmitter("cancel");
+  const changeTarget = useUIEmitter("up");
+  const changeWeapon = useUIEmitter("right");
+  const confirm = useUIEmitter("confirm");
 
   return (
     <div className="attack-input">
-      <button className="back" onClick={cancel}>
-        <i className="fas fa-arrow-left" />
-        Back
+      <button className="cycle-target" onClick={changeTarget}>
+        <i className="fas fa-redo-alt" />
+        Target
       </button>
-      <button className="confirm" onClick={props.confirm}>
+      <button className="cycle-weapon" onClick={changeWeapon}>
+        <i className="fas fa-redo-alt" />
+        Weapon
+      </button>
+      <button className="confirm" onClick={confirm}>
         <img src="https://www.svgrepo.com/show/254421/sword.svg"
           alt="attack"
           className="icon" />
         Attack
       </button>
-      <button className="cycle-target" onClick={props.changeTarget}>
-        <i className="fas fa-redo-alt" />
-        Target
-      </button>
-      <button className="cycle-weapon" onClick={props.changeWeapon}>
-        <i className="fas fa-redo-alt" />
-        Weapon
+      <button className="back" onClick={cancel}>
+        <i className="fas fa-x" />
+        Back
       </button>
     </div>
   )
