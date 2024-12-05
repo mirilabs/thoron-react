@@ -88,9 +88,13 @@ class MovingState extends ControllerState {
   }
 
   onTileChange(nextCoords: IVector2) {
-    // check that new position is within move range
+    // ensure new position is in range
     let moveRange = this.unit.getMoveRange();
     if (!moveRange.includes(nextCoords)) return;
+
+    // ensure new position is unoccupied
+    let occupant = this.controller.chapter.getUnitAt(nextCoords);
+    if (occupant && occupant !== this.unit) return;
     
     // update pathEnt with new target position
     this.unitEnt.setDestination(nextCoords);
