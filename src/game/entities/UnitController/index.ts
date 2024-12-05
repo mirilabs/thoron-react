@@ -84,7 +84,6 @@ class UnitController extends GameObject {
     }
 
     // update store
-    console.log(unit.state)
     controllerStore.dispatch(unitSelected(unit.id));
   }
 
