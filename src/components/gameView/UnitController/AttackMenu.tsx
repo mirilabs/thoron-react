@@ -93,10 +93,20 @@ function CombatInput({ unit }) {
   const changeTarget = useUIEmitter("down");
   const changeWeapon = useUIEmitter("right");
   const confirm = useUIEmitter("confirm");
+  const selectWeapon = useUIEmitter("select_item");
 
   const dispatch = useControllerDispatch();
-  useUIAction("left", () => cycleItem(unit, -1, dispatch));
-  useUIAction("right", () => cycleItem(unit, 1, dispatch));
+
+  useUIAction("left", () => {
+    let i = cycleItem(unit, -1);
+    dispatch(itemSelected(i));
+    selectWeapon(unit.equipped);
+  });
+  useUIAction("right", () => {
+    let i = cycleItem(unit, 1);
+    dispatch(itemSelected(i));
+    selectWeapon(unit.equipped);
+  });
 
   return (
     <div className="attack-input">
@@ -126,12 +136,12 @@ function CombatInput({ unit }) {
  *  Loop through a unit's inventory to find a valid item to switch to
  *  @param unit
  *  @param direction 1 or -1
- *  @param dispatch controllertore dispatch function
+ *  @returns Index of the found item
  */
-function cycleItem(unit, direction, dispatch) {
+function cycleItem(unit, direction: number = 1) {
   const startIndex = unit.state.equippedIndex;
   let index = startIndex;
-  
+
   for (let i = 0; i < unit.items.length; i++) {
     index += direction;
     if (index >= unit.items.length) index = 0;
@@ -139,8 +149,7 @@ function cycleItem(unit, direction, dispatch) {
 
     try {
       unit.equip(index);
-      dispatch(itemSelected(index));
-      return
+      return index;
     }
     catch (e) {}
   }
