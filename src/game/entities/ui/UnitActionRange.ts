@@ -48,7 +48,11 @@ class UnitActionRange extends GameObject {
 
     let paintQueue: Map<string, string> = new Map();
     
-    let attackRange = unit.getStationaryAttackRange(this.targetPos);
+    const attackRange = this.chapter.terrain.getRange(
+      this.targetPos,
+      unit.equipped.minRange,
+      unit.equipped.maxRange
+    );
     attackRange.forEach(({ x, y }) => {
       paintQueue.set(`${x},${y}`, attackColor);
     });

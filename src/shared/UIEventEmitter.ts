@@ -3,6 +3,7 @@ import EventEmitter, { IEventSignatures } from "../utils/EventEmitter";
 interface UIEventSignatures extends IEventSignatures {
   // gameplay
   select_action: (action: string) => void;
+  select_item: (item: any) => void;
 
   // navigation
   confirm: () => void;
