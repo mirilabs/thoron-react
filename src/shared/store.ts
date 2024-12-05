@@ -6,7 +6,7 @@ import {
 
 const initialState: {
   phase: ControllerPhase,
-  unitId: string,
+  unitId: string | number,
   position: Vector2,
   pendingMove: {
     destination: Vector2,
@@ -30,9 +30,13 @@ const controllerSlice = createSlice({
   reducers: {
     phaseChanged: (state, action) => { state.phase = action.payload },
 
-    unitSelected: (state, action) => { state.unitId = action.payload },
+    unitSelected: (state, action) => {
+      state.unitId = action.payload;
+    },
 
-    positionSelected: (state, action) => { state.position = action.payload },
+    positionSelected: (state, action) => {
+      state.position = action.payload;
+    },
 
     destinationSelected: (state, action) => {
       state.pendingMove.destination = action.payload;
@@ -48,6 +52,10 @@ const controllerSlice = createSlice({
 
     itemSelected: (state, action) => {
       state.pendingMove.itemIndex = action.payload;
+    },
+
+    pendingMoveDiscarded(state, action) {
+      state.pendingMove = { destination: null, action: null }
     }
   }
 });
@@ -59,7 +67,8 @@ export const {
   destinationSelected,
   actionSelected,
   targetSelected,
-  itemSelected
+  itemSelected,
+  pendingMoveDiscarded
 } = controllerSlice.actions;
 
 const controllerStore = configureStore({

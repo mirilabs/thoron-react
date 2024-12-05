@@ -1,17 +1,30 @@
 import React from 'react';
 import UnitDetailToggle from "./UnitDetailToggle";
 import UnitSummary from "./UnitSummary";
-import { useSelectedUnitRecord } from "components/utils/useUnit";
+import { useSelectedUnit } from "components/utils/useUnit";
 import WeaponSelector from "./WeaponSelector";
+import { useControllerSelector } from 'components/utils/reduxHooks';
 
 function UnitSummaryContainer() {
-  const { record, update } = useSelectedUnitRecord();
+  const unit = useSelectedUnit();
+
+  // rerender when equip index changes
+  useControllerSelector(state => (
+    state.pendingMove.itemIndex
+  ));
+
+  if (!unit) return (<></>);
+
+  const record = {
+    ...unit.serialize(),
+    combatStats: unit.getCombatStats()
+  }
 
   return (
     <>
       <UnitSummary unit={record} />
       <UnitDetailToggle unit={record} />
-      <WeaponSelector updateRecord={update} />
+      <WeaponSelector />
     </>
   )
 }

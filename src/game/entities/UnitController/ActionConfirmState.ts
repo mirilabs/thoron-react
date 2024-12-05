@@ -33,11 +33,6 @@ class ActionConfirmState extends ControllerState {
     this.actionRangeEnt.addToScene(scene);
 
     // TODO if no target is selected, pick one
-
-    this.bindUIEvent("left", this.cycleItemBack);
-    this.bindUIEvent("right", this.cycleItemForward);
-    this.bindUIEvent("up", this.cycleTargetBack);
-    this.bindUIEvent("down", this.cycleTargetForward);
     this.bindUIEvent("cancel", this.onCancel);
   }
 
@@ -61,11 +56,6 @@ class ActionConfirmState extends ControllerState {
       this.setState(new PanningState())
     }
   }
-
-  cycleItemBack() {}
-  cycleItemForward() {}
-  cycleTargetBack() {}
-  cycleTargetForward() {}
 
   onCancel() {
     store.dispatch(actionSelected(null))

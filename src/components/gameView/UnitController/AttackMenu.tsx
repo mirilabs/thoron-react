@@ -2,9 +2,10 @@ import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./AttackMenu.scss";
 import useUnit, { useSelectedUnit } from "components/utils/useUnit";
-import { useControllerSelector } from "components/utils/reduxHooks";
+import { useControllerDispatch, useControllerSelector } from "components/utils/reduxHooks";
 import ItemIcon from "components/UnitSummary/ItemIcon";
-import { useUIEmitter } from "components/utils/useUIAction";
+import useUIAction, { useUIEmitter } from "components/utils/useUIAction";
+import { itemSelected } from "shared/store";
 
 const HP_BAR_WIDTH_SCALE = 1 / 60; // 60 hp = 100% width
 
@@ -87,11 +88,15 @@ function CombatForecast({ attacker, target, combat }) {
   )
 }
 
-function CombatInput() {
+function CombatInput({ unit }) {
   const cancel = useUIEmitter("cancel");
   const changeTarget = useUIEmitter("down");
   const changeWeapon = useUIEmitter("right");
   const confirm = useUIEmitter("confirm");
+
+  const dispatch = useControllerDispatch();
+  useUIAction("left", () => cycleItem(unit, -1, dispatch));
+  useUIAction("right", () => cycleItem(unit, 1, dispatch));
 
   return (
     <div className="attack-input">
@@ -117,15 +122,46 @@ function CombatInput() {
   )
 }
 
+/**
+ *  Loop through a unit's inventory to find a valid item to switch to
+ *  @param unit
+ *  @param direction 1 or -1
+ *  @param dispatch controllertore dispatch function
+ */
+function cycleItem(unit, direction, dispatch) {
+  const startIndex = unit.state.equippedIndex;
+  let index = startIndex;
+  
+  for (let i = 0; i < unit.items.length; i++) {
+    index += direction;
+    if (index >= unit.items.length) index = 0;
+    if (index < 0) index = unit.items.length - 1;
+
+    try {
+      unit.equip(index);
+      dispatch(itemSelected(index));
+      return
+    }
+    catch (e) {}
+  }
+}
+
 function AttackMenu() {
   const attacker = useSelectedUnit();
   const targetId = useControllerSelector(state => state.pendingMove.targetId);
   const target = useUnit(targetId);
 
+  // rerender when equip index changes
+  useControllerSelector(state => (
+    state.pendingMove.itemIndex
+  ));
+
   let combat;
   if (attacker && target) {
     combat = attacker?.getCombatForecast(target);
   }
+
+  
 
   return (
     <>
@@ -133,7 +169,7 @@ function AttackMenu() {
         combat &&
         <CombatForecast attacker={attacker} target={target} combat={combat} />
       }
-      <CombatInput />
+      <CombatInput unit={attacker} />
     </>
   )
 }
@@ -152,7 +188,7 @@ function AttackMenuContainer(props: {
   return (
     <CSSTransition {...transitionProps}>
       <div className="attack-menu" ref={nodeRef}>
-        <AttackMenu ref={nodeRef} />
+        <AttackMenu />
       </div>
     </CSSTransition>
   )

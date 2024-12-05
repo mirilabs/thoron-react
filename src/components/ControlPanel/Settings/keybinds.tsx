@@ -13,10 +13,10 @@ const defaultKeybinds: KeybindSchema = {
   'z':      'confirm',
   'x':      'cancel',
   'c':      'open_character_detail',
-  'left':   'left',
-  'right':  'right',
-  'up':     'up',
-  'down':   'down'
+  'left':   'left', 'arrowleft': 'left',
+  'right':  'right', 'arrowright': 'right',
+  'up':     'up', 'arrowup': 'up',
+  'down':   'down', 'arrowdown': 'down'
 }
 
 const keybinds = new Map(Object.entries(defaultKeybinds));

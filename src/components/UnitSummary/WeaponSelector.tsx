@@ -2,14 +2,19 @@ import "./WeaponSelector.scss";
 import React, { useState } from "react";
 import ItemShow from "./ItemShow";
 import { useSelectedUnit } from "components/utils/useUnit";
+import {
+  useControllerDispatch
+} from "components/utils/reduxHooks";
+import { itemSelected } from "shared/store";
 
-function WeaponSelector({ updateRecord }) {
+function WeaponSelector() {
   const [selecting, setSelecting] = useState(false);
+  const dispatch = useControllerDispatch();
   
   const unit = useSelectedUnit();
   const setEquipped = (index) => {
-    unit.equip(index)
-    updateRecord(unit);
+    unit.equip(index);
+    dispatch(itemSelected(index));
   }
 
   const handleOpenMenu = () => {
@@ -36,7 +41,7 @@ function WeaponSelector({ updateRecord }) {
     );
   }
   else {
-    // render all weapons
+    // render all items
     itemElems = items.filter((item) => item["weapon"] !== undefined)
       .map((item, i) => (
         <ItemShow item={item} key={i} onClick={() => { handleItemSelect(i) }} />
