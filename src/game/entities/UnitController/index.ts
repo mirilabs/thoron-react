@@ -84,6 +84,7 @@ class UnitController extends GameObject {
     }
 
     // update store
+    console.log(unit.state)
     controllerStore.dispatch(unitSelected(unit.id));
   }
 
@@ -93,7 +94,7 @@ class UnitController extends GameObject {
 
   setState(nextState: ControllerState) {
     // console.log(
-    //   this.currentState?.constructor.name + " => " +
+    //   this.currentState?.constructor.name + " --> " +
     //   nextState.constructor.name
     // );
 
