@@ -22,18 +22,12 @@ class ActionSelectState extends ControllerState {
     controllerStore.dispatch(actionSelected(null));
 
     // wait for user to select action in ui
-    this.onActionSelected = this.onActionSelected.bind(this);
-    this.controller.uiEvents.on("select_action", this.onActionSelected);
-
-    this.onCancel = this.onCancel.bind(this);
-    this.controller.uiEvents.on("cancel", this.onCancel);
+    this.bindUIEvent("select_action", this.onActionSelected);
+    this.bindUIEvent("cancel", this.onCancel);
   }
 
   onExit(nextState: ControllerState) {
     super.onExit(nextState);
-
-    this.controller.uiEvents.off("select_action", this.onActionSelected);
-    this.controller.uiEvents.off("cancel", this.onCancel);
 
     if (
       nextState instanceof ActionConfirmState ||
