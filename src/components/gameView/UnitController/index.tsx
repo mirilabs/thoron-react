@@ -6,7 +6,7 @@ import AttackMenu from "./AttackMenu";
 
 function ActionUI() {
   const phase = useControllerSelector(state => state.phase);
-  const action = useControllerSelector(state => state.action);
+  const action = useControllerSelector(state => state.pendingMove.action);
   
   return (
     <>

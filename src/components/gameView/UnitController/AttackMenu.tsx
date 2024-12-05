@@ -89,7 +89,7 @@ function CombatForecast({ attacker, target, combat }) {
 
 function CombatInput() {
   const cancel = useUIEmitter("cancel");
-  const changeTarget = useUIEmitter("up");
+  const changeTarget = useUIEmitter("down");
   const changeWeapon = useUIEmitter("right");
   const confirm = useUIEmitter("confirm");
 
@@ -117,19 +117,31 @@ function CombatInput() {
   )
 }
 
-function AttackMenu(props: {
-  display: boolean
-}) {
-  const nodeRef = useRef();
-
-  let attacker = useSelectedUnit();
-  let targetId = useControllerSelector(state => state.targetId);
-  let target = useUnit(targetId);
+function AttackMenu() {
+  const attacker = useSelectedUnit();
+  const targetId = useControllerSelector(state => state.pendingMove.targetId);
+  const target = useUnit(targetId);
 
   let combat;
   if (attacker && target) {
     combat = attacker?.getCombatForecast(target);
   }
+
+  return (
+    <>
+      {
+        combat &&
+        <CombatForecast attacker={attacker} target={target} combat={combat} />
+      }
+      <CombatInput />
+    </>
+  )
+}
+
+function AttackMenuContainer(props: {
+  display: boolean
+}) {
+  const nodeRef = useRef();
 
   let transitionProps = {
     in: props.display,
@@ -140,14 +152,10 @@ function AttackMenu(props: {
   return (
     <CSSTransition {...transitionProps}>
       <div className="attack-menu" ref={nodeRef}>
-        {
-          combat &&
-          <CombatForecast attacker={attacker} target={target} combat={combat} />
-        }
-        <CombatInput />
+        <AttackMenu ref={nodeRef} />
       </div>
     </CSSTransition>
   )
 }
 
-export default AttackMenu;
+export default AttackMenuContainer;

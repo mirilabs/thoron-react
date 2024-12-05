@@ -14,6 +14,10 @@ class ActionConfirmState extends ControllerState {
   selectedUnit: any;
   actionRangeEnt: UnitActionRange;
 
+  getDest() {
+    return store.getState().pendingMove.destination;
+  }
+
   onEnter(prevState: ControllerState) {
     super.onEnter(prevState);
 
@@ -24,10 +28,16 @@ class ActionConfirmState extends ControllerState {
     this.actionRangeEnt = new UnitActionRange(
       game,
       this.selectedUnit,
-      store.getState().destination
+      this.getDest()
     );
     this.actionRangeEnt.addToScene(scene);
 
+    // TODO if no target is selected, pick one
+
+    this.bindUIEvent("left", this.cycleItemBack);
+    this.bindUIEvent("right", this.cycleItemForward);
+    this.bindUIEvent("up", this.cycleTargetBack);
+    this.bindUIEvent("down", this.cycleTargetForward);
     this.bindUIEvent("cancel", this.onCancel);
   }
 
@@ -41,7 +51,7 @@ class ActionConfirmState extends ControllerState {
     let tileCoords = this.controller.coords.toTiles(event.x, event.y);
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
-    if (Vector2.eq(tileCoords, store.getState().destination)) {
+    if (Vector2.eq(tileCoords, this.getDest())) {
       console.log(this.controller);
     }
     else if (unit && unit !== this.selectedUnit) {

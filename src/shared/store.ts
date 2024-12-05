@@ -8,16 +8,20 @@ const initialState: {
   phase: ControllerPhase,
   unitId: string,
   position: Vector2,
-  destination: Vector2,
-  action: string,
-  targetId: string
+  pendingMove: {
+    destination: Vector2,
+    action: string,
+    targetId?: string,
+    itemIndex?: number
+  }
 } = {
   phase: null,
   unitId: null,
   position: null,
-  destination: null,
-  action: null,
-  targetId: null
+  pendingMove: {
+    destination: null,
+    action: null
+  }
 }
 
 const controllerSlice = createSlice({
@@ -31,12 +35,20 @@ const controllerSlice = createSlice({
     positionSelected: (state, action) => { state.position = action.payload },
 
     destinationSelected: (state, action) => {
-      state.destination = action.payload;
+      state.pendingMove.destination = action.payload;
     },
 
-    actionSelected: (state, action) => { state.action = action.payload },
+    actionSelected: (state, action) => {
+      state.pendingMove.action = action.payload;
+    },
 
-    targetSelected: (state, action) => { state.targetId = action.payload }
+    targetSelected: (state, action) => {
+      state.pendingMove.targetId = action.payload;
+    },
+
+    itemSelected: (state, action) => {
+      state.pendingMove.itemIndex = action.payload;
+    }
   }
 });
 
@@ -46,7 +58,8 @@ export const {
   positionSelected,
   destinationSelected,
   actionSelected,
-  targetSelected
+  targetSelected,
+  itemSelected
 } = controllerSlice.actions;
 
 const controllerStore = configureStore({
