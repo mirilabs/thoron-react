@@ -4,6 +4,7 @@ import "./AttackMenu.scss";
 import useUnit, { useSelectedUnit } from "components/utils/useUnit";
 import { useControllerSelector } from "components/utils/reduxHooks";
 import ItemIcon from "components/UnitSummary/ItemIcon";
+import { useUIEmitter } from "components/utils/useUIAction";
 
 const HP_BAR_WIDTH_SCALE = 1 / 60; // 60 hp = 100% width
 
@@ -92,9 +93,11 @@ function CombatInput(props: {
   changeTarget: () => void,
   changeWeapon: () => void
 }) {
+  const cancel = useUIEmitter("cancel");
+
   return (
     <div className="attack-input">
-      <button className="back" onClick={props.cancel}>
+      <button className="back" onClick={cancel}>
         <i className="fas fa-arrow-left" />
         Back
       </button>
@@ -143,11 +146,7 @@ function AttackMenu(props: {
           combat &&
           <CombatForecast attacker={attacker} target={target} combat={combat} />
         }
-        <CombatInput
-          confirm={()=>{}}
-          cancel={()=>{}}
-          changeTarget={()=>{}}
-          changeWeapon={()=>{}} />
+        <CombatInput />
       </div>
     </CSSTransition>
   )

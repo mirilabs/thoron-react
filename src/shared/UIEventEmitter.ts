@@ -1,15 +1,8 @@
 import EventEmitter, { IEventSignatures } from "../utils/EventEmitter";
 
-enum ControllerState {
-  "idle",
-  "action_select",
-  "combat_forecast"
-}
-
 interface UIEventSignatures extends IEventSignatures {
   // gameplay
   select_action: (action: string) => void;
-  reset_controller_state: (state: ControllerState) => void;
 
   // navigation
   confirm: () => void;

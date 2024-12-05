@@ -73,7 +73,7 @@ function ActionMenuToggle(props: {
     unit.getPossibleActions(destination) :
     [];
 
-  const handleClose = useUIEmitter("reset_controller_state");
+  const handleClose = useUIEmitter("cancel");
   
   let transitionProps = {
     in: props.display,
