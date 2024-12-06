@@ -3,8 +3,8 @@
     "outDir": "./dist",
     "target": "ESNext",
     "allowJs": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "baseUrl": "src/",
     "jsx": "react"

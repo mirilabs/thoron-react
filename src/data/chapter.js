@@ -10,9 +10,10 @@ chapter.addUnit({
     items: [
       {
         name: 'Iron Sword',
-        type: 'sword',
+        type: 'weapon',
         maxUses: 40,
-        weapon: {
+        stats: {
+          weaponType: 'sword',
           isMagic: false,
           might: 5,
           hit: 90,
@@ -23,9 +24,10 @@ chapter.addUnit({
       },
       {
         name: 'Iron Lance',
-        type: 'lance',
+        type: 'weapon',
         maxUses: 40,
-        weapon: {
+        stats: {
+          weaponType: 'sword',
           isMagic: false,
           might: 6,
           hit: 80,
@@ -47,9 +49,10 @@ chapter.addUnit({
     items: [
       {
         name: 'Iron Bow',
-        type: 'bow',
+        type: 'weapon',
         maxUses: 40,
-        weapon: {
+        stats: {
+          weaponType: 'bow',
           isMagic: false,
           might: 6,
           hit: 80,
@@ -60,9 +63,10 @@ chapter.addUnit({
       },
       {
         name: 'Iron Sword',
-        type: 'sword',
+        type: 'weapon',
         maxUses: 40,
         weapon: {
+          weaponType: 'sword',
           isMagic: false,
           might: 5,
           hit: 90,
@@ -86,7 +90,7 @@ chapter.addUnit({
         name: 'Fire',
         type: 'tome',
         maxUses: 40,
-        weapon: {
+        stats: {
           isMagic: true,
           might: 5,
           hit: 90,
