@@ -6,6 +6,7 @@ import { useSelectedUnit } from "components/utils/useUnit";
 import { useControllerSelector } from "components/utils/reduxHooks";
 import { useDispatch } from "react-redux";
 import { actionSelected } from "shared/store";
+import { DeployedUnit } from "thoron";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -34,10 +35,10 @@ function ActionButton({ unitAction, isSelectable=true }: {
 
 function ActionMenu({ actions, possibleActions }: {
   actions: string[],
-  possibleActions: { [K: symbol]: any }
+  possibleActions: string[]
 }) {
   const buttons = actions.map((action) => {
-    if (possibleActions[action] !== undefined) {
+    if (possibleActions.includes(action)) {
       return <ActionButton unitAction={action} key={action} />
     }
     else return null;
@@ -67,12 +68,12 @@ function ActionMenuToggle(props: {
 }) {
   const nodeRef = useRef();
 
-  let unit = useSelectedUnit();
+  let unit: DeployedUnit = useSelectedUnit();
   let destination = useControllerSelector(
     state => state.pendingMove.destination
   );
   let possibleActions = unit && destination ?
-    unit.getPossibleActions(destination) :
+    unit.getPossibleActions(destination, null) :
     [];
 
   const handleClose = useUIEmitter("cancel");
