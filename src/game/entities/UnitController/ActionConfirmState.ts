@@ -1,7 +1,5 @@
-import Vector2 from "engine/utils/Vector2";
 import UnitPiece from "../UnitPiece";
 import ControllerState, { ControllerPhase } from "./ControllerState";
-import { Vector2 as IVector2 } from "engine/components";
 import UnitActionRange from "../ui/UnitActionRange";
 import store, {
   targetSelected,
@@ -10,6 +8,9 @@ import store, {
 import PanningState from "./PanningState";
 import ActionSelectState from "./ActionSelectState";
 import ActionController from "./ActionController";
+import { addListener, UnsubscribeListener } from "@reduxjs/toolkit";
+import controllerStore from "shared/store";
+import Vector2 from "engine/utils/Vector2";
 
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
@@ -18,6 +19,7 @@ class ActionConfirmState extends ControllerState {
   selectedUnit: any;
   actionRangeEnt: UnitActionRange;
   actionController: ActionController;
+  removeTargetListener: UnsubscribeListener;
 
   getDest() {
     return store.getState().pendingMove.destination;
@@ -32,6 +34,7 @@ class ActionConfirmState extends ControllerState {
 
     const { pendingMove } = store.getState();
     
+    // show action range
     this.actionRangeEnt = new UnitActionRange(
       game,
       this.selectedUnit,
@@ -39,6 +42,7 @@ class ActionConfirmState extends ControllerState {
     );
     this.actionRangeEnt.addToScene(scene);
 
+    // create actionController
     this.actionController = new ActionController(
       this.controller.chapter,
       this.unitEnt.unit,
@@ -46,8 +50,7 @@ class ActionConfirmState extends ControllerState {
       pendingMove.action
     );
 
-    // TODO if no target is selected, pick one
-
+    // pass ui events to actionController
     this.bindUIEvent("left", () => this.actionController.selectPreviousItem());
     this.bindUIEvent("right", () => this.actionController.selectNextItem())
     this.bindUIEvent("down", () => {
@@ -57,16 +60,25 @@ class ActionConfirmState extends ControllerState {
       this.actionController.selectPreviousTarget();
     });
     this.bindUIEvent("cancel", this.onCancel);
+
+    // listen for changes in pendingMove
+    this.removeTargetListener = controllerStore.dispatch(addListener({
+      type: "controller/targetSelected",
+      effect: () => this.onTargetSelected()
+    }));
+
+    this.actionController.findTargets();
   }
 
   onExit(nextState: ControllerState): void {
     super.onExit(nextState);
 
-    this.actionController.cleanup();
     this.actionRangeEnt.destroy();
+    this.removeTargetListener();
+    this.resetTargetIndicators();
   }
 
-  onMouseDown(event: IVector2): void {
+  onMouseDown(event: Vector2): void {
     let tileCoords = this.controller.coords.toTiles(event.x, event.y);
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
@@ -79,6 +91,20 @@ class ActionConfirmState extends ControllerState {
     else {
       this.setState(new PanningState())
     }
+  }
+
+  resetTargetIndicators() {
+    for (const unitEnt of this.controller.unitPieces.values()) {
+      unitEnt.hideTargetIndicator();
+    }
+  }
+
+  onTargetSelected() {
+    this.actionController.onTargetSelected();
+    
+    this.resetTargetIndicators();
+    let target = this.actionController.getTarget();
+    this.controller.getUnitPiece(target).showTargetIndicator();
   }
 
   onCancel() {
