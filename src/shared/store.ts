@@ -1,4 +1,4 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
+import { createSlice, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import { Vector2 } from "engine/components";
 import {
   ControllerPhase
@@ -71,8 +71,12 @@ export const {
   pendingMoveDiscarded
 } = controllerSlice.actions;
 
+const listenerMiddleware = createListenerMiddleware();
+
 const controllerStore = configureStore({
-  reducer: controllerSlice.reducer
+  reducer: controllerSlice.reducer,
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware().prepend(listenerMiddleware.middleware)
 });
 
 export default controllerStore;

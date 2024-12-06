@@ -5,7 +5,7 @@ import { Vector2 as IVector2 } from "engine/components";
 import UnitActionRange from "../ui/UnitActionRange";
 import store, {
   targetSelected,
-  pendingMoveDiscarded
+  actionSelected
 } from "shared/store";
 import PanningState from "./PanningState";
 import ActionSelectState from "./ActionSelectState";
@@ -62,6 +62,7 @@ class ActionConfirmState extends ControllerState {
   onExit(nextState: ControllerState): void {
     super.onExit(nextState);
 
+    this.actionController.cleanup();
     this.actionRangeEnt.destroy();
   }
 
@@ -81,7 +82,8 @@ class ActionConfirmState extends ControllerState {
   }
 
   onCancel() {
-    store.dispatch(pendingMoveDiscarded(null))
+    store.dispatch(targetSelected(null));
+    store.dispatch(actionSelected(null));
     this.setState(new ActionSelectState());
   }
 }
