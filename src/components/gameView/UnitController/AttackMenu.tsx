@@ -132,8 +132,6 @@ function AttackMenu() {
     combat = attacker?.getCombatForecast(target);
   }
 
-  
-
   return (
     <>
       {

@@ -6,6 +6,7 @@ import {
   useControllerDispatch
 } from "components/utils/reduxHooks";
 import { itemSelected } from "shared/store";
+import Item from "thoron/dist/Item";
 
 function WeaponSelector() {
   const [selecting, setSelecting] = useState(false);
@@ -42,7 +43,7 @@ function WeaponSelector() {
   }
   else {
     // render all items
-    itemElems = items.filter((item) => item["weapon"] !== undefined)
+    itemElems = items.filter((item: Item) => item.type === "weapon")
       .map((item, i) => (
         <ItemShow item={item} key={i} onClick={() => { handleItemSelect(i) }} />
       ));

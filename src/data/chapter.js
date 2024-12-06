@@ -65,7 +65,7 @@ chapter.addUnit({
         name: 'Iron Sword',
         type: 'weapon',
         maxUses: 40,
-        weapon: {
+        stats: {
           weaponType: 'sword',
           isMagic: false,
           might: 5,
@@ -88,9 +88,10 @@ chapter.addUnit({
     items: [
       {
         name: 'Fire',
-        type: 'tome',
+        type: 'weapon',
         maxUses: 40,
         stats: {
+          weaponType: 'tome',
           isMagic: true,
           might: 5,
           hit: 90,
@@ -103,7 +104,7 @@ chapter.addUnit({
     sprite: 'https://cdn.discordapp.com/emojis/1278905499680510045'
   },
   position: { x: 3, y: 4 },
-  actionState: { team: 1 }
+  actionState: { team: 2 }
 })
 
 export default chapter
