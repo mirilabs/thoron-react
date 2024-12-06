@@ -1,4 +1,3 @@
-import { addListener, UnsubscribeListener } from "@reduxjs/toolkit";
 import { Vector2 } from "engine/components";
 import controllerStore, { itemSelected, targetSelected } from "shared/store";
 import Chapter, { DeployedUnit } from "thoron";
@@ -10,9 +9,6 @@ class ActionController {
   destination: Vector2;
   items: any[];
   targetIds: (string | number)[];
-
-  removeTargetListener: UnsubscribeListener;
-  removeItemListener: UnsubscribeListener;
 
   constructor(
     chapter: Chapter,
@@ -28,21 +24,6 @@ class ActionController {
     if (action === "attack") {
       this.items = unit.items.filter(item => item.type === "weapon");
     }
-
-    this.findTargets();
-    
-    // listen for changes in pendingMove
-    this.removeTargetListener = controllerStore.dispatch(addListener({
-      type: "controller/targetSelected",
-      effect: () => this.onTargetSelected()
-    }));
-  }
-
-  /**
-   * Remove store subscriptions
-   */
-  cleanup() {
-    this.removeTargetListener();
   }
 
   /**
