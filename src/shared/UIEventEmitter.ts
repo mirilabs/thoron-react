@@ -4,6 +4,7 @@ interface UIEventSignatures extends IEventSignatures {
   // gameplay
   select_action: (action: string) => void;
   select_item: (item: any) => void;
+  select_target: (targetId: number | string) => void;
 
   // navigation
   confirm: () => void;

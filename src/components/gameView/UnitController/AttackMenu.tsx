@@ -2,10 +2,9 @@ import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./AttackMenu.scss";
 import useUnit, { useSelectedUnit } from "components/utils/useUnit";
-import { useControllerDispatch, useControllerSelector } from "components/utils/reduxHooks";
+import { useControllerSelector } from "components/utils/reduxHooks";
 import ItemIcon from "components/UnitSummary/ItemIcon";
-import useUIAction, { useUIEmitter } from "components/utils/useUIAction";
-import { itemSelected } from "shared/store";
+import { useUIEmitter } from "components/utils/useUIAction";
 
 const HP_BAR_WIDTH_SCALE = 1 / 60; // 60 hp = 100% width
 
@@ -93,20 +92,6 @@ function CombatInput({ unit }) {
   const changeTarget = useUIEmitter("down");
   const changeWeapon = useUIEmitter("right");
   const confirm = useUIEmitter("confirm");
-  const selectWeapon = useUIEmitter("select_item");
-
-  const dispatch = useControllerDispatch();
-
-  useUIAction("left", () => {
-    let i = cycleItem(unit, -1);
-    dispatch(itemSelected(i));
-    selectWeapon(unit.equipped);
-  });
-  useUIAction("right", () => {
-    let i = cycleItem(unit, 1);
-    dispatch(itemSelected(i));
-    selectWeapon(unit.equipped);
-  });
 
   return (
     <div className="attack-input">
@@ -130,29 +115,6 @@ function CombatInput({ unit }) {
       </button>
     </div>
   )
-}
-
-/**
- *  Loop through a unit's inventory to find a valid item to switch to
- *  @param unit
- *  @param direction 1 or -1
- *  @returns Index of the found item
- */
-function cycleItem(unit, direction: number = 1) {
-  const startIndex = unit.state.equippedIndex;
-  let index = startIndex;
-
-  for (let i = 0; i < unit.items.length; i++) {
-    index += direction;
-    if (index >= unit.items.length) index = 0;
-    if (index < 0) index = unit.items.length - 1;
-
-    try {
-      unit.equip(index);
-      return index;
-    }
-    catch (e) {}
-  }
 }
 
 function AttackMenu() {
