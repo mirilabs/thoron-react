@@ -7,10 +7,11 @@ import TargetIndicator from './ui/TargetIndicator';
 import UnitPath from './ui/UnitPath';
 import { Vector2 } from 'engine/components';
 import controllerStore from 'shared/store';
+import { DeployedUnit } from 'thoron';
 
 class UnitPiece extends GameObject {
   rect: Rect;
-  unit: any;
+  unit: DeployedUnit;
   _game: WeakRef<Game>;
 
   moveRangeEnt: UnitRange;

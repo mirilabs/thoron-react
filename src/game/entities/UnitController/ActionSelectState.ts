@@ -44,10 +44,21 @@ class ActionSelectState extends ControllerState {
   onMouseDown(event: CursorEvent): void {
     let tileCoords = this.getTileCoords(event);
     let target = this.controller.chapter.getUnitAt(tileCoords);
+    let possibleActions = this.unitEnt.unit.getPossibleActions(
+      controllerStore.getState().pendingMove.destination,
+      target
+    );
+    console.log(this.unitEnt.unit.getMinAttackRange())
+    console.log(possibleActions);
 
     if (target && target !== this.unitEnt.unit) {
+      // if only one action on this target is possible, select it by default
+      if (possibleActions.length === 1) {
+        controllerStore.dispatch(actionSelected(possibleActions[0]));
+        this.setState(new ActionConfirmState())
+      }
+
       controllerStore.dispatch(targetSelected(target.id));
-      this.setState(new ActionConfirmState())
     }
     else if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
       this.setState(new MovingState());

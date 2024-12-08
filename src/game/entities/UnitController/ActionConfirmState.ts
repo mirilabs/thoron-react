@@ -106,7 +106,8 @@ class ActionConfirmState extends ControllerState {
     
     this.resetTargetIndicators();
     let target = this.actionController.getTarget();
-    this.controller.getUnitPiece(target).showTargetIndicator();
+    if (target)
+      this.controller.getUnitPiece(target).showTargetIndicator();
   }
 
   onCancel() {

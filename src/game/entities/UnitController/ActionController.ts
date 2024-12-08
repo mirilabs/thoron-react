@@ -21,8 +21,12 @@ class ActionController {
     this.destination = destination;
     this.action = action;
 
-    if (action === "attack") {
-      this.items = unit.items.filter(item => item.type === "weapon");
+    switch(action) {
+      case "attack":
+        this.items = unit.items.filter(item => item.type === "weapon");
+        break;
+      default:
+        this.items = [];
     }
   }
 
@@ -112,7 +116,10 @@ class ActionController {
     this.targetIds = targets.map(unit => unit.id);
 
     // set default target
-    if (!this.targetIds.includes(this.getTargetId())) {
+    if (
+      this.targetIds.length > 0 &&
+      !this.targetIds.includes(this.getTargetId())
+    ) {
       this.setTargetId(this.targetIds[0]);
     }
   }
@@ -150,8 +157,11 @@ class ActionController {
    * Target select callback
    */
   onTargetSelected() {
+    const target = this.getTarget();
+    if (!target) return;
+
     // swap weapon if current one is out of range
-    if (!this.isInEquippedRange(this.getTarget()))
+    if (!this.isInEquippedRange(target))
       this.selectNextItem();
   }
 }
