@@ -1,6 +1,5 @@
 import { CursorEvent } from "engine/components";
 import ControllerState, { ControllerPhase } from "./ControllerState";
-import PanningState from "./PanningState";
 import MovingState from "./MovingState";
 
 class IdleState extends ControllerState {
@@ -21,7 +20,7 @@ class IdleState extends ControllerState {
       this.controller.currentState.onMouseDown(event);
     }
     else {
-      this.setState(new PanningState());
+      this.startPanning();
     }
   }
 }

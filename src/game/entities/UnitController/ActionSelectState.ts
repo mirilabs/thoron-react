@@ -3,7 +3,6 @@ import UnitPiece from "../UnitPiece";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";
-import PanningState from "./PanningState";
 import controllerStore, { targetSelected, actionSelected } from "shared/store";
 import ActionConfirmState from "./ActionConfirmState";
 
@@ -57,7 +56,7 @@ class ActionSelectState extends ControllerState {
       this.controller.currentState.onMouseDown(event);
     }
     else {
-      this.setState(new PanningState());
+      this.startPanning();
     }
   }
 
