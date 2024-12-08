@@ -5,12 +5,12 @@ import store, {
   targetSelected,
   actionSelected
 } from "shared/store";
-import PanningState from "./PanningState";
 import ActionSelectState from "./ActionSelectState";
 import ActionController from "./ActionController";
 import { addListener, UnsubscribeListener } from "@reduxjs/toolkit";
 import controllerStore from "shared/store";
 import Vector2 from "engine/utils/Vector2";
+import { CursorEvent } from "engine/components";
 
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
@@ -72,13 +72,15 @@ class ActionConfirmState extends ControllerState {
 
   onExit(nextState: ControllerState): void {
     super.onExit(nextState);
-
+    
     this.actionRangeEnt.destroy();
     this.removeTargetListener();
     this.resetTargetIndicators();
   }
 
-  onMouseDown(event: Vector2): void {
+  onMouseDown(event: CursorEvent): void {
+    super.onMouseDown(event);
+    
     let tileCoords = this.controller.coords.toTiles(event.x, event.y);
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
@@ -89,7 +91,7 @@ class ActionConfirmState extends ControllerState {
       store.dispatch(targetSelected(unit.id));
     }
     else {
-      this.setState(new PanningState())
+      this.startPanning();
     }
   }
 

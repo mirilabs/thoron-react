@@ -17,6 +17,7 @@ type UIEventBindings = {
 abstract class ControllerState {
   id: ControllerPhase;
   uiEventBindings: Partial<UIEventBindings> = {};
+  panning: boolean = false;
 
   private _controller: WeakRef<UnitController>;
   get controller(): UnitController {
@@ -43,6 +44,10 @@ abstract class ControllerState {
     return this.controller.coords.toTiles(vec.x, vec.y);
   }
 
+  startPanning() {
+    this.panning = true;
+  }
+
   onEnter(prevState: ControllerState) {}
 
   onExit(nextState: ControllerState) {
@@ -56,8 +61,16 @@ abstract class ControllerState {
   }
 
   onMouseDown(event: CursorEvent) {}
-  onMouseMove(event: CursorEvent) {}
-  onMouseUp(event: CursorEvent) {}
+
+  onMouseMove(event: CursorEvent) {
+    if (this.panning) {
+      this.controller.scene.camera.pan(event.delta);
+    }
+  }
+
+  onMouseUp(event: CursorEvent) {
+    this.panning = false;
+  }
 }
 
 export default ControllerState;
