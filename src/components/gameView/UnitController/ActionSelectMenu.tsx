@@ -35,10 +35,10 @@ function ActionButton({ unitAction, isSelectable=true }: {
 
 function ActionMenu({ actions, possibleActions }: {
   actions: string[],
-  possibleActions: string[]
+  possibleActions: { [action: string]: any }
 }) {
   const buttons = actions.map((action) => {
-    if (possibleActions.includes(action)) {
+    if (possibleActions[action]) {
       return <ActionButton unitAction={action} key={action} />
     }
     else return null;
@@ -73,7 +73,7 @@ function ActionMenuToggle(props: {
     state => state.pendingMove.destination
   );
   let possibleActions = unit && destination ?
-    unit.getPossibleActions(destination, null) :
+    unit.getPossibleActions(destination) :
     [];
 
   const handleClose = useUIEmitter("cancel");
