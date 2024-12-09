@@ -5,6 +5,8 @@ import useUnit, { useSelectedUnit } from "components/utils/useUnit";
 import { useControllerSelector } from "components/utils/reduxHooks";
 import ItemIcon from "components/UnitSummary/ItemIcon";
 import { useUIEmitter } from "components/utils/useUIAction";
+import { CombatForecast } from "thoron/dist/Battle";
+import { DeployedUnit } from "thoron";
 
 const HP_BAR_WIDTH_SCALE = 1 / 60; // 60 hp = 100% width
 
@@ -27,7 +29,7 @@ function HPBar({ maxHP, hp, damage }) {
   )
 }
 
-function CombatForecastSide({ unit, forecast, oppForecast }) {
+function CombatPreviewSide({ unit, forecast, oppForecast }) {
   let equipped = unit.items[unit.state.equippedIndex];
 
   return (
@@ -69,18 +71,18 @@ function CombatForecastSide({ unit, forecast, oppForecast }) {
   )
 }
 
-function CombatForecast({ attacker, target, combat }) {
+function CombatPreview({ attacker, target, combat }) {
   return (
     <div className="attack-preview">
       <span className="attack-preview__left">
-        <CombatForecastSide unit={attacker} forecast={combat.initiator}
+        <CombatPreviewSide unit={attacker} forecast={combat.initiator}
           oppForecast={combat.defender} />
       </span>
       <span className="attack-preview__center">
 
       </span>
       <span className="attack-preview__right">
-        <CombatForecastSide unit={target} forecast={combat.defender}
+        <CombatPreviewSide unit={target} forecast={combat.defender}
           oppForecast={combat.initiator} />
       </span>
     </div>
@@ -118,27 +120,31 @@ function CombatInput({ unit }) {
 }
 
 function AttackMenu() {
-  const attacker = useSelectedUnit();
-  const targetId = useControllerSelector(state => state.pendingMove.targetId);
-  const target = useUnit(targetId);
+  const unit: DeployedUnit = useSelectedUnit();
+  const {
+    targetId,
+    destination
+  } = useControllerSelector(state => state.pendingMove);
+  const target: DeployedUnit = useUnit(targetId);
 
   // rerender when equip index changes
   useControllerSelector(state => (
     state.pendingMove.itemIndex
   ));
 
-  let combat;
-  if (attacker && target) {
-    combat = attacker?.getCombatForecast(target);
+  let combat: CombatForecast;
+  if (unit && target) {
+    let range = target.getDistance(destination);
+    combat = unit?.getCombatForecast(target, range);
   }
 
   return (
     <>
       {
         combat &&
-        <CombatForecast attacker={attacker} target={target} combat={combat} />
+        <CombatPreview attacker={unit} target={target} combat={combat} />
       }
-      <CombatInput unit={attacker} />
+      <CombatInput unit={unit} />
     </>
   )
 }
