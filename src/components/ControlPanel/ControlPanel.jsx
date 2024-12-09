@@ -2,9 +2,9 @@ import "./ControlPanel.scss";
 import "react-tabs/style/react-tabs.css";
 import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import UnitDetail from "./UnitDetail";
 import Settings from "components/ControlPanel/Settings";
 import useUIAction, { useUIEmitter } from "components/utils/useUIAction";
+import UnitIndexContainer from "./UnitIndex";
 
 function ControlPanel({ show, setShow }) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -39,7 +39,7 @@ function ControlPanel({ show, setShow }) {
     <>
       <Tabs selectedIndex={tabIndex} onSelect={index => { setTabIndex(index) }}>
         <TabPanel>
-          <UnitDetail />
+          <UnitIndexContainer />
         </TabPanel>
         <TabPanel>
           <Settings />

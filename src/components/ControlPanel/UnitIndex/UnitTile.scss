@@ -1,8 +1,4 @@
-@use "sass:color";
-@use "../ControlPanel/UnitIndex/UnitTile.scss";
-
-.unit-detail-toggle {
-  @extend .unit-tile;
+.unit-tile {
   position: relative;
   max-width: fit-content;
   height: 32px;
@@ -12,6 +8,10 @@
 
   margin-top: 8px;
   z-index: 10;
+
+  background-color: var(--bg-color-2);
+  outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
+  border-bottom: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
 
   .sprite {
     opacity: 1;

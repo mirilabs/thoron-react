@@ -2,20 +2,16 @@ import "./index.scss";
 import React from "react";
 import StatView from "./StatView";
 import InventoryView from "./InventoryView";
-import { useSelectedUnit } from "components/utils/useUnit";
 
-function UnitDetail() {
-  const selectedUnit = useSelectedUnit();
-
-  if (!selectedUnit) return null;
+function UnitDetail({ unit }) {
   return (
     <div className="unit-detail">
       <div className="title">
-        <h1>{selectedUnit.record.name}</h1>
+        <h1>{unit.record.name}</h1>
       </div>
-      <StatView stats={selectedUnit.record.stats}
-          growths={selectedUnit.record.growths} />
-      <InventoryView items={selectedUnit.record.items} />
+      <StatView stats={unit.record.stats}
+          growths={unit.record.growths} />
+      <InventoryView items={unit.record.items} />
     </div>
   )
 }
