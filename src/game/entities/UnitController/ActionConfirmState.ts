@@ -7,8 +7,6 @@ import store, {
 } from "shared/store";
 import ActionSelectState from "./ActionSelectState";
 import ActionController from "./ActionController";
-import { addListener, UnsubscribeListener } from "@reduxjs/toolkit";
-import controllerStore from "shared/store";
 import Vector2 from "engine/utils/Vector2";
 import { CursorEvent } from "engine/components";
 
@@ -19,7 +17,6 @@ class ActionConfirmState extends ControllerState {
   selectedUnit: any;
   actionRangeEnt: UnitActionRange;
   actionController: ActionController;
-  removeTargetListener: UnsubscribeListener;
 
   getDest() {
     return store.getState().pendingMove.destination;
@@ -51,21 +48,21 @@ class ActionConfirmState extends ControllerState {
     );
 
     // pass ui events to actionController
-    this.bindUIEvent("left", () => this.actionController.selectPreviousItem());
-    this.bindUIEvent("right", () => this.actionController.selectNextItem())
-    this.bindUIEvent("down", () => {
+    this.addUIEventListener("left", () => this.actionController.selectPreviousItem());
+    this.addUIEventListener("right", () => this.actionController.selectNextItem())
+    this.addUIEventListener("down", () => {
       this.actionController.selectNextTarget();
     });
-    this.bindUIEvent("up", () => {
+    this.addUIEventListener("up", () => {
       this.actionController.selectPreviousTarget();
     });
-    this.bindUIEvent("cancel", this.onCancel);
+    this.addUIEventListener("cancel", this.onCancel);
 
     // listen for changes in pendingMove
-    this.removeTargetListener = controllerStore.dispatch(addListener({
+    this.addStoreListener({
       type: "controller/targetSelected",
       effect: () => this.onTargetSelected()
-    }));
+    });
 
     this.actionController.findTargets();
   }
@@ -74,7 +71,6 @@ class ActionConfirmState extends ControllerState {
     super.onExit(nextState);
     
     this.actionRangeEnt.destroy();
-    this.removeTargetListener();
     this.resetTargetIndicators();
   }
 

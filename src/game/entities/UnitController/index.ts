@@ -7,7 +7,10 @@ import UnitPiece from "../UnitPiece";
 import { CursorEvent } from "engine/components";
 import ControllerState from "./ControllerState";
 import IdleState from "./IdleState";
-import controllerStore, { phaseChanged, unitSelected } from "shared/store";
+import controllerStore, { phaseChanged } from "shared/store";
+import { addAppListener } from "shared/listenerMiddleware";
+import { PayloadAction } from "@reduxjs/toolkit";
+import MovingState from "./MovingState";
 
 class UnitController extends GameObject {
   game: Game;
@@ -36,6 +39,11 @@ class UnitController extends GameObject {
         onMouseUp: this.onMouseUp.bind(this)
       }
     }
+
+    controllerStore.dispatch(addAppListener({
+      type: "controller/unitSelected",
+      effect: (action: PayloadAction) => this.onUnitSelected(action.payload)
+    }));
 
     this.setState(new IdleState());
   }
@@ -66,9 +74,13 @@ class UnitController extends GameObject {
     this.unitPieces.delete(unit);
   }
 
-  selectUnit(unit) {
+  onUnitSelected(unitId) {
+    const unit = this.chapter.getUnitById(unitId);
+
     // unselect previous unit
     if (this.selectedPiece) {
+      this.selectedPiece.resetPosition();
+      this.selectedPiece.hideMovePath();
       this.selectedPiece.hideMoveRange();
       this.scene.draw();
     }
@@ -77,14 +89,12 @@ class UnitController extends GameObject {
     if (unit) {
       this.selectedPiece = this.getUnitPiece(unit);
       this.selectedPiece.showMoveRange();
-      this.scene.draw();
+      this.setState(new MovingState());
     }
     else {
       delete this.selectedPiece;
+      this.setState(new IdleState());
     }
-
-    // update store
-    controllerStore.dispatch(unitSelected(unit.id));
   }
 
   get selectedUnit() {
@@ -92,10 +102,10 @@ class UnitController extends GameObject {
   }
 
   setState(nextState: ControllerState) {
-    // console.log(
-    //   this.currentState?.constructor.name + " --> " +
-    //   nextState.constructor.name
-    // );
+    console.log(
+      this.currentState?.constructor.name + " --> " +
+      nextState.constructor.name
+    );
 
     const prevState = this.currentState;
     if (this.currentState) this.currentState.onExit(nextState);
