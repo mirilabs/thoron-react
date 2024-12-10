@@ -1,8 +1,9 @@
-import { createSlice, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 import { Vector2 } from "engine/components";
 import {
   ControllerPhase
 } from "game/entities/UnitController/ControllerState";
+import listenerMiddleware from "./listenerMiddleware";
 
 const initialState: {
   phase: ControllerPhase,
@@ -71,12 +72,10 @@ export const {
   pendingMoveDiscarded
 } = controllerSlice.actions;
 
-const listenerMiddleware = createListenerMiddleware();
-
 const controllerStore = configureStore({
   reducer: controllerSlice.reducer,
   middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware().prepend(listenerMiddleware.middleware)
+    getDefaultMiddleware().prepend(listenerMiddleware)
 });
 
 export default controllerStore;

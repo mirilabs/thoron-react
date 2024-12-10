@@ -5,6 +5,7 @@ import IdleState from "./IdleState";
 import MovingState from "./MovingState";
 import controllerStore, { targetSelected, actionSelected } from "shared/store";
 import ActionConfirmState from "./ActionConfirmState";
+import { DeployedUnit } from "thoron";
 
 class ActionSelectState extends ControllerState {
   id = ControllerPhase.ACTION_SELECT;
@@ -21,8 +22,8 @@ class ActionSelectState extends ControllerState {
     controllerStore.dispatch(actionSelected(null));
 
     // wait for user to select action in ui
-    this.bindUIEvent("select_action", this.onActionSelected);
-    this.bindUIEvent("cancel", this.onCancel);
+    this.addUIEventListener("select_action", this.onActionSelected);
+    this.addUIEventListener("cancel", this.onCancel);
   }
 
   onExit(nextState: ControllerState) {
@@ -79,8 +80,13 @@ class ActionSelectState extends ControllerState {
   }
 
   onCancel() {
-    this.unitEnt.resetPosition();
     this.setState(new IdleState());
+  }
+
+  onUnitSelected(unit: DeployedUnit): void {
+    if (unit !== this.unitEnt.unit) {
+      this.setState(new IdleState())
+    }
   }
 }
 

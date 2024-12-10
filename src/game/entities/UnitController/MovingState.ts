@@ -7,12 +7,13 @@ import controllerStore, {
   destinationSelected,
   positionSelected
 } from "shared/store";
+import { DeployedUnit } from "thoron";
 
 class MovingState extends ControllerState {
   id = ControllerPhase.MOVING;
   
+  unit: DeployedUnit;
   unitEnt: UnitPiece;
-  unit: any;
   entityPos: IVector2;
 
   lastX: number;
@@ -20,8 +21,12 @@ class MovingState extends ControllerState {
   dragging: boolean = false;
 
   onEnter(prevState: ControllerState) {
-    this.unitEnt = this.controller.selectedPiece;
-    this.unit = this.unitEnt.unit;
+    super.onEnter(prevState);
+
+    this.unit = this.controller.chapter.getUnitById(
+      controllerStore.getState().unitId
+    );
+    this.unitEnt = this.controller.getUnitPiece(this.unit);
 
     this.entityPos = this.unitEnt.entity.getComponent('position');
 
