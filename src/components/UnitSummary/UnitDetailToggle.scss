@@ -5,29 +5,8 @@
   @extend .unit-tile;
   position: relative;
   max-width: fit-content;
-  height: 32px;
-  display: flex;
-  flex-direction: row;
   float: left;
 
   margin-top: 8px;
   z-index: 10;
-
-  .sprite {
-    opacity: 1;
-    max-width: 64px;
-    max-height: 100%;
-    margin: 0 8px;
-  }
-
-  .name {
-    opacity: 1;
-    margin: auto;
-    margin-right: 16px;
-    font-size: medium;
-  }
-  
-  &:hover {
-    background-color: rgb(from var(--bg-color-2) r g b / 0.5);
-  }
 }

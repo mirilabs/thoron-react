@@ -40,29 +40,6 @@
       align-items: center;
     }
 
-    .hp-bar {
-      $bg: rgba(from var(--accent-color) r g b/0.25);
-      background-color: $bg;
-      height: 8px;
-      display: flex;
-      flex-direction: row;
-  
-      & > * {
-        height: 8px;
-      }
-  
-      &__remaining {
-        background-color: var(--text-color-2);
-      }
-  
-      &__damage {
-        background-color: var(--text-color-2);
-        animation-name: flicker;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
-      }
-    }
-
     .label {
       font-weight: bold;
       font-size: 0.9rem;

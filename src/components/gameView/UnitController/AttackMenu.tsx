@@ -7,27 +7,7 @@ import ItemIcon from "components/UnitSummary/ItemIcon";
 import { useUIEmitter } from "components/utils/useUIAction";
 import { CombatForecast } from "thoron/dist/Battle";
 import { DeployedUnit } from "thoron";
-
-const HP_BAR_WIDTH_SCALE = 1 / 60; // 60 hp = 100% width
-
-function HPBar({ maxHP, hp, damage }) {
-  let remainingHP = Math.max(hp - damage, 0);
-
-  let percentWidth = (value) => {
-    return { width: `${value * 100}%` }
-  }
-  
-  return (
-    <div className="hp-bar" style={percentWidth(maxHP * HP_BAR_WIDTH_SCALE)}>
-      <span className="hp-bar__remaining"
-        style={percentWidth(remainingHP / maxHP)}>
-      </span>
-      <span className="hp-bar__damage"
-        style={percentWidth(damage / maxHP)}>
-      </span>
-    </div>
-  )
-}
+import HPBar from "components/ControlPanel/UnitIndex/HPBar";
 
 function CombatPreviewSide({ unit, forecast, oppForecast }) {
   let equipped = unit.items[unit.state.equippedIndex];
