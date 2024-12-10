@@ -1,13 +1,11 @@
 .unit-tile {
-  position: relative;
-  max-width: fit-content;
   height: 32px;
+  padding: 4px 8px 4px 4px;
+  margin: 4px;
   display: flex;
   flex-direction: row;
-  float: left;
-
-  margin-top: 8px;
-  z-index: 10;
+  align-items: center;
+  gap: 8px;
 
   background-color: var(--bg-color-2);
   outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
@@ -15,19 +13,24 @@
 
   .sprite {
     opacity: 1;
+    min-width: 24px; 
     max-width: 64px;
     max-height: 100%;
-    margin: 0 8px;
   }
 
   .name {
     opacity: 1;
     margin: auto;
-    margin-right: 16px;
+    min-width: 80px;
     font-size: medium;
+    text-align: left;
   }
   
   &:hover {
     background-color: rgb(from var(--bg-color-2) r g b / 0.5);
+  }
+
+  .hp-value {
+    font-size: 0.8rem
   }
 }

@@ -1,7 +1,7 @@
 .control-panel {
   .react-tabs {
     position: absolute;
-    width: inherit;
+    width: calc(100% - 8px);
     height: 100%;
     display: grid;
     grid-template-rows: auto 36px;
