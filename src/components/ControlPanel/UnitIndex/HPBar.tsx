@@ -1,7 +1,7 @@
 import React from "react";
 import "./HPBar.scss";
 
-const DEFAULT_WIDTH_SCALE = `${1/60}%`; // 60 hp = 100% width
+const DEFAULT_WIDTH_SCALE = `${1/60 * 100}%`; // 60 hp = 100% width
 
 function HPBar({ maxHP, hp, damage, widthScale = DEFAULT_WIDTH_SCALE }) {
   let remainingHP = Math.max(hp - damage, 0);
