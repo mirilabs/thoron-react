@@ -1,37 +1,65 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Game from '../game/Game';
 import UIEventEmitter from '../shared/UIEventEmitter';
+import Chapter, { Controller } from 'thoron';
 
-const ThoronContext: React.Context<{
-  chapter: any,
-  uiEvents: UIEventEmitter
-}> = createContext({
+type ThoronContextState = {
+  save: any,
+  controller: Controller,
+  chapter: Chapter,
+  uiEvents?: UIEventEmitter,
+  canvas: HTMLCanvasElement,
+  setCanvas: (canvas: HTMLCanvasElement) => void
+}
+
+const ThoronContext: React.Context<ThoronContextState> = createContext({
+  save: null,
+  controller: null,
   chapter: null,
-  uiEvents: null
+  uiEvents: null,
+  canvas: null,
+  setCanvas: null
 });
 
-function ThoronProvider({ chapter, children }) {
-  let [canvas, setCanvas] = useState(null);
-  let [api, setApi] = useState(null);
+function ThoronProvider({ saveState, children }: {
+  saveState: any,
+  children: React.ReactNode
+}) {
+  // create Thoron controller from saveState
+  function getInitialState(save: any): Partial<ThoronContextState> {
+    const controller = Controller.load(save);
+    const chapter = controller.chapter;
+
+    return {
+      save,
+      controller,
+      chapter
+    }
+  }
+
+  const [api, setApi] = useState(getInitialState(saveState));
+  const [canvas, setCanvas] = useState(null);
   
+  // when canvas is set, create Game object and attach canvas to it
   useEffect(() => {
-    if (chapter && canvas) {
-      let game = new Game(chapter);
+    if (canvas) {
+      let game = new Game(api.chapter);
       game.setCanvas(canvas);
 
-      setApi({
+      setApi((api) => ({
+        ...api,
         uiEvents: game.uiEvents
-      });
+      }));
 
       return function cleanup() {
         game.unsetCanvas();
       }
     }
-  }, [chapter, canvas])
+  }, [api.chapter, canvas])
 
-  let value = {
-    chapter,
-    ...api,
+  // exposed to components that use ThoronContext
+  let value: ThoronContextState = {
+    ...api as ThoronContextState,
     canvas,
     setCanvas
   }

@@ -3,6 +3,7 @@ import Scene from '../engine/Scene';
 import { Background, Grid } from './entities';
 import UIEventEmitter from '../shared/UIEventEmitter';
 import UnitController from './entities/UnitController';
+import Chapter from 'thoron';
 
 interface IGameConfig {
   tileWidth: number;
@@ -25,14 +26,14 @@ const defaultConfig: IGameConfig = {
 }
 
 class Game {
-  chapter;
+  chapter: Chapter;
   config: IGameConfig;
   coords: CoordinateConverter;
   uiEvents: UIEventEmitter;
   canvas: HTMLCanvasElement;
   scene: Scene;
 
-  constructor(chapter, cfg: Partial<IGameConfig> = {}) {
+  constructor(chapter: Chapter, cfg: Partial<IGameConfig> = {}) {
     this.chapter = chapter;
     this.config = {
       ...defaultConfig,

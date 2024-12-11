@@ -4,7 +4,7 @@ import { useControllerSelector } from "./reduxHooks";
 
 function useUnit(id) {
   const { chapter } = useContext(ThoronContext);
-  return chapter.getUnitById(id);
+  return chapter?.getUnitById(id) ?? null;
 }
 
 function useSelectedUnit() {

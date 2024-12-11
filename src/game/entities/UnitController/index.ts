@@ -11,13 +11,15 @@ import controllerStore, { phaseChanged } from "shared/store";
 import { addAppListener } from "shared/listenerMiddleware";
 import { PayloadAction } from "@reduxjs/toolkit";
 import MovingState from "./MovingState";
+import Chapter, { Controller } from "thoron";
 
 class UnitController extends GameObject {
   game: Game;
   config: IGameConfig;
   uiEvents: UIEventEmitter;
   coords: CoordinateConverter;
-  chapter: any;
+  gameController: Controller;
+  chapter: Chapter;
   scene: Scene;
   unitPieces: Map<any, UnitPiece> = new Map();
   selectedPiece: UnitPiece;
@@ -102,10 +104,10 @@ class UnitController extends GameObject {
   }
 
   setState(nextState: ControllerState) {
-    console.log(
-      this.currentState?.constructor.name + " --> " +
-      nextState.constructor.name
-    );
+    // console.log(
+    //   this.currentState?.constructor.name + " --> " +
+    //   nextState.constructor.name
+    // );
 
     const prevState = this.currentState;
     if (this.currentState) this.currentState.onExit(nextState);
