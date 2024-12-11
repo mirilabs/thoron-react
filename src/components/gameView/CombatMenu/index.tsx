@@ -19,7 +19,7 @@ function AttackMenuContainer(props: {
     <CSSTransition {...transitionProps}>
       <div className="attack-menu" ref={nodeRef}>
         <CombatMenu />
-        {props.display && <CombatStartHandler />}
+        <CombatStartHandler enabled={props.display} />
       </div>
     </CSSTransition>
   )
