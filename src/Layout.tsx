@@ -5,7 +5,7 @@ import { WindowSize } from "components/ViewportContext";
 
 // COMPONENTS
 import GameCanvas from './components/gameView/GameCanvas';
-import ActionUI from "components/gameView/UnitController";
+import ActionUI from "components/gameView/ActionMenu";
 import UnitSummary from "components/UnitSummary";
 import ControlPanel, { ControlPanelOpener } from "components/ControlPanel";
 
