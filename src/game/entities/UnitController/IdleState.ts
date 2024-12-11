@@ -2,7 +2,6 @@ import { CursorEvent } from "engine/components";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import MovingState from "./MovingState";
 import controllerStore, { pendingMoveDiscarded, unitSelected } from "shared/store";
-import { PayloadAction } from "@reduxjs/toolkit";
 
 class IdleState extends ControllerState {
   id = ControllerPhase.IDLE;
@@ -14,13 +13,6 @@ class IdleState extends ControllerState {
     if (this.controller.selectedPiece) {
       this.controller.selectedPiece.resetPosition();
     }
-    
-    this.addStoreListener({
-      type: "controller/unitSelected",
-      effect: (action: PayloadAction) => {
-        this.onUnitSelected();
-      }
-    });
   }
 
   onMouseDown(event: CursorEvent): void {
@@ -36,10 +28,6 @@ class IdleState extends ControllerState {
     else {
       this.startPanning();
     }
-  }
-
-  onUnitSelected() {
-    this.setState(new MovingState());
   }
 }
 
