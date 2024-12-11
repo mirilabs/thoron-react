@@ -10,7 +10,9 @@ import { DeployedUnit } from "thoron";
 import HPBar from "components/ControlPanel/UnitIndex/HPBar";
 
 function CombatPreviewSide({ unit, forecast, oppForecast }) {
-  let equipped = unit.items[unit.state.equippedIndex];
+  const equipped = unit.items[unit.state.equippedIndex];
+  const { damage, hit, crit, doubles, isInRange } = forecast;
+  const oppDamage = oppForecast.isInRange ? oppForecast.damage : 0;
 
   return (
     <>
@@ -25,26 +27,29 @@ function CombatPreviewSide({ unit, forecast, oppForecast }) {
         <div className="hp">
           <span className="label">HP</span>
           <span className="value">
-            {unit.hp} → {Math.max(unit.hp - oppForecast.damage, 0)}
+            {unit.hp} → {Math.max(unit.hp - oppDamage, 0)}
           </span>
         </div>
         <HPBar maxHP={unit.getStats().mhp}
           hp={unit.hp}
-          damage={oppForecast.damage} />
+          damage={oppDamage} />
         <div className="damage">
           <span className="label">Dmg</span>
           <span className="value">
-            {forecast.damage}
-            {forecast.doubles ? "×2" : ""}
+            {isInRange ? (damage + (doubles ? "×2" : "")) : "--"}
           </span>
         </div>
         <div className="hit">
           <span className="label">Hit</span>
-          <span className="value">{forecast.hit}</span>
+          <span className="value">
+            {isInRange ? hit : "--"}
+          </span>
         </div>
         <div className="crit">
           <span className="label">Crit</span>
-          <span className="value">{forecast.crit}</span>
+          <span className="value">
+            {isInRange ? crit : "--"}
+          </span>
         </div>
       </div>
     </>
@@ -55,14 +60,16 @@ function CombatPreview({ attacker, target, combat }) {
   return (
     <div className="attack-preview">
       <span className="attack-preview__left">
-        <CombatPreviewSide unit={attacker} forecast={combat.initiator}
+        <CombatPreviewSide unit={attacker}
+          forecast={combat.initiator}
           oppForecast={combat.defender} />
       </span>
       <span className="attack-preview__center">
 
       </span>
       <span className="attack-preview__right">
-        <CombatPreviewSide unit={target} forecast={combat.defender}
+        <CombatPreviewSide unit={target}
+          forecast={combat.defender}
           oppForecast={combat.initiator} />
       </span>
     </div>
