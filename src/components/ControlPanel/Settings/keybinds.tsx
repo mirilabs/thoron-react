@@ -9,6 +9,7 @@ import { UIAction } from "shared/UIEventEmitter";
 type KeybindSchema = { [K: string]: UIAction };
 
 const defaultKeybinds: KeybindSchema = {
+  'enter':  'confirm',
   'escape': 'cancel',
   'z':      'confirm',
   'x':      'cancel',
