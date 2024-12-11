@@ -12689,21 +12689,21 @@ __metadata:
     react-tabs: "npm:^6.0.2"
     react-transition-group: "npm:^4.4.5"
     sass: "npm:^1.77.6"
-    thoron: "npm:^2.2.1"
+    thoron: "npm:^2.2.2"
     typescript: "npm:^5.5.2"
     web-vitals: "npm:^2.1.4"
   languageName: unknown
   linkType: soft
 
-"thoron@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "thoron@npm:2.2.1"
+"thoron@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "thoron@npm:2.2.2"
   dependencies:
     ajv: "npm:^8.11.0"
     heap-js: "npm:^2.3.0"
     lodash: "npm:^4.17.21"
     seedrandom: "npm:^3.0.5"
-  checksum: 10/9a7da306c8de0252fb11ffbf1e945dc3b6be4a166e4028110c1e3a478e59d93617ce8f5044a94e5533e93b9399cf789bf6c21a813e22c548bfe78ee3f52f45ee
+  checksum: 10/9c555c18b3a6e7c56bc8c2f90191d670842db07db927a72619412d7109620322357621177bbd10530b760c0179455aa163dcb338835e0f0446254bf30a4af9e8
   languageName: node
   linkType: hard
 
