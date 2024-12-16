@@ -27,7 +27,16 @@ class UnitPiece extends GameObject {
         height: game.coords.tileHeight
       },
       sprite: {
-        url: unit.record['sprite']
+        url: unit.record['sprite'],
+        preprocess(ctx) {
+          const { team, canAct } = unit.getActionState();
+          if (
+            team === game.chapter.actionController.currentPhase &&
+            !canAct
+          ) {
+            ctx.filter = "grayscale(1)";
+          }
+        }
       }
     }
     
