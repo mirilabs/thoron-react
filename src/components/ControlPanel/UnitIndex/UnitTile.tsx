@@ -8,9 +8,10 @@ function UnitTile({ unit }) {
   const handleClick = () => dispatch(unitSelected(unit.id))
   const maxHp = unit.record.stats.mhp;
   const hp = unit.state.hp;
+  const team = unit.getTeam();
 
   return (
-    <button className="unit-tile" onClick={handleClick}>
+    <button className={`unit-tile team-${team}`} onClick={handleClick}>
       <img className="sprite"
         src={unit.record.sprite}
         alt={unit.record.name + " sprite"} />
