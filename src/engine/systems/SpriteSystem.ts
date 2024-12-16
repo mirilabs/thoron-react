@@ -60,6 +60,8 @@ class SpriteSystem extends DrawSystem {
 
   draw() {
     this.componentSets.forEach(({ position, rectangle, sprite }) => {
+      this.ctx.save();
+
       if (sprite.preprocess) {
         sprite.preprocess(this.ctx);
       }
@@ -75,6 +77,8 @@ class SpriteSystem extends DrawSystem {
         // draw placeholder
         this.ctx.fillText("?", position.x, position.y, rectangle.width);
       }
+      
+      this.ctx.restore();
     });
   }
 }
