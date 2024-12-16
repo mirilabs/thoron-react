@@ -5,6 +5,8 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Settings from "components/ControlPanel/Settings";
 import useUIAction, { useUIEmitter } from "components/utils/useUIAction";
 import UnitIndexContainer from "./UnitIndex";
+import ChapterLog from "./ChapterLog";
+import ChapterMenu from "./ChapterMenu";
 
 function ControlPanel({ show, setShow }) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -32,12 +34,18 @@ function ControlPanel({ show, setShow }) {
   useUIAction("cancel", () => setShow(false));
 
   useUIAction("open_character_detail", () => {
-    toggleTab(0);
+    toggleTab(2);
   });
 
   return (
     <>
       <Tabs selectedIndex={tabIndex} onSelect={index => { setTabIndex(index) }}>
+        <TabPanel>
+          <ChapterMenu />
+        </TabPanel>
+        <TabPanel>
+          <ChapterLog />
+        </TabPanel>
         <TabPanel>
           <UnitIndexContainer />
         </TabPanel>
@@ -46,8 +54,10 @@ function ControlPanel({ show, setShow }) {
         </TabPanel>
 
         <TabList>
+          <Tab>Menu</Tab>
+          <Tab>Log</Tab>
           <Tab>Character</Tab>
-          <Tab>Options</Tab>
+          <Tab>Settings</Tab>
         </TabList>
       </Tabs>
       <button className="control-panel-toggle" onClick={() => setShow(false)}>
