@@ -13,6 +13,9 @@
     --text-color: white;
     --text-color-2: rgb(235, 197, 219);
     --icon-filter: invert(100%) brightness(110%) contrast(100%);
+    --team-0: rgb(55, 59, 121);
+    --team-1: rgb(168, 40, 40);
+    --team-2: rgb(71, 126, 64);
   }
 
   &.theme-soap, .theme-selector.theme-soap {
@@ -24,6 +27,9 @@
     --text-color: black;
     --text-color-2: rgb(78, 30, 58);
     --icon-filter: none;
+    --team-0: rgb(109, 143, 236);
+    --team-1: rgb(241, 100, 100);
+    --team-2: rgb(151, 224, 151);
   }
 }
 

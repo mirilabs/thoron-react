@@ -10,6 +10,22 @@
   background-color: var(--bg-color-2);
   outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
   border-bottom: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
+  
+  &:hover {
+    background-color: rgb(from var(--bg-color-2) r g b / 0.5);
+  }
+
+  &.team-0 {
+    background-color: var(--team-0);
+  }
+
+  &.team-1 {
+    background-color: var(--team-1);
+  }
+
+  &.team-2 {
+    background-color: var(--team-2);
+  }
 
   .sprite {
     opacity: 1;
@@ -24,10 +40,6 @@
     min-width: 80px;
     font-size: medium;
     text-align: left;
-  }
-  
-  &:hover {
-    background-color: rgb(from var(--bg-color-2) r g b / 0.5);
   }
 
   .hp-value {
