@@ -5,7 +5,7 @@ import {
   useControllerDispatch,
   useControllerSelector
 } from "components/utils/reduxHooks";
-import { Command } from "thoron/dist/Controller";
+import { Command } from "thoron";
 import { unitSelected } from "shared/store";
 import { InvalidActionError } from "thoron";
 
