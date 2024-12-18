@@ -1,6 +1,6 @@
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import { CursorEvent, Vector2 as IVector2 } from "engine/components";
-import UnitPiece from "../UnitPiece";
+import UnitPiece from "../UnitBody";
 import ActionSelectState from "./ActionSelectState";
 import IdleState from "./IdleState";
 import controllerStore, {
@@ -26,7 +26,7 @@ class MovingState extends ControllerState {
     this.unit = this.controller.chapter.getUnitById(
       controllerStore.getState().unitId
     );
-    this.unitEnt = this.controller.getUnitPiece(this.unit);
+    this.unitEnt = this.controller.getUnitBody(this.unit);
 
     this.entityPos = this.unitEnt.entity.getComponent('position');
 

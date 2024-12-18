@@ -1,4 +1,4 @@
-import UnitPiece from "../UnitPiece";
+import UnitBody from "../UnitBody";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import UnitActionRange from "../ui/UnitActionRange";
 import store, {
@@ -13,7 +13,7 @@ import { CursorEvent } from "engine/components";
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
 
-  unitEnt: UnitPiece;
+  unitEnt: UnitBody;
   selectedUnit: any;
   actionRangeEnt: UnitActionRange;
   actionController: ActionController;
@@ -103,7 +103,7 @@ class ActionConfirmState extends ControllerState {
     this.resetTargetIndicators();
     let target = this.actionController.getTarget();
     if (target)
-      this.controller.getUnitPiece(target).showTargetIndicator();
+      this.controller.getUnitBody(target).showTargetIndicator();
   }
 
   onCancel() {
