@@ -2,7 +2,7 @@ import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid } from './entities';
 import UIEventEmitter from '../shared/UIEventEmitter';
-import UnitController from './entities/UnitController';
+import ControlSystem from './entities/ControlSystem';
 import Chapter from 'thoron';
 
 interface IGameConfig {
@@ -73,8 +73,10 @@ class Game {
     let grid = new Grid(rows, columns, this.config);
     grid.addToScene(scene);
 
-    let pointer = new UnitController(this);
-    pointer.addToScene(scene);
+    let controlSystem = new ControlSystem(this);
+    controlSystem.addToScene(scene);
+
+    
     
     this.scene.draw();
   }

@@ -13,7 +13,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import MovingState from "./MovingState";
 import Chapter, { Controller } from "thoron";
 
-class UnitController extends GameObject {
+class ControlSystem extends GameObject {
   game: Game;
   config: IGameConfig;
   uiEvents: UIEventEmitter;
@@ -138,4 +138,4 @@ class UnitController extends GameObject {
   }
 }
 
-export default UnitController;
+export default ControlSystem;

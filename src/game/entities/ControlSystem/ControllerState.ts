@@ -10,7 +10,8 @@ export enum ControllerPhase {
   MOVING,
   PANNING,
   ACTION_SELECT,
-  ACTION_CONFIRM
+  ACTION_CONFIRM,
+  ANIMATION
 }
 
 type UIEventBindings = {
