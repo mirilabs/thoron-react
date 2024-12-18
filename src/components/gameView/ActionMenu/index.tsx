@@ -1,7 +1,7 @@
 import React from "react";
 import ActionMenu from "./ActionSelectMenu";
 import { useControllerSelector } from "components/utils/reduxHooks";
-import { ControllerPhase } from "game/entities/UnitController/ControllerState";
+import { ControllerPhase } from "game/entities/ControlSystem/ControllerState";
 import CombatMenu from "../CombatMenu";
 
 function ActionUI() {
