@@ -14,8 +14,8 @@ class IdleState extends ControllerState {
     super.onEnter(prevState);
 
     controllerStore.dispatch(pendingMoveDiscarded(null));
-    if (this.controller.selectedPiece) {
-      this.controller.selectedPiece.resetPosition();
+    if (this.controller.selectedUnitBody) {
+      this.controller.selectedUnitBody.resetPosition();
     }
   }
 
@@ -33,8 +33,8 @@ class IdleState extends ControllerState {
       }
     }
     else {
-      if (this.controller.selectedPiece) {
-        this.controller.selectedPiece.hideMoveRange();
+      if (this.controller.selectedUnitBody) {
+        this.controller.selectedUnitBody.hideMoveRange();
       }
       this.startPanning();
     }
