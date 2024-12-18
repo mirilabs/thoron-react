@@ -1,5 +1,5 @@
 import GameObject from "engine/GameObject";
-import UnitPiece from "../UnitPiece";
+import UnitPiece from "../UnitBody";
 import CombatTargetIcon from "icons/target_combat.svg";
 import Vector2 from "engine/utils/Vector2";
 import MotionPath from "engine/utils/MotionPath";

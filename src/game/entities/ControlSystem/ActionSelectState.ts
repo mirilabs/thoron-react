@@ -1,5 +1,5 @@
 import { CursorEvent } from "engine/components";
-import UnitPiece from "../UnitPiece";
+import UnitPiece from "../UnitBody";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";

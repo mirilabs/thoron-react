@@ -9,7 +9,7 @@ import { Vector2 } from 'engine/components';
 import controllerStore from 'shared/store';
 import { DeployedUnit } from 'thoron';
 
-class UnitPiece extends GameObject {
+class UnitBody extends GameObject {
   rect: Rect;
   unit: DeployedUnit;
   _game: WeakRef<Game>;
@@ -112,4 +112,4 @@ class UnitPiece extends GameObject {
   }
 }
 
-export default UnitPiece;
+export default UnitBody;

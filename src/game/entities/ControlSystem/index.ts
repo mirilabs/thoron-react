@@ -3,7 +3,7 @@ import Scene from "engine/Scene";
 import Game, { IGameConfig } from "game/Game";
 import CoordinateConverter from "game/utils/CoordinateConverter";
 import UIEventEmitter from "shared/UIEventEmitter";
-import UnitPiece from "../UnitPiece";
+import UnitPiece from "../UnitBody";
 import { CursorEvent } from "engine/components";
 import ControllerState from "./ControllerState";
 import IdleState from "./IdleState";
@@ -66,12 +66,12 @@ class ControlSystem extends GameObject {
     unitPiece.resetPosition();
   }
 
-  getUnitPiece(unit) {
+  getUnitBody(unit) {
     return this.unitPieces.get(unit);
   }
   
   removeUnit(unit) {
-    let ent = this.getUnitPiece(unit);
+    let ent = this.getUnitBody(unit);
     ent.destroy();
     this.unitPieces.delete(unit);
   }
@@ -89,7 +89,7 @@ class ControlSystem extends GameObject {
 
     // set new unit
     if (unit) {
-      this.selectedPiece = this.getUnitPiece(unit);
+      this.selectedPiece = this.getUnitBody(unit);
       this.selectedPiece.showMoveRange();
 
       let { canAct, team } = unit.getActionState();
