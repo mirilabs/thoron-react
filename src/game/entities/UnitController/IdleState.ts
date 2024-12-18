@@ -1,7 +1,11 @@
 import { CursorEvent } from "engine/components";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import MovingState from "./MovingState";
-import controllerStore, { pendingMoveDiscarded, unitSelected } from "shared/store";
+import controllerStore, {
+  pendingMoveDiscarded,
+  unitSelected
+} from "shared/store";
+import { DeployedUnit } from "thoron";
 
 class IdleState extends ControllerState {
   id = ControllerPhase.IDLE;
@@ -17,15 +21,21 @@ class IdleState extends ControllerState {
 
   onMouseDown(event: CursorEvent): void {
     let tileCoords = this.getTileCoords(event);
-    let unit = this.controller.chapter.getUnitAt(tileCoords);
+    let unit: DeployedUnit = this.controller.chapter.getUnitAt(tileCoords);
 
-    // show unit range
     if (unit) {
+      // select clicked unit
       controllerStore.dispatch(unitSelected(unit.id));
-      this.setState(new MovingState());
-      this.controller.currentState.onMouseDown(event);
+
+      // if the select resulted in a change to MovingState, start dragging
+      if (this.controller.currentState instanceof MovingState) {
+        this.controller.currentState.onMouseDown(event);
+      }
     }
     else {
+      if (this.controller.selectedPiece) {
+        this.controller.selectedPiece.hideMoveRange();
+      }
       this.startPanning();
     }
   }

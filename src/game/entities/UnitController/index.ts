@@ -91,11 +91,17 @@ class UnitController extends GameObject {
     if (unit) {
       this.selectedPiece = this.getUnitPiece(unit);
       this.selectedPiece.showMoveRange();
-      this.setState(new MovingState());
+
+      let { canAct, team } = unit.getActionState();
+      if (canAct && team === this.chapter.actionController.currentPhase) {
+        this.setState(new MovingState());
+      }
     }
     else {
       delete this.selectedPiece;
-      this.setState(new IdleState());
+      if (!(this.currentState instanceof IdleState)) {
+        this.setState(new IdleState());
+      }
     }
   }
 

@@ -12,10 +12,7 @@ function ControlPanelContainer() {
     in: show,
     timeout: 200,
     classNames: 'control-panel',
-    nodeRef,
-    onEntered() {
-
-    }
+    nodeRef
   }
 
   return (
