@@ -14,7 +14,7 @@ class ActionSelectState extends ControllerState {
   onEnter(prevState: MovingState) {
     super.onEnter(prevState);
 
-    this.unitEnt = this.controller.selectedPiece;
+    this.unitEnt = this.controller.selectedUnitBody;
     this.unitEnt.showMoveRange();
     this.unitEnt.showMovePath();
 
