@@ -35,7 +35,8 @@ class MotionPath {
     time = 200,
     mode: MovementMode = MovementMode.LINEAR
   ) {
-    // get origin from end of last segment or, if no segments exist, entity pos
+    // get origin from end of last segment,
+    // or, if no segments exist, from entity position
     let origin = this.lastSegment ?
       this.lastSegment.destination :
       Vector2.copy(this.entity.getComponent("position"));
@@ -45,6 +46,8 @@ class MotionPath {
 
   private nextSegment(): MotionPathSegment | undefined {
     this.currentIndex++;
+    
+    // if repeating, return to first segment
     if (this.currentIndex >= this.segments.length) {
       this.currentIndex = this.repeat ? 0 : undefined;
     }
@@ -52,31 +55,38 @@ class MotionPath {
     return this.currentSegment;
   }
 
-  start() {
-    let position = this.entity.getComponent("position") as IVector2;
-    let elapsedTime = 0;
-    let motion = this.entity.addChild();
-
-    motion.addComponent("update", (dT: number) => {
-      elapsedTime += dT;
-      
-      // update position
-      let nextPos = this.currentSegment.getPosition(elapsedTime);
-      position.x = nextPos.x;
-      position.y = nextPos.y;
-
-      // move to next segment if done with current one
-      if (elapsedTime >= this.currentSegment.time) {
-        let nextSegment = this.nextSegment();
-
-        if (nextSegment) {
-          elapsedTime = 0;
+  /**
+   * Start moving the entity along this MotionPath
+   * @returns A promise that resolves when the motion has finished
+   */
+  start(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      let position = this.entity.getComponent("position") as IVector2;
+      let elapsedTime = 0;
+      let motion = this.entity.addChild();
+  
+      motion.addComponent("update", (dT: number) => {
+        elapsedTime += dT;
+        
+        // update position
+        let nextPos = this.currentSegment.getPosition(elapsedTime);
+        position.x = nextPos.x;
+        position.y = nextPos.y;
+  
+        // move to next segment if done with current one
+        if (elapsedTime >= this.currentSegment.time) {
+          let nextSegment = this.nextSegment();
+  
+          if (nextSegment) {
+            elapsedTime = 0;
+          }
+          else {
+            // if next segment does not exist, end motion
+            motion.destroy();
+            resolve();
+          }
         }
-        else {
-          // if next segment does not exist, end motion
-          motion.destroy();
-        }
-      }
+      });
     });
   }
 }
