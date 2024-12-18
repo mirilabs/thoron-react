@@ -4,6 +4,7 @@ import { Background, Grid } from './entities';
 import UIEventEmitter from '../shared/UIEventEmitter';
 import ControlSystem from './entities/ControlSystem';
 import Chapter, { GameController } from 'thoron';
+import MotionSystem from './entities/MotionSystem';
 import UnitBody from './entities/UnitBody';
 
 interface IGameConfig {
@@ -79,6 +80,9 @@ class Game {
 
     let controlSystem = new ControlSystem(this);
     controlSystem.addToScene(scene);
+
+    let motionSystem = new MotionSystem(this);
+    motionSystem.addToScene(scene);
 
     let units = this.chapter.getUnits();
     for (let unit of units) {
