@@ -22,10 +22,6 @@ function ControlPanel({ show, setShow }) {
       if (index !== tabIndex) {
         setTabIndex(index);
       }
-      // or close control panel if already on this tab
-      else {
-        setShow(false);
-      }
     }
   }
 
