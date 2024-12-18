@@ -8,14 +8,15 @@
   position: absolute;
   padding: 0;
   width: 100%;
-  
   padding-top: 32px;
   padding-bottom: 8px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), var(--bg-color));
   color: var(--text-color);
-  
+
   bottom: -110%;
   transition: bottom 100ms linear;
+
+  pointer-events: none;
 
   &.enter, &.enter-active, &.exit-done {
     bottom: -110%;
@@ -51,6 +52,9 @@
     width: 100%;
     height: 25%;
     min-height: 64px;
+
+    pointer-events: all;
+
     display: grid;
     grid-template-columns: 25% auto 25%;
     grid-template-rows: 50% auto;
