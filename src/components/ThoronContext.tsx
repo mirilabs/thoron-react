@@ -43,7 +43,7 @@ function ThoronProvider({ saveState, children }: {
   // when canvas is set, create Game object and attach canvas to it
   useEffect(() => {
     if (canvas) {
-      let game = new Game(api.chapter);
+      let game = new Game(api.controller);
       game.setCanvas(canvas);
 
       setApi((api) => ({
@@ -55,7 +55,7 @@ function ThoronProvider({ saveState, children }: {
         game.unsetCanvas();
       }
     }
-  }, [api.chapter, canvas])
+  }, [api.controller, canvas])
 
   // exposed to components that use ThoronContext
   let value: ThoronContextState = {

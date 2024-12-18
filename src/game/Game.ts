@@ -3,7 +3,7 @@ import Scene from '../engine/Scene';
 import { Background, Grid } from './entities';
 import UIEventEmitter from '../shared/UIEventEmitter';
 import ControlSystem from './entities/ControlSystem';
-import Chapter from 'thoron';
+import Chapter, { GameController } from 'thoron';
 
 interface IGameConfig {
   tileWidth: number;
@@ -26,6 +26,7 @@ const defaultConfig: IGameConfig = {
 }
 
 class Game {
+  gameController: GameController;
   chapter: Chapter;
   config: IGameConfig;
   coords: CoordinateConverter;
@@ -33,8 +34,9 @@ class Game {
   canvas: HTMLCanvasElement;
   scene: Scene;
 
-  constructor(chapter: Chapter, cfg: Partial<IGameConfig> = {}) {
-    this.chapter = chapter;
+  constructor(gameController: GameController, cfg: Partial<IGameConfig> = {}) {
+    this.gameController = gameController
+    this.chapter = gameController.chapter;
     this.config = {
       ...defaultConfig,
       ...cfg
@@ -75,8 +77,6 @@ class Game {
 
     let controlSystem = new ControlSystem(this);
     controlSystem.addToScene(scene);
-
-    
     
     this.scene.draw();
   }
