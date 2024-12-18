@@ -36,7 +36,7 @@ class ActionSelectState extends ControllerState {
       this.unitEnt.hideMoveRange();
       this.unitEnt.hideMovePath();
 
-      for (const unitPiece of this.controller.unitPieces.values()) {
+      for (const unitPiece of this.controller.game.unitBodies.values()) {
         unitPiece.hideTargetIndicator();
       }
     }

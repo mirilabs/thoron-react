@@ -26,7 +26,7 @@ class MovingState extends ControllerState {
     this.unit = this.controller.chapter.getUnitById(
       controllerStore.getState().unitId
     );
-    this.unitEnt = this.controller.getUnitBody(this.unit);
+    this.unitEnt = this.controller.getUnitBody(this.unit.id);
 
     this.entityPos = this.unitEnt.entity.getComponent('position');
 
@@ -40,7 +40,7 @@ class MovingState extends ControllerState {
       this.unitEnt.hideMovePath();
 
       // hide all target indicators
-      for (const unitPiece of this.controller.unitPieces.values()) {
+      for (const unitPiece of this.controller.game.unitBodies.values()) {
         unitPiece.hideTargetIndicator();
       }
     }
@@ -111,7 +111,7 @@ class MovingState extends ControllerState {
     // update target indicators
     let maxAttackRange = this.unit.getMaxAttackRange();
 
-    for (const unitEnt of this.controller.unitPieces.values()) {
+    for (const unitEnt of this.controller.game.unitBodies.values()) {
       if (unitEnt === this.unitEnt) continue;
       
       let distance = unitEnt.unit.getDistance(nextCoords);

@@ -1,17 +1,19 @@
+import { PayloadAction } from "@reduxjs/toolkit";
 import GameObject from "engine/GameObject";
 import Scene from "engine/Scene";
+import { CursorEvent } from "engine/components";
 import Game, { IGameConfig } from "game/Game";
 import CoordinateConverter from "game/utils/CoordinateConverter";
 import UIEventEmitter from "shared/UIEventEmitter";
-import UnitPiece from "../UnitBody";
-import { CursorEvent } from "engine/components";
 import ControllerState from "./ControllerState";
-import IdleState from "./IdleState";
 import controllerStore, { phaseChanged } from "shared/store";
 import { addAppListener } from "shared/listenerMiddleware";
-import { PayloadAction } from "@reduxjs/toolkit";
-import MovingState from "./MovingState";
+import {
+  IdleState,
+  MovingState
+} from "./states";
 import Chapter, { Controller } from "thoron";
+import UnitBody from "../UnitBody";
 
 class ControlSystem extends GameObject {
   game: Game;
@@ -21,8 +23,7 @@ class ControlSystem extends GameObject {
   gameController: Controller;
   chapter: Chapter;
   scene: Scene;
-  unitPieces: Map<any, UnitPiece> = new Map();
-  selectedPiece: UnitPiece;
+  selectedUnitBody: UnitBody;
   currentState: ControllerState;
   
   constructor(game: Game) {
@@ -50,47 +51,25 @@ class ControlSystem extends GameObject {
     this.setState(new IdleState());
   }
 
-  onInit(scene: Scene) {
-    this.chapter.units.forEach((unit) => {
-      this.addUnit(unit);
-    });
-  }
-
-  addUnit(unit) {
-    let unitPiece = new UnitPiece(unit, this.game);
-    unitPiece.addToScene(this.scene);
-
-    this.unitPieces.set(unit, unitPiece);
-
-    // move to initial position
-    unitPiece.resetPosition();
-  }
-
-  getUnitBody(unit) {
-    return this.unitPieces.get(unit);
-  }
-  
-  removeUnit(unit) {
-    let ent = this.getUnitBody(unit);
-    ent.destroy();
-    this.unitPieces.delete(unit);
+  getUnitBody(unitId: string | number) {
+    return this.game.getUnitBody(unitId);
   }
 
   onUnitSelected(unitId) {
     const unit = this.chapter.getUnitById(unitId);
 
     // unselect previous unit
-    if (this.selectedPiece) {
-      this.selectedPiece.resetPosition();
-      this.selectedPiece.hideMovePath();
-      this.selectedPiece.hideMoveRange();
+    if (this.selectedUnitBody) {
+      this.selectedUnitBody.resetPosition();
+      this.selectedUnitBody.hideMovePath();
+      this.selectedUnitBody.hideMoveRange();
       this.scene.draw();
     }
 
     // set new unit
     if (unit) {
-      this.selectedPiece = this.getUnitBody(unit);
-      this.selectedPiece.showMoveRange();
+      this.selectedUnitBody = this.getUnitBody(unit.id);
+      this.selectedUnitBody.showMoveRange();
 
       let { canAct, team } = unit.getActionState();
       if (canAct && team === this.chapter.actionController.currentPhase) {
@@ -98,7 +77,7 @@ class ControlSystem extends GameObject {
       }
     }
     else {
-      delete this.selectedPiece;
+      delete this.selectedUnitBody;
       if (!(this.currentState instanceof IdleState)) {
         this.setState(new IdleState());
       }
@@ -106,7 +85,7 @@ class ControlSystem extends GameObject {
   }
 
   get selectedUnit() {
-    return this.selectedPiece.unit;
+    return this.selectedUnitBody.unit;
   }
 
   setState(nextState: ControllerState) {

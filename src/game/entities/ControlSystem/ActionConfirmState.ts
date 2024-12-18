@@ -13,7 +13,7 @@ import { CursorEvent } from "engine/components";
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
 
-  unitEnt: UnitBody;
+  selectedUnitBody: UnitBody;
   selectedUnit: any;
   actionRangeEnt: UnitActionRange;
   actionController: ActionController;
@@ -25,9 +25,9 @@ class ActionConfirmState extends ControllerState {
   onEnter(prevState: ControllerState) {
     super.onEnter(prevState);
 
-    const { game, selectedPiece, scene } = this.controller;
-    this.unitEnt = selectedPiece;
-    this.selectedUnit = selectedPiece.unit;
+    const { game, selectedUnitBody, scene } = this.controller;
+    this.selectedUnitBody = selectedUnitBody;
+    this.selectedUnit = selectedUnitBody.unit;
 
     const { pendingMove } = store.getState();
     
@@ -42,7 +42,7 @@ class ActionConfirmState extends ControllerState {
     // create actionController
     this.actionController = new ActionController(
       this.controller.chapter,
-      this.unitEnt.unit,
+      this.selectedUnit,
       pendingMove.destination,
       pendingMove.action
     );
@@ -92,7 +92,7 @@ class ActionConfirmState extends ControllerState {
   }
 
   resetTargetIndicators() {
-    for (const unitEnt of this.controller.unitPieces.values()) {
+    for (const unitEnt of this.controller.game.unitBodies.values()) {
       unitEnt.hideTargetIndicator();
     }
   }
@@ -103,7 +103,7 @@ class ActionConfirmState extends ControllerState {
     this.resetTargetIndicators();
     let target = this.actionController.getTarget();
     if (target)
-      this.controller.getUnitBody(target).showTargetIndicator();
+      this.controller.getUnitBody(target.id).showTargetIndicator();
   }
 
   onCancel() {
