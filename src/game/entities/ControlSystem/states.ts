@@ -1,13 +1,5 @@
-import ActionSelectState from "./ActionSelectState";
-import IdleState from "./IdleState";
-import MovingState from "./MovingState";
-import TargetSelectState from "./ActionConfirmState";
-
-const controllerStates = {
-  idle: IdleState,
-  moving: MovingState,
-  actionSelect: ActionSelectState,
-  targetSelect: TargetSelectState
-}
-
-export default controllerStates;
+export { default as ActionConfirmState } from "./ActionConfirmState";
+export { default as ActionSelectState } from "./ActionSelectState";
+export { default as AnimationState } from "./AnimationState";
+export { default as IdleState } from "./IdleState";
+export { default as MovingState } from "./MovingState";
