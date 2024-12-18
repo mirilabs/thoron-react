@@ -4,8 +4,6 @@ import CombatTargetIcon from "icons/target_combat.svg";
 import Vector2 from "engine/utils/Vector2";
 import MotionPath from "engine/utils/MotionPath";
 
-const ICON_SCALE = 0.7;
-
 const TOP_OFFSET = {
   x: 0.2,
   y: -0.4
@@ -13,6 +11,10 @@ const TOP_OFFSET = {
 const BOTTOM_OFFSET = {
   x: 0.2,
   y: -0.3
+}
+const SIZE = {
+  width: 44,
+  height: 44
 }
 
 class TargetIndicator extends GameObject {
@@ -40,8 +42,8 @@ class TargetIndicator extends GameObject {
         y: this.bottomPosition.y
       },
       rectangle: {
-        width: tileWidth * ICON_SCALE,
-        height: tileHeight * ICON_SCALE
+        width: SIZE.width,
+        height: SIZE.height
       },
       sprite: {
         url: CombatTargetIcon
