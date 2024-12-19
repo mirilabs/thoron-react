@@ -4,8 +4,10 @@ import HPBar from "components/ControlPanel/UnitIndex/HPBar";
 
 function CombatPreviewSide({ unit, forecast, oppForecast }) {
   const equipped = unit.items[unit.state.equippedIndex];
+  console.log(forecast);
+  
   const { damage, hit, crit, doubles, isInRange } = forecast;
-  const oppDamage = oppForecast.isInRange ? oppForecast.damage : 0;
+  const oppDamage = oppForecast.projectedTotalDamage;
 
   return (
     <>
