@@ -13,10 +13,12 @@ class UnitBody extends GameObject {
   rect: Rect;
   unit: DeployedUnit;
   _game: WeakRef<Game>;
-
+  
   moveRangeEnt: UnitRange;
   pathEnt: UnitPath;
   targetIndicatorEnt: TargetIndicator;
+
+  grayscale: boolean = false;
 
   constructor(unit, game: Game) {
     super();
@@ -28,12 +30,8 @@ class UnitBody extends GameObject {
       },
       sprite: {
         url: unit.record['sprite'],
-        preprocess(ctx) {
-          const { team, canAct } = unit.getActionState();
-          if (
-            team === game.chapter.actionController.currentPhase &&
-            !canAct
-          ) {
+        preprocess: (ctx) => {
+          if (this.grayscale) {
             ctx.filter = "grayscale(1)";
           }
         }
