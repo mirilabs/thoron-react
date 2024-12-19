@@ -9,8 +9,9 @@ class AsyncQueue {
     this.isProcessing = false;
   }
 
-  add(asyncFn: AsyncFunction) {
-    this.queue.push(asyncFn);
+  add(...asyncFns: AsyncFunction[]) {
+    asyncFns = asyncFns.filter(fn => fn !== null && fn !== undefined);
+    this.queue.push(...asyncFns);
     this.processQueue();
   }
 
