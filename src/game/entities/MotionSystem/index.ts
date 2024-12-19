@@ -34,11 +34,16 @@ class MotionSystem extends GameObject {
   }
 
   getMotionCallback(event: ChapterEvent): () => Promise<void> {
+    const unit = this.game.getUnitBody(event.unitId);
+
     switch(event.type) {
       case "combat_attack":
-        let attacker = this.game.getUnitBody(event.unitId);
         let target = this.game.getUnitBody(event.targetId);
-        return AttackMotion(this.game, attacker, target, event);
+        return AttackMotion(this.game, unit, target, event);
+      case "end_turn":
+        return async () => {
+          unit.grayscale = true;
+        }
       default:
         return
     }

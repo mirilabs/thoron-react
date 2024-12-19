@@ -7,7 +7,7 @@ import Vector2 from "engine/utils/Vector2";
 const MOTION_SCALE = 0.3; // 1.0 = moves fully to enemy position
 const FORWARD_MOTION_TIME = 120;  // ms
 const BACKWARD_MOTION_TIME = 80;  // ms
-const POST_DELAY_TIME = 500;  // ms
+const POST_ATTACK_DELAY_TIME = 500;  // ms
 
 function wait(time: number): Promise<void> {
   return new Promise((resolve) => {
@@ -36,7 +36,8 @@ function AttackMotion(
 
   return async function attackMotion() {
     await path.start();
-    await wait(POST_DELAY_TIME);
+    attacker.resetPosition();
+    await wait(POST_ATTACK_DELAY_TIME);
   }
 }
 
