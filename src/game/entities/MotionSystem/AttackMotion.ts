@@ -1,7 +1,7 @@
 import Game from "game/Game";
 import UnitBody from "../UnitBody";
 import { AttackEvent } from "thoron";
-import MotionPath from "engine/utils/MotionPath";
+import MotionSequence from "engine/utils/MotionSequence";
 import Vector2 from "engine/utils/Vector2";
 
 const MOTION_SCALE = 0.3; // 1.0 = one tile width
@@ -33,9 +33,9 @@ function AttackMotion(
 
   let dest = Vector2.sum(startingPos, direction);
 
-  const path = new MotionPath(attacker.entity);
-  path.addNode(dest, FORWARD_MOTION_TIME);
-  path.addNode(startingPos, BACKWARD_MOTION_TIME);
+  const path = new MotionSequence(attacker.entity);
+  path.moveTo(dest, FORWARD_MOTION_TIME);
+  path.moveTo(startingPos, BACKWARD_MOTION_TIME);
 
   return async function attackMotion() {
     await path.start();

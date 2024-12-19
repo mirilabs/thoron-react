@@ -2,7 +2,7 @@ import GameObject from "engine/GameObject";
 import UnitPiece from "../UnitBody";
 import CombatTargetIcon from "icons/target_combat.svg";
 import Vector2 from "engine/utils/Vector2";
-import MotionPath from "engine/utils/MotionPath";
+import MotionSequence from "engine/utils/MotionSequence";
 
 const TOP_OFFSET = {
   x: 0.2,
@@ -52,11 +52,10 @@ class TargetIndicator extends GameObject {
   }
 
   onInit(): void {
-    let path = new MotionPath(this.entity);
-    path.addNode(this.topPosition, 1000);
-    path.addNode(this.bottomPosition, 1000);
-    path.repeat = true;
-    path.start();
+    let path = new MotionSequence(this.entity);
+    path.moveTo(this.topPosition, 1000);
+    path.moveTo(this.bottomPosition, 1000);
+    path.repeat();
   }
 }
 
