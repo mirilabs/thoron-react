@@ -1,7 +1,8 @@
 import Entity from "engine/Entity";
 import Vector2 from "./Vector2";
 import { Vector2 as IVector2 } from "../components";
-import { EasingFunction, EASE } from "./easingFunctions";
+import { EASE } from "./easingFunctions";
+import type { EasingFunction } from "./easingFunctions";
 
 interface MotionSegment {
   update: (progress: number) => void;
