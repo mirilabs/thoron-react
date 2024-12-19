@@ -3,12 +3,12 @@ import Scene from "engine/Scene";
 import Game from "game/Game";
 import { GameController, ChapterEvent } from "thoron";
 import AsyncQueue from "./AsyncQueue";
-import MotionPath from "engine/utils/MotionPath";
+import AttackMotion from "./AttackMotion";
 
 class MotionSystem extends GameObject {
   game: Game;
   gameController: GameController;
-  motionQueue: AsyncQueue;
+  motionQueue: AsyncQueue = new AsyncQueue();
 
   private removeGameListener: () => void;
 
@@ -19,21 +19,26 @@ class MotionSystem extends GameObject {
   }
 
   onInit(scene: Scene): void {
-    this.removeGameListener = this.gameController.subscribe((result) => {
-      console.log(result.events);
+    const unsubscribe = this.gameController.subscribe((result) => {
+      let motions = result.events.map(event => {
+        return this.getMotionCallback(event);
+      });
+      this.motionQueue.add(...motions);
     });
+
+    this.removeGameListener = unsubscribe;
   }
 
   onDestroy(): void {
     this.removeGameListener();
   }
 
-  addEvent(event: ChapterEvent) {
-    // TODO create entities/MotionPaths depending on event type and add them to
-    //  motionQueue
+  getMotionCallback(event: ChapterEvent): () => Promise<void> {
     switch(event.type) {
       case "combat_attack":
-        break;
+        let attacker = this.game.getUnitBody(event.unitId);
+        let target = this.game.getUnitBody(event.targetId);
+        return AttackMotion(this.game, attacker, target, event);
       default:
         return
     }
