@@ -4,7 +4,7 @@ import { AttackEvent } from "thoron";
 import MotionPath from "engine/utils/MotionPath";
 import Vector2 from "engine/utils/Vector2";
 
-const MOTION_SCALE = 0.3; // 1.0 = moves fully to enemy position
+const MOTION_SCALE = 0.3; // 1.0 = one tile width
 const FORWARD_MOTION_TIME = 120;  // ms
 const BACKWARD_MOTION_TIME = 80;  // ms
 const POST_ATTACK_DELAY_TIME = 500;  // ms
@@ -23,12 +23,15 @@ function AttackMotion(
   target: UnitBody,
   event: AttackEvent
 ) {
-  const startingPos = Vector2.copy(attacker.entity.getComponent("position"));
-  const dest = Vector2.lerp(
-    startingPos,
+  let startingPos = Vector2.copy(attacker.entity.getComponent("position"));
+  let direction = Vector2.difference(
     target.entity.getComponent("position"),
-    MOTION_SCALE
+    startingPos
   );
+  direction = Vector2.normalize(direction);
+  direction = Vector2.scale(direction, game.config.tileWidth * MOTION_SCALE);
+
+  let dest = Vector2.sum(startingPos, direction);
 
   const path = new MotionPath(attacker.entity);
   path.addNode(dest, FORWARD_MOTION_TIME);
