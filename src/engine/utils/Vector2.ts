@@ -4,85 +4,135 @@ class Vector2 implements IVector2 {
   x: number;
   y: number;
 
-  static copy(v: IVector2) {
-    return {
-      x: v.x,
-      y: v.y
-    }
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
   }
 
-  static eq(left: IVector2, right: IVector2): boolean {
-    return left.x === right.x && left.y === right.y;
+  static copy(v: IVector2): Vector2 {
+    return new Vector2(v.x, v.y);
   }
 
-  static sum(left: IVector2, right: IVector2): IVector2 {
-    return {
-      x: left.x + right.x,
-      y: left.y + right.y
-    }
+  copy(): Vector2 {
+    return Vector2.copy(this);
   }
 
-  static difference(left: IVector2, right: IVector2): IVector2 {
-    return {
-      x: left.x - right.x,
-      y: left.y - right.y
-    }
+  static eq(v1: IVector2, v2: IVector2): boolean {
+    return v1.x === v2.x && v1.y === v2.y;
+  }
+
+  eq(v: IVector2): boolean {
+    return Vector2.eq(this, v);
+  }
+
+  static sum(v1: IVector2, v2: IVector2): Vector2 {
+    return new Vector2(
+      v1.x + v2.x,
+      v1.y + v2.y
+    )
+  }
+
+  sum(v: IVector2): Vector2 {
+    return Vector2.sum(this, v);
+  }
+
+  static difference(v1: IVector2, v2: IVector2): Vector2 {
+    return new Vector2(
+      v1.x - v2.x,
+      v1.y - v2.y
+    );
+  }
+
+  difference(v: IVector2): Vector2 {
+    return Vector2.difference(this, v);
   }
 
   static lengthSquared(v: IVector2): number {
     return v.x ** 2 + v.y ** 2;
   }
 
+  lengthSquared(): number {
+    return Vector2.lengthSquared(this);
+  }
+
   static length(v: IVector2): number {
-    return Math.sqrt(this.lengthSquared(v));
+    return Math.sqrt(Vector2.lengthSquared(v));
   }
 
-  static distanceSquared(left: IVector2, right: IVector2): number {
-    let d = this.difference(left, right);
-    return this.lengthSquared(d);
+  length(): number {
+    return Vector2.length(this);
   }
 
-  static distance(left: IVector2, right: IVector2): number {
-    let d = this.difference(left, right);
-    return this.length(d);
+  static distanceSquared(v1: IVector2, v2: IVector2): number {
+    let d = Vector2.difference(v1, v2);
+    return Vector2.lengthSquared(d);
   }
 
-  static normalize(v: IVector2): IVector2 {
-    let scale = 1 / this.length(v);
-    return this.scale(v, scale);
+  distanceSquared(v: IVector2): number {
+    return Vector2.distanceSquared(this, v);
   }
 
-  static scale(v: IVector2, scale: number): IVector2 {
-    return {
-      x: v.x * scale,
-      y: v.y * scale
-    }
+  static distance(v1: IVector2, v2: IVector2): number {
+    let d = Vector2.difference(v1, v2);
+    return Vector2.length(d);
   }
 
-  static lerp(v1: IVector2, v2: IVector2, fraction: number) {
-    let d = this.difference(v2, v1);
-    return {
-      x: v1.x + (d.x * fraction),
-      y: v1.y + (d.y * fraction)
-    }
+  distance(v: IVector2): number {
+    return Vector2.distance(this, v);
   }
 
-  static rotateAboutOrigin(v: IVector2, theta: number): IVector2 {
+  static normalize(v: IVector2): Vector2 {
+    let scale = 1 / Vector2.length(v);
+    return Vector2.scale(v, scale);
+  }
+
+  normalize(): Vector2 {
+    return Vector2.normalize(this);
+  }
+
+  static scale(v: IVector2, scale: number): Vector2 {
+    return new Vector2(
+      v.x * scale,
+      v.y * scale
+    );
+  }
+
+  scale(scale: number): Vector2 {
+    return Vector2.scale(this, scale);
+  }
+
+  static lerp(v1: IVector2, v2: IVector2, fraction: number): Vector2 {
+    let d = Vector2.difference(v2, v1);
+    return new Vector2(
+      v1.x + (d.x * fraction),
+      v1.y + (d.y * fraction)
+    );
+  }
+
+  lerp(v: IVector2, fraction: number): Vector2 {
+    return Vector2.lerp(this, v, fraction);
+  }
+
+  static rotateAboutOrigin(v: IVector2, theta: number): Vector2 {
     let { x, y } = v;
     let sinT = Math.sin(theta);
     let cosT = Math.cos(theta);
     
-    return {
-      x: x * cosT - y * sinT,
-      y: y * cosT + x * sinT
-    }
+    return new Vector2(
+      x * cosT - y * sinT,
+      y * cosT + x * sinT
+    );
   }
 
-  static ZERO: { x: 0, y: 0 }
-  static LEFT: { x: -1, y: 0 }
-  static RIGHT: { x: 1, y: 0 }
-  static UP: { x: 0, y: -1 }
-  static DOWN: { x: 0, y: 1 }
+  rotateAboutOrigin(theta: number): Vector2 {
+    return Vector2.rotateAboutOrigin(this, theta);
+  }
+
+  static ZERO: Vector2 = new Vector2(0, 0);
+  static LEFT: Vector2 = new Vector2(-1, 0);
+  static RIGHT: Vector2 = new Vector2(1, 0);
+  static UP: Vector2 = new Vector2(0, -1);
+  static DOWN: Vector2 = new Vector2(0, 1);
 }
 
 export default Vector2;

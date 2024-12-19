@@ -12,7 +12,7 @@ interface MotionSegment {
 class MotionSequence {
   private repeating: boolean = false;
   entity: Entity;
-  lastPosition: Vector2;
+  lastPosition: IVector2;
   segments: MotionSegment[] = [];
   currentIndex: number = 0;
 
