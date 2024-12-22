@@ -68,11 +68,13 @@ class Game {
 
   init() {
     let scene = this.scene;
-    let { width, height } = this.canvas;
-    let rows = this.chapter.terrain.width;
-    let columns = this.chapter.terrain.height;
-
-    let bg = new Background(width, height, null);
+    let { terrain } = this.chapter;
+    let rows = terrain.width;
+    let columns = terrain.height;
+    let width = rows * this.config.tileWidth;
+    let height = columns * this.config.tileHeight;
+    
+    let bg = new Background(width, height, terrain.record.background);
     bg.addToScene(scene);
 
     let grid = new Grid(rows, columns, this.config);

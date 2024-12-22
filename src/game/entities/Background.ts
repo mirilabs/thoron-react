@@ -9,7 +9,10 @@ class Background extends GameObject {
     super();
     this.components = {
       position: { x: 0, y: 0 },
-      rectangle: { width, height }
+      rectangle: { width, height },
+      sprite: {
+        url: src
+      }
     }
   }
 }
