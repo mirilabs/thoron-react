@@ -1,8 +1,9 @@
-import { Vector2 as IVector2 } from "../../../engine/components";
+import { IVector2 } from "../../../engine/utils/Vector2";
 import GameObject from "../../../engine/GameObject";
 import Vector2 from "../../../engine/utils/Vector2";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
+import { DrawHandler } from "engine/components";
 
 class UnitPath extends GameObject {
   game: Game;
@@ -26,7 +27,9 @@ class UnitPath extends GameObject {
     this.unit = unit;
     this.origin = unit.getPosition();
 
-    this.components.draw = this.draw.bind(this);
+    this.components = [
+      new DrawHandler(this.draw.bind(this))
+    ]
 
     if (initialDestination !== null) {
       this.updateTargetPos(initialDestination);

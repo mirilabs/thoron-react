@@ -1,7 +1,9 @@
-import { Vector2 } from "../../../engine/components";
+import { IVector2 } from "engine/utils/Vector2";
 import GameObject from "../../../engine/GameObject";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
+import { DrawHandler } from "engine/components";
+import Scene from "engine/Scene";
 
 class UnitRange extends GameObject {
   unit: any;
@@ -13,16 +15,22 @@ class UnitRange extends GameObject {
     this.coords = game.coords;
     this.config = game.config;
     this.unit = unit;
-    
+
+    this.components = [
+      new DrawHandler(this.draw.bind(this))
+    ]
+  }
+
+  onInit(scene: Scene): void {
     this.show();
   }
 
   show() {
-    this.components.draw = this.draw.bind(this);
+    this.entity.getComponent("draw").enabled = true;
   }
 
   hide() {
-    delete this.components.draw;
+    this.entity.getComponent("draw").enabled = false;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -98,7 +106,7 @@ class UnitRange extends GameObject {
 
 function drawEightPointStar(
   ctx: CanvasRenderingContext2D,
-  origin: Vector2,
+  origin: IVector2,
   xScale: number = 1,
   yScale: number = 1
 ) {

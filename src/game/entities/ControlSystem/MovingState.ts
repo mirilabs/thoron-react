@@ -1,5 +1,6 @@
 import ControllerState, { ControllerPhase } from "./ControllerState";
-import { CursorEvent, Vector2 as IVector2 } from "engine/components";
+import { IVector2 } from "engine/utils/Vector2";
+import { ICursorEvent } from "engine/components/CursorEventHandler";
 import UnitPiece from "../UnitBody";
 import ActionSelectState from "./ActionSelectState";
 import IdleState from "./IdleState";
@@ -28,7 +29,7 @@ class MovingState extends ControllerState {
     );
     this.unitEnt = this.controller.getUnitBody(this.unit.id);
 
-    this.entityPos = this.unitEnt.entity.getComponent('position');
+    this.entityPos = this.unitEnt.entity.getComponent("position");
 
     this.unitEnt.showMoveRange();
     this.unitEnt.showMovePath();
@@ -52,7 +53,7 @@ class MovingState extends ControllerState {
     this.controller.scene.draw();
   }
 
-  onMouseDown(event: CursorEvent): void {
+  onMouseDown(event: ICursorEvent): void {
     let tileCoords = this.getTileCoords(event);
     let moveRange = this.unit.getMoveRange();
 
@@ -68,13 +69,13 @@ class MovingState extends ControllerState {
     }
   }
 
-  onMouseMove(event: CursorEvent): void {
+  onMouseMove(event: ICursorEvent): void {
     if (this.dragging) {
       this.onMouseDrag(event);
     }
   }
 
-  onMouseDrag(event: CursorEvent): void {
+  onMouseDrag(event: ICursorEvent): void {
     // execute onTileChange if hovering over a new tile
     let tileCoords = this.getTileCoords(event);
 
@@ -125,7 +126,7 @@ class MovingState extends ControllerState {
     }
   }
 
-  onMouseUp(event: CursorEvent) {
+  onMouseUp(event: ICursorEvent) {
     if (this.unitEnt.pathEnt.hasLeftOrigin) {
       let targetPos = this.unitEnt.getDestination();
       let pixelCoords = this.controller.coords.toPixels(

@@ -1,7 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import GameObject from "engine/GameObject";
 import Scene from "engine/Scene";
-import { CursorEvent } from "engine/components";
+import CursorEventHandler, { ICursorEvent } from "engine/components/CursorEventHandler";
 import Game, { IGameConfig } from "game/Game";
 import CoordinateConverter from "game/utils/CoordinateConverter";
 import UIEventEmitter from "shared/UIEventEmitter";
@@ -35,13 +35,13 @@ class ControlSystem extends GameObject {
     this.chapter = game.chapter;
     this.scene = game.scene;
 
-    this.components = {
-      cursorEvents: {
+    this.components = [
+      new CursorEventHandler({
         onMouseDown: this.onMouseDown.bind(this),
         onMouseMove: this.onMouseMove.bind(this),
         onMouseUp: this.onMouseUp.bind(this)
-      }
-    }
+      })
+    ]
 
     controllerStore.dispatch(addAppListener({
       type: "controller/unitSelected",
@@ -104,15 +104,15 @@ class ControlSystem extends GameObject {
     controllerStore.dispatch(phaseChanged(nextState.id));
   }
 
-  onMouseDown(event: CursorEvent) {
+  onMouseDown(event: ICursorEvent) {
     this.currentState.onMouseDown(event);
   }
 
-  onMouseMove(event: CursorEvent) {
+  onMouseMove(event: ICursorEvent) {
     this.currentState.onMouseMove(event);
   }
 
-  onMouseUp(event: CursorEvent) {
+  onMouseUp(event: ICursorEvent) {
     this.currentState.onMouseUp(event);
   }
 }

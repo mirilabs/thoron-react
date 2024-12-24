@@ -1,3 +1,4 @@
+import { Rectangle, Sprite, Position } from 'engine/components';
 import GameObject from '../../engine/GameObject';
 
 class Background extends GameObject {
@@ -7,13 +8,11 @@ class Background extends GameObject {
     src: string = null
   ) {
     super();
-    this.components = {
-      position: { x: 0, y: 0 },
-      rectangle: { width, height },
-      sprite: {
-        url: src
-      }
-    }
+    this.components = [
+      new Position(0, 0),
+      new Rectangle(width, height),
+      new Sprite(src)
+    ]
   }
 }
 

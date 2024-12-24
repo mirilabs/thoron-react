@@ -1,4 +1,4 @@
-import { Vector2 } from "engine/components";
+import { IVector2 } from "engine/utils/Vector2";
 import controllerStore, { itemSelected, targetSelected } from "shared/store";
 import Chapter, { DeployedUnit } from "thoron";
 
@@ -6,14 +6,14 @@ class ActionController {
   chapter: Chapter;
   unit: DeployedUnit;
   action: string;
-  destination: Vector2;
+  destination: IVector2;
   items: any[];
   targetIds: (string | number)[];
 
   constructor(
     chapter: Chapter,
     unit: DeployedUnit,
-    destination: Vector2,
+    destination: IVector2,
     action: any
   ) {
     this.chapter = chapter;

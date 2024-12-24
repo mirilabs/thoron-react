@@ -1,10 +1,14 @@
 import {
-  ComponentSet,
+  AnyComponent,
   ComponentId,
-  Component
+  ComponentTypes
 } from "../components";
 import Entity, { EntityId } from "../Entity";
 import Scene from "../Scene";
+
+type ComponentGroup = Partial<{
+  [K in keyof ComponentTypes]: ComponentTypes[K];
+}>
 
 abstract class System {
   scene: Scene;
@@ -17,7 +21,7 @@ abstract class System {
   entities: Set<EntityId> = new Set();
 
   // Components that match signature and belong to tracked entities
-  componentSets: ComponentSet[] = [];
+  componentGroups: ComponentGroup[] = [];
 
   mount(scene: Scene) {
     this.scene = scene;
@@ -41,8 +45,7 @@ abstract class System {
    */
   onComponentAdded(
     entity: Entity,
-    componentId: ComponentId,
-    component: Component
+    component: AnyComponent
   ) {
     if (
       !this.entities.has(entity.id) &&
@@ -60,7 +63,7 @@ abstract class System {
    */
   onComponentRemoved(
     entity: Entity,
-    componentId: ComponentId
+    component: AnyComponent
   ) {
     if (
       this.entities.has(entity.id) &&
@@ -77,12 +80,13 @@ abstract class System {
   addEntity(entity: Entity) {
     this.entities.add(entity.id);
     
-    let componentSet = {};
-    for (const componentId of this.signature) {
-      let component = entity.getComponent(componentId as ComponentId);
-      componentSet[componentId] = component;
+    let group = {};
+    for (const cId of this.signature) {
+      let component = entity.getComponent(cId);
+      group[cId] = component;
     }
-    this.componentSets.push(componentSet);
+    
+    this.componentGroups.push(group);
   }
 
   /**
@@ -109,7 +113,7 @@ abstract class System {
     if (index < 0) return;
 
     this.entities.delete(entity.id);
-    this.componentSets.splice(index, 1);
+    this.componentGroups.splice(index, 1);
   }
 
   /**
@@ -118,9 +122,9 @@ abstract class System {
    * @param entity 
    * @returns An object with structure { [ComponentId]: Component }
    */
-  getComponents(entity: Entity): ComponentSet {
+  getComponents(entity: Entity): ComponentGroup {
     let i = this.getEntityIndex(entity.id);
-    return this.componentSets[i];
+    return this.componentGroups[i];
   }
 }
 

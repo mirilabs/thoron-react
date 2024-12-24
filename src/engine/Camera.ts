@@ -1,5 +1,4 @@
-import { Vector2 as IVector2 } from "./components";
-import Vector2 from "./utils/Vector2";
+import Vector2, { IVector2 } from "./utils/Vector2";
 
 class Camera {
   translate: IVector2 = { x: 0, y: 0 }

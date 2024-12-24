@@ -3,6 +3,7 @@ import UnitPiece from "../UnitBody";
 import CombatTargetIcon from "icons/target_combat.svg";
 import Vector2 from "engine/utils/Vector2";
 import MotionSequence from "engine/utils/MotionSequence";
+import { Position, Rectangle, Sprite } from "engine/components";
 
 const TOP_OFFSET = {
   x: 0.2,
@@ -25,7 +26,7 @@ class TargetIndicator extends GameObject {
     super();
 
     const { tileWidth, tileHeight } = unitPiece.game.coords;
-    const position = unitPiece.components.position;
+    const position = unitPiece.entity.getComponent("position");
 
     this.topPosition = Vector2.sum(position, {
       x: TOP_OFFSET.x * tileWidth,
@@ -36,19 +37,11 @@ class TargetIndicator extends GameObject {
       y: BOTTOM_OFFSET.y * tileHeight
     });
 
-    this.components = {
-      position: {
-        x: this.bottomPosition.x,
-        y: this.bottomPosition.y
-      },
-      rectangle: {
-        width: SIZE.width,
-        height: SIZE.height
-      },
-      sprite: {
-        url: CombatTargetIcon
-      }
-    }
+    this.components = [
+      new Position(this.bottomPosition.x, this.bottomPosition.y),
+      new Rectangle(SIZE.width, SIZE.height),
+      new Sprite(CombatTargetIcon)
+    ]
   }
 
   onInit(): void {

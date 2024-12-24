@@ -1,6 +1,6 @@
 import Entity from "engine/Entity";
-import Vector2 from "./Vector2";
-import { Vector2 as IVector2 } from "../components";
+import Vector2, { IVector2 } from "./Vector2";
+import { UpdateFunction } from "../components";
 import { EASE } from "./easingFunctions";
 import type { EasingFunction } from "./easingFunctions";
 
@@ -72,7 +72,7 @@ class MotionSequence {
     const origin = Vector2.copy(
       this.lastPosition ?? this.entity.getComponent("position")
     );
-    const position = this.entity.getComponent("position") as Vector2;
+    const position = this.entity.getComponent("position");
 
     const update = (progress: number) => {
       let nextPos = Vector2.lerp(origin, dest, progress);
@@ -120,7 +120,7 @@ class MotionSequence {
         }
       }
 
-      ent.addComponent("update", update);
+      ent.addComponent(new UpdateFunction(update));
     });
   }
 

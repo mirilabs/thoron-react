@@ -74,7 +74,8 @@ class Game {
     let width = rows * this.config.tileWidth;
     let height = columns * this.config.tileHeight;
     
-    let bg = new Background(width, height, terrain.record.background);
+    const backgroundUrl = (terrain as any).record.background;    
+    let bg = new Background(width, height, backgroundUrl);
     bg.addToScene(scene);
 
     let grid = new Grid(rows, columns, this.config);

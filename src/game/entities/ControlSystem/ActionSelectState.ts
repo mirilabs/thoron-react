@@ -1,4 +1,4 @@
-import { CursorEvent } from "engine/components";
+import { ICursorEvent } from "engine/components/CursorEventHandler";
 import UnitPiece from "../UnitBody";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
@@ -42,7 +42,7 @@ class ActionSelectState extends ControllerState {
     }
   }
 
-  onMouseDown(event: CursorEvent): void {
+  onMouseDown(event: ICursorEvent): void {
     let tileCoords = this.getTileCoords(event);
     let target = this.controller.chapter.getUnitAt(tileCoords);
     let possibleActions = this.unitEnt.unit.getPossibleActionsTo(

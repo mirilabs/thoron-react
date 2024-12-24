@@ -1,6 +1,7 @@
 import { UIEventSignatures } from "shared/UIEventEmitter";
 import UnitController from ".";
-import { CursorEvent, Vector2 } from "engine/components";
+import { ICursorEvent } from "engine/components/CursorEventHandler";
+import { IVector2 } from "engine/utils/Vector2";
 import controllerStore from "shared/store";
 import { UnsubscribeListener } from "@reduxjs/toolkit";
 import { addAppListener } from "shared/listenerMiddleware";
@@ -50,7 +51,7 @@ abstract class ControllerState {
     this.storeEventBindings.push(removeListener);
   }
 
-  getTileCoords(vec: Vector2): Vector2 {
+  getTileCoords(vec: IVector2): IVector2 {
     return this.controller.coords.toTiles(vec.x, vec.y);
   }
 
@@ -75,15 +76,15 @@ abstract class ControllerState {
     }
   }
 
-  onMouseDown(event: CursorEvent) {}
+  onMouseDown(event: ICursorEvent) {}
 
-  onMouseMove(event: CursorEvent) {
+  onMouseMove(event: ICursorEvent) {
     if (this.panning) {
       this.controller.scene.camera.pan(event.delta);
     }
   }
 
-  onMouseUp(event: CursorEvent) {
+  onMouseUp(event: ICursorEvent) {
     this.panning = false;
   }
 }

@@ -1,3 +1,4 @@
+import DrawHandler from "engine/components/DrawHandler";
 import GameObject from "../../engine/GameObject";
 import { IGameConfig } from "../Game";
 
@@ -16,9 +17,9 @@ class Grid extends GameObject {
     this.columns = columns;
     this.cfg = cfg;
 
-    this.components = {
-      draw: this.draw.bind(this)
-    }
+    this.components = [
+      new DrawHandler(this.draw.bind(this), 5)
+    ]
   }
 
   draw(ctx: CanvasRenderingContext2D) {

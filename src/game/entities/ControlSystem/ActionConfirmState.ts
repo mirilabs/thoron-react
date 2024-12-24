@@ -8,7 +8,7 @@ import store, {
 import ActionSelectState from "./ActionSelectState";
 import ActionController from "./ActionController";
 import Vector2 from "engine/utils/Vector2";
-import { CursorEvent } from "engine/components";
+import { ICursorEvent } from "engine/components/CursorEventHandler";
 
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
@@ -74,7 +74,7 @@ class ActionConfirmState extends ControllerState {
     this.resetTargetIndicators();
   }
 
-  onMouseDown(event: CursorEvent): void {
+  onMouseDown(event: ICursorEvent): void {
     super.onMouseDown(event);
     
     let tileCoords = this.controller.coords.toTiles(event.x, event.y);
