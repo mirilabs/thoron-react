@@ -3,6 +3,7 @@ import "./ChapterMenu.scss";
 import ThoronContext from "components/ThoronContext";
 
 function ChapterMenu() {
+  // eslint-disable-next-line
   const { controller } = useContext(ThoronContext);
 
   const handleEndTurn = () => {
