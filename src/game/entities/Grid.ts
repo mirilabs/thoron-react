@@ -18,7 +18,7 @@ class Grid extends GameObject {
     this.cfg = cfg;
 
     this.components = [
-      new DrawHandler(this.draw.bind(this), 5)
+      new DrawHandler(this.draw.bind(this), 20)
     ]
   }
 

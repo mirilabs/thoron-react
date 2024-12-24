@@ -18,7 +18,7 @@ abstract class System {
 
   // Set of Entities that this System holds references to
   // because they have all of the components in signature
-  entities: Set<EntityId> = new Set();
+  trackedEntities: Set<EntityId> = new Set();
 
   // Components that match signature and belong to tracked entities
   componentGroups: ComponentGroup[] = [];
@@ -48,7 +48,7 @@ abstract class System {
     component: AnyComponent
   ) {
     if (
-      !this.entities.has(entity.id) &&
+      !this.trackedEntities.has(entity.id) &&
       this.signature.isSubsetOf(entity.signature)
     ) {
       this.addEntity(entity);
@@ -66,7 +66,7 @@ abstract class System {
     component: AnyComponent
   ) {
     if (
-      this.entities.has(entity.id) &&
+      this.trackedEntities.has(entity.id) &&
       !this.signature.isSubsetOf(entity.signature)
     ) {
       this.removeEntity(entity);
@@ -78,7 +78,7 @@ abstract class System {
    * @param entity 
    */
   addEntity(entity: Entity) {
-    this.entities.add(entity.id);
+    this.trackedEntities.add(entity.id);
     
     let group = {};
     for (const cId of this.signature) {
@@ -97,7 +97,7 @@ abstract class System {
    */
   getEntityIndex(entityId: EntityId) {
     let i: number = 0;
-    for (const eId of this.entities) {
+    for (const eId of this.trackedEntities) {
       if (eId === entityId) return i;
       i++;
     }
@@ -111,9 +111,9 @@ abstract class System {
   removeEntity(entity: Entity) {
     let index = this.getEntityIndex(entity.id);
     if (index < 0) return;
-
-    this.entities.delete(entity.id);
     this.componentGroups.splice(index, 1);
+
+    this.trackedEntities.delete(entity.id);
   }
 
   /**

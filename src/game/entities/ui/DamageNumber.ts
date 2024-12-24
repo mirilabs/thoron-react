@@ -23,10 +23,10 @@ class DamageNumber extends GameObject {
   constructor(origin: Vector2, event: AttackEvent, config: IGameConfig) {
     super();
 
-    const position = origin;
+    const position = new Position(origin.x, origin.y);
 
     this.components = [
-      new Position(origin.x, origin.y),
+      position,
       new DrawHandler((ctx) => {
         ctx.save();
 
@@ -41,7 +41,7 @@ class DamageNumber extends GameObject {
         ctx.strokeText(this.text, position.x, position.y, MAX_WIDTH);
 
         ctx.restore();
-      }, 25)
+      }, 75)
     ]
 
     this.config = config;
@@ -86,6 +86,8 @@ class DamageNumber extends GameObject {
     path.addMotion((progress) => {
       // move from p1 to p2
       this.setPosition(Vector2.lerp(p1, p2, progress));
+
+      // fade away
       this.opacity = 1 - progress;
     }, FLOAT_DURATION);
     

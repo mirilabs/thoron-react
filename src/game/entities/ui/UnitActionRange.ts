@@ -19,7 +19,7 @@ class UnitActionRange extends GameObject {
     this.config = game.config;
     this.unit = unit;
     this.targetPos = targetPos;
-    this.drawHandler = new DrawHandler(this.draw.bind(this));
+    this.drawHandler = new DrawHandler(this.draw.bind(this), 30);
 
     this.components = [
       this.drawHandler

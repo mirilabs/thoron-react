@@ -40,7 +40,7 @@ class TargetIndicator extends GameObject {
     this.components = [
       new Position(this.bottomPosition.x, this.bottomPosition.y),
       new Rectangle(SIZE.width, SIZE.height),
-      new Sprite(CombatTargetIcon)
+      new Sprite(CombatTargetIcon, 70)
     ]
   }
 

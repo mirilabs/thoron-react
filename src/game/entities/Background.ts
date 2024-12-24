@@ -11,7 +11,7 @@ class Background extends GameObject {
     this.components = [
       new Position(0, 0),
       new Rectangle(width, height),
-      new Sprite(src)
+      new Sprite(src, 10)
     ]
   }
 }

@@ -17,7 +17,7 @@ class UnitRange extends GameObject {
     this.unit = unit;
 
     this.components = [
-      new DrawHandler(this.draw.bind(this))
+      new DrawHandler(this.draw.bind(this), 30)
     ]
   }
 

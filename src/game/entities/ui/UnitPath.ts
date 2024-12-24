@@ -28,7 +28,7 @@ class UnitPath extends GameObject {
     this.origin = unit.getPosition();
 
     this.components = [
-      new DrawHandler(this.draw.bind(this))
+      new DrawHandler(this.draw.bind(this), 35)
     ]
 
     if (initialDestination !== null) {

@@ -1,5 +1,29 @@
-import { ComponentId } from "../components";
+import SortedArray from "engine/utils/SortedArray";
+import { AnyComponent, ComponentId, DrawHandler } from "../components";
 import System from "./System";
+import Entity from "engine/Entity";
+import { IDrawHandler } from "engine/components/DrawHandler";
+
+class DrawOrder {
+  order = new SortedArray<IDrawHandler>(
+    (a: IDrawHandler, b: IDrawHandler) => a.zIndex - b.zIndex
+  ); // automatically sorted by z index
+
+  add(drawHandler: IDrawHandler) {
+    this.order.add(drawHandler);
+  }
+
+  remove(drawHandler: IDrawHandler) {
+    let i = this.order.indexOf(drawHandler);
+    if (i >= 0) this.order.splice(i, 1);
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    this.order.forEach((drawHandler: DrawHandler) => {
+      drawHandler.draw(ctx);
+    });
+  }
+}
 
 class DrawSystem extends System {
   signature: Set<ComponentId> = new Set([
@@ -7,6 +31,7 @@ class DrawSystem extends System {
   ]);
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
+  drawOrder = new DrawOrder();
 
   bindCanvas(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -23,15 +48,28 @@ class DrawSystem extends System {
     this.ctx.clearRect(0, 0, width, height);
   }
 
+  onComponentAdded(entity: Entity, component: AnyComponent): void {
+    super.onComponentAdded(entity, component);
+
+    if (component instanceof DrawHandler) {
+      this.drawOrder.add(component);
+    }
+  }
+
+  onComponentRemoved(entity: Entity, component: AnyComponent): void {
+    super.onComponentRemoved(entity, component);
+
+    if (component instanceof DrawHandler) {
+      this.drawOrder.remove(component);
+    }
+  }
+
   draw() {
     this.ctx.resetTransform();
     this.clearCanvas();
     this.scene.camera.transformContext(this.ctx);
 
-    this.componentGroups.forEach(({ draw }) => {
-      if (draw.enabled)
-        draw.draw(this.ctx);
-    });
+    this.drawOrder.draw(this.ctx);
   }
 }
 

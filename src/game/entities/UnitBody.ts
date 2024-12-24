@@ -24,7 +24,7 @@ class UnitBody extends GameObject {
     this.components = [
       new Position(0, 0),
       new Rectangle(game.coords.tileWidth, game.coords.tileHeight),
-      new Sprite(unit.record['sprite'], (ctx) => {
+      new Sprite(unit.record['sprite'], 40, (ctx) => {
         if (this.grayscale) {
           ctx.filter = "grayscale(1)";
         }
