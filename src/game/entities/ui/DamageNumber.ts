@@ -3,6 +3,8 @@ import Vector2 from "engine/utils/Vector2";
 import MotionSequence, { EASE } from "engine/utils/MotionSequence";
 import { IGameConfig } from "game/Game";
 import { AttackEvent } from "thoron";
+import { Position } from "engine/components";
+import DrawHandler from "engine/components/DrawHandler";
 
 const INITIAL_TEXT_SIZE = 16;
 const FINAL_TEXT_SIZE = 32;
@@ -23,9 +25,9 @@ class DamageNumber extends GameObject {
 
     const position = origin;
 
-    this.components = {
-      position,
-      draw: (ctx) => {
+    this.components = [
+      new Position(origin.x, origin.y),
+      new DrawHandler((ctx) => {
         ctx.save();
 
         ctx.globalAlpha = this.opacity;
@@ -39,8 +41,8 @@ class DamageNumber extends GameObject {
         ctx.strokeText(this.text, position.x, position.y, MAX_WIDTH);
 
         ctx.restore();
-      }
-    }
+      }, 25)
+    ]
 
     this.config = config;
     this.setDrawAttributes(event);
@@ -64,8 +66,8 @@ class DamageNumber extends GameObject {
   }
 
   onInit(): void {
-    let p0 = Vector2.copy(this.components.position);
-    let p1 = Vector2.copy(this.components.position);
+    let p0 = Vector2.copy(this.entity.getComponent("position"));
+    let p1 = Vector2.copy(p0);
     let p2 = Vector2.scale(
       Vector2.UP,
       FLOATING_OFFSET_SCALE * this.config.tileWidth
@@ -91,8 +93,7 @@ class DamageNumber extends GameObject {
   }
 
   setPosition(pos: Vector2) {
-    this.components.position.x = pos.x;
-    this.components.position.y = pos.y;
+    this.entity.getComponent("position").moveTo(pos);
   }
 }
 

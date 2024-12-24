@@ -44,7 +44,7 @@ function AttackMotion(
         x: game.config.tileWidth,
         y: game.config.tileHeight
       }, 0.5);
-      origin = origin.sum(target.components.position);
+      origin = origin.sum(target.entity.getComponent("position"));
 
       const damageNumber = new DamageNumber(origin, event, game.config);
       damageNumber.addToScene(game.scene);

@@ -1,4 +1,4 @@
-import { CursorEvent } from "engine/components";
+import { ICursorEvent } from "engine/components/CursorEventHandler";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import MovingState from "./MovingState";
 import controllerStore, {
@@ -19,7 +19,7 @@ class IdleState extends ControllerState {
     }
   }
 
-  onMouseDown(event: CursorEvent): void {
+  onMouseDown(event: ICursorEvent): void {
     let tileCoords = this.getTileCoords(event);
     let unit: DeployedUnit = this.controller.chapter.getUnitAt(tileCoords);
 

@@ -1,5 +1,5 @@
 import Scene from "./Scene";
-import { Component, ComponentId } from "./components";
+import { AnyComponent, ComponentId, ComponentTypes, getComponentId } from "./components";
 
 type EntityId = Entity['id'];
 
@@ -30,27 +30,33 @@ class Entity {
     return this._parent ? this._parent.deref() : undefined;
   }
 
-  getComponent<T extends Component>(componentId: ComponentId): T {
-    return this.scene.componentMap.getComponent(this.id, componentId);
+  getComponent<T extends ComponentId>(
+    cId: T
+  ): ComponentTypes[T] {
+    let component = this.scene.componentMap.getComponent(this.id, cId);
+    return component;
   }
 
-  addComponent(cId: ComponentId, component: Component) {
-    this.signature.add(cId);
+  addComponent(component: AnyComponent) {
+    this.signature.add(getComponentId(component));
 
-    this.scene.componentMap.addComponent(this.id, cId, component);
+    this.scene.componentMap.addComponent(this.id, component);
 
     this.scene.systems.forEach(sys => {
-      sys.onComponentAdded(this, cId, component);
+      sys.onComponentAdded(this, component);
     });
   }
 
-  removeComponent(cId: ComponentId) {
+  removeComponent<T extends ComponentId>(
+    cId: T
+  ): void {
+    const component = this.getComponent(cId);
     this.signature.delete(cId);
-
+    
     this.scene.componentMap.removeComponent(this.id, cId);
 
     this.scene.systems.forEach(system => {
-      system.onComponentRemoved(this, cId);
+      system.onComponentRemoved(this, component);
     });
   }
 

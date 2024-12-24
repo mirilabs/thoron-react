@@ -1,4 +1,7 @@
-import { Vector2 as IVector2 } from "../components";
+interface IVector2 {
+  x: number;
+  y: number;
+}
 
 class Vector2 implements IVector2 {
   x: number;
@@ -136,3 +139,4 @@ class Vector2 implements IVector2 {
 }
 
 export default Vector2;
+export { IVector2 }

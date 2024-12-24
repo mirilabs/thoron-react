@@ -7,8 +7,8 @@ class UpdateSystem extends System {
   ]);
 
   update(dT: number) {
-    this.componentSets.forEach(({ update }) => {
-      update(dT);
+    this.componentGroups.forEach(({ update }) => {
+      update.update(dT);
     });
   }
 }

@@ -1,5 +1,5 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
-import { Vector2 } from "engine/components";
+import { IVector2 } from "engine/utils/Vector2";
 import {
   ControllerPhase
 } from "game/entities/ControlSystem/ControllerState";
@@ -8,9 +8,9 @@ import listenerMiddleware from "./listenerMiddleware";
 const initialState: {
   phase: ControllerPhase,
   unitId: string | number,
-  position: Vector2,
+  position: IVector2,
   pendingMove: {
-    destination: Vector2,
+    destination: IVector2,
     action: string,
     targetId?: string,
     itemIndex?: number

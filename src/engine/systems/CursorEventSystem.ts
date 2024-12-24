@@ -1,15 +1,17 @@
-import Vector2 from "engine/utils/Vector2";
-import {
-  ComponentSchema,
-  CursorEventHandler,
-  CursorEvent,
-  CursorEventHandlers,
-  Vector2 as IVector2
-} from "../components";
 import System from "./System";
+import Vector2, { IVector2 } from "engine/utils/Vector2";
+import {
+  ComponentId,
+  ComponentTypes
+} from "../components";
+import {
+  CursorEventCallback,
+  ICursorEvent,
+  ICursorEventHandler
+} from "engine/components/CursorEventHandler";
 
 class CursorEventSystem extends System {
-  signature: Set<keyof ComponentSchema> = new Set([
+  signature: Set<ComponentId> = new Set([
     'cursorEvents'
   ]);
 
@@ -55,7 +57,7 @@ class CursorEventSystem extends System {
    * @returns An event callback that passes events to this system's entities
    */
   cursorEventCallback(
-    callbackId: keyof CursorEventHandlers,
+    callbackId: keyof ICursorEventHandler,
     isTouchEvent: boolean = false
   ): (event: MouseEvent) => void {
     return function(event: PointerEvent) {
@@ -75,12 +77,12 @@ class CursorEventSystem extends System {
       mousePos = this.scene.camera.reverseTransformVector(mousePos);
 
       // generate event and pass it to components
-      for (const components of this.componentSets) {
+      for (const components of this.componentGroups) {
         let {
           cursorEvents
-        } = components as ComponentSchema;
+        } = components as Partial<ComponentTypes>;
 
-        let cEvent: CursorEvent = {
+        let cEvent: ICursorEvent = {
           x: mousePos.x,
           y: mousePos.y,
           delta,
@@ -89,7 +91,7 @@ class CursorEventSystem extends System {
           ctrlKey: event.ctrlKey
         }
 
-        let eventHandler: CursorEventHandler = cursorEvents[callbackId];
+        let eventHandler: CursorEventCallback = cursorEvents[callbackId];
         if (eventHandler) {
           eventHandler(cEvent);
         }
