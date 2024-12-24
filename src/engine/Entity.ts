@@ -45,6 +45,8 @@ class Entity {
     this.scene.systems.forEach(sys => {
       sys.onComponentAdded(this, component);
     });
+
+    component.onInit(this);
   }
 
   removeComponent<T extends ComponentId>(
@@ -58,6 +60,8 @@ class Entity {
     this.scene.systems.forEach(system => {
       system.onComponentRemoved(this, component);
     });
+
+    component.onDestroy(this);
   }
 
   addChild() {
@@ -80,6 +84,10 @@ class Entity {
     if (this.parent) {
       this.parent.removeChild(this);
     }
+
+    this.signature.forEach(cId => {
+      this.removeComponent(cId);
+    });
     
     this.scene.systems.forEach(system => {
       system.removeEntity(this);

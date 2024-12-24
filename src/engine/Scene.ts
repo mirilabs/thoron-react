@@ -68,7 +68,6 @@ class Scene {
   // draw loop
   draw() {
     this.drawSystem.draw();
-    this.spriteSystem.draw();
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -77,7 +76,6 @@ class Scene {
 
     // bind to new canvas
     this.drawSystem.bindCanvas(canvas);
-    this.spriteSystem.bindCanvas(canvas);
     this.cursorEventSystem.bindCursorEvents(canvas);
     this.canvas = canvas;
   }
@@ -85,7 +83,6 @@ class Scene {
   unsetCanvas() {
     if (this.canvas) {
       this.drawSystem.unbindCanvas();
-      this.spriteSystem.unbindCanvas();
       this.cursorEventSystem.unbindCursorEvents(this.canvas);
       delete this.canvas;
     }

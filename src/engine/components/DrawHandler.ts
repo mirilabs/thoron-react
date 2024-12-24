@@ -2,13 +2,13 @@ import Component from "./Component";
 
 type DrawFn = (ctx: CanvasRenderingContext2D) => void;
 
-interface IDrawFunction {
+interface IDrawHandler {
   draw: DrawFn;
   zIndex?: number;
   enabled?: boolean;
 }
 
-class DrawHandler extends Component implements IDrawFunction {
+class DrawHandler extends Component implements IDrawHandler {
   draw: DrawFn;
   zIndex?: number;
   enabled?: boolean = true;
@@ -22,5 +22,6 @@ class DrawHandler extends Component implements IDrawFunction {
 
 export default DrawHandler;
 export {
+  IDrawHandler,
   DrawFn
 }

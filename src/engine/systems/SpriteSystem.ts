@@ -1,37 +1,40 @@
+import Scene from "engine/Scene";
 import {
-  ComponentId
+  AnyComponent,
+  ComponentId,
+  Sprite
 } from "../components";
 import DrawSystem from "./DrawSystem";
+import System from "./System";
+import Entity from "engine/Entity";
 
-class SpriteSystem extends DrawSystem {
+class SpriteSystem extends System {
+  drawSystem: DrawSystem;
+
   signature: Set<ComponentId> = new Set([
     'position',
     'rectangle',
     'sprite',
   ]);
 
-  draw() {
-    this.componentGroups.forEach(({ position, rectangle, sprite }) => {
-      this.ctx.save();
+  onMount(scene?: Scene): void {
+    this.drawSystem = scene.drawSystem;
+  }
 
-      if (sprite.preprocess) {
-        sprite.preprocess(this.ctx);
-      }
+  onComponentAdded(entity: Entity, component: AnyComponent): void {
+    super.onComponentAdded(entity, component);
 
-      if (sprite.image) {
-        this.ctx.drawImage(
-          sprite.image,
-          position.x, position.y,
-          rectangle.width, rectangle.height
-        );
-      }
-      else {
-        // draw placeholder
-        this.ctx.fillText("?", position.x, position.y, rectangle.width);
-      }
-      
-      this.ctx.restore();
-    });
+    if (component instanceof Sprite) {
+      this.drawSystem.drawOrder.add(component);
+    }
+  }
+
+  onComponentRemoved(entity: Entity, component: AnyComponent): void {
+    super.onComponentRemoved(entity, component);
+
+    if (component instanceof Sprite) {
+      this.drawSystem.drawOrder.remove(component);
+    }
   }
 }
 
