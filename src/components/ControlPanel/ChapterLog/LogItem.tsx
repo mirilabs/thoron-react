@@ -1,15 +1,10 @@
 import React from "react";
-import Chapter, { ActionResult } from "thoron";
+import Chapter, { ActionResult, IAction } from "thoron";
+import CombatLog from "./CombatLog";
 
 const logComponents = {
-  attack({ unit }) {
-    return (
-      <>
-        {unit.record.name} attacked
-      </>
-    )
-  },
-  
+  attack: CombatLog,
+
   default({ unit }) {
     return (
       <>
@@ -19,14 +14,14 @@ const logComponents = {
   }
 }
 
-function LogItem({ actionResult, chapter }: {
+function LogItemContainer({ actionResult, chapter }: {
   actionResult: ActionResult,
   chapter: Chapter
 }) {
-  const { action } = actionResult;
+  const action = actionResult.action as IAction;
   const unit = chapter.getUnitById(action.unitId);
   const target = action.targetId ? chapter.getUnitById(action.targetId) : null;
-  const props = { unit, target, action, actionResult }
+  const props = { unit, target, action, result: actionResult }
 
   let Content = logComponents[action.command] ?? logComponents.default;
 
@@ -37,4 +32,4 @@ function LogItem({ actionResult, chapter }: {
   );
 }
 
-export default LogItem;
+export default LogItemContainer;

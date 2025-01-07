@@ -22,7 +22,10 @@ function ChapterLog() {
 
   const items = history.map((actionResult, i) => {
     return (
-      <LogItem key={i} chapter={chapter} actionResult={actionResult}  />
+      <LogItem
+        key={i}
+        chapter={chapter}
+        actionResult={actionResult}  />
     );
   });
 
