@@ -20,7 +20,7 @@ function CombatStartHandler() {
       controller.pushAction({
         unitId,
         targetId: pendingMove.targetId,
-        destPos: pendingMove.destination,
+        destination: pendingMove.destination,
         command: pendingMove.action as Command
       });
       dispatch(unitSelected(null));
