@@ -16,7 +16,7 @@
     "react-tabs": "^6.0.2",
     "react-transition-group": "^4.4.5",
     "sass": "^1.77.6",
-    "thoron": "^2.2.3"
+    "thoron": "^2.2.5"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.3.4",
