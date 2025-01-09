@@ -11,13 +11,15 @@ function HPBar({ maxHP, hp, damage, widthScale = DEFAULT_WIDTH_SCALE }) {
   }
   
   return (
-    <div className="hp-bar" style={{ width: `calc(${maxHP} * ${widthScale})`}}>
-      <span className="hp-bar__remaining"
-        style={percentWidth(remainingHP / maxHP)}>
-      </span>
-      <span className="hp-bar__damage"
-        style={percentWidth(damage / maxHP)}>
-      </span>
+    <div className="hp-bar-container">
+      <div className="hp-bar" style={{ width: `calc(${maxHP} * ${widthScale})`}}>
+        <span className="hp-bar__remaining"
+          style={percentWidth(remainingHP / maxHP)}>
+        </span>
+        <span className="hp-bar__damage"
+          style={percentWidth(damage / maxHP)}>
+        </span>
+      </div>
     </div>
   )
 }
