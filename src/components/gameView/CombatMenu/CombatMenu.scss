@@ -29,23 +29,6 @@
   .attack-preview {
     display: grid;
     grid-template-columns: 40% auto 40%;
-
-    & > span {
-      margin-left: 4px;
-      margin-right: 4px;
-    }
-
-    .equipped {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-
-    .label {
-      font-weight: bold;
-      font-size: 0.9rem;
-      margin-right: 0.5rem;
-    }
   }
 
   .attack-input {
