@@ -6,6 +6,7 @@ import { ItemRecord } from "thoron/dist/Item";
 
 interface ICombatPreview {
   unitName: string,       // name of unit
+  unitSpriteUrl?: string, // unit sprite url
   equippedItem: ItemRecord, // equipped item
   maxHP: number,      // max hp value
   startHP: number,    // hp at beginning of combat
@@ -22,6 +23,7 @@ function CombatPreview({ data }: {
 }) {
   const {
     unitName,
+    unitSpriteUrl,
     equippedItem,
     maxHP, startHP, endHP,
     damage, hit, crit, doubles,
@@ -32,6 +34,10 @@ function CombatPreview({ data }: {
     <div className="combat-forecast">
       <div>
         <div className="name">
+          {
+            unitSpriteUrl &&
+            <img className="sprite" src={unitSpriteUrl} alt={unitName} />
+          }
           {unitName}
         </div>
         <div className="equipped">
@@ -52,20 +58,20 @@ function CombatPreview({ data }: {
       </div>
       <table className="stats">
         <tr>
-          <th className="label">Dmg</th>
-          <th className="value">
+          <th className="stat-label">Dmg</th>
+          <th className="stat-value">
             {isInRange ? (damage + (doubles ? "×2" : "")) : "--"}
           </th>
         </tr>
         <tr>
-          <th className="label">Hit</th>
-          <th className="value">
+          <th className="stat-label">Hit</th>
+          <th className="stat-value">
             {isInRange ? hit : "--"}
           </th>
         </tr>
         <tr>
-          <th className="label">Crit</th>
-          <th className="value">
+          <th className="stat-label">Crit</th>
+          <th className="stat-value">
             {isInRange ? crit : "--"}
           </th>
         </tr>
