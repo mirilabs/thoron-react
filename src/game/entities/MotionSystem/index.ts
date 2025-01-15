@@ -40,7 +40,7 @@ class MotionSystem extends GameObject {
       case "combat_attack":
         let target = this.game.getUnitBody(event.targetId);
         return AttackMotion(this.game, unit, target, event);
-      case "end_turn":
+      case "end_action":
         return async () => {
           unit.grayscale = true;
         }
