@@ -1,3 +1,4 @@
+import "./LogItem.scss";
 import React from "react";
 import Chapter, { ActionResult, IAction } from "thoron";
 import CombatLog from "./CombatLog";
