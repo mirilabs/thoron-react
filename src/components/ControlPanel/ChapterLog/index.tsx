@@ -30,7 +30,7 @@ function ChapterLog() {
   });
 
   return (
-    <div>
+    <div className="chapter-log">
       {items.length === 0 && <div>No history</div>}
       {items}
     </div>
