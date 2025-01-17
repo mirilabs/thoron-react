@@ -1,13 +1,11 @@
 import React from "react";
-import { CombatForecast, DeployedUnit } from "thoron";
+import { ICombatForecast, DeployedUnit, ICombatForecastSide } from "thoron";
 import CombatPreview, { ICombatPreview } from "./CombatPreview";
-
-type AttackForecast = CombatForecast["initiator"];
 
 function getForecastData(
   unit: DeployedUnit,
-  forecast: AttackForecast,
-  oppForecast: AttackForecast
+  forecast: ICombatForecastSide,
+  oppForecast: ICombatForecastSide
 ): ICombatPreview {
   const hp = unit.getState().hp;
 
@@ -17,14 +15,14 @@ function getForecastData(
     maxHP: unit.getStats().mhp,
     startHP: hp,
     endHP: hp - oppForecast.projectedTotalDamage,
-    ...(forecast as Required<AttackForecast>)
+    ...(forecast as Required<ICombatForecastSide>)
   }
 }
 
 function CombatPreviewContainer({ attacker, target, forecast }: {
   attacker: DeployedUnit,
   target: DeployedUnit,
-  forecast: CombatForecast
+  forecast: ICombatForecast
 }) {
   const attData = getForecastData(
     attacker,
