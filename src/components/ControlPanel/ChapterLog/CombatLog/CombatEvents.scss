@@ -1,0 +1,47 @@
+.combat-detail__events {
+  list-style: none;
+  padding: 8px;
+  margin: auto 0;
+  font-weight: bold;
+  background-color: var(--bg-color);
+  
+  .hp {
+    color: var(--accent-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .hp-value {
+    min-width: 24px;
+    text-align: center;
+  }
+}
+
+.combat-detail__attack-event {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  i {
+    &.team-0 {
+      color: var(--team-0);
+    }
+  
+    &.team-1 {
+      color: var(--team-1);
+    }
+  
+    &.team-2 {
+      color: var(--team-2);
+    }
+
+    &.defeat {
+      color: red;
+    }
+  }
+}
