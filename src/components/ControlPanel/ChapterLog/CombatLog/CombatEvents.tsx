@@ -1,6 +1,6 @@
 import "./CombatEvents.scss";
 import React from 'react';
-import { ChapterEvent, DeployedUnit, ICombatResultSide } from 'thoron';
+import { ChapterEvent, DeployedUnit } from 'thoron';
 import AttackEvent from "./AttackEvent";
 import { ICombatPreview } from "components/gameView/CombatMenu/CombatPreview";
 
