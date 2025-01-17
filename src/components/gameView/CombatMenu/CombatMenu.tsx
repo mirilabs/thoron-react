@@ -4,7 +4,7 @@ import { useControllerSelector } from "components/utils/reduxHooks";
 import CombatPreview from "./CombatPreviewContainer";
 import CombatInput from "./CombatInput";
 import { DeployedUnit } from "thoron";
-import { CombatForecast } from "thoron/dist/Battle";
+import { ICombatForecast } from "thoron/dist/Battle";
 
 function CombatMenu() {
   const unit: DeployedUnit = useSelectedUnit();
@@ -19,7 +19,7 @@ function CombatMenu() {
     state.pendingMove.itemIndex
   ));
 
-  let forecast: CombatForecast;
+  let forecast: ICombatForecast;
   if (unit && target) {
     let range = target.getDistance(destination);
     forecast = unit?.getCombatForecast(target, range);
