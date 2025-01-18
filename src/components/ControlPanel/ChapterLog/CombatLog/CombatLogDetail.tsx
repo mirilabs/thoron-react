@@ -1,14 +1,15 @@
+import "./CombatLogDetail.scss";
 import React from "react";
 import CombatPreview, {
   ICombatPreview
 } from "components/gameView/CombatMenu/CombatPreview";
 import {
-  ActionResult,
   DeployedUnit,
   ICombatForecastSide,
   ICombatResultSide
 } from "thoron";
 import CombatEvents from "./CombatEvents";
+import { LogDetailProps } from "../LogItem";
 
 function getForecastData(
   unit: DeployedUnit,
@@ -26,20 +27,16 @@ function getForecastData(
   } as ICombatPreview;
 }
 
-function CombatLogDetail({ unit, target, result }: {
-  unit: DeployedUnit,
-  target: DeployedUnit,
-  result: ActionResult
-}) {
+function CombatLogDetail({ unit, target, actionResult }: LogDetailProps) {
   let left = getForecastData(
     unit,
-    result.combatForecast.initiator,
-    result.combatResult.initiator
+    actionResult.combatForecast.initiator,
+    actionResult.combatResult.initiator
   );
   let right = getForecastData(
     target,
-    result.combatForecast.defender,
-    result.combatResult.defender
+    actionResult.combatForecast.defender,
+    actionResult.combatResult.defender
   );
   
   const renderInitiatorOnLeft = unit.getTeam() < target.getTeam();
@@ -54,7 +51,7 @@ function CombatLogDetail({ unit, target, result }: {
     <div className="combat-detail">
       <CombatPreview data={left} />
       <CombatEvents
-        events={result.events}
+        events={actionResult.events}
         leftUnit={renderInitiatorOnLeft ? unit : target}
         rightUnit={renderInitiatorOnLeft ? target : unit}
         leftData={left}
