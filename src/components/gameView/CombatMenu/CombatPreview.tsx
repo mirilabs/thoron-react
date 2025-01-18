@@ -57,24 +57,26 @@ function CombatPreview({ data }: {
           damage={startHP - endHP} />
       </div>
       <table className="stats">
-        <tr>
-          <th className="stat-label">Dmg</th>
-          <th className="stat-value">
-            {isInRange ? (damage + (doubles ? "×2" : "")) : "--"}
-          </th>
-        </tr>
-        <tr>
-          <th className="stat-label">Hit</th>
-          <th className="stat-value">
-            {isInRange ? hit : "--"}
-          </th>
-        </tr>
-        <tr>
-          <th className="stat-label">Crit</th>
-          <th className="stat-value">
-            {isInRange ? crit : "--"}
-          </th>
-        </tr>
+        <tbody>
+          <tr>
+            <th className="stat-label">Dmg</th>
+            <th className="stat-value">
+              {isInRange ? (damage + (doubles ? "×2" : "")) : "--"}
+            </th>
+          </tr>
+          <tr>
+            <th className="stat-label">Hit</th>
+            <th className="stat-value">
+              {isInRange ? hit : "--"}
+            </th>
+          </tr>
+          <tr>
+            <th className="stat-label">Crit</th>
+            <th className="stat-value">
+              {isInRange ? crit : "--"}
+            </th>
+          </tr>
+        </tbody>
       </table>
     </div>
   )
