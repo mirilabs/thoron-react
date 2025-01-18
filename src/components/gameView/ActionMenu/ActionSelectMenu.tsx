@@ -4,38 +4,13 @@ import { CSSTransition } from "react-transition-group";
 import "./ActionSelectMenu.scss";
 import { useSelectedUnit } from "components/utils/useUnit";
 import { useControllerSelector } from "components/utils/reduxHooks";
-import { useDispatch } from "react-redux";
-import { actionSelected } from "shared/store";
-import { DeployedUnit } from "thoron";
-
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function ActionButton({ unitAction, isSelectable=true }: {
-  unitAction: string,
-  isSelectable?: boolean
-}) {
-  const dispatch = useDispatch();
-  const emitSignal = useUIEmitter("select_action");
-
-  const handleClick = () => {
-    if (isSelectable) {
-      dispatch(actionSelected(unitAction));
-      emitSignal(unitAction);
-    }
-  }
-
-  return (
-    <li onClick={handleClick} className={isSelectable ? "" : "faded"}>
-      {capitalize(unitAction)}
-    </li>
-  )
-}
+import { Command, DeployedUnit } from "thoron";
+import ActionButton from "./ActionButton";
+import WaitButton from "./WaitButton";
 
 function ActionMenu({ actions, possibleActions }: {
-  actions: string[],
-  possibleActions: { [action: string]: any }
+  actions: Command[],
+  possibleActions: Partial<{ [action in Command]: any }>
 }) {
   const buttons = actions.map((action) => {
     if (possibleActions[action]) {
@@ -51,16 +26,14 @@ function ActionMenu({ actions, possibleActions }: {
   );
 }
 
-const leftActions = [
+const leftActions: Command[] = [
   "attack",
-  "items",
-  "wait"
+  "item"
 ]
 
-const rightActions = [
+const rightActions: Command[] = [
   "staff",
-  "trade",
-  "rally"
+  "trade"
 ]
 
 function ActionMenuToggle(props: {
@@ -72,9 +45,9 @@ function ActionMenuToggle(props: {
   let destination = useControllerSelector(
     state => state.pendingMove.destination
   );
-  let possibleActions = unit && destination ?
+  let possibleActions = (unit && destination) ?
     unit.getPossibleActions(destination) :
-    [];
+    {};
 
   const handleClose = useUIEmitter("cancel");
   
@@ -90,6 +63,7 @@ function ActionMenuToggle(props: {
         <ul className="unit-action-menu__left">
           <ActionMenu actions={leftActions}
             possibleActions={possibleActions} />
+          <WaitButton />
         </ul>
         <ul className="unit-action-menu__right">
           <ActionMenu actions={rightActions}

@@ -5,7 +5,7 @@ import IdleState from "./IdleState";
 import MovingState from "./MovingState";
 import controllerStore, { targetSelected, actionSelected } from "shared/store";
 import ActionConfirmState from "./ActionConfirmState";
-import { DeployedUnit } from "thoron";
+import { Command, DeployedUnit } from "thoron";
 
 class ActionSelectState extends ControllerState {
   id = ControllerPhase.ACTION_SELECT;
@@ -70,9 +70,12 @@ class ActionSelectState extends ControllerState {
     }
   }
 
-  onActionSelected(action: string) {
+  onActionSelected(action: Command | "cancel") {
     if (action === "cancel") {
       this.onCancel();
+    }
+    else if (action === "wait") {
+      this.setState(new IdleState());
     }
     else {
       this.setState(new ActionConfirmState());
