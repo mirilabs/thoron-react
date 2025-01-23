@@ -7,12 +7,14 @@ function ChapterMenu() {
   const { controller } = useContext(ThoronContext);
 
   const handleEndTurn = () => {
-    // TODO
+    controller.pushAction({
+      command: "end_phase"
+    });
   }
 
   return (
     <div className="chapter-menu" onClick={handleEndTurn}>
-      <button>End Turn</button>
+      <button onClick={handleEndTurn}>End Phase</button>
     </div>
   )
 }
