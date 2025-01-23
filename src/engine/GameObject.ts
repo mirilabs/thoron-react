@@ -1,12 +1,11 @@
 import Entity from "./Entity";
 import Scene from "./Scene";
 import {
-  ComponentSet,
-  ComponentId
+  AnyComponent
 } from "./components";
 
 abstract class GameObject {
-  components: ComponentSet = {};
+  components: AnyComponent[] = [];
   entity: Entity;
 
   onInit(scene: Scene) {}
@@ -15,10 +14,7 @@ abstract class GameObject {
   addToScene(scene: Scene): Entity {
     let entity = scene.createEntity();
 
-    for (const cId in this.components) {
-      const component = this.components[cId];
-      entity.addComponent(cId as ComponentId, component);
-    }
+    this.components.forEach(c => entity.addComponent(c));
 
     this.entity = entity;
     this.onInit(scene);

@@ -1,0 +1,123 @@
+@mixin colors {
+  background-color: var(--bg-color-2);
+  outline: 1px rgba(from var(--accent-color) r g b / 0.25) solid;
+  border-bottom: 1px rgba(from var(--accent-color) r g b / 0.5) solid;
+}
+
+$unit-summary-height: 100px;
+
+.unit-summary {
+  @include colors;
+  position: relative;
+  top: 0;
+  min-width: 320px;
+  width: 100%;
+  height: $unit-summary-height;
+  overflow: scroll;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .body-left {
+    margin: auto 0 auto 0.5rem;
+    min-width: 64px;
+
+    .unit-class {
+      font-size: 0.9rem;
+      text-transform: capitalize;
+    }
+
+    .level,
+    .move {
+      font-size: 0.8rem;
+    }
+
+    .exp-container {
+      margin: auto 0.4rem;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+
+      meter {
+        height: 0.2rem;
+        max-width: 32px;
+        border-radius: 0.25rem;
+        background: rgba(from var(--accent-color) r g b / 0.25);
+
+        &::-moz-meter-bar,
+        &::-webkit-meter-bar {
+          background: var(--accent-color);
+        }
+      }
+    }
+
+    .hp {
+      margin: 4px 0;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      column-gap: 8px;
+      box-shadow: inset 0 -8px 8px -8px rgba(255, 192, 203, 0.5);
+
+      strong {
+        font-size: 0.9rem;
+        color: var(--text-color-2);
+      }
+
+      font-size: 1.4rem;
+    }
+  }
+
+  .body-middle {
+    margin: auto 0;
+
+    .stats {
+      margin: 0;
+      padding-left: 8px;
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      list-style: none;
+
+      li {
+        margin-right: 8px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 64px;
+        box-shadow:
+          inset 0 -8px 8px -8px
+          rgba(from var(--accent-color) r g b / 0.5);
+        padding: 0 6px;
+        font-size: 0.9rem;
+
+        span {
+          font-weight: bold;
+          color: var(--text-color-2);
+        }
+      }
+    }
+  }
+
+  .body-right {
+    .items,
+    .skills {
+      margin: 4px 0;
+      list-style: none;
+      display: flex;
+      flex-direction: row;
+      column-gap: 4px;
+
+      img {
+        max-width: 32px;
+        max-height: 32px;
+
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+}

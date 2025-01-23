@@ -1,17 +1,21 @@
-import {
-  ComponentSchema,
-  CursorEventHandler,
-  CursorEvent,
-  CursorEventHandlers,
-  Vector2
-} from "../components";
 import System from "./System";
+import Vector2, { IVector2 } from "engine/utils/Vector2";
+import {
+  ComponentId,
+  ComponentTypes
+} from "../components";
+import {
+  CursorEventCallback,
+  ICursorEvent,
+  ICursorEventHandler
+} from "engine/components/CursorEventHandler";
 
 class CursorEventSystem extends System {
-  signature: Set<keyof ComponentSchema> = new Set([
+  signature: Set<ComponentId> = new Set([
     'cursorEvents'
   ]);
 
+  prevPosition: IVector2;
   onMouseDown: (event: MouseEvent) => void;
   onMouseMove: (event: MouseEvent) => void;
   onMouseUp: (event: MouseEvent) => void;
@@ -28,18 +32,20 @@ class CursorEventSystem extends System {
   }
 
   bindCursorEvents(element: HTMLElement) {
-    element.addEventListener('mousedown', this.onMouseDown);
-    element.addEventListener('mousemove', this.onMouseMove);
-    element.addEventListener('mouseup', this.onMouseUp);
+    element.addEventListener('pointerdown', this.onMouseDown);
+    document.addEventListener('pointermove', this.onMouseMove);
+    document.addEventListener('pointerup', this.onMouseUp);
+    document.addEventListener('pointercancel', this.onMouseUp);
   }
 
   unbindCursorEvents(element: HTMLElement) {
-    element.removeEventListener('mousedown', this.onMouseDown);
-    element.removeEventListener('mousemove', this.onMouseMove);
-    element.removeEventListener('mouseup', this.onMouseUp);
+    element.removeEventListener('pointerdown', this.onMouseDown);
+    document.removeEventListener('pointermove', this.onMouseMove);
+    document.removeEventListener('pointerup', this.onMouseUp);
+    document.removeEventListener('pointercancel', this.onMouseUp);
   }
 
-  getCoords(event: MouseEvent): Vector2 {
+  getCoords(event: MouseEvent): IVector2 {
     let x = event.pageX - this.canvas.offsetLeft;
     let y = event.pageY - this.canvas.offsetTop;
     return { x, y }
@@ -51,27 +57,41 @@ class CursorEventSystem extends System {
    * @returns An event callback that passes events to this system's entities
    */
   cursorEventCallback(
-    callbackId: keyof CursorEventHandlers
-  ):(event: MouseEvent) => void {
-    return function(event: MouseEvent) {
-      let mousePos: Vector2 = this.getCoords(event);
+    callbackId: keyof ICursorEventHandler,
+    isTouchEvent: boolean = false
+  ): (event: MouseEvent) => void {
+    return function(event: PointerEvent) {
+      // do not respond to non-primary pointer events
+      if (!event.isPrimary) return;
 
-      for (const components of this.components) {
+      // convert event coordinates to canvas coordinates
+      let mousePos: IVector2 = this.getCoords(event);
+      
+      let delta = this.prevPosition ?
+        Vector2.difference(mousePos, this.prevPosition) :
+        Vector2.ZERO;
+      this.prevPosition = mousePos;
+
+      // convert canvas coordinates to game world coordinates
+      // by reversing camera transformation
+      mousePos = this.scene.camera.reverseTransformVector(mousePos);
+
+      // generate event and pass it to components
+      for (const components of this.componentGroups) {
         let {
           cursorEvents
-        } = components as ComponentSchema;
+        } = components as Partial<ComponentTypes>;
 
-        let cEvent: CursorEvent = {
+        let cEvent: ICursorEvent = {
           x: mousePos.x,
           y: mousePos.y,
-          movementX: event.movementX,
-          movementY: event.movementY,
+          delta,
           altKey: event.altKey,
           shiftKey: event.shiftKey,
           ctrlKey: event.ctrlKey
         }
 
-        let eventHandler: CursorEventHandler = cursorEvents[callbackId];
+        let eventHandler: CursorEventCallback = cursorEvents[callbackId];
         if (eventHandler) {
           eventHandler(cEvent);
         }

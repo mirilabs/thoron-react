@@ -1,7 +1,7 @@
 import Map from './src/components/Map.js';
-import Provider from './src/components/Provider.js';
+import { ThoronProvider } from './src/components/Provider.js';
 
 export {
   Map,
-  Provider
+  ThoronProvider
 }

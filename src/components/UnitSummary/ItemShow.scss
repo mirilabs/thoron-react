@@ -1,0 +1,15 @@
+
+.item-show {
+  background-color: var(--bg-color-2);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 12px;
+  cursor: pointer;
+
+  h2 {
+    margin-left: 8px;
+    font-size: medium;
+    font-weight: inherit;
+  }
+}

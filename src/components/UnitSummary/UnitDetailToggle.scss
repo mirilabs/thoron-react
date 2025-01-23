@@ -1,0 +1,12 @@
+@use "sass:color";
+@use "../ControlPanel/UnitIndex/UnitTile.scss";
+
+.unit-detail-toggle {
+  @extend .unit-tile;
+  position: relative;
+  max-width: fit-content;
+  float: left;
+
+  margin-top: 8px;
+  z-index: 10;
+}

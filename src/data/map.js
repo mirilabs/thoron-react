@@ -14,16 +14,28 @@ const data = {
       bonus: {  }
     },
     {
+      name: 'water',
+      cost: {
+        default: 99,
+        flying: 1
+      }
+    },
+    {
       name: 'wall',
       cost: 99
     }
   ],
   map: [
-    [0, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 2, 0],
-    [0, 0, 0, 0]
-  ]
+    [2, 2, 2, 2, 2, 2],
+    [2, 2, 2, 2, 2, 2],
+    [0, 0, 2, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 2, 0],
+    [0, 0, 1, 2, 1, 0],
+    [2, 2, 2, 2, 2, 2],
+    [2, 2, 2, 2, 2, 2]
+  ],
+  background: "https://static.wikia.nocookie.net/feheroes_gamepedia_en/images/2/29/Map_S0201.webp"
 }
 
 export default data;

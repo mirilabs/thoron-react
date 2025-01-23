@@ -1,0 +1,40 @@
+.control-panel {
+  .react-tabs {
+    position: absolute;
+    width: calc(100% - 8px);
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 36px;
+    padding: 0 4px;
+
+    &__tab-panel {
+      z-index: 14;
+      background-color: var(--bg-color);
+  
+      &.unit-detail {
+        z-index: 7;  // display controls over unit detail panel
+      }
+    }
+
+    &__tab-list {
+      height: 36px;
+      border: none;
+    }
+  }
+
+  .control-panel-toggle {
+    z-index: 16;
+  }
+}
+
+.control-panel-toggle {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: 0;
+  width: 15%;
+  min-width: 48px;
+  max-width: 60px;
+  aspect-ratio: 1;
+  color: var(--accent-color);
+}

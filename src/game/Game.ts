@@ -1,8 +1,11 @@
 import CoordinateConverter from './utils/CoordinateConverter';
 import Scene from '../engine/Scene';
 import { Background, Grid } from './entities';
-import UIEventEmitter from './utils/UIEventEmitter';
-import UnitController from './entities/ui/UnitController';
+import UIEventEmitter from '../shared/UIEventEmitter';
+import ControlSystem from './entities/ControlSystem';
+import Chapter, { GameController } from 'thoron';
+import MotionSystem from './entities/MotionSystem';
+import UnitBody from './entities/UnitBody';
 
 interface IGameConfig {
   tileWidth: number;
@@ -25,17 +28,18 @@ const defaultConfig: IGameConfig = {
 }
 
 class Game {
-  chapter;
+  gameController: GameController;
+  chapter: Chapter;
   config: IGameConfig;
   coords: CoordinateConverter;
   uiEvents: UIEventEmitter;
   canvas: HTMLCanvasElement;
   scene: Scene;
+  unitBodies: Map<any, UnitBody> = new Map();
 
-  _selectedUnit: any;
-
-  constructor(chapter, cfg: Partial<IGameConfig> = {}) {
-    this.chapter = chapter;
+  constructor(gameController: GameController, cfg: Partial<IGameConfig> = {}) {
+    this.gameController = gameController
+    this.chapter = gameController.chapter;
     this.config = {
       ...defaultConfig,
       ...cfg
@@ -48,9 +52,6 @@ class Game {
     );
 
     this.uiEvents = new UIEventEmitter();
-    this.uiEvents.on('select_unit', (unit) => {
-      this._selectedUnit = unit
-    });
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -67,18 +68,44 @@ class Game {
 
   init() {
     let scene = this.scene;
-    let { width, height } = this.canvas;
-
-    let bg = new Background(width, height, null);
+    let { terrain } = this.chapter;
+    let rows = terrain.width;
+    let columns = terrain.height;
+    let width = rows * this.config.tileWidth;
+    let height = columns * this.config.tileHeight;
+    
+    const backgroundUrl = (terrain as any).record.background;    
+    let bg = new Background(width, height, backgroundUrl);
     bg.addToScene(scene);
 
-    let grid = new Grid(width, height, this.config);
+    let grid = new Grid(rows, columns, this.config);
     grid.addToScene(scene);
 
-    let pointer = new UnitController(this);
-    pointer.addToScene(scene);
+    let controlSystem = new ControlSystem(this);
+    controlSystem.addToScene(scene);
+
+    let motionSystem = new MotionSystem(this);
+    motionSystem.addToScene(scene);
+
+    let units = this.chapter.getUnits();
+    for (let unit of units) {
+      const unitBody = new UnitBody(unit, this);
+      unitBody.addToScene(this.scene);
+      unitBody.resetPosition(); // move to initial position
+      this.unitBodies.set(unit.id, unitBody);
+    }
     
     this.scene.draw();
+  }
+
+  getUnitBody(unitId: string | number) {
+    return this.unitBodies.get(unitId);
+  }
+
+  removeUnit(unitId: string | number) {
+    let body = this.unitBodies.get(unitId);
+    body.destroy();
+    this.unitBodies.delete(unitId);
   }
 }
 
