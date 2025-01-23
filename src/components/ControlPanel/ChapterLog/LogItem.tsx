@@ -12,7 +12,9 @@ interface LogItemProps {
 function LogItem({ actionResult, chapter }: LogItemProps) {
   const action = actionResult.action as IAction;
   const unit = chapter.getUnitById(action.unitId);
-  const target = action.targetId ? chapter.getUnitById(action.targetId) : null;
+  const target = (action.targetId !== undefined) ? 
+    chapter.getUnitById(action.targetId) :
+    null;
 
   const [showDetail, setShowDetail] = React.useState(false);
   const toggleDetail = () => setShowDetail(!showDetail);
