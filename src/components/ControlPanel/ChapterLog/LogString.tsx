@@ -1,23 +1,26 @@
 import React from 'react';
-import { Command } from 'thoron';
+import { ActionResult, DeployedUnit } from 'thoron';
 
 interface LogStringProps {
-  command: Command;
-  unitName: string;
+  actionResult: ActionResult;
+  unit?: DeployedUnit;
   itemName?: string;
-  targetName?: string;
+  target?: DeployedUnit;
 }
 
 function LogString(props: LogStringProps) {
+  let unitName = props.unit?.record?.name ?? "(UNNAMED)";
+  let targetName = props.target?.record?.name ?? "(UNNAMED)";
+
   let predicate: React.ReactNode;
-  switch(props.command) {
+  switch(props.actionResult.action.command) {
     case "wait":
       predicate = " waited";
       break;
     case "attack":
       predicate = (<>
         {" attacked "}
-        <strong>{props.targetName}</strong>
+        <strong>{targetName}</strong>
       </>);
       break;
     case "item":
@@ -28,17 +31,25 @@ function LogString(props: LogStringProps) {
       break;
     case "staff":
       predicate = (<>
+        <strong>{unitName}</strong>
         {" used "}
         <strong>{props.itemName}</strong>
         {" on "}
-        <strong>{props.targetName}</strong>
+        <strong>{targetName}</strong>
       </>);
       break;
+    case "end_phase":
+      return (
+        <span>
+          {/* TODO indicate which phase is ending */}
+          <strong>End phase</strong>
+        </span>
+      )
   }
 
   return (
     <span>
-      <strong>{props.unitName}</strong>
+      <strong>{unitName}</strong>
       {predicate}
     </span>
   )
