@@ -21,12 +21,15 @@ function LogItem({ actionResult, chapter }: LogItemProps) {
   return (
     <div className="chapter-log__entry">
       <div className="chapter-log__entry-title">
-        <img src={unit.record["sprite"]}
-          alt={`[${unit.record.name} sprite]`}
-          className="sprite"/>
-        <LogString unitName={unit.record.name}
-          targetName={target?.record.name}
-          command={action.command} />
+        {
+          unit &&
+          <img src={unit.record["sprite"]}
+            alt={`[${unit.record.name} sprite]`}
+            className="sprite"/>
+        }
+        <LogString unit={unit}
+          target={target}
+          actionResult={actionResult} />
         {
           // for certain action types, render detail toggle button
           DetailsComponent &&
