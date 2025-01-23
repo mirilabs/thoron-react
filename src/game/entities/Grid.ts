@@ -1,30 +1,33 @@
+import DrawHandler from "engine/components/DrawHandler";
 import GameObject from "../../engine/GameObject";
 import { IGameConfig } from "../Game";
 
 class Grid extends GameObject {
-  width: number;
-  height: number;
+  rows: number;
+  columns: number;
   cfg: IGameConfig;
 
   constructor(
-    width: number,
-    height: number,
+    rows: number,
+    columns: number,
     cfg: IGameConfig
   ) {
     super();
-    this.width = width;
-    this.height = height;
+    this.rows = rows;
+    this.columns = columns;
     this.cfg = cfg;
 
-    this.components = {
-      draw: this.draw.bind(this)
-    }
+    this.components = [
+      new DrawHandler(this.draw.bind(this), 20)
+    ]
   }
 
   draw(ctx: CanvasRenderingContext2D) {
     let x: number, y: number;
-    let { width, height } = this;
+    let { rows, columns } = this;
     let { tileWidth, tileHeight } = this.cfg;
+    let width = rows * tileWidth;
+    let height = columns * tileHeight;
     
     ctx.beginPath();
     for (x = 0; x <= width; x += tileWidth) {

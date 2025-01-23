@@ -1,22 +1,19 @@
-import React, { useState, useContext } from 'react';
-import { ThoronContext } from './ThoronContext';
-import useEventListener from './useEventListener';
+import React, { useContext } from 'react';
+import ThoronContext from './ThoronContext';
+import { useControllerSelector } from './utils/reduxHooks';
 
 function TilePanel({ render }) {
-  const { uiEvents } = useContext(ThoronContext);
-  const [data, setData] = useState(null);
-  
-  useEventListener(uiEvents, 'select_tile', tile => {
-    setData(tile);
-  })
+  const { chapter } = useContext(ThoronContext);
+  const coords = useControllerSelector(state => state.position);
+  const tile = chapter.terrain.get(coords.x, coords.y);
 
   if (render) {
-    return render(data);
+    return render(tile);
   }
   else {
     return (
       <div>
-        {JSON.stringify(data)}
+        {JSON.stringify(tile)}
       </div>
     )
   }

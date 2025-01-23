@@ -1,52 +1,52 @@
 import { EntityId } from "./Entity";
 import {
-  ComponentSchema,
-  ComponentId,
-  Component
+  AnyComponent,
+  ComponentTypes,
+  getComponentId
 } from "./components";
 
-type AttributeMap<T> = Map<EntityId, T>;
-type ComponentState = {
-  [K in keyof ComponentSchema]: AttributeMap<ComponentSchema[K]>;
+type ComponentMapState = {
+  [K in keyof ComponentTypes]: Map<EntityId, ComponentTypes[K]>
 }
 
 class ComponentMap {
-  components: ComponentState = {
+  components: ComponentMapState = {
     position: new Map(),
-    velocity: new Map(),
     rectangle: new Map(),
-    sprite: new Map(),
+    update: new Map(),
     draw: new Map(),
-    cursorEvents: new Map(),
+    sprite: new Map(),
+    cursorEvents: new Map()
   };
 
-  addComponent<CId extends ComponentId>(
+  addComponent<T extends AnyComponent>(
     entityId: EntityId,
-    componentId: CId,
-    component: ComponentSchema[CId]
-  ) {
-    let componentInstanceMap = this.components[componentId];
+    component: T
+  ): void {
+    let cId = getComponentId(component);    
+    let componentInstanceMap = this.components[cId] as Map<EntityId, T>;
     componentInstanceMap.set(entityId, component);
   }
 
-  getComponent<T extends Component> (
+  getComponent<T extends keyof ComponentTypes> (
     entityId: EntityId,
-    componentId: ComponentId
-  ): T {
-    return this.components[componentId].get(entityId) as T;
+    componentType: T
+  ): ComponentTypes[T] {
+    let component = this.components[componentType].get(entityId);
+    return component;
   }
 
-  removeComponent(
+  removeComponent<T extends keyof ComponentTypes> (
     entityId: EntityId,
-    componentId: ComponentId
-  ) {
-    this.components[componentId].delete(entityId);
+    componentType: T
+  ): void {
+    this.components[componentType].delete(entityId);
   }
 
   onEntityDestroyed(entityId: EntityId) {
-    for (const componentId in this.components) {
-      this.components[componentId].delete(entityId);
-    }
+    Object.keys(this.components).forEach((cId) => {
+      this.components[cId].delete(entityId);
+    });
   }
 }
 

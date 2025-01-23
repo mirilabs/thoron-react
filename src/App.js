@@ -1,36 +1,35 @@
-import './stylesheets/App.css';
-import './stylesheets/dev.css';
+import "./App.scss";
+import "./stylesheets/dev.css";
 
-import chapter from './data/chapter';
+import { ErrorBoundary } from "react-error-boundary";
+import fallbackRender from "components/utils/fallbackRender";
+import { ViewportProvider } from "./components/ViewportContext";
+import { ThoronProvider } from "./components/ThoronContext";
+import { Provider as ReduxProvider } from "react-redux";
+import controllerStore from "shared/store";
+import { KeybindInitializer } from "components/ControlPanel/Settings/keybinds";
+import LayoutRoot from "Layout";
+import { initializeUserSettings } from "components/ControlPanel/Settings/userSettings";
+import saveState from "./data/saveState";
 
-import Provider from './components/Provider';
-import GameCanvas from './components/GameCanvas';
-import TilePanel from './components/TilePanel';
-import UnitPanel from './components/UnitPanel';
-import UnitList from './components/UnitList';
-import ActionMenu from './components/ActionMenu';
-
-import renderObject from './utils/renderObject';
-
-global.chapter = chapter;
+initializeUserSettings();
 
 function App() {
   return (
-    <div className="App">
-      <main>
-        <Provider chapter={chapter}>
-          <div className="canvas-container">
-            <GameCanvas />
-          </div>
-          <div className="panels-container">
-            <TilePanel render={renderObject} />
-            <UnitPanel render={renderObject} />
-            <UnitList render={renderObject} />
-            <ActionMenu />
-          </div>
-        </Provider>
-      </main>
-    </div>
+    <ErrorBoundary fallbackRender={fallbackRender}>
+      <ViewportProvider>
+        <ThoronProvider saveState={saveState}>
+          <ReduxProvider store={controllerStore}>
+            <main className="app">
+              <LayoutRoot />
+            </main>
+            <> {/* initializers */}
+              <KeybindInitializer />
+            </>
+          </ReduxProvider>
+        </ThoronProvider>
+      </ViewportProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -1,0 +1,63 @@
+html {
+  overscroll-behavior: none;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.app {
+  background-color: #282c34;
+  color: var(--text-color);
+  
+  width: 100vw;
+  height: 100vh;
+}
+
+.app * {
+  transition-property: color, background-color;
+  transition-duration: 200ms;
+}
+
+.app-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+button, input[type="submit"], input[type="reset"] {
+  background-color: var(--bg-color-2);
+  color: inherit;
+  transition: background-color 200ms linear;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+
+  &:hover {
+    background-color: var(--bg-color);
+  }
+}
+
+.icon {
+  fill: white;
+  filter: var(--icon-filter);
+  max-width: 1.2rem;
+  max-height: 1.2rem;
+}

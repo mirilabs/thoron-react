@@ -1,10 +1,14 @@
 import {
-  ComponentSet,
+  AnyComponent,
   ComponentId,
-  Component
+  ComponentTypes
 } from "../components";
 import Entity, { EntityId } from "../Entity";
 import Scene from "../Scene";
+
+type ComponentGroup = Partial<{
+  [K in keyof ComponentTypes]: ComponentTypes[K];
+}>
 
 abstract class System {
   scene: Scene;
@@ -14,10 +18,10 @@ abstract class System {
 
   // Set of Entities that this System holds references to
   // because they have all of the components in signature
-  entities: Set<EntityId> = new Set();
+  trackedEntities: Set<EntityId> = new Set();
 
   // Components that match signature and belong to tracked entities
-  components: ComponentSet[] = [];
+  componentGroups: ComponentGroup[] = [];
 
   mount(scene: Scene) {
     this.scene = scene;
@@ -41,11 +45,10 @@ abstract class System {
    */
   onComponentAdded(
     entity: Entity,
-    componentId: ComponentId,
-    component: Component
+    component: AnyComponent
   ) {
     if (
-      !this.entities.has(entity.id) &&
+      !this.trackedEntities.has(entity.id) &&
       this.signature.isSubsetOf(entity.signature)
     ) {
       this.addEntity(entity);
@@ -60,10 +63,10 @@ abstract class System {
    */
   onComponentRemoved(
     entity: Entity,
-    componentId: ComponentId
+    component: AnyComponent
   ) {
     if (
-      this.entities.has(entity.id) &&
+      this.trackedEntities.has(entity.id) &&
       !this.signature.isSubsetOf(entity.signature)
     ) {
       this.removeEntity(entity);
@@ -75,14 +78,15 @@ abstract class System {
    * @param entity 
    */
   addEntity(entity: Entity) {
-    this.entities.add(entity.id);
+    this.trackedEntities.add(entity.id);
     
-    let componentSet = {};
-    for (const componentId of this.signature) {
-      let component = entity.getComponent(componentId as ComponentId);
-      componentSet[componentId] = component;
+    let group = {};
+    for (const cId of this.signature) {
+      let component = entity.getComponent(cId);
+      group[cId] = component;
     }
-    this.components.push(componentSet);
+    
+    this.componentGroups.push(group);
   }
 
   /**
@@ -93,7 +97,7 @@ abstract class System {
    */
   getEntityIndex(entityId: EntityId) {
     let i: number = 0;
-    for (const eId of this.entities) {
+    for (const eId of this.trackedEntities) {
       if (eId === entityId) return i;
       i++;
     }
@@ -107,9 +111,9 @@ abstract class System {
   removeEntity(entity: Entity) {
     let index = this.getEntityIndex(entity.id);
     if (index < 0) return;
+    this.componentGroups.splice(index, 1);
 
-    this.entities.delete(entity.id);
-    this.components.splice(index, 1);
+    this.trackedEntities.delete(entity.id);
   }
 
   /**
@@ -118,9 +122,9 @@ abstract class System {
    * @param entity 
    * @returns An object with structure { [ComponentId]: Component }
    */
-  getComponents(entity: Entity): ComponentSet {
+  getComponents(entity: Entity): ComponentGroup {
     let i = this.getEntityIndex(entity.id);
-    return this.components[i];
+    return this.componentGroups[i];
   }
 }
 

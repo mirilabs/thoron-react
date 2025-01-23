@@ -1,7 +1,8 @@
 import GameObject from "../../../engine/GameObject";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
-import { Vector2 as IVector2 } from "../../../engine/components";
+import { IVector2 } from "engine/utils/Vector2";
+import DrawHandler from "engine/components/DrawHandler";
 
 class UnitActionRange extends GameObject {
   chapter: any;
@@ -9,6 +10,7 @@ class UnitActionRange extends GameObject {
   config: IGameConfig;
   unit: any;
   targetPos: IVector2;
+  drawHandler: DrawHandler;
   
   constructor(game: Game, unit: any, targetPos: IVector2) {
     super();
@@ -17,16 +19,19 @@ class UnitActionRange extends GameObject {
     this.config = game.config;
     this.unit = unit;
     this.targetPos = targetPos;
+    this.drawHandler = new DrawHandler(this.draw.bind(this), 30);
 
-    this.show();
+    this.components = [
+      this.drawHandler
+    ]
   }
 
   show() {
-    this.components.draw = this.draw.bind(this);
+    this.drawHandler.enabled = true;
   }
 
   hide() {
-    delete this.components.draw;
+    this.drawHandler.enabled = false;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -48,7 +53,11 @@ class UnitActionRange extends GameObject {
 
     let paintQueue: Map<string, string> = new Map();
     
-    let attackRange = unit.getStationaryAttackRange(this.targetPos);
+    const attackRange = this.chapter.terrain.getRange(
+      this.targetPos,
+      unit.equipped.minRange,
+      unit.equipped.maxRange
+    );
     attackRange.forEach(({ x, y }) => {
       paintQueue.set(`${x},${y}`, attackColor);
     });

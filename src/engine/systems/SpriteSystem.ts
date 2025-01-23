@@ -1,79 +1,40 @@
+import Scene from "engine/Scene";
 import {
-  Rectangle,
-  Sprite,
+  AnyComponent,
   ComponentId,
-  Component
+  Sprite
 } from "../components";
-import Entity from "../Entity";
 import DrawSystem from "./DrawSystem";
+import System from "./System";
+import Entity from "engine/Entity";
 
-class SpriteSystem extends DrawSystem {
+class SpriteSystem extends System {
+  drawSystem: DrawSystem;
+
   signature: Set<ComponentId> = new Set([
     'position',
     'rectangle',
     'sprite',
   ]);
 
-  static loadSprite(
-    url: string,
-    width: number,
-    height: number
-  ): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      const image = new Image(width, height);
-  
-      if (url === null) resolve(image);
-  
-      image.src = url;
-      image.onload = () => { resolve(image) }
-      image.onerror = (err) => { reject(err) }
-    })
+  onMount(scene?: Scene): void {
+    this.drawSystem = scene.drawSystem;
   }
-  
-  onComponentAdded(
-    entity: Entity,
-    componentId: ComponentId,
-    component: Component
-  ): void {
-    super.onComponentAdded(entity, componentId, component);
 
-    if (componentId === 'sprite') {
-      // load sprite
-      let sprite: Sprite = component as Sprite;
-      let rect: Rectangle = entity.getComponent('rectangle');
+  onComponentAdded(entity: Entity, component: AnyComponent): void {
+    super.onComponentAdded(entity, component);
 
-      SpriteSystem.loadSprite(
-        sprite.url, rect.width, rect.height
-      )
-        .then((image) => { sprite.image = image; })
-        .then(() => {
-          console.log("Loaded image: " + sprite.url);
-
-          // redraw scene with newly loaded image
-          this.scene.draw();
-        })
-        .catch((e) => { throw e; })
+    if (component instanceof Sprite) {
+      this.drawSystem.drawOrder.add(component);
     }
   }
 
-  draw() {
-    this.components.forEach(({ position, rectangle, sprite }) => {
-      if (sprite.preprocess) {
-        sprite.preprocess(this.ctx);
-      }
+  onComponentRemoved(entity: Entity, component: AnyComponent): void {
+    super.onComponentRemoved(entity, component);
 
-      if (sprite.image) {
-        this.ctx.drawImage(
-          sprite.image,
-          position.x, position.y,
-          rectangle.width, rectangle.height
-        );
-      }
-      else {
-        // draw placeholder
-        this.ctx.fillText("?", position.x, position.y, rectangle.width);
-      }
-    });
+    if (component instanceof Sprite) {
+      this.drawSystem.drawOrder.remove(component);
+    }
   }
 }
 

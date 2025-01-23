@@ -1,0 +1,47 @@
+
+.unit-detail__stats {
+  grid-area: b;
+
+  .stat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .stat-name {
+      width: 44px;
+      text-align: right;
+      font-weight: bold;
+      color: var(--text-color-2);
+    }
+
+    .stat-value {
+      width: 44px;
+      text-align: center;
+    }
+  
+    meter {
+      height: 0.2rem;
+      min-width: 64px;
+      border-radius: 0.25rem;
+
+      background: rgba(from var(--accent-color) r g b / 0.25);
+      &::-moz-meter-bar,
+      &::-webkit-meter-bar {
+        background: var(--accent-color);
+      }
+    }
+  }
+
+  .stat-growths {
+    .stat-value {
+      font-size: smaller;
+    }
+
+    meter {
+      &::-moz-meter-bar,
+      &::-webkit-meter-bar {
+        background: var(--accent-color-2);
+      }
+    }
+  }
+}

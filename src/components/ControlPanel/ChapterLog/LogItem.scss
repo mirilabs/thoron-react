@@ -1,0 +1,25 @@
+.chapter-log__entry {
+  background-color: var(--bg-color-2);
+  padding: 0 4px;
+  margin: 4px 0;
+  max-width: 640px;
+}
+
+.chapter-log__entry-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+
+  .sprite {
+    max-width: 32px;
+    max-height: 32px;
+  }
+
+  .toggle-detail {
+    width: 48px;
+    height: 32px;
+    color: var(--accent-color);
+    margin-left: auto;
+  }
+}

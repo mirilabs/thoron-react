@@ -4,7 +4,8 @@ import System from "./systems/System";
 import CursorEventSystem from "./systems/CursorEventSystem";
 import DrawSystem from "./systems/DrawSystem";
 import SpriteSystem from "./systems/SpriteSystem";
-import MotionSystem from "./systems/MotionSystem";
+import Camera from "./Camera";
+import UpdateSystem from "./systems/UpdateSystem";
 
 class Scene {
   canvas: HTMLCanvasElement;
@@ -12,20 +13,61 @@ class Scene {
   componentMap: ComponentMap = new ComponentMap();
 
   systems: System[] = [];
+  updateSystem: UpdateSystem = new UpdateSystem();
   drawSystem: DrawSystem = new DrawSystem();
   spriteSystem: SpriteSystem = new SpriteSystem();
   cursorEventSystem: CursorEventSystem = new CursorEventSystem();
-  motionSystem: MotionSystem = new MotionSystem();
+
+  camera: Camera = new Camera();
+
+  private _paused: boolean = false;
+  lastUpdateTime: DOMHighResTimeStamp;
 
   constructor(canvas: HTMLCanvasElement) {
     this.addSystems(
+      this.updateSystem,
       this.drawSystem,
       this.spriteSystem,
-      this.cursorEventSystem,
-      this.motionSystem
+      this.cursorEventSystem
     );
     
     this.setCanvas(canvas);
+
+    this.update = this.update.bind(this);
+    this.unpause();
+  }
+
+  get paused(): boolean {
+    return this._paused;
+  }
+
+  pause() {
+    this._paused = true;
+  }
+
+  unpause() {
+    this._paused = false;
+    window.requestAnimationFrame(this.update);
+  }
+
+  // update loop
+  update(timeStamp: DOMHighResTimeStamp) {
+    const dT = timeStamp - this.lastUpdateTime;
+    this.lastUpdateTime = timeStamp;
+
+    this.updateSystem.update(dT);
+    
+    this.draw();
+
+    // next frame
+    if (!this.paused) {
+      window.requestAnimationFrame(this.update);
+    }
+  }
+  
+  // draw loop
+  draw() {
+    this.drawSystem.draw();
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -33,14 +75,14 @@ class Scene {
     this.unsetCanvas();
 
     // bind to new canvas
-    this.drawSystem.setCanvas(canvas);
-    this.spriteSystem.setCanvas(canvas);
+    this.drawSystem.bindCanvas(canvas);
     this.cursorEventSystem.bindCursorEvents(canvas);
     this.canvas = canvas;
   }
 
   unsetCanvas() {
     if (this.canvas) {
+      this.drawSystem.unbindCanvas();
       this.cursorEventSystem.unbindCursorEvents(this.canvas);
       delete this.canvas;
     }
@@ -59,11 +101,6 @@ class Scene {
   removeEntity(id: EntityId) {
     this.componentMap.onEntityDestroyed(id);
     this.entities.delete(id);
-  }
-  
-  draw() {
-    this.drawSystem.draw();
-    this.spriteSystem.draw();
   }
 
   addSystem(system: System) {
