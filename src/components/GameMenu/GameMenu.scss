@@ -1,0 +1,69 @@
+
+.game-menu {
+  $closed: 100%;
+  $open: calc(100% - 256px);
+
+  position: relative;
+  bottom: 0;
+  left: $closed;
+
+  border-radius: 0;
+
+  &.game-menu-enter {
+    left: $closed;
+  }
+
+  &.game-menu-enter-active {
+    left: $open;
+    transition: left 200ms ease-in-out;
+  }
+
+  &.game-menu-enter-done {
+    left: $open;
+  }
+
+  &.game-menu-exit {
+    left: $open;
+  }
+
+  &.game-menu-exit-active {
+    left: $closed;
+    transition: left 200ms;
+  }
+}
+
+.game-menu-toggle {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: 0;
+  width: 15%;
+  min-width: 48px;
+  max-width: 60px;
+  aspect-ratio: 1;
+  color: var(--accent-color);
+}
+
+.game-menu__options {
+  list-style: none;
+  margin: 8px 0;
+
+  li {
+    padding: 8px 0 8px 24px;
+    margin: 8px 0;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    outline: 1px var(--text-color-2) solid;
+    border-radius: 2px 0 0 24px;
+    
+    cursor: pointer;
+    
+    transition: background-color 200ms linear;
+
+    &:hover {
+      background-color: var(--bg-color-2);
+      box-shadow: -4px 0px 0 var(--accent-color);
+    }
+  }
+}

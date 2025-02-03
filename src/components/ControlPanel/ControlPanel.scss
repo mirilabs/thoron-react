@@ -26,15 +26,3 @@
     z-index: 16;
   }
 }
-
-.control-panel-toggle {
-  position: absolute;
-  z-index: 6;
-  right: 0;
-  bottom: 0;
-  width: 15%;
-  min-width: 48px;
-  max-width: 60px;
-  aspect-ratio: 1;
-  color: var(--accent-color);
-}

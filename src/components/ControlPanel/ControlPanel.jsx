@@ -3,7 +3,7 @@ import "react-tabs/style/react-tabs.css";
 import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Settings from "components/ControlPanel/Settings";
-import useUIAction, { useUIEmitter } from "components/utils/useUIAction";
+import useUIAction from "components/utils/useUIAction";
 import UnitIndexContainer from "./UnitIndex";
 import ChapterLog from "./ChapterLog";
 import ChapterMenu from "./ChapterMenu";
@@ -63,16 +63,4 @@ function ControlPanel({ show, setShow }) {
   )
 }
 
-function ControlPanelOpener() {
-  let open = useUIEmitter("open_control_panel");
-  return (
-    <button className="control-panel-toggle" onClick={open}>
-      <i className="fas fa-bars" />
-    </button>
-  )
-}
-
 export default ControlPanel;
-export {
-  ControlPanelOpener
-}

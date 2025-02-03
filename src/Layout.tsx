@@ -8,7 +8,7 @@ import { WindowSize } from "components/ViewportContext";
 import GameCanvas from './components/gameView/GameCanvas';
 import ActionUI from "components/gameView/ActionMenu";
 import UnitSummary from "components/UnitSummary";
-import GameMenu from "components/GameMenu/GameMenu";
+import GameMenuContainer from "components/GameMenu";
 
 function Layout() {
   let { size } = useResponsive();
@@ -22,7 +22,7 @@ function Layout() {
             <UnitSummary />
           </div>
           <div className="gui-layer">
-            <GameMenu />
+            <GameMenuContainer />
           </div>
           <div className="gui-layer">
             <ActionUI />
