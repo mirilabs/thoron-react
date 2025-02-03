@@ -16,13 +16,11 @@ function ControlPanelContainer() {
   }
 
   return (
-    <>
-      <CSSTransition {...transitionProps}>
-        <div className="control-panel" ref={nodeRef}>
-          <ControlPanel show={show} setShow={setShow} />
-        </div>
-      </CSSTransition>
-    </>
+    <CSSTransition {...transitionProps}>
+      <div className="control-panel" ref={nodeRef}>
+        <ControlPanel show={show} setShow={setShow} />
+      </div>
+    </CSSTransition>
   )
 }
 
