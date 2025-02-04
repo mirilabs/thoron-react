@@ -1,0 +1,52 @@
+.unit-detail {
+  width: 100%;
+  
+  display: grid;
+  grid-template-rows: 64px auto auto;
+  grid-template-columns: calc(75% - 122px) auto;
+  grid-template-areas:
+    "a a"
+    "b b"
+    "c d";
+  row-gap: 8px;
+  column-gap: 8px;
+
+  button {
+    padding: 4px 8px;
+    margin: 4px;
+    color: var(--accent-color);
+  }
+
+  .title {
+    grid-area: a;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .unit-name {
+      margin: 0;
+    }
+
+    button {
+      padding: 8px 16px;
+      margin-left: 8px;
+    }
+  }
+
+  .description {
+    grid-area: b;
+
+    .move-label {
+      font-weight: bold;
+    }
+  }
+
+  .stats {
+    grid-area: d;
+  }
+
+  .inventory {
+    grid-area: c;
+  }
+}
