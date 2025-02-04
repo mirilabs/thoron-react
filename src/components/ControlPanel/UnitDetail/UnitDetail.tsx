@@ -6,6 +6,7 @@ import { useControllerDispatch } from "components/utils/reduxHooks";
 import { unitSelected } from "shared/store";
 import { Unit } from "thoron";
 import ClassView from "./ClassView";
+import LevelView from "./LevelView";
 
 interface UnitDetailProps {
   unit: Unit,
@@ -41,12 +42,15 @@ function UnitDetail(props: UnitDetailProps) {
       <div className="chara-class">
         <ClassView record={unit.record} />
       </div>
-      <div className="stats">
-        <StatView stats={stats}
-            growths={growths} />
+      <div className="level">
+        <LevelView record={unit.record} />
       </div>
       <div className="inventory">
         <InventoryView items={items} />
+      </div>
+      <div className="stats">
+        <StatView stats={stats}
+            growths={growths} />
       </div>
     </div>
   )
