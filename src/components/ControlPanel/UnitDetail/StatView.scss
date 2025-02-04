@@ -1,5 +1,16 @@
 
 .unit-detail__stats {
+  button {
+    padding: 4px 8px;
+    margin: 4px;
+    color: var(--accent-color);
+    background: none;
+
+    &.selected {
+      background: var(--bg-color-2);
+    }
+  }
+
   .stat {
     display: flex;
     flex-direction: row;

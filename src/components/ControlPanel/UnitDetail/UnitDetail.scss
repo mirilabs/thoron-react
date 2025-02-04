@@ -11,12 +11,6 @@
   row-gap: 8px;
   column-gap: 8px;
 
-  button {
-    padding: 4px 8px;
-    margin: 4px;
-    color: var(--accent-color);
-  }
-
   .title {
     grid-area: a;
     display: flex;
@@ -29,6 +23,7 @@
     }
 
     button {
+      color: var(--accent-color);
       padding: 8px 16px;
       margin-left: 8px;
     }
