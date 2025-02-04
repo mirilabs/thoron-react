@@ -1,0 +1,24 @@
+.unit-detail__level {
+  .level {
+    margin: 0;
+  }
+
+  .exp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .exp-bar {
+    width: 100px;
+    height: 0.2rem;
+    background: var(--bg-color-3);
+
+    &::-webkit-meter-optimum-value,
+    &::-moz-meter-bar,
+    &::-webkit-meter-bar {
+      background: var(--accent-color);
+    }
+  }
+}

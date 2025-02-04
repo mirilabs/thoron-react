@@ -31,9 +31,11 @@ function ClassView({ record }: ClassViewProps) {
         {capitalize(record.className ?? "(no class)")}
       </h3>
       <div className="movement">
-        <span className="label">move</span>
-        <span className="value">{record.movement}</span>
-        {icons}
+        <strong>move </strong>
+        {record.movement}
+        <span>
+          {icons}
+        </span>
       </div>
     </div>
   )
