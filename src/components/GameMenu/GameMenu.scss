@@ -12,7 +12,8 @@
   $open: 0;
 
   position: relative;
-  min-width: 256px;
+  min-width: 216px;
+  max-width: 100%;
   right: $closed;
 
   border-radius: 0;
@@ -52,6 +53,7 @@
 .game-menu__options {
   list-style: none;
   margin: 8px 0;
+  padding: 0;
 
   li {
     padding: 8px 0 8px 24px;

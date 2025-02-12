@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import GameMenuToggle from "./GameMenuToggle";
 import GameMenu from "./GameMenu";
+import useOutsideClickHandler from "components/utils/useOutsideClickHandler";
 
 function GameMenuContainer() {
   const [show, setShow] = useState(false);
@@ -11,9 +12,10 @@ function GameMenuContainer() {
 
   const nodeRef = useRef();
 
-  useUIAction("cancel", () => {
-    setShow(false);
-  });
+  useUIAction("cancel", () => setShow(false));
+  
+  const rootRef = React.useRef(null);
+  useOutsideClickHandler(rootRef, () => setShow(false));
 
   const transitionProps = {
     in: show,
@@ -23,7 +25,7 @@ function GameMenuContainer() {
   }
 
   return (
-    <div className="game-menu-container">
+    <div className="game-menu-container" ref={rootRef}>
       <CSSTransition {...transitionProps}>
         <div className="game-menu" ref={nodeRef}>
           <GameMenu handleClose={() => setShow(false)} />
