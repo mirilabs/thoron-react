@@ -1,4 +1,5 @@
 import "./Layout.scss";
+import "./stylesheets/themes.scss";
 import React from "react";
 import useResponsive from "components/utils/useResponsive";
 import { WindowSize } from "components/ViewportContext";
@@ -7,7 +8,8 @@ import { WindowSize } from "components/ViewportContext";
 import GameCanvas from './components/gameView/GameCanvas';
 import ActionUI from "components/gameView/ActionMenu";
 import UnitSummary from "components/UnitSummary";
-import ControlPanel, { ControlPanelOpener } from "components/ControlPanel";
+import GameMenuContainer from "components/GameMenu";
+import ControlPanelContainer from "components/ControlPanel";
 
 function Layout() {
   let { size } = useResponsive();
@@ -21,8 +23,10 @@ function Layout() {
             <UnitSummary />
           </div>
           <div className="gui-layer">
-            <ControlPanel />
-            <ControlPanelOpener />
+            <GameMenuContainer />
+          </div>
+          <div className="gui-layer">
+            <ControlPanelContainer />
           </div>
           <div className="gui-layer">
             <ActionUI />

@@ -1,5 +1,4 @@
 import React from "react";
-import "./themes.scss";
 import settingsController, {
   options,
   Theme
