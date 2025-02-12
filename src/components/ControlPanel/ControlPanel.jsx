@@ -6,7 +6,6 @@ import Settings from "components/ControlPanel/Settings";
 import useUIAction from "components/utils/useUIAction";
 import UnitIndexContainer from "./UnitIndex";
 import ChapterLog from "./ChapterLog";
-import ChapterMenu from "./ChapterMenu";
 
 function ControlPanel({ show, setShow }) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -27,16 +26,13 @@ function ControlPanel({ show, setShow }) {
 
   useUIAction("open_control_panel", () => setShow(true));
   useUIAction("cancel", () => setShow(false));
-  useUIAction("open_chapter_log", () => toggleTab(1));
-  useUIAction("open_character_detail", () => toggleTab(2));
-  useUIAction("open_settings", () => toggleTab(3));
+  useUIAction("open_chapter_log", () => toggleTab(0));
+  useUIAction("open_character_detail", () => toggleTab(1));
+  useUIAction("open_settings", () => toggleTab(2));
 
   return (
     <>
       <Tabs selectedIndex={tabIndex} onSelect={index => { setTabIndex(index) }}>
-        <TabPanel>
-          <ChapterMenu />
-        </TabPanel>
         <TabPanel>
           <ChapterLog />
         </TabPanel>
@@ -48,7 +44,6 @@ function ControlPanel({ show, setShow }) {
         </TabPanel>
 
         <TabList>
-          <Tab>Menu</Tab>
           <Tab>Log</Tab>
           <Tab>Character</Tab>
           <Tab>Settings</Tab>
