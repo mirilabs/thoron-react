@@ -9,6 +9,7 @@ import GameCanvas from './components/gameView/GameCanvas';
 import ActionUI from "components/gameView/ActionMenu";
 import UnitSummary from "components/UnitSummary";
 import GameMenuContainer from "components/GameMenu";
+import ControlPanelContainer from "components/ControlPanel";
 
 function Layout() {
   let { size } = useResponsive();
@@ -23,6 +24,9 @@ function Layout() {
           </div>
           <div className="gui-layer">
             <GameMenuContainer />
+          </div>
+          <div className="gui-layer">
+            <ControlPanelContainer />
           </div>
           <div className="gui-layer">
             <ActionUI />

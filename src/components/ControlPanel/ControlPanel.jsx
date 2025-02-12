@@ -13,9 +13,9 @@ function ControlPanel({ show, setShow }) {
 
   const toggleTab = index => {
     if (!show) {
-      // if control panel is closed, open it and switch to chosen tab
-      setShow(true);
+      // if control panel is closed, switch to chosen tab and open it
       setTabIndex(index);
+      setShow(true);
     }
     else {
       // switch to tab
@@ -26,12 +26,10 @@ function ControlPanel({ show, setShow }) {
   }
 
   useUIAction("open_control_panel", () => setShow(true));
-  
   useUIAction("cancel", () => setShow(false));
-
-  useUIAction("open_character_detail", () => {
-    toggleTab(2);
-  });
+  useUIAction("open_chapter_log", () => toggleTab(1));
+  useUIAction("open_character_detail", () => toggleTab(2));
+  useUIAction("open_settings", () => toggleTab(3));
 
   return (
     <>

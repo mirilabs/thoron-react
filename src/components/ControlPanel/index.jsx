@@ -25,4 +25,3 @@ function ControlPanelContainer() {
 }
 
 export default ControlPanelContainer;
-export { ControlPanelOpener } from "./ControlPanel"
