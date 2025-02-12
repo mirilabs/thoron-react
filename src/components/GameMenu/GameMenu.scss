@@ -1,42 +1,47 @@
+.game-menu-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 
 .game-menu {
-  $closed: 100%;
-  $open: calc(100% - 256px);
+  $closed: -264px;
+  $open: 0;
 
   position: relative;
-  bottom: 0;
-  left: $closed;
+  min-width: 256px;
+  right: $closed;
 
   border-radius: 0;
 
   &.game-menu-enter {
-    left: $closed;
+    right: $closed;
   }
 
   &.game-menu-enter-active {
-    left: $open;
-    transition: left 200ms ease-in-out;
+    right: $open;
+    transition: right 200ms ease-in-out;
   }
 
   &.game-menu-enter-done {
-    left: $open;
+    right: $open;
   }
 
   &.game-menu-exit {
-    left: $open;
+    right: $open;
   }
 
   &.game-menu-exit-active {
-    left: $closed;
-    transition: left 200ms;
+    right: $closed;
+    transition: right 200ms ease-in-out;
   }
 }
 
 .game-menu-toggle {
-  position: absolute;
   z-index: 6;
-  right: 0;
-  bottom: 0;
   width: 15%;
   min-width: 48px;
   max-width: 60px;
