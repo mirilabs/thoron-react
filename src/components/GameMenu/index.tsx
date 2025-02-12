@@ -23,14 +23,14 @@ function GameMenuContainer() {
   }
 
   return (
-    <>
+    <div className="game-menu-container">
       <CSSTransition {...transitionProps}>
         <div className="game-menu" ref={nodeRef}>
           <GameMenu />
         </div>
       </CSSTransition>
       <GameMenuToggle onClick={toggle} />
-    </>
+    </div>
   )
 }
 

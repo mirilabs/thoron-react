@@ -2,6 +2,7 @@ import "./GameMenu.scss";
 import React from 'react';
 
 function GameMenu() {
+  // TODO implement buttons
   return (
     <ul className="game-menu__options">
       <li>
