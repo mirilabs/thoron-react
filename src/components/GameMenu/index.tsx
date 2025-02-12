@@ -26,7 +26,7 @@ function GameMenuContainer() {
     <div className="game-menu-container">
       <CSSTransition {...transitionProps}>
         <div className="game-menu" ref={nodeRef}>
-          <GameMenu />
+          <GameMenu handleClose={() => setShow(false)} />
         </div>
       </CSSTransition>
       <GameMenuToggle onClick={toggle} />
