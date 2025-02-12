@@ -17,7 +17,9 @@ const defaultKeybinds: KeybindSchema = {
   'left':   'left', 'arrowleft': 'left',
   'right':  'right', 'arrowright': 'right',
   'up':     'up', 'arrowup': 'up',
-  'down':   'down', 'arrowdown': 'down'
+  'down':   'down', 'arrowdown': 'down',
+  'l':      'open_chapter_log',
+  'o':      'open_settings'
 }
 
 const keybinds = new Map(Object.entries(defaultKeybinds));
