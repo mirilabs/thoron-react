@@ -1,4 +1,4 @@
-import Entity from "engine/Entity";
+import Entity from "@/engine/Entity";
 import { ComponentId } from ".";
 
 abstract class Component{

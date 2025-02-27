@@ -1,10 +1,10 @@
-import GameObject from "engine/GameObject";
-import Vector2 from "engine/utils/Vector2";
-import MotionSequence, { EASE } from "engine/utils/MotionSequence";
-import { IGameConfig } from "game/Game";
+import GameObject from "@/engine/GameObject";
+import Vector2 from "@/engine/utils/Vector2";
+import MotionSequence, { EASE } from "@/engine/utils/MotionSequence";
+import { IGameConfig } from "@/game/Game";
 import { AttackEvent } from "thoron";
-import { Position } from "engine/components";
-import DrawHandler from "engine/components/DrawHandler";
+import { Position } from "@/engine/components";
+import DrawHandler from "@/engine/components/DrawHandler";
 
 const INITIAL_TEXT_SIZE = 16;
 const FINAL_TEXT_SIZE = 32;

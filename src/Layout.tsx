@@ -1,15 +1,15 @@
 import "./Layout.scss";
 import "./stylesheets/themes.scss";
 import React from "react";
-import useResponsive from "components/utils/useResponsive";
-import { WindowSize } from "components/ViewportContext";
+import useResponsive from "@/app/utils/useResponsive";
+import { WindowSize } from "@/app/ViewportContext";
 
 // COMPONENTS
-import GameCanvas from './components/gameView/GameCanvas';
-import ActionUI from "components/gameView/ActionMenu";
-import UnitSummary from "components/UnitSummary";
-import GameMenuContainer from "components/GameMenu";
-import ControlPanelContainer from "components/ControlPanel";
+import GameCanvas from '@/app/gameView/GameCanvas';
+import ActionUI from "@/app/gameView/ActionMenu";
+import UnitSummary from "@/app/UnitSummary";
+import GameMenuContainer from "@/app/GameMenu";
+import ControlPanelContainer from "@/app/ControlPanel";
 
 function Layout() {
   let { size } = useResponsive();

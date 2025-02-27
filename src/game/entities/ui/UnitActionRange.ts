@@ -1,8 +1,8 @@
 import GameObject from "../../../engine/GameObject";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
-import { IVector2 } from "engine/utils/Vector2";
-import DrawHandler from "engine/components/DrawHandler";
+import { IVector2 } from "@/engine/utils/Vector2";
+import DrawHandler from "@/engine/components/DrawHandler";
 
 class UnitActionRange extends GameObject {
   chapter: any;

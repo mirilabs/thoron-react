@@ -1,9 +1,9 @@
-import GameObject from "engine/GameObject";
+import GameObject from "@/engine/GameObject";
 import UnitPiece from "../UnitBody";
-import CombatTargetIcon from "icons/target_combat.svg";
-import Vector2 from "engine/utils/Vector2";
-import MotionSequence from "engine/utils/MotionSequence";
-import { Position, Rectangle, Sprite } from "engine/components";
+import CombatTargetIcon from "@/icons/target_combat.svg";
+import Vector2 from "@/engine/utils/Vector2";
+import MotionSequence from "@/engine/utils/MotionSequence";
+import { Position, Rectangle, Sprite } from "@/engine/components";
 
 const TOP_OFFSET = {
   x: 0.2,
