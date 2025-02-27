@@ -1,4 +1,4 @@
-import ThoronContext from "components/ThoronContext";
+import ThoronContext from "@/app/ThoronContext";
 import { useContext } from "react";
 import { useControllerSelector } from "./reduxHooks";
 

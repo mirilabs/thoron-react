@@ -1,13 +1,13 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import GameObject from "engine/GameObject";
-import Scene from "engine/Scene";
-import CursorEventHandler, { ICursorEvent } from "engine/components/CursorEventHandler";
-import Game, { IGameConfig } from "game/Game";
-import CoordinateConverter from "game/utils/CoordinateConverter";
-import UIEventEmitter from "shared/UIEventEmitter";
+import GameObject from "@/engine/GameObject";
+import Scene from "@/engine/Scene";
+import CursorEventHandler, { ICursorEvent } from "@/engine/components/CursorEventHandler";
+import Game, { IGameConfig } from "@/game/Game";
+import CoordinateConverter from "@/game/utils/CoordinateConverter";
+import UIEventEmitter from "@/shared/UIEventEmitter";
 import ControllerState from "./ControllerState";
-import controllerStore, { phaseChanged } from "shared/store";
-import { addAppListener } from "shared/listenerMiddleware";
+import controllerStore, { phaseChanged } from "@/shared/store";
+import { addAppListener } from "@/shared/listenerMiddleware";
 import {
   IdleState,
   MovingState

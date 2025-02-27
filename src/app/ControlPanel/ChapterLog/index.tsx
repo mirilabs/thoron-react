@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import ThoronContext from "components/ThoronContext";
+import ThoronContext from "@/app/ThoronContext";
 import LogItem from "./LogItem";
+import ChapterLogControls from "./ChapterLogControls";
 
 function ChapterLog() {
   const { controller, chapter } = useContext(ThoronContext);
@@ -31,6 +32,7 @@ function ChapterLog() {
 
   return (
     <div className="chapter-log">
+      <ChapterLogControls />
       {items.length === 0 && <div>No history</div>}
       {items}
     </div>

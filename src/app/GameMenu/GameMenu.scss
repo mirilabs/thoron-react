@@ -1,0 +1,81 @@
+.game-menu-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+
+  & > * {
+    pointer-events: auto;
+  }
+}
+
+.game-menu {
+  $closed: -264px;
+  $open: 0;
+
+  position: relative;
+  min-width: 216px;
+  max-width: 100%;
+  right: $closed;
+
+  border-radius: 0;
+
+  &.game-menu-enter {
+    right: $closed;
+  }
+
+  &.game-menu-enter-active {
+    right: $open;
+    transition: right 200ms ease-in-out;
+  }
+
+  &.game-menu-enter-done {
+    right: $open;
+  }
+
+  &.game-menu-exit {
+    right: $open;
+  }
+
+  &.game-menu-exit-active {
+    right: $closed;
+    transition: right 200ms ease-in-out;
+  }
+}
+
+.game-menu-toggle {
+  z-index: 6;
+  width: 15%;
+  min-width: 48px;
+  max-width: 60px;
+  aspect-ratio: 1;
+  color: var(--accent-color);
+}
+
+.game-menu__options {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+
+  li {
+    padding: 8px 0 8px 24px;
+    margin: 8px 0;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    outline: 1px var(--text-color-2) solid;
+    border-radius: 2px 0 0 24px;
+    
+    cursor: pointer;
+    
+    transition: background-color 200ms linear;
+
+    &:hover {
+      background-color: var(--bg-color-2);
+      box-shadow: -4px 0px 0 var(--accent-color);
+    }
+  }
+}

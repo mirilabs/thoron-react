@@ -1,6 +1,6 @@
 import React from "react";
-import { useControllerDispatch } from "components/utils/reduxHooks";
-import { unitSelected } from "shared/store";
+import { useControllerDispatch } from "@/app/utils/reduxHooks";
+import { unitSelected } from "@/shared/store";
 import HPBar from "./HPBar";
 
 function UnitTile({ unit }) {

@@ -1,7 +1,7 @@
 import "./CombatPreview.scss";
-import HPBar from 'components/ControlPanel/UnitIndex/HPBar';
-import ItemIcon from 'components/UnitSummary/ItemIcon';
-import React from 'react';
+import HPBar from "@/app/ControlPanel/UnitIndex/HPBar";
+import ItemIcon from "@/app/UnitSummary/ItemIcon";
+import React from "react";
 import { ItemRecord } from "thoron/dist/Item";
 
 interface ICombatPreview {

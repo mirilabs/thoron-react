@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import ThoronContext from "components/ThoronContext";
-import useUIAction from "components/utils/useUIAction";
+import ThoronContext from "@/app/ThoronContext";
+import useUIAction from "@/app/utils/useUIAction";
 import {
   useControllerDispatch,
   useControllerSelector
-} from "components/utils/reduxHooks";
+} from "@/app/utils/reduxHooks";
 import { Command } from "thoron";
-import { unitSelected } from "shared/store";
+import { unitSelected } from "@/shared/store";
 import { InvalidActionError } from "thoron";
 
 function CombatStartHandler() {

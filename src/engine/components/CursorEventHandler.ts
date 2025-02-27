@@ -1,4 +1,4 @@
-import { IVector2 } from "engine/utils/Vector2";
+import { IVector2 } from "@/engine/utils/Vector2";
 import Component from "./Component";
 
 interface ICursorEvent extends IVector2 {

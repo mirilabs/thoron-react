@@ -1,9 +1,9 @@
 import React from 'react';
 import UnitDetailToggle from "./UnitDetailToggle";
 import UnitSummary from "./UnitSummary";
-import { useSelectedUnit } from "components/utils/useUnit";
+import { useSelectedUnit } from "@/app/utils/useUnit";
 import WeaponSelector from "./WeaponSelector";
-import { useControllerSelector } from 'components/utils/reduxHooks';
+import { useControllerSelector } from "@/app/utils/reduxHooks";
 
 function UnitSummaryContainer() {
   const unit = useSelectedUnit();

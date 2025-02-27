@@ -1,4 +1,4 @@
-import Scene from "engine/Scene";
+import Scene from "@/engine/Scene";
 import {
   AnyComponent,
   ComponentId,
@@ -6,7 +6,7 @@ import {
 } from "../components";
 import DrawSystem from "./DrawSystem";
 import System from "./System";
-import Entity from "engine/Entity";
+import Entity from "@/engine/Entity";
 
 class SpriteSystem extends System {
   drawSystem: DrawSystem;

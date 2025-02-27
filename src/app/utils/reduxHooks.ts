@@ -3,7 +3,7 @@ import {
   ControllerDispatch,
   ControllerState,
   ControllerStore
-} from "shared/store";
+} from "@/shared/store";
 
 // https://redux.js.org/usage/usage-with-typescript#define-typed-hooks
 

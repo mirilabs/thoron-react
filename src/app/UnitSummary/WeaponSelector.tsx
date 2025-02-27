@@ -1,11 +1,11 @@
 import "./WeaponSelector.scss";
 import React, { useState } from "react";
 import ItemShow from "./ItemShow";
-import { useSelectedUnit } from "components/utils/useUnit";
+import { useSelectedUnit } from "@/app/utils/useUnit";
 import {
   useControllerDispatch
-} from "components/utils/reduxHooks";
-import { itemSelected } from "shared/store";
+} from "@/app/utils/reduxHooks";
+import { itemSelected } from "@/shared/store";
 import Item from "thoron/dist/Item";
 
 function WeaponSelector() {
