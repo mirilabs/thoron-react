@@ -2,7 +2,7 @@ import Entity from "./Entity";
 import Scene from "./Scene";
 import {
   AnyComponent
-} from "./components";
+} from "@/app";
 
 abstract class GameObject {
   components: AnyComponent[] = [];

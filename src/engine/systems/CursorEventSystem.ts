@@ -1,5 +1,5 @@
 import System from "./System";
-import Vector2, { IVector2 } from "engine/utils/Vector2";
+import Vector2, { IVector2 } from "@/engine/utils/Vector2";
 import {
   ComponentId,
   ComponentTypes
@@ -8,7 +8,7 @@ import {
   CursorEventCallback,
   ICursorEvent,
   ICursorEventHandler
-} from "engine/components/CursorEventHandler";
+} from "@/engine/components/CursorEventHandler";
 
 class CursorEventSystem extends System {
   signature: Set<ComponentId> = new Set([

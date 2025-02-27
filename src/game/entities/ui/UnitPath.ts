@@ -3,7 +3,7 @@ import GameObject from "../../../engine/GameObject";
 import Vector2 from "../../../engine/utils/Vector2";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
-import { DrawHandler } from "engine/components";
+import { DrawHandler } from "@/engine/components";
 
 class UnitPath extends GameObject {
   game: Game;

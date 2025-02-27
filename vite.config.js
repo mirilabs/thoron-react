@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { resolve } from 'path';
 
 export default defineConfig({
   css: {
@@ -7,5 +8,14 @@ export default defineConfig({
         api: "modern-compiler"
       }
     }
+  },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src")
+    }
+  },
+  loader: {
+    ".js": "jsx",
+    ".ts": "tsx"
   }
 });

@@ -1,6 +1,6 @@
-import GameObject from "engine/GameObject";
-import Scene from "engine/Scene";
-import Game from "game/Game";
+import GameObject from "@/engine/GameObject";
+import Scene from "@/engine/Scene";
+import Game from "@/game/Game";
 import { GameController, ChapterEvent } from "thoron";
 import AsyncQueue from "./AsyncQueue";
 import AttackMotion from "./AttackMotion";

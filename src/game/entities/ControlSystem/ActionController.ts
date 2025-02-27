@@ -1,5 +1,5 @@
-import { IVector2 } from "engine/utils/Vector2";
-import controllerStore, { itemSelected, targetSelected } from "shared/store";
+import { IVector2 } from "@/engine/utils/Vector2";
+import controllerStore, { itemSelected, targetSelected } from "@/shared/store";
 import Chapter, { DeployedUnit } from "thoron";
 
 class ActionController {
