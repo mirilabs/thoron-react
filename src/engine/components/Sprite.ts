@@ -1,4 +1,4 @@
-import Entity from "engine/Entity";
+import Entity from "@/engine/Entity";
 import Component from "./Component";
 import { DrawFn, IDrawHandler } from "./DrawHandler";
 import Position from "./Position";

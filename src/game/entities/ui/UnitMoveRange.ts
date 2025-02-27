@@ -1,9 +1,9 @@
-import { IVector2 } from "engine/utils/Vector2";
+import { IVector2 } from "@/engine/utils/Vector2";
 import GameObject from "../../../engine/GameObject";
 import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
-import { DrawHandler } from "engine/components";
-import Scene from "engine/Scene";
+import { DrawHandler } from "@/engine/components";
+import Scene from "@/engine/Scene";
 
 class UnitRange extends GameObject {
   unit: any;

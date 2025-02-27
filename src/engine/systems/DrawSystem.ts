@@ -1,8 +1,8 @@
-import SortedArray from "engine/utils/SortedArray";
+import SortedArray from "@/engine/utils/SortedArray";
 import { AnyComponent, ComponentId, DrawHandler } from "../components";
 import System from "./System";
-import Entity from "engine/Entity";
-import { IDrawHandler } from "engine/components/DrawHandler";
+import Entity from "@/engine/Entity";
+import { IDrawHandler } from "@/engine/components/DrawHandler";
 
 class DrawOrder {
   order = new SortedArray<IDrawHandler>(

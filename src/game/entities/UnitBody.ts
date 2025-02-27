@@ -1,13 +1,13 @@
-import GameObject from '../../engine/GameObject';
-import CoordinateConverter from 'game/utils/CoordinateConverter';
-import Game from 'game/Game';
-import UnitRange from './ui/UnitMoveRange';
-import TargetIndicator from './ui/TargetIndicator';
-import UnitPath from './ui/UnitPath';
-import { Position, Rectangle, Sprite } from 'engine/components';
-import controllerStore from 'shared/store';
-import { DeployedUnit } from 'thoron';
-import { IVector2 } from 'engine/utils/Vector2';
+import GameObject from "../../engine/GameObject";
+import CoordinateConverter from "game/utils/CoordinateConverter";
+import Game from "game/Game";
+import UnitRange from "./ui/UnitMoveRange";
+import TargetIndicator from "./ui/TargetIndicator";
+import UnitPath from "./ui/UnitPath";
+import { Position, Rectangle, Sprite } from "@/engine/components";
+import controllerStore from "@/shared/store";
+import { DeployedUnit } from "thoron";
+import { IVector2 } from "@/engine/utils/Vector2";
 
 class UnitBody extends GameObject {
   unit: DeployedUnit;
@@ -24,7 +24,7 @@ class UnitBody extends GameObject {
     this.components = [
       new Position(0, 0),
       new Rectangle(game.coords.tileWidth, game.coords.tileHeight),
-      new Sprite(unit.record['sprite'], 40, (ctx) => {
+      new Sprite(unit.record["sprite"], 40, (ctx) => {
         if (this.grayscale) {
           ctx.filter = "grayscale(1)";
         }
