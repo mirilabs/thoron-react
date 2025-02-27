@@ -1,10 +1,10 @@
-import { ICursorEvent } from "engine/components/CursorEventHandler";
+import { ICursorEvent } from "@/engine/components/CursorEventHandler";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import MovingState from "./MovingState";
 import controllerStore, {
   pendingMoveDiscarded,
   unitSelected
-} from "shared/store";
+} from "@/shared/store";
 import { DeployedUnit } from "thoron";
 
 class IdleState extends ControllerState {

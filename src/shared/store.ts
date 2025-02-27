@@ -1,8 +1,8 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
-import { IVector2 } from "engine/utils/Vector2";
+import { IVector2 } from "@/engine/utils/Vector2";
 import {
   ControllerPhase
-} from "game/entities/ControlSystem/ControllerState";
+} from "@/game/entities/ControlSystem/ControllerState";
 import listenerMiddleware from "./listenerMiddleware";
 
 const initialState: {

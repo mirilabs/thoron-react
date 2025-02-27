@@ -1,9 +1,9 @@
-import { ICursorEvent } from "engine/components/CursorEventHandler";
+import { ICursorEvent } from "@/engine/components/CursorEventHandler";
 import UnitPiece from "../UnitBody";
 import ControllerState, { ControllerPhase } from "./ControllerState";
 import IdleState from "./IdleState";
 import MovingState from "./MovingState";
-import controllerStore, { targetSelected, actionSelected } from "shared/store";
+import controllerStore, { targetSelected, actionSelected } from "@/shared/store";
 import ActionConfirmState from "./ActionConfirmState";
 import { Command, DeployedUnit } from "thoron";
 

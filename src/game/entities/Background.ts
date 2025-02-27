@@ -1,5 +1,5 @@
-import { Rectangle, Sprite, Position } from 'engine/components';
-import GameObject from '../../engine/GameObject';
+import { Rectangle, Sprite, Position } from "@/engine/components";
+import GameObject from "@/engine/GameObject";
 
 class Background extends GameObject {
   constructor(

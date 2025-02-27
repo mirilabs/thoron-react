@@ -4,7 +4,7 @@ import Sprite from "./Sprite";
 import UpdateFunction from "./UpdateHandler";
 import DrawHandler from "./DrawHandler";
 import CursorEventHandler from "./CursorEventHandler";
-import TwoWayMap from "utils/TwoWayMap";
+import TwoWayMap from "@/utils/TwoWayMap";
 
 const CIDS = {
   position: Position,
