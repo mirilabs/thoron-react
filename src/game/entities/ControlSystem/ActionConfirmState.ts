@@ -4,11 +4,11 @@ import UnitActionRange from "../ui/UnitActionRange";
 import store, {
   targetSelected,
   actionSelected
-} from "shared/store";
+} from "@/shared/store";
 import ActionSelectState from "./ActionSelectState";
 import ActionController from "./ActionController";
-import Vector2 from "engine/utils/Vector2";
-import { ICursorEvent } from "engine/components/CursorEventHandler";
+import Vector2 from "@/engine/utils/Vector2";
+import { ICursorEvent } from "@/engine/components/CursorEventHandler";
 
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;

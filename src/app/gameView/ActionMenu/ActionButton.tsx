@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { actionSelected } from "shared/store";
+import { actionSelected } from "@/shared/store";
 import { useUIEmitter } from "../../utils/useUIAction";
 import { Command } from "thoron";
 

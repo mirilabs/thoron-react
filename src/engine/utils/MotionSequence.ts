@@ -1,4 +1,4 @@
-import Entity from "engine/Entity";
+import Entity from "@/engine/Entity";
 import Vector2, { IVector2 } from "./Vector2";
 import { UpdateFunction } from "../components";
 import { EASE } from "./easingFunctions";

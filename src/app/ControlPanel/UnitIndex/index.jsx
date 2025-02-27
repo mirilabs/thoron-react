@@ -1,5 +1,5 @@
-import ThoronContext from "components/ThoronContext";
-import { useSelectedUnit } from "components/utils/useUnit";
+import ThoronContext from "@/app/ThoronContext";
+import { useSelectedUnit } from "@/app/utils/useUnit";
 import React, { useContext } from "react";
 import UnitDetail from "../UnitDetail";
 import UnitTile from "./UnitTile";

@@ -1,8 +1,8 @@
-import Game from "game/Game";
+import Game from "@/game/Game";
 import UnitBody from "../UnitBody";
 import { AttackEvent } from "thoron";
-import MotionSequence from "engine/utils/MotionSequence";
-import Vector2 from "engine/utils/Vector2";
+import MotionSequence from "@/engine/utils/MotionSequence";
+import Vector2 from "@/engine/utils/Vector2";
 import DamageNumber from "../ui/DamageNumber";
 
 const MOTION_SCALE = 0.3; // 1.0 = one tile width

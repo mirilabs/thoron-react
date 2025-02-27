@@ -1,5 +1,5 @@
 import React from "react";
-import { useUIEmitter } from "components/utils/useUIAction";
+import { useUIEmitter } from "@/app/utils/useUIAction";
 
 function CombatInput() {
   const cancel = useUIEmitter("cancel");

@@ -1,6 +1,6 @@
 import "./ItemIcon.scss";
 import React from "react";
-import icons from "icons/items";
+import icons from "@/icons/items";
 
 function ItemIcon({ item }) {
   let iconId = (item.type === "weapon") ?

@@ -1,4 +1,4 @@
-import DrawHandler from "engine/components/DrawHandler";
+import DrawHandler from "@/engine/components/DrawHandler";
 import GameObject from "../../engine/GameObject";
 import { IGameConfig } from "../Game";
 

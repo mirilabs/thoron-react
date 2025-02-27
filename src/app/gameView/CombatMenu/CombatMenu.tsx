@@ -1,6 +1,6 @@
 import React from "react";
-import useUnit, { useSelectedUnit } from "components/utils/useUnit";
-import { useControllerSelector } from "components/utils/reduxHooks";
+import useUnit, { useSelectedUnit } from "@/app/utils/useUnit";
+import { useControllerSelector } from "@/app/utils/reduxHooks";
 import CombatPreview from "./CombatPreviewContainer";
 import CombatInput from "./CombatInput";
 import { DeployedUnit } from "thoron";

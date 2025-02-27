@@ -1,10 +1,10 @@
-import { UIEventSignatures } from "shared/UIEventEmitter";
+import { UIEventSignatures } from "@/shared/UIEventEmitter";
 import UnitController from ".";
-import { ICursorEvent } from "engine/components/CursorEventHandler";
-import { IVector2 } from "engine/utils/Vector2";
-import controllerStore from "shared/store";
+import { ICursorEvent } from "@/engine/components/CursorEventHandler";
+import { IVector2 } from "@/engine/utils/Vector2";
+import controllerStore from "@/shared/store";
 import { UnsubscribeListener } from "@reduxjs/toolkit";
-import { addAppListener } from "shared/listenerMiddleware";
+import { addAppListener } from "@/shared/listenerMiddleware";
 
 export enum ControllerPhase {
   IDLE,

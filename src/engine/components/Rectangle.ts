@@ -1,4 +1,4 @@
-import Entity from "engine/Entity";
+import Entity from "@/engine/Entity";
 import Component from "./Component";
 import Position, { IPosition } from "./Position";
 

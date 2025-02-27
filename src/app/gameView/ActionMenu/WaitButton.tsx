@@ -1,13 +1,13 @@
 import React from "react";
-import ThoronContext from "components/ThoronContext";
+import ThoronContext from "@/app/ThoronContext";
 import {
   useControllerDispatch,
   useControllerSelector
-} from "components/utils/reduxHooks";
+} from "@/app/utils/reduxHooks";
 import { useContext } from "react";
 import { InvalidActionError } from "thoron";
-import { phaseChanged, unitSelected } from "shared/store";
-import { ControllerPhase } from "game/entities/ControlSystem/ControllerState";
+import { phaseChanged, unitSelected } from "@/shared/store";
+import { ControllerPhase } from "@/game/entities/ControlSystem/ControllerState";
 
 interface WaitButtonProps {
   isSelectable?: boolean

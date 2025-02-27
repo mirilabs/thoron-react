@@ -1,15 +1,16 @@
 import "./App.scss";
 import "./stylesheets/dev.css";
 
+import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import fallbackRender from "components/utils/fallbackRender";
-import { ViewportProvider } from "./components/ViewportContext";
-import { ThoronProvider } from "./components/ThoronContext";
+import fallbackRender from "@/app/utils/fallbackRender";
+import { ViewportProvider } from "@/app/ViewportContext";
+import { ThoronProvider } from "@/app/ThoronContext";
 import { Provider as ReduxProvider } from "react-redux";
-import controllerStore from "shared/store";
-import { KeybindInitializer } from "components/ControlPanel/Settings/keybinds";
-import LayoutRoot from "Layout";
-import { initializeUserSettings } from "components/ControlPanel/Settings/userSettings";
+import controllerStore from "@/shared/store";
+import { KeybindInitializer } from "@/app/ControlPanel/Settings/keybinds";
+import LayoutRoot from "./Layout";
+import { initializeUserSettings } from "@/app/ControlPanel/Settings/userSettings";
 import saveState from "./data/saveState";
 
 initializeUserSettings();

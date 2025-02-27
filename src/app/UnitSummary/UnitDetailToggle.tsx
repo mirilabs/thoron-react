@@ -1,4 +1,4 @@
-import { useUIEmitter } from "components/utils/useUIAction";
+import { useUIEmitter } from "@/app/utils/useUIAction";
 import "./UnitDetailToggle.scss";
 import React from "react";
 
