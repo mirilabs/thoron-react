@@ -5,6 +5,9 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.6",
     "@reduxjs/toolkit": "^2.2.8",
     "core-js": "^3.38.1",
     "react": "^19.0.0",
