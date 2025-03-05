@@ -1,7 +1,13 @@
 import "./StatView.scss";
 import React, { useState } from "react";
+import { StatBlock } from "thoron";
 
-function StatView({ stats, growths }) {
+interface StatViewProps {
+  stats: StatBlock,
+  growths: StatBlock
+}
+
+function StatView({ stats, growths }: StatViewProps) {
     const [viewGrowths, setViewGrowths] = useState(false);
     const gaugeMax = viewGrowths ? 100 : 60;
     
