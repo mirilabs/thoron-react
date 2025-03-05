@@ -63,6 +63,10 @@ class ActionConfirmState extends ControllerState {
       type: "controller/targetSelected",
       effect: () => this.onTargetSelected()
     });
+    this.addStoreListener({
+      type: "controller/itemSelected",
+      effect: () => this.onItemSelected()
+    })
 
     this.actionController.findTargets();
   }
@@ -104,6 +108,10 @@ class ActionConfirmState extends ControllerState {
     let target = this.actionController.getTarget();
     if (target)
       this.controller.getUnitBody(target.id).showTargetIndicator();
+  }
+
+  onItemSelected() {
+    this.actionController.onItemSelected();
   }
 
   onCancel() {
