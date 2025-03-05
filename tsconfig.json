@@ -2,13 +2,11 @@
   "compilerOptions": {
     "outDir": "./dist",
     "allowJs": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src/",
     "jsx": "react",
+    "baseUrl": "src/",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./*"],
     }
   },
   "include": [

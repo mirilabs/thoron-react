@@ -1,3 +1,4 @@
+import { fire, heal, ironBow, ironLance, ironSword } from './items';
 import map from './map';
 import unitFactory from './unitFactory';
 
@@ -7,34 +8,9 @@ const saveState = {
       record: {
         ...unitFactory(),
         items: [
-          {
-            name: 'Iron Sword',
-            type: 'weapon',
-            maxUses: 40,
-            stats: {
-              weaponType: 'sword',
-              isMagic: false,
-              might: 5,
-              hit: 90,
-              crit: 0,
-              minRange: 1,
-              maxRange: 1
-            }
-          },
-          {
-            name: 'Iron Lance',
-            type: 'weapon',
-            maxUses: 40,
-            stats: {
-              weaponType: 'sword',
-              isMagic: false,
-              might: 6,
-              hit: 80,
-              crit: 0,
-              minRange: 1,
-              maxRange: 1
-            }
-          },
+          ironSword,
+          ironLance,
+          heal
         ],
         sprite: 'https://cdn.discordapp.com/emojis/1107849361691529227.webp'
       },
@@ -45,34 +21,8 @@ const saveState = {
       record: {
         ...unitFactory(),
         items: [
-          {
-            name: 'Iron Bow',
-            type: 'weapon',
-            maxUses: 40,
-            stats: {
-              weaponType: 'bow',
-              isMagic: false,
-              might: 6,
-              hit: 80,
-              crit: 0,
-              minRange: 2,
-              maxRange: 2
-            }
-          },
-          {
-            name: 'Iron Sword',
-            type: 'weapon',
-            maxUses: 40,
-            stats: {
-              weaponType: 'sword',
-              isMagic: false,
-              might: 5,
-              hit: 90,
-              crit: 0,
-              minRange: 1,
-              maxRange: 1
-            }
-          }
+          ironBow,
+          ironSword
         ],
         sprite: 'https://cdn.discordapp.com/emojis/1112145799657304104'
       },
@@ -83,20 +33,7 @@ const saveState = {
       record: {
         ...unitFactory(),
         items: [
-          {
-            name: 'Fire',
-            type: 'weapon',
-            maxUses: 40,
-            stats: {
-              weaponType: 'tome',
-              isMagic: true,
-              might: 5,
-              hit: 90,
-              crit: 0,
-              minRange: 1,
-              maxRange: 2
-            }
-          }
+          fire
         ],
         sprite: 'https://cdn.discordapp.com/emojis/1278905499680510045'
       },
