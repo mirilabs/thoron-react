@@ -4,6 +4,7 @@ import { Position } from "@/engine/components";
 import DrawHandler from "@/engine/components/DrawHandler";
 import Scene from "@/engine/Scene";
 import MotionSequence from "@/engine/utils/MotionSequence";
+import Camera from "@/engine/Camera";
 
 const COLORS = {
   "player": "blue",
@@ -17,6 +18,8 @@ const FADE_DURATION = 100;
 const STATIC_DURATION = 800;
 
 class PhaseChange extends GameObject {
+  camera: Camera;
+
   constructor() {
     super();
 
@@ -24,15 +27,18 @@ class PhaseChange extends GameObject {
       new Position(0, 0),
       new DrawHandler((ctx) => {
         ctx.save();
+        const { width, height } = ctx.canvas;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        // undo camera transform so this always renders in the center
+        ctx.resetTransform();
 
         // background
         ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.fillRect(0, 0, width, height);
 
         // text
-        const centerX = ctx.canvas.width / 2;
-        const centerY = ctx.canvas.height / 2;
-
         ctx.font = `${TEXT_SIZE}px serif`;
         ctx.textAlign = "center";
         ctx.strokeStyle = "blue";
@@ -47,6 +53,8 @@ class PhaseChange extends GameObject {
   }
 
   onInit(scene: Scene): void {
+    this.camera = scene.camera;
+
     let { width, height } = scene.canvas;
     const position = this.entity.getComponent("position") as Position;
     position.moveTo(new Vector2(width / 2, height / 2));
