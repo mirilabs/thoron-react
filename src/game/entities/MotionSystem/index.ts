@@ -4,6 +4,7 @@ import Game from "@/game/Game";
 import { GameController, ChapterEvent } from "thoron";
 import AsyncQueue from "./AsyncQueue";
 import AttackMotion from "./AttackMotion";
+import EndPhaseMotion from "./EndPhaseMotion";
 
 class MotionSystem extends GameObject {
   game: Game;
@@ -44,6 +45,8 @@ class MotionSystem extends GameObject {
         return async () => {
           unit.grayscale = true;
         }
+      case "end_phase":
+        return () => EndPhaseMotion(this.game);
       default:
         return
     }
