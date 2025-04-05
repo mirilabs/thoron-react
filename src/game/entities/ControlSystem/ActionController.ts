@@ -164,6 +164,15 @@ class ActionController {
     if (!this.isInEquippedRange(target))
       this.selectNextItem();
   }
+
+  /**
+   * Item select callback
+   */
+  onItemSelected() {
+    const item = this.getItem();
+
+    
+  }
 }
 
 export default ActionController;
