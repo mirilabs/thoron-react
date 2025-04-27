@@ -57,3 +57,6 @@ function UnitDetail(props: UnitDetailProps) {
 }
 
 export default UnitDetail;
+export type {
+  UnitDetailProps
+}
