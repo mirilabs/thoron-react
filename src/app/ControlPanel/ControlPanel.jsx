@@ -2,7 +2,7 @@ import "./ControlPanel.scss";
 import "react-tabs/style/react-tabs.css";
 import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import Settings from "@/app/ControlPanel/Settings";
+import Settings from "./Settings";
 import useUIAction from "@/app/utils/useUIAction";
 import UnitIndexContainer from "./UnitIndex";
 import ChapterLog from "./ChapterLog";
