@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { DeployedUnit, IUnitRecord } from "thoron";
-import { TextField } from "@mui/material";
+import { Slider, TextField } from "@mui/material";
 import NumberField from "./NumberField";
+import StatField from "./StatField";
 
 interface UnitEditFormProps {
   unit: DeployedUnit;
@@ -41,7 +42,6 @@ function UnitEditForm({
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="form-field"
           sx={{ marginBottom: 1 }}
         />
         <TextField
@@ -49,7 +49,6 @@ function UnitEditForm({
           name="className"
           value={formData.className}
           onChange={handleChange}
-          className="form-field"
           size="small"
           sx={{ marginBottom: 1 }}
         />
@@ -60,16 +59,30 @@ function UnitEditForm({
             value={formData.level}
             onChange={(value) => setFormData({ ...formData, level: value })}
             min={1} max={40}
-            required
-            className="form-field" />
+            required />
           <NumberField
             label="EXP"
             name="exp"
             value={formData.exp}
             onChange={(value) => setFormData({ ...formData, exp: value })}
-            min={0} max={99}
-            className="form-field" />
+            min={0} max={99} step={1} />
         </div>
+        <StatField label="Max HP" stat="mhp"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Strength" stat="str"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Magic" stat="mag"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Skill" stat="skl"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Speed" stat="spd"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Luck" stat="luk"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Defense" stat="def"
+          formData={formData} setFormData={setFormData} />
+        <StatField label="Resistance" stat="res"
+          formData={formData} setFormData={setFormData} />
       </div>
       {/* Add more fields as necessary */}
       <span>
