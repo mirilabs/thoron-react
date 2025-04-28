@@ -10,6 +10,7 @@
       z-index: 14;
       background-color: var(--bg-color);
       padding: 8px;
+      overflow-y: scroll;
   
       &.unit-detail {
         z-index: 7;  // display controls over unit detail panel
