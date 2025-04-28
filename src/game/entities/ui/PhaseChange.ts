@@ -20,7 +20,7 @@ const STATIC_DURATION = 800;
 class PhaseChange extends GameObject {
   camera: Camera;
 
-  constructor() {
+  constructor(text: string = "Next Phase") {
     super();
 
     this.components = [
@@ -43,9 +43,9 @@ class PhaseChange extends GameObject {
         ctx.textAlign = "center";
         ctx.strokeStyle = "blue";
         ctx.lineWidth = 2;
-        ctx.strokeText("Phase Change", centerX, centerY);
+        ctx.strokeText(text, centerX, centerY);
         ctx.fillStyle = "white";
-        ctx.fillText("Phase Change", centerX, centerY);
+        ctx.fillText(text, centerX, centerY);
 
         ctx.restore();
       }, Z_INDEX)
