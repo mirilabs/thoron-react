@@ -39,10 +39,18 @@ function LogString(props: LogStringProps) {
       </>);
       break;
     case "end_phase":
+      const phaseChange = props.actionResult.events
+        .find(e => e.type === "phase_change");
+      const { turn, phase } = phaseChange.next;
+      const phaseTitle = ({
+        0: "Player Phase",
+        1: "Enemy Phase",
+        2: "Ally Phase"
+      })[phase];
+      
       return (
         <span>
-          {/* TODO indicate which phase is ending */}
-          <strong>End phase</strong>
+          <strong>Turn {turn} - {phaseTitle}</strong>
         </span>
       )
   }
