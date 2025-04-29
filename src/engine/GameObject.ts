@@ -1,8 +1,8 @@
 import Entity from "./Entity";
 import Scene from "./Scene";
-import {
+import type {
   AnyComponent
-} from "@/app";
+} from "./components";
 
 abstract class GameObject {
   components: AnyComponent[] = [];
