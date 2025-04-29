@@ -6,10 +6,16 @@ import Scene from "@/engine/Scene";
 import MotionSequence from "@/engine/utils/MotionSequence";
 import Camera from "@/engine/Camera";
 
+const TITLES = {
+  0: "PLAYER PHASE",
+  1: "ENEMY PHASE",
+  2: "ALLY PHASE",
+}
+
 const COLORS = {
-  "player": "blue",
-  "enemy": "red",
-  "ally": "green"
+  0: "blue",
+  1: "red",
+  2: "green"
 }
 
 const TEXT_SIZE = 36;
@@ -20,8 +26,12 @@ const STATIC_DURATION = 800;
 class PhaseChange extends GameObject {
   camera: Camera;
 
-  constructor(text: string = "Next Phase") {
+  constructor(turn: number, phase: number) {
     super();
+
+    const title = TITLES[phase];
+    const subtitle = `Turn ${turn}`;
+    const color = COLORS[phase];
 
     this.components = [
       new Position(0, 0),
@@ -29,7 +39,7 @@ class PhaseChange extends GameObject {
         ctx.save();
         const { width, height } = ctx.canvas;
         const centerX = width / 2;
-        const centerY = height / 2;
+        const centerY = height / 2 - TEXT_SIZE / 2;
 
         // undo camera transform so this always renders in the center
         ctx.resetTransform();
@@ -38,14 +48,21 @@ class PhaseChange extends GameObject {
         ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
         ctx.fillRect(0, 0, width, height);
 
-        // text
+        // top text
         ctx.font = `${TEXT_SIZE}px serif`;
         ctx.textAlign = "center";
-        ctx.strokeStyle = "blue";
-        ctx.lineWidth = 2;
-        ctx.strokeText(text, centerX, centerY);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.strokeText(title, centerX, centerY);
         ctx.fillStyle = "white";
-        ctx.fillText(text, centerX, centerY);
+        ctx.fillText(title, centerX, centerY);
+
+        // bottom text
+        ctx.font = `${TEXT_SIZE * 0.75}px serif`;
+        ctx.strokeStyle = "black";
+        ctx.strokeText(subtitle, centerX, centerY + TEXT_SIZE);
+        ctx.fillStyle = "white";
+        ctx.fillText(subtitle, centerX, centerY + TEXT_SIZE);
 
         ctx.restore();
       }, Z_INDEX)
