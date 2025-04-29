@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "lib": ["esnext", "dom"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
