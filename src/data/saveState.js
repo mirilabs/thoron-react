@@ -26,8 +26,8 @@ const saveState = {
         ],
         sprite: 'https://cdn.discordapp.com/emojis/1112145799657304104'
       },
-      position: { x: 4, y: 3 },
-      actionState: { team: 1, canAct: false }
+      position: { x: 2, y: 4 },
+      actionState: { team: 0, canAct: true }
     },
     {
       record: {
@@ -37,8 +37,8 @@ const saveState = {
         ],
         sprite: 'https://cdn.discordapp.com/emojis/1278905499680510045'
       },
-      position: { x: 3, y: 4 },
-      actionState: { team: 2, canAct: false }
+      position: { x: 4, y: 3 },
+      actionState: { team: 1, canAct: false }
     }
   ],
   map,

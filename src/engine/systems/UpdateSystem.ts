@@ -2,7 +2,7 @@ import { ComponentId } from "../components";
 import System from "./System";
 
 class UpdateSystem extends System {
-  signature: Set<ComponentId> = new Set([
+  signature: Set<ComponentId> = new Set<ComponentId>([
     'update'
   ]);
 

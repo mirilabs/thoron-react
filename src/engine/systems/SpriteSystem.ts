@@ -11,7 +11,7 @@ import Entity from "@/engine/Entity";
 class SpriteSystem extends System {
   drawSystem: DrawSystem;
 
-  signature: Set<ComponentId> = new Set([
+  signature: Set<ComponentId> = new Set<ComponentId>([
     'position',
     'rectangle',
     'sprite',
