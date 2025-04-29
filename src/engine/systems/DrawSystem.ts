@@ -26,7 +26,7 @@ class DrawOrder {
 }
 
 class DrawSystem extends System {
-  signature: Set<ComponentId> = new Set([
+  signature: Set<ComponentId> = new Set<ComponentId>([
     'draw'
   ]);
   canvas: HTMLCanvasElement;
