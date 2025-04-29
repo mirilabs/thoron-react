@@ -9,14 +9,26 @@ interface IDrawHandler {
 }
 
 class DrawHandler extends Component implements IDrawHandler {
-  draw: DrawFn;
+  drawFn: DrawFn;
+  opacity: number = 1;
   zIndex?: number;
   enabled?: boolean = true;
 
   constructor(drawFn: DrawFn, zIndex: number = 0) {
     super();
-    this.draw = drawFn;
+    this.drawFn = drawFn;
     this.zIndex = zIndex;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    if (!this.enabled) return;
+    ctx.save();
+
+    ctx.globalAlpha = this.opacity;
+    
+    this.drawFn(ctx);
+
+    ctx.restore();
   }
 }
 

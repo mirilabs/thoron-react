@@ -2,6 +2,33 @@ import "./StatView.scss";
 import React, { useState } from "react";
 import { StatBlock } from "thoron";
 
+interface StatRowProps {
+  statName: string,
+  value: number,
+  maxValue: number,
+  isGrowth: boolean
+}
+
+function StatRow({ statName, value, maxValue, isGrowth }: StatRowProps) {
+  const baseClass = isGrowth ? "growth" : "stat";
+
+  return (
+    <div className="stat-container" key={statName}>
+      <span className="stat-name">
+        {statName}
+      </span>
+      <span className={`stat-value ${baseClass}`}>
+        {value + (isGrowth ? '%' : '')}
+      </span>
+      <span className="stat-meter">
+        <span className={`stat-meter__value ${baseClass}`}
+          style={{ width: `${value / maxValue * 100}%`}}>
+        </span>
+      </span>
+    </div>
+  )
+}
+
 interface StatViewProps {
   stats: StatBlock,
   growths: StatBlock
@@ -12,12 +39,12 @@ function StatView({ stats, growths }: StatViewProps) {
     const gaugeMax = viewGrowths ? 100 : 60;
     
     const values = viewGrowths ? growths : stats;
-    const rows = Object.entries(values).map(([name, value]) => (
-      <div className={'stat' + (viewGrowths ? ' stat-growths' : '')} key={name}>
-        <span className="stat-name">{name}</span>
-        <span className="stat-value">{value + (viewGrowths ? '%' : '')}</span>
-        <meter className="stat-meter" value={value} max={gaugeMax}></meter>
-      </div>
+    const rows = Object.entries(values).map(([statName, value]) => (
+      <StatRow key={statName}
+        statName={statName}
+        value={value}
+        maxValue={gaugeMax}
+        isGrowth={viewGrowths} />
     ));
     
     if (!stats) return;

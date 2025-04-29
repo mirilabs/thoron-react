@@ -1,4 +1,4 @@
-import GameObject from "../../engine/GameObject";
+import GameObject from "@/engine/GameObject";
 import CoordinateConverter from "game/utils/CoordinateConverter";
 import Game from "game/Game";
 import UnitRange from "./ui/UnitMoveRange";
