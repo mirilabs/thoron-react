@@ -11,7 +11,7 @@ import {
 } from "@/engine/components/CursorEventHandler";
 
 class CursorEventSystem extends System {
-  signature: Set<ComponentId> = new Set([
+  signature: Set<ComponentId> = new Set<ComponentId>([
     'cursorEvents'
   ]);
 

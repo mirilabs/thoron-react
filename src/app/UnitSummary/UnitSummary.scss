@@ -13,7 +13,10 @@ $unit-summary-height: 100px;
   min-width: 320px;
   width: 100%;
   height: $unit-summary-height;
-  overflow: scroll;
+
+  overflow-y: scroll;
+  scrollbar-color: var(--accent-color) var(--bg-color-2);
+  scrollbar-width: thin;
 
   display: flex;
   flex-direction: row;
