@@ -40,6 +40,4 @@ const theme = createTheme({
   }
 });
 
-console.log("MUI Theme", theme);
-
 export default theme;
