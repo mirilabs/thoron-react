@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { DeployedUnit, IUnitRecord } from "thoron";
-import { TextField } from "@mui/material";
-import NumberField from "./NumberField";
-import StatField from "./StatField";
+import ProfileForm from "./ProfileForm";
+import StatsForm from "./StatsForm";
+import "./UnitEditForm.scss";
+import { Button } from "@mui/material";
 
 interface UnitEditFormProps {
   unit: DeployedUnit;
@@ -18,13 +19,14 @@ function UnitEditForm({
   const { record, state } = unit.serialize();
   const [formData, setFormData] = useState(record);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [tabIndex, setTabIndex] = useState(0);
+  const handleTabClick = (index: number) => {
+    // create callback
+    return (event: React.SyntheticEvent) => {
+      event.preventDefault(); // preventDefault so it doesn't submit the form
+      setTabIndex(index);     // set state
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,61 +36,36 @@ function UnitEditForm({
     handleSave(formData);
   };
 
+  // select which part of the form to render based on currently selected tab
+  let content: React.JSX.Element;
+  switch(tabIndex) {
+    case 0:
+      content = (<ProfileForm data={formData} setData={setFormData} />);
+      break;
+    case 1:
+      content = (<StatsForm data={formData} setData={setFormData} />);
+      break;
+    case 2:
+      content = (<>TBI</>);
+      break;
+    default:
+      throw new Error("UnitEditForm: Invalid tabIndex")
+  }
+
   return (
     <form className="unit-edit-form" onSubmit={handleSubmit}>
-      <div>
-        <TextField required
-          label="Name"
-          name="name"
-          value={formData.name ?? ""}
-          onChange={handleChange}
-          sx={{ marginBottom: 1 }}
-        />
-        <TextField
-          label="Class"
-          name="className"
-          value={formData.className ?? ""}
-          onChange={handleChange}
-          size="small"
-          sx={{ marginBottom: 1 }}
-        />
-        <div>
-          <NumberField
-            label="Level"
-            name="level"
-            value={formData.level}
-            onChange={(value) => setFormData({ ...formData, level: value })}
-            min={1} max={40}
-            required />
-          <NumberField
-            label="EXP"
-            name="exp"
-            value={formData.exp}
-            onChange={(value) => setFormData({ ...formData, exp: value })}
-            min={0} max={99} step={1} />
-        </div>
-        <StatField label="Max HP" stat="mhp"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Strength" stat="str"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Magic" stat="mag"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Skill" stat="skl"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Speed" stat="spd"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Luck" stat="luk"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Defense" stat="def"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Resistance" stat="res"
-          formData={formData} setFormData={setFormData} />
+      <div className="unit-edit-form__tabs">
+        <Button onClick={handleTabClick(0)}>PROFILE</Button>
+        <Button onClick={handleTabClick(1)}>STATS</Button>
+        <Button onClick={handleTabClick(2)}>ITEMS</Button>
       </div>
-      {/* Add more fields as necessary */}
-      <span>
-        <button type="submit">Save</button>
-        <button onClick={handleCancel}>Cancel</button>
-      </span>
+      <div className="unit-edit-form__content">
+        {content}
+      </div>
+      <div className="unit-edit-form__footer">
+        <Button variant="contained" type="submit">Save</Button>
+        <Button variant="outlined" onClick={handleCancel}>Cancel</Button>
+      </div>
     </form>
   );
 }
