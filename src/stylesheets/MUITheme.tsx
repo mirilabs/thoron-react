@@ -3,6 +3,15 @@ import { createTheme } from "@mui/material";
 // https://mui.com/material-ui/customization/theme-components/
 
 const theme = createTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: "rgb(255, 192, 203)"
+        }
+      }
+    }
+  },
   components: {
     MuiFormLabel: {
       styleOverrides: {
@@ -37,6 +46,11 @@ const theme = createTheme({
         },
       }
     },
+  },
+  typography: {
+    button: {
+      textTransform: "none"
+    }
   }
 });
 
