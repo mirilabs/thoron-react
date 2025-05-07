@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DeployedUnit, IUnitRecord } from "thoron";
-import { Slider, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import NumberField from "./NumberField";
 import StatField from "./StatField";
 
@@ -40,14 +40,14 @@ function UnitEditForm({
         <TextField required
           label="Name"
           name="name"
-          value={formData.name}
+          value={formData.name ?? ""}
           onChange={handleChange}
           sx={{ marginBottom: 1 }}
         />
         <TextField
           label="Class"
           name="className"
-          value={formData.className}
+          value={formData.className ?? ""}
           onChange={handleChange}
           size="small"
           sx={{ marginBottom: 1 }}
