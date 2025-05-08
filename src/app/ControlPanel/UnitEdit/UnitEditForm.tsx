@@ -54,6 +54,17 @@ function UnitEditForm({
 
   return (
     <form className="unit-edit-form" onSubmit={handleSubmit}>
+      <div className="unit-edit-form__title">
+        <h3>Editing {formData.name}</h3>
+        <span>
+          <Button variant="contained" type="submit">
+            <i className="fas fa-save" />
+          </Button>
+          <Button variant="outlined" onClick={handleCancel}>
+            <i className="fas fa-trash" />
+          </Button>
+        </span>
+      </div>
       <div className="unit-edit-form__tabs">
         <Button onClick={handleTabClick(0)}>PROFILE</Button>
         <Button onClick={handleTabClick(1)}>STATS</Button>
@@ -63,8 +74,14 @@ function UnitEditForm({
         {content}
       </div>
       <div className="unit-edit-form__footer">
-        <Button variant="contained" type="submit">Save</Button>
-        <Button variant="outlined" onClick={handleCancel}>Cancel</Button>
+        <Button variant="contained" type="submit"
+          startIcon={<i className="fas fa-save" />}>
+          Save
+        </Button>
+        <Button variant="outlined" onClick={handleCancel}
+          startIcon={<i className="fas fa-trash" />}>
+          Cancel
+        </Button>
       </div>
     </form>
   );
