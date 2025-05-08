@@ -1,9 +1,34 @@
+.unit-edit-form {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.unit-edit-form__title {
+  position: sticky;
+  top: 0;
+  padding-top: 8px;
+  width: 100%;
+  background: linear-gradient(var(--bg-color), rgba(0, 0, 0, 0));
+  max-height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  h3 {
+    display: inline-block;
+  }
+
+  button {
+    width: 64px;
+  }
+}
+
 .unit-edit-form__tabs {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
-  overflow-x: scroll;
+  flex-wrap: wrap;
 }
 
 .unit-edit-form__footer {
