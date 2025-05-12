@@ -8,7 +8,8 @@
     "paths": {
       "@/*": ["./*"],
     },
-    "lib": ["DOM", "ESNext"]
+    "lib": ["DOM", "ESNext"],
+    "downlevelIteration": true
   },
   "include": [
     "src",
