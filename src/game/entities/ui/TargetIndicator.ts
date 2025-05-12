@@ -1,9 +1,13 @@
 import GameObject from "@/engine/GameObject";
 import UnitPiece from "../UnitBody";
-import CombatTargetIcon from "@/icons/target_combat.svg";
 import Vector2 from "@/engine/utils/Vector2";
 import MotionSequence from "@/engine/utils/MotionSequence";
 import { Position, Rectangle, Sprite } from "@/engine/components";
+import { Action, Command } from "thoron";
+
+import CombatTargetIcon from "@/icons/target_combat.svg";
+import StaffTargetIcon from "@/icons/target_staff.svg";
+import UnknownIcon from "@/icons/unknown.svg";
 
 const TOP_OFFSET = {
   x: 0.2,
@@ -18,11 +22,22 @@ const SIZE = {
   height: 44
 }
 
+const ACTION_ICONS: { [K in Action["command"]]: string } = {
+  attack: CombatTargetIcon,
+  staff: StaffTargetIcon,
+  trade: CombatTargetIcon,
+
+  // non-targeted actions
+  item: UnknownIcon,
+  wait: UnknownIcon,
+  end_phase: UnknownIcon,
+}
+
 class TargetIndicator extends GameObject {
   topPosition: Vector2;
   bottomPosition: Vector2;
 
-  constructor(unitPiece: UnitPiece) {
+  constructor(unitPiece: UnitPiece, actionType: Command) {
     super();
 
     const { tileWidth, tileHeight } = unitPiece.game.coords;
@@ -37,10 +52,12 @@ class TargetIndicator extends GameObject {
       y: BOTTOM_OFFSET.y * tileHeight
     });
 
+    const icon = ACTION_ICONS[actionType];
+
     this.components = [
       new Position(this.bottomPosition.x, this.bottomPosition.y),
       new Rectangle(SIZE.width, SIZE.height),
-      new Sprite(CombatTargetIcon, 70)
+      new Sprite(icon, 70)
     ]
   }
 
