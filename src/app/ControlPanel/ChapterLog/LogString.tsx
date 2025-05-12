@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActionResult, DeployedUnit } from 'thoron';
+import DefeatIcon from './CombatLog/DefeatIcon';
 
 interface LogStringProps {
   actionResult: ActionResult;
@@ -18,9 +19,15 @@ function LogString(props: LogStringProps) {
       predicate = " waited";
       break;
     case "attack":
+      const { combatResult } = props.actionResult;
+      const unitDefeated = combatResult.initiator.endHP === 0;
+      const targetDefeated = combatResult.defender.endHP === 0;
+
       predicate = (<>
+        {unitDefeated && <DefeatIcon />}
         {" attacked "}
         <strong>{targetName}</strong>
+        {targetDefeated && <DefeatIcon />}
       </>);
       break;
     case "item":
