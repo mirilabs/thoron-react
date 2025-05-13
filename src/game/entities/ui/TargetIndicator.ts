@@ -53,6 +53,9 @@ class TargetIndicator extends GameObject {
     });
 
     const icon = ACTION_ICONS[actionType];
+    if (!icon) {
+      throw new Error(`Unknown action type: ${actionType}`);
+    }
 
     this.components = [
       new Position(this.bottomPosition.x, this.bottomPosition.y),

@@ -1,11 +1,11 @@
 import { IVector2 } from "@/engine/utils/Vector2";
 import controllerStore, { itemSelected, targetSelected } from "@/shared/store";
-import Chapter, { DeployedUnit } from "thoron";
+import Chapter, { Command, DeployedUnit } from "thoron";
 
 class ActionController {
   chapter: Chapter;
   unit: DeployedUnit;
-  action: string;
+  action: Command;
   destination: IVector2;
   items: any[];
   targetIds: (string | number)[];
@@ -14,7 +14,7 @@ class ActionController {
     chapter: Chapter,
     unit: DeployedUnit,
     destination: IVector2,
-    action: any
+    action: Command
   ) {
     this.chapter = chapter;
     this.unit = unit;
