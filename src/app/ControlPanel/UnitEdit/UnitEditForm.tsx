@@ -4,6 +4,7 @@ import ProfileForm from "./ProfileForm";
 import StatsForm from "./StatsForm";
 import "./UnitEditForm.scss";
 import { Button } from "@mui/material";
+import ClassForm from "./ClassForm";
 
 interface UnitEditFormProps {
   unit: DeployedUnit;
@@ -19,12 +20,12 @@ function UnitEditForm({
   const { record, state } = unit.serialize();
   const [formData, setFormData] = useState(record);
 
-  const [tabIndex, setTabIndex] = useState(0);
-  const handleTabClick = (index: number) => {
+  const [tabId, setTabId] = useState("profile");
+  const handleTabClick = (tabId: string) => {
     // create callback
     return (event: React.SyntheticEvent) => {
       event.preventDefault(); // preventDefault so it doesn't submit the form
-      setTabIndex(index);     // set state
+      setTabId(tabId);     // set state
     }
   }
 
@@ -38,14 +39,17 @@ function UnitEditForm({
 
   // select which part of the form to render based on currently selected tab
   let content: React.JSX.Element;
-  switch(tabIndex) {
-    case 0:
+  switch(tabId) {
+    case "profile":
       content = (<ProfileForm data={formData} setData={setFormData} />);
       break;
-    case 1:
+    case "class":
+      content = (<ClassForm data={formData} setData={setFormData} />)
+      break;
+    case "stats":
       content = (<StatsForm data={formData} setData={setFormData} />);
       break;
-    case 2:
+    case "items":
       content = (<>TBI</>);
       break;
     default:
@@ -66,9 +70,10 @@ function UnitEditForm({
         </span>
       </div>
       <div className="unit-edit-form__tabs">
-        <Button onClick={handleTabClick(0)}>PROFILE</Button>
-        <Button onClick={handleTabClick(1)}>STATS</Button>
-        <Button onClick={handleTabClick(2)}>ITEMS</Button>
+        <Button onClick={handleTabClick("profile")}>PROFILE</Button>
+        <Button onClick={handleTabClick("class")}>CLASS</Button>
+        <Button onClick={handleTabClick("stats")}>STATS</Button>
+        <Button onClick={handleTabClick("items")}>ITEMS</Button>
       </div>
       <div className="unit-edit-form__content">
         {content}
