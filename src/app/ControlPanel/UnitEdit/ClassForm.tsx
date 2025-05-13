@@ -2,12 +2,12 @@ import React from "react";
 import { TextField } from "@mui/material";
 import { IUnitRecord } from "thoron";
 
-interface ProfileFormProps {
+interface ClassFormProps {
   data: IUnitRecord;
   setData: (data: IUnitRecord) => void;
 }
 
-function ProfileForm({ data, setData }: ProfileFormProps) {
+function ClassForm({ data, setData }: ClassFormProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setData({
@@ -18,15 +18,15 @@ function ProfileForm({ data, setData }: ProfileFormProps) {
 
   return (
     <div>
-      <TextField required
-        label="Name"
-        name="name"
-        value={data.name ?? ""}
+      <TextField
+        label="Class"
+        name="className"
+        value={data.className ?? ""}
         onChange={handleChange}
-        sx={{ marginBottom: 1 }}
-      />
+        size="small"
+        sx={{ marginBottom: 1 }} />
     </div>
   )
 }
 
-export default ProfileForm;
+export default ClassForm;
