@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./CombatMenu.scss";
 import CombatMenu from "./CombatMenu";
-import CombatStartHandler from "./CombatStartHandler";
 
 function AttackMenuContainer(props: {
   display: boolean
@@ -19,7 +18,6 @@ function AttackMenuContainer(props: {
     <CSSTransition {...transitionProps}>
       <div className="attack-menu" ref={nodeRef}>
         <CombatMenu />
-        <CombatStartHandler enabled={props.display} />
       </div>
     </CSSTransition>
   )
