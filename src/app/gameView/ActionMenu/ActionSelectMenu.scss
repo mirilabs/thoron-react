@@ -1,4 +1,4 @@
-.unit-action-menu {
+.action-select-menu {
   position: absolute;
   padding: 0;
   bottom: 8px;
@@ -14,7 +14,7 @@
   }
 }
 
-.unit-action-menu__column {
+.action-select-menu__column {
   position: absolute;
   bottom: 0;
   width: calc(50% - 8px);
@@ -26,8 +26,8 @@
     right 100ms linear;
 }
 
-.unit-action-menu__left {
-  @extend .unit-action-menu__column;
+.action-select-menu__left {
+  @extend .action-select-menu__column;
   left: -110%;
 
   & li {
@@ -49,8 +49,8 @@
   }
 }
 
-.unit-action-menu__right {
-  @extend .unit-action-menu__column;
+.action-select-menu__right {
+  @extend .action-select-menu__column;
   right: -110%;
 
   & li {
