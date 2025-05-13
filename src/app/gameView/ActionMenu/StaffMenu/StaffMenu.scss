@@ -1,0 +1,15 @@
+.staff-menu {
+  height: 25%;
+  min-height: 64px;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 40% auto 40%;
+
+  
+  .staff-select {
+    display: flex;
+    flex-direction: column;
+    pointer-events: all;
+  }
+}
