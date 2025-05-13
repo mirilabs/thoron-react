@@ -91,7 +91,10 @@ class ActionConfirmState extends ControllerState {
 
     if (Vector2.eq(tileCoords, this.getDest())) {
       // clicked on selected unit (at destination tile)
-      console.log(this.controller);
+      // return to ActionSelectState
+      store.dispatch(targetSelected(null));
+      store.dispatch(actionSelected(null));
+      this.setState(new ActionSelectState());
     }
     else if (unit && unit !== this.selectedUnit) {
       // clicked on unit other than the selected one
