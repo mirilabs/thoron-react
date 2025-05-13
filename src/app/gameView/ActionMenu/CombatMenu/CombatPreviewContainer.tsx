@@ -36,14 +36,14 @@ function CombatPreviewContainer({ attacker, target, forecast }: {
   )
 
   return (
-    <div className="attack-preview">
-      <span className="attack-preview__left">
+    <div className="combat-preview">
+      <span className="combat-preview__left">
         <CombatPreview data={attData} />
       </span>
-      <span className="attack-preview__center">
+      <span className="combat-preview__center">
 
       </span>
-      <span className="attack-preview__right">
+      <span className="combat-preview__right">
         <CombatPreview data={tgtData} />
       </span>
     </div>

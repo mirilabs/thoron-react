@@ -16,7 +16,7 @@ function AttackMenuContainer(props: {
 
   return (
     <CSSTransition {...transitionProps}>
-      <div className="attack-menu" ref={nodeRef}>
+      <div className="action-confirm-menu combat-menu" ref={nodeRef}>
         <CombatMenu />
       </div>
     </CSSTransition>

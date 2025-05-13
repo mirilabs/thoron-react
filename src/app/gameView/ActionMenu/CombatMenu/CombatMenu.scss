@@ -1,32 +1,5 @@
-@keyframes flicker {
-  from { opacity: 1; }
-  50% { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.attack-menu {
-  position: absolute;
-  padding: 0;
-  width: 100%;
-  padding-top: 32px;
-  padding-bottom: 8px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), var(--bg-color));
-  color: var(--text-color);
-
-  bottom: -110%;
-  transition: bottom 100ms linear;
-
-  pointer-events: none;
-
-  &.enter, &.enter-active, &.exit-done {
-    bottom: -110%;
-  }
-
-  &.enter-done, &.exit-active {
-    bottom: 0;
-  }
-
-  .attack-preview {
+.combat-menu {
+  .combat-preview {
     display: grid;
     grid-template-columns: 40% auto 40%;
   }
