@@ -105,9 +105,10 @@ class ActionConfirmState extends ControllerState {
     this.actionController.onTargetSelected();
     
     this.resetTargetIndicators();
-    let target = this.actionController.getTarget();
+    const target = this.actionController.getTarget();
+    const action = this.actionController.action;
     if (target)
-      this.controller.getUnitBody(target.id).showTargetIndicator();
+      this.controller.getUnitBody(target.id).showTargetIndicator(action);
   }
 
   onItemSelected() {
