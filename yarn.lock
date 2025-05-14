@@ -4401,7 +4401,7 @@ __metadata:
     react-tabs: "npm:^6.1.0"
     react-transition-group: "npm:^4.4.5"
     sass: "npm:^1.77.6"
-    thoron: "npm:^2.2.11"
+    thoron: "npm:^2.2.12"
     typescript: "npm:^5.7.3"
     vite: "npm:^6.2.0"
     vite-plugin-node-polyfills: "npm:^0.23.0"
@@ -4409,15 +4409,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"thoron@npm:^2.2.11":
-  version: 2.2.11
-  resolution: "thoron@npm:2.2.11"
+"thoron@npm:^2.2.12":
+  version: 2.2.12
+  resolution: "thoron@npm:2.2.12"
   dependencies:
     ajv: "npm:^8.11.0"
     heap-js: "npm:^2.3.0"
     lodash: "npm:^4.17.21"
     seedrandom: "npm:^3.0.5"
-  checksum: 10/7f8b097c64178a99738ed2d480d146cddd3e88c5e3698b5511dadd10b9f9228717c2c6bf82ff6cfb9caca053d3368ac11af4635e7cf10304d87e4cec4c8e24c3
+  checksum: 10/d34e6d8f961ca8749e1a62f2aeceedfa7db331219078d857a64d3ec4cce0f2cafb642d419310951ccae6fe33eae2404ded74b19d46ae790e4cce1b6e10eb940b
   languageName: node
   linkType: hard
 
