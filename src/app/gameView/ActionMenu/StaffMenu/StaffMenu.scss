@@ -1,3 +1,5 @@
+@use "../CombatMenu/CombatMenu.scss";
+
 .staff-menu {
   height: 25%;
   min-height: 64px;
@@ -5,11 +7,24 @@
 
   display: grid;
   grid-template-columns: 40% auto 40%;
-
+  grid-template-rows: auto 64px;
+  grid-template-areas:
+    "a b"
+    "c c";
   
   .staff-select {
+    grid-area: a;
     display: flex;
     flex-direction: column;
     pointer-events: all;
+  }
+
+  .staff-preview {
+    grid-area: b;
+  }
+
+  .staff-input {
+    grid-area: c;
+    @extend .combat-input;
   }
 }

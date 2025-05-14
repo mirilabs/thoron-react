@@ -34,6 +34,7 @@ function StaffSelector({
 
   return (
     <div className="staff-select">
+      <h2>{unit.record.name}</h2>
       {items}
     </div>
   );
