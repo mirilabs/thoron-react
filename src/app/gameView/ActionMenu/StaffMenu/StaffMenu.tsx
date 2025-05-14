@@ -4,6 +4,7 @@ import useUnit, { useSelectedUnit } from '@/app/utils/useUnit';
 import { DeployedUnit } from 'thoron';
 import StaffSelector from './StaffSelector';
 import StaffPreview from './StaffPreview';
+import StaffInput from './StaffInput';
 
 function StaffMenu() {
   const unit: DeployedUnit = useSelectedUnit();
@@ -27,18 +28,13 @@ function StaffMenu() {
   if (!target) return null;
   return (
     <div className="staff-menu">
-      <div className="staff-menu__left">
-        <h2>{unit?.record.name}</h2>
-        <StaffSelector unit={unit}
-          selectedStaff={selectedStaff}
-          setSelectedStaff={setSelectedStaff} />
-      </div>
-      <br />
-      <div className="staff-menu__left">
-        <StaffPreview unit={unit}
-          target={target}
-          staff={selectedStaff} />
-      </div>
+      <StaffSelector unit={unit}
+        selectedStaff={selectedStaff}
+        setSelectedStaff={setSelectedStaff} />
+      <StaffPreview unit={unit}
+        target={target}
+        staff={selectedStaff} />
+      <StaffInput />
     </div>
   )
 }
