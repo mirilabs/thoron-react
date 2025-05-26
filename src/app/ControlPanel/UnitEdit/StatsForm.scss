@@ -1,0 +1,20 @@
+.unit-stats-form {
+  .level-inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .stat-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(8, auto);
+    row-gap: 0.5rem;
+    column-gap: 0;
+
+    h3 {
+      margin: 0;
+    }
+  }
+}

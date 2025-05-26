@@ -1,17 +1,41 @@
 import React from 'react';
 import { IUnitRecord } from 'thoron';
 import NumberField from './NumberField';
-import StatField from './StatField';
+import StatField, { GrowthField, StatFieldProps } from './StatField';
+import "./StatsForm.scss";
 
 interface StatsFormProps {
   data: IUnitRecord;
   setData: (data: IUnitRecord) => void;
 }
 
+const STATS = [
+  { label: "Max HP",      stat: "mhp" },
+  { label: "Strength",    stat: "str" },
+  { label: "Magic",       stat: "mag" },
+  { label: "Skill",       stat: "skl" },
+  { label: "Speed",       stat: "spd" },
+  { label: "Luck",        stat: "luk" },
+  { label: "Defense",     stat: "def" },
+  { label: "Resistance",  stat: "res" },
+]
+
 function StatsForm({ data, setData }: StatsFormProps) {
+  const statFields = [];
+  STATS.forEach(({ label, stat }) => {
+    statFields.push((
+      <StatField key={stat} label={label} stat={stat}
+        data={data} setData={setData} />
+    ));
+    statFields.push((
+      <GrowthField key={stat + "_growth"} label={label} stat={stat}
+        data={data} setData={setData} />
+    ));
+  });
+
   return (
-    <div>
-      <div>
+    <div className="unit-stats-form">
+      <div className="level-inputs">
         <NumberField
           label="Level"
           name="level"
@@ -26,23 +50,10 @@ function StatsForm({ data, setData }: StatsFormProps) {
           onChange={(value) => setData({ ...data, exp: value })}
           min={0} max={99} step={1} />
       </div>
-      <div>
-        <StatField label="Max HP" stat="mhp"
-          data={data} setData={setData} />
-        <StatField label="Strength" stat="str"
-          data={data} setData={setData} />
-        <StatField label="Magic" stat="mag"
-          data={data} setData={setData} />
-        <StatField label="Skill" stat="skl"
-          data={data} setData={setData} />
-        <StatField label="Speed" stat="spd"
-          data={data} setData={setData} />
-        <StatField label="Luck" stat="luk"
-          data={data} setData={setData} />
-        <StatField label="Defense" stat="def"
-          data={data} setData={setData} />
-        <StatField label="Resistance" stat="res"
-          data={data} setData={setData} />
+      <div className="stat-inputs">
+        <h3>Stats</h3>
+        <h3>Growths</h3>
+        {statFields}
       </div>
     </div>
   )
