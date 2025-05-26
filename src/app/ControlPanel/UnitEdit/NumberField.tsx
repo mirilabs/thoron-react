@@ -4,7 +4,7 @@ import "./NumberField.scss";
 
 interface NumberFieldProps {
   className?: string;
-  label: string;
+  label?: string;
   name: string;
   value: number;
   onChange: (value: number) => void;
@@ -23,13 +23,14 @@ function NumberField({
   min = -Infinity,
   max = Infinity,
   step = 1,
-  required = false
+  required = false,
+  ...props
 }: NumberFieldProps) {
   const [isFocused, setFocused] = useState(false);
 
   return (
     <BaseNumberField.Root
-      className={"number-field " + className}
+      className={"number-field " + (className ?? "")}
       name={name}
       value={value}
       onValueChange={onChange}
@@ -37,6 +38,7 @@ function NumberField({
       max={max}
       step={step}
       required={required}
+      {...props}
       >
       <label htmlFor={name}>{label}</label>
       <BaseNumberField.Group className={"group" + (isFocused ? " focused" : "")}

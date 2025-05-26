@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DeployedUnit, IUnitRecord } from "thoron";
+import { DeployedUnit, IUnitRecord, Unit, ValidationError } from "thoron";
 import ProfileForm from "./ProfileForm";
 import StatsForm from "./StatsForm";
 import "./UnitEditForm.scss";
@@ -19,6 +19,7 @@ function UnitEditForm({
 }: UnitEditFormProps) {
   const { record, state } = unit.serialize();
   const [formData, setFormData] = useState(record);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const [tabId, setTabId] = useState("profile");
   const handleTabClick = (tabId: string) => {
@@ -32,9 +33,17 @@ function UnitEditForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // TODO validate and emit
-    console.log(formData);
-    handleSave(formData);
+    // validate data
+    try {
+      const unit = new Unit(formData);
+      
+      handleSave(formData);
+    }
+    catch(e) {
+      if (e instanceof ValidationError) {
+        setErrorMsg(e.message);
+      }
+    }
   };
 
   // select which part of the form to render based on currently selected tab
@@ -69,6 +78,10 @@ function UnitEditForm({
           </Button>
         </span>
       </div>
+      {
+        errorMsg ??
+        <div className="unit-edit-form__error">{errorMsg}</div>
+      }
       <div className="unit-edit-form__tabs">
         <Button onClick={handleTabClick("profile")}>PROFILE</Button>
         <Button onClick={handleTabClick("class")}>CLASS</Button>
