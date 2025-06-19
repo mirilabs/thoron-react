@@ -1,6 +1,6 @@
 import "./WeaponSelector.scss";
 import React, { useState } from "react";
-import ItemShow from "./ItemShow";
+import ItemShow from "../Items/ItemShow";
 import { useSelectedUnit } from "@/app/utils/useUnit";
 import {
   useControllerDispatch

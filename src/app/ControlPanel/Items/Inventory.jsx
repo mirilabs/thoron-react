@@ -1,4 +1,4 @@
-import "./InventoryView.scss";
+import "./Inventory.scss";
 import React from "react";
 
 function ItemSelector({ index, item }) {

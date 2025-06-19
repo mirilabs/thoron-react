@@ -1,7 +1,7 @@
 import "./UnitDetail.scss";
 import React from "react";
 import StatView from "./StatView";
-import InventoryView from "./InventoryView";
+import InventoryView from "./Items/Inventory";
 import { useControllerDispatch } from "components/utils/reduxHooks";
 import { unitSelected } from "shared/store";
 import { Unit } from "thoron";
