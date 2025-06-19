@@ -1,4 +1,4 @@
-import "./ItemShow.scss";
+import "./ItemCard.scss";
 import React from "react";
 import ItemIcon from "./ItemIcon";
 
