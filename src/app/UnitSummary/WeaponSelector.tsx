@@ -1,6 +1,6 @@
 import "./WeaponSelector.scss";
 import React, { useState } from "react";
-import ItemShow from "../Items/ItemShow";
+import ItemCard from "../Items/ItemCard";
 import { useSelectedUnit } from "@/app/utils/useUnit";
 import {
   useControllerDispatch
@@ -38,14 +38,14 @@ function WeaponSelector() {
     // render currently equipped weapon    
     let item = items[unit.state.equippedIndex]
     itemElems = (
-      <ItemShow item={item} onClick={handleOpenMenu} />
+      <ItemCard item={item} onClick={handleOpenMenu} />
     );
   }
   else {
     // render all items
     itemElems = items.filter((item: Item) => item.type === "weapon")
       .map((item, i) => (
-        <ItemShow item={item} key={i} onClick={() => { handleItemSelect(i) }} />
+        <ItemCard item={item} key={i} onClick={() => { handleItemSelect(i) }} />
       ));
 
     // move equipped item to top of list
