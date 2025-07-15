@@ -9,7 +9,10 @@ import { Command } from "thoron";
 import { unitSelected } from "@/shared/store";
 import { InvalidActionError } from "thoron";
 
-function CombatStartHandler() {
+/**
+ * Enables the callback to confirm the action selected in the action menu
+ */
+function ActionConfirmHandler() {
   const { controller } = useContext(ThoronContext);
   const dispatch = useControllerDispatch();
   const unitId = useControllerSelector(state => state.unitId);
@@ -36,8 +39,8 @@ function CombatStartHandler() {
   return null;
 }
 
-function CombatStartHandlerContainer({ enabled }: { enabled: boolean }) {
-  return enabled ? <CombatStartHandler /> : null;
+function ActionConfirmHandlerContainer({ enabled }: { enabled: boolean }) {
+  return enabled ? <ActionConfirmHandler /> : null;
 }
 
-export default CombatStartHandlerContainer;
+export default ActionConfirmHandlerContainer;

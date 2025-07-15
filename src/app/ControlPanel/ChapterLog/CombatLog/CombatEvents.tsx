@@ -2,7 +2,7 @@ import "./CombatEvents.scss";
 import React from 'react';
 import { ChapterEvent, DeployedUnit } from 'thoron';
 import AttackEvent from "./AttackEvent";
-import { ICombatPreview } from "@/app/gameView/CombatMenu/CombatPreview";
+import { ICombatPreview } from "@/app/gameView/ActionMenu/CombatMenu/CombatPreviewSide";
 
 function CombatEvents({
   events,

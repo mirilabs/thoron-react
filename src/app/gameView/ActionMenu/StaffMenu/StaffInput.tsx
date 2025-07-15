@@ -1,27 +1,23 @@
 import React from "react";
 import { useUIEmitter } from "@/app/utils/useUIAction";
+import StaffIcon from "@/icons/items/staff.svg";
 
 function CombatInput() {
   const cancel = useUIEmitter("cancel");
   const changeTarget = useUIEmitter("down");
-  const changeWeapon = useUIEmitter("right");
   const confirm = useUIEmitter("confirm");
 
   return (
-    <div className="attack-input">
+    <div className="staff-input">
       <button className="cycle-target" onClick={changeTarget}>
         <i className="fas fa-redo-alt" />
         Target
       </button>
-      <button className="cycle-weapon" onClick={changeWeapon}>
-        <i className="fas fa-redo-alt" />
-        Weapon
-      </button>
       <button className="confirm" onClick={confirm}>
-        <img src="https://www.svgrepo.com/show/254421/sword.svg"
-          alt="attack"
+        <img src={StaffIcon}
+          alt="staff"
           className="icon" />
-        Attack
+        Use
       </button>
       <button className="back" onClick={cancel}>
         <i className="fas fa-x" />

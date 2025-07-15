@@ -4,6 +4,7 @@ import {
   ControllerPhase
 } from "@/game/entities/ControlSystem/ControllerState";
 import listenerMiddleware from "./listenerMiddleware";
+import { Command } from "thoron";
 
 const initialState: {
   phase: ControllerPhase,
@@ -11,7 +12,7 @@ const initialState: {
   position: IVector2,
   pendingMove: {
     destination: IVector2,
-    action: string,
+    action: Command,
     targetId?: string,
     itemIndex?: number
   }
