@@ -1,6 +1,6 @@
 import "./ClassView.scss";
 import React from "react";
-import movetypeIcons from "icons/movetypes";
+import movetypeIcons from "@/icons/movetypes";
 import { IUnitRecord } from "thoron";
 
 interface ClassViewProps { 

@@ -59,13 +59,13 @@ function ActionMenuToggle(props: {
 
   return (
     <CSSTransition {...transitionProps}>
-      <div className="unit-action-menu" ref={nodeRef}>
-        <ul className="unit-action-menu__left">
+      <div className="action-select-menu" ref={nodeRef}>
+        <ul className="action-select-menu__left">
           <ActionMenu actions={leftActions}
             possibleActions={possibleActions} />
           <WaitButton />
         </ul>
-        <ul className="unit-action-menu__right">
+        <ul className="action-select-menu__right">
           <ActionMenu actions={rightActions}
             possibleActions={possibleActions} />
           <li onClick={handleClose}>Cancel</li>

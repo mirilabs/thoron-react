@@ -1,4 +1,4 @@
-import "./CombatPreview.scss";
+import "./CombatPreviewSide.scss";
 import HPBar from "@/app/ControlPanel/UnitIndex/HPBar";
 import ItemIcon from "@/app/UnitSummary/ItemIcon";
 import React from "react";

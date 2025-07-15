@@ -6,7 +6,7 @@ import TargetIndicator from "./ui/TargetIndicator";
 import UnitPath from "./ui/UnitPath";
 import { Position, Rectangle, Sprite } from "@/engine/components";
 import controllerStore from "@/shared/store";
-import { DeployedUnit } from "thoron";
+import { Command, DeployedUnit } from "thoron";
 import { IVector2 } from "@/engine/utils/Vector2";
 
 class UnitBody extends GameObject {
@@ -86,9 +86,9 @@ class UnitBody extends GameObject {
     this.pathEnt.updateTargetPos(dest);
   }
 
-  showTargetIndicator() {
+  showTargetIndicator(command: Command) {
     if (this.targetIndicatorEnt !== undefined) return;
-    this.targetIndicatorEnt = new TargetIndicator(this);
+    this.targetIndicatorEnt = new TargetIndicator(this, command);
     this.targetIndicatorEnt.addToScene(this.game.scene);
   }
 

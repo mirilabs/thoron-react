@@ -1,0 +1,58 @@
+.number-field {
+  display: inline-flex;
+  flex-direction: column;
+  margin: 0.25rem;
+
+  & > label {
+    color: var(--text-color-2);
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .group {
+    outline: 1px solid var(--bg-color-2);
+    border-radius: 4px;
+
+    &:hover {
+      outline-color: var(--bg-color-3);
+    }
+
+    &.focused {
+      outline-width: 2px;
+      outline-color: var(--accent-color);
+    }
+  }
+
+  .input {
+    width: 48px;
+    text-align: center;
+    color: var(--text-color);
+    background-color: inherit;
+    border: none;
+    font-size: 1rem;
+    resize: vertical;
+    overflow: visible;
+    padding-right: 0.5rem;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .increment, .decrement {
+    background-color: var(--bg-color-2);
+    outline: none;
+
+    &:hover {
+      background-color: var(--bg-color-3);
+    }
+  }
+
+  .increment {
+    border-radius: 0 4px 4px 0;
+  }
+
+  .decrement {
+    border-radius: 4px 0 0 4px;
+  }
+}
