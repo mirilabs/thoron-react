@@ -13,8 +13,8 @@ function ItemCard({ item, showDetailOnClick, ...props }: {
   const toggleDetail = () => { setShowDetail(!showDetail) }
 
   return (
-    <div className="item-card" onClick={toggleDetail} {...props}>
-      <ItemTitle item={item} />
+    <div className="item-card" {...props}>
+      <ItemTitle item={item} onClick={toggleDetail} />
       {
         showDetail && <ItemDetail record={item} />
       }
