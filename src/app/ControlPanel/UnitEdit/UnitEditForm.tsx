@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { DeployedUnit, IUnitRecord } from "thoron";
-import { Slider, TextField } from "@mui/material";
-import NumberField from "./NumberField";
-import StatField from "./StatField";
+import { DeployedUnit, IUnitRecord, Unit, ValidationError } from "thoron";
+import ProfileForm from "./ProfileForm";
+import StatsForm from "./StatsForm";
+import "./UnitEditForm.scss";
+import { Button } from "@mui/material";
+import ClassForm from "./ClassForm";
 
 interface UnitEditFormProps {
   unit: DeployedUnit;
@@ -17,78 +19,88 @@ function UnitEditForm({
 }: UnitEditFormProps) {
   const { record, state } = unit.serialize();
   const [formData, setFormData] = useState(record);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [tabId, setTabId] = useState("profile");
+  const handleTabClick = (tabId: string) => {
+    // create callback
+    return (event: React.SyntheticEvent) => {
+      event.preventDefault(); // preventDefault so it doesn't submit the form
+      setTabId(tabId);     // set state
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // TODO validate and emit
-    console.log(formData);
-    handleSave(formData);
+    // validate data
+    try {
+      const unit = new Unit(formData);
+      
+      handleSave(formData);
+    }
+    catch(e) {
+      if (e instanceof ValidationError) {
+        setErrorMsg(e.message);
+      }
+    }
   };
+
+  // select which part of the form to render based on currently selected tab
+  let content: React.JSX.Element;
+  switch(tabId) {
+    case "profile":
+      content = (<ProfileForm data={formData} setData={setFormData} />);
+      break;
+    case "class":
+      content = (<ClassForm data={formData} setData={setFormData} />)
+      break;
+    case "stats":
+      content = (<StatsForm data={formData} setData={setFormData} />);
+      break;
+    case "items":
+      content = (<>TBI</>);
+      break;
+    default:
+      throw new Error("UnitEditForm: Invalid tabIndex")
+  }
 
   return (
     <form className="unit-edit-form" onSubmit={handleSubmit}>
-      <div>
-        <TextField required
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          sx={{ marginBottom: 1 }}
-        />
-        <TextField
-          label="Class"
-          name="className"
-          value={formData.className}
-          onChange={handleChange}
-          size="small"
-          sx={{ marginBottom: 1 }}
-        />
-        <div>
-          <NumberField
-            label="Level"
-            name="level"
-            value={formData.level}
-            onChange={(value) => setFormData({ ...formData, level: value })}
-            min={1} max={40}
-            required />
-          <NumberField
-            label="EXP"
-            name="exp"
-            value={formData.exp}
-            onChange={(value) => setFormData({ ...formData, exp: value })}
-            min={0} max={99} step={1} />
-        </div>
-        <StatField label="Max HP" stat="mhp"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Strength" stat="str"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Magic" stat="mag"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Skill" stat="skl"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Speed" stat="spd"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Luck" stat="luk"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Defense" stat="def"
-          formData={formData} setFormData={setFormData} />
-        <StatField label="Resistance" stat="res"
-          formData={formData} setFormData={setFormData} />
+      <div className="unit-edit-form__title">
+        <h3>Editing {formData.name}</h3>
+        <span>
+          <Button variant="contained" type="submit">
+            <i className="fas fa-save" />
+          </Button>
+          <Button variant="outlined" onClick={handleCancel}>
+            <i className="fas fa-trash" />
+          </Button>
+        </span>
       </div>
-      {/* Add more fields as necessary */}
-      <span>
-        <button type="submit">Save</button>
-        <button onClick={handleCancel}>Cancel</button>
-      </span>
+      {
+        errorMsg ??
+        <div className="unit-edit-form__error">{errorMsg}</div>
+      }
+      <div className="unit-edit-form__tabs">
+        <Button onClick={handleTabClick("profile")}>PROFILE</Button>
+        <Button onClick={handleTabClick("class")}>CLASS</Button>
+        <Button onClick={handleTabClick("stats")}>STATS</Button>
+        <Button onClick={handleTabClick("items")}>ITEMS</Button>
+      </div>
+      <div className="unit-edit-form__content">
+        {content}
+      </div>
+      <div className="unit-edit-form__footer">
+        <Button variant="contained" type="submit"
+          startIcon={<i className="fas fa-save" />}>
+          Save
+        </Button>
+        <Button variant="outlined" onClick={handleCancel}
+          startIcon={<i className="fas fa-trash" />}>
+          Cancel
+        </Button>
+      </div>
     </form>
   );
 }

@@ -4,3 +4,17 @@
   align-items: end;
   gap: 0.5rem;
 }
+
+.stat-field.growth {
+  .input {
+    color: var(--text-color-2);
+  }
+
+  .increment, .decrement {
+    background-color: inherit;
+
+    &:hover {
+      background-color: var(--accent-color);
+    }
+  }
+}
