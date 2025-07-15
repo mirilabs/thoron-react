@@ -1,32 +1,10 @@
 import React from "react";
-import settingsController, {
-  options,
-  Theme
-} from "./userSettings";
-
-function ThemeSelector({ settings, theme }: {
-  settings: typeof settingsController,
-  theme: Theme
-}) {
-  return (
-    <div className={`theme-selector theme-${theme}`}
-      onClick={() => settings.set("theme", theme)}>
-      {theme}
-    </div>
-  )
-}
+import ThemeSelector from "./ThemeSelector";
 
 function Settings() {
-  let settings = settingsController;
-
-  let themeSelectors = options.theme.map(theme => (
-    <ThemeSelector settings={settings} theme={theme} key={theme} />
-  ));
-
   return (
     <div className="settings">
-      <h3>Theme</h3>
-      {themeSelectors}
+      <ThemeSelector />
     </div>
   );
 }

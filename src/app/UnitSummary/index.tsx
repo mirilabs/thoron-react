@@ -2,7 +2,7 @@ import React from 'react';
 import UnitDetailToggle from "./UnitDetailToggle";
 import UnitSummary from "./UnitSummary";
 import { useSelectedUnit } from "@/app/utils/useUnit";
-import WeaponSelector from "./WeaponSelector";
+import InventoryQuickView from "./InventoryQuickView";
 import { useControllerSelector } from "@/app/utils/reduxHooks";
 
 function UnitSummaryContainer() {
@@ -24,7 +24,7 @@ function UnitSummaryContainer() {
     <>
       <UnitSummary unit={record} />
       <UnitDetailToggle unit={record} />
-      <WeaponSelector />
+      <InventoryQuickView />
     </>
   )
 }
