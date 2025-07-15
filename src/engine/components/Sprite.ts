@@ -22,9 +22,10 @@ class Sprite extends Component implements ISprite, IDrawHandler {
     this.zIndex = zIndex;
     this.preprocess = preprocess;
 
-    this.loadImage(url).then(img => {
-      this.image = img;
-    });
+    this.loadImage(url)
+      .then(img => {
+        this.image = img;
+      });
   }
 
   onInit(entity: Entity): void {
@@ -39,12 +40,13 @@ class Sprite extends Component implements ISprite, IDrawHandler {
   ): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const image = new Image(width, height);
-  
-      if (url === null) resolve(image);
-  
+      
       image.src = url;
       image.onload = () => { resolve(image) }
-      image.onerror = (err) => { reject(err) }
+      image.onerror = (err) => {
+        console.error(`Failed to load image from URL: ${url}`, err);
+        reject(err);
+      };
     })
   }
 

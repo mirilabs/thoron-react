@@ -1,6 +1,6 @@
 import React from "react";
 import { ICombatForecast, DeployedUnit, ICombatForecastSide } from "thoron";
-import CombatPreview, { ICombatPreview } from "./CombatPreview";
+import CombatPreviewSide, { ICombatPreview } from "./CombatPreviewSide";
 
 function getForecastData(
   unit: DeployedUnit,
@@ -36,15 +36,15 @@ function CombatPreviewContainer({ attacker, target, forecast }: {
   )
 
   return (
-    <div className="attack-preview">
-      <span className="attack-preview__left">
-        <CombatPreview data={attData} />
+    <div className="combat-preview">
+      <span className="combat-preview__left">
+        <CombatPreviewSide data={attData} />
       </span>
-      <span className="attack-preview__center">
+      <span className="combat-preview__center">
 
       </span>
-      <span className="attack-preview__right">
-        <CombatPreview data={tgtData} />
+      <span className="combat-preview__right">
+        <CombatPreviewSide data={tgtData} />
       </span>
     </div>
   )

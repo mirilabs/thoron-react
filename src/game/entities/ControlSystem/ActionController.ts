@@ -1,11 +1,11 @@
 import { IVector2 } from "@/engine/utils/Vector2";
 import controllerStore, { itemSelected, targetSelected } from "@/shared/store";
-import Chapter, { DeployedUnit } from "thoron";
+import Chapter, { Command, DeployedUnit } from "thoron";
 
 class ActionController {
   chapter: Chapter;
   unit: DeployedUnit;
-  action: string;
+  action: Command;
   destination: IVector2;
   items: any[];
   targetIds: (string | number)[];
@@ -14,7 +14,7 @@ class ActionController {
     chapter: Chapter,
     unit: DeployedUnit,
     destination: IVector2,
-    action: any
+    action: Command
   ) {
     this.chapter = chapter;
     this.unit = unit;
@@ -56,13 +56,17 @@ class ActionController {
    * in range
    */
   selectNextItem() {
-    let i = this.items.indexOf(this.getItem()) + 1;
-    if (i >= this.items.length) i = 0;
-    this.setItem(i);
-
-    // if not in range, skip this item
-    if (!this.isInEquippedRange(this.getTarget()))
-      this.selectNextItem();
+    let i = this.items.indexOf(this.getItem());
+    
+    // loop through items until we find one in range
+    for (let j = 0; j < this.items.length; j++) {
+      i = (i + 1) % this.items.length;
+      
+      if (this.isInEquippedRange(this.getTarget())) {
+        this.setItem(i);
+        return;
+      }
+    }
   }
 
   /**
@@ -70,12 +74,18 @@ class ActionController {
    * in range
    */
   selectPreviousItem() {
-    let i = this.items.indexOf(this.getItem()) - 1;
-    if (i < 0) i = this.items.length - 1;
-    this.setItem(i);
+    let i = this.items.indexOf(this.getItem());
 
-    if (!this.isInEquippedRange(this.getTarget()))
-      this.selectPreviousItem();
+    // loop through items backwards until we find one in range
+    for (let j = 0; j < this.items.length; j++) {
+      i--;
+      if (i < 0) i = this.items.length - 1;
+
+      if (this.isInEquippedRange(this.getTarget())) {
+        this.setItem(i);
+        return;
+      }
+    }
   }
 
   /**

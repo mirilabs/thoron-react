@@ -51,6 +51,7 @@ class ActionSelectState extends ControllerState {
     );
 
     if (target && target !== this.unitEnt.unit) {
+      // clicked on a target
       // if only one action on this target is possible, select it by default
       if (possibleActions.length === 1) {
         controllerStore.dispatch(actionSelected(possibleActions[0]));
@@ -60,12 +61,14 @@ class ActionSelectState extends ControllerState {
       controllerStore.dispatch(targetSelected(target.id));
     }
     else if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
+      // clicked on a tile in move range
       this.setState(new MovingState());
       
       // pass mousedown event to next state
       this.controller.currentState.onMouseDown(event);
     }
     else {
+      // clicked outside of move range
       this.startPanning();
     }
   }
