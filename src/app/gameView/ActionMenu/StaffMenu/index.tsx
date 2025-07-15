@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
-import "./CombatMenu.scss";
-import CombatMenu from "./CombatMenu";
-import CombatStartHandler from "./CombatStartHandler";
+import StaffMenu from "./StaffMenu";
+import "./StaffMenu.scss";
 
-function AttackMenuContainer(props: {
+function StaffMenuContainer(props: {
   display: boolean
 }) {
   const nodeRef = useRef();
@@ -17,12 +16,11 @@ function AttackMenuContainer(props: {
 
   return (
     <CSSTransition {...transitionProps}>
-      <div className="attack-menu" ref={nodeRef}>
-        <CombatMenu />
-        <CombatStartHandler enabled={props.display} />
+      <div className="action-confirm-menu" ref={nodeRef}>
+        <StaffMenu />
       </div>
     </CSSTransition>
   )
 }
 
-export default AttackMenuContainer;
+export default StaffMenuContainer;

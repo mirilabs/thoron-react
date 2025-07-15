@@ -5,6 +5,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@base-ui-components/react": "^1.0.0-alpha.8",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.1",
     "@reduxjs/toolkit": "^2.6.0",
     "core-js": "^3.38.1",
     "react": "^19.0.0",
@@ -15,7 +19,7 @@
     "react-tabs": "^6.1.0",
     "react-transition-group": "^4.4.5",
     "sass": "^1.77.6",
-    "thoron": "^2.2.11"
+    "thoron": "^2.2.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

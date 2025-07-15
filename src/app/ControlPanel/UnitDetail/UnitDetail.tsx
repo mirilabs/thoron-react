@@ -1,9 +1,9 @@
 import "./UnitDetail.scss";
 import React from "react";
 import StatView from "./StatView";
-import InventoryView from "./Items/Inventory";
-import { useControllerDispatch } from "components/utils/reduxHooks";
-import { unitSelected } from "shared/store";
+import Inventory from "../Items/Inventory";
+import { useControllerDispatch } from "@/app/utils/reduxHooks";
+import { unitSelected } from "@/shared/store";
 import { Unit } from "thoron";
 import ClassView from "./ClassView";
 import LevelView from "./LevelView";
@@ -46,7 +46,7 @@ function UnitDetail(props: UnitDetailProps) {
         <LevelView record={unit.record} />
       </div>
       <div className="inventory">
-        <InventoryView items={items} />
+        <Inventory items={items} />
       </div>
       <div className="stats">
         <StatView stats={stats}
@@ -57,3 +57,6 @@ function UnitDetail(props: UnitDetailProps) {
 }
 
 export default UnitDetail;
+export type {
+  UnitDetailProps
+}

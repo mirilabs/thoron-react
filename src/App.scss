@@ -17,12 +17,15 @@ code {
     monospace;
 }
 
-.app {
+.root {
   background-color: #282c34;
   color: var(--text-color);
-  
   width: 100vw;
   height: 100vh;
+
+  isolation: isolate;
+    // enables popups to appear over other elements
+    // see https://base-ui.com/react/overview/quick-start
 }
 
 .app * {
@@ -49,10 +52,6 @@ button, input[type="submit"], input[type="reset"] {
   font: inherit;
   cursor: pointer;
   outline: inherit;
-
-  &:hover {
-    background-color: var(--bg-color);
-  }
 }
 
 .icon {

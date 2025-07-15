@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "./UnitSummary.scss";
 
 .weapon-selector {
   position: relative;
@@ -17,16 +16,5 @@
     margin: auto;
     margin-right: 16px;
     font-size: medium;
-  }
-
-  & .item-show {
-    @include UnitSummary.colors;
-    height: 32px;
-    margin-bottom: 6px;
-    min-width: 120px;
-
-    &:hover {
-      font-weight: bold;
-    }
   }
 }
