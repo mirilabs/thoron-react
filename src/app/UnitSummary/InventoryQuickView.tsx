@@ -1,6 +1,6 @@
 import "./InventoryQuickView.scss";
 import React, { useContext, useState } from "react";
-import ItemShow from "./ItemShow";
+import ItemTitle from "../ControlPanel/Items/ItemTitle";
 import { useSelectedUnit } from "@/app/utils/useUnit";
 import {
   useControllerDispatch
@@ -37,18 +37,18 @@ function InventoryQuickView() {
     // render currently equipped weapon    
     let item = items[unit.state.equippedIndex]
     itemElems = (
-      <ItemShow item={item} equippable onClick={handleOpenMenu} />
+      <ItemTitle item={item} onClick={handleOpenMenu} />
     );
   }
   else {
     // render all items
     itemElems = items.map((item, i) => {
       if (item.type === "weapon") return (
-        <ItemShow key={i} item={item} equippable
+        <ItemTitle key={i} item={item}
           onClick={() => { handleItemSelect(i) }} />
       );
       else return (
-        <ItemShow key={i} item={item} />
+        <ItemTitle key={i} item={item} />
       )
     });
 

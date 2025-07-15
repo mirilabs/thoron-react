@@ -4,15 +4,19 @@ import { ItemRecord } from 'thoron';
 import ItemIcon from './ItemIcon';
 
 interface ItemTitleProps extends React.HTMLAttributes<HTMLDivElement> {
-  item: ItemRecord
+  item: ItemRecord;
 }
 
 function ItemTitle({ item, ...props }: ItemTitleProps) {
+  const className = (props.onClick !== undefined) ?
+    "item-title clickable" :
+    "item-title";
+
   let { uses, maxUses } = item;
   if (maxUses && uses === undefined) uses = maxUses;
 
   return (
-    <div className="item-title" {...props}>
+    <div className={className} {...props}>
       <ItemIcon item={item} />
       <h2 className="name">{item.name ?? '???'}</h2>
       {

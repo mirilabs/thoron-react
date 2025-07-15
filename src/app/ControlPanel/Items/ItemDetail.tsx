@@ -1,7 +1,6 @@
 import "./ItemDetail.scss";
 import React from "react";
 import { ItemRecord, StaffStats, WeaponStats } from "thoron";
-import ItemIcon from "./ItemIcon";
 
 interface ItemDetailProps {
   record: ItemRecord;
