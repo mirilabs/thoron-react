@@ -1,4 +1,4 @@
-import ThoronContext from '@/app/ThoronContext';
+import HPBar from '@/app/ControlPanel/UnitIndex/HPBar';
 import React, { useContext, useEffect } from 'react';
 import { DeployedUnit, ItemRecord, staffEffects } from 'thoron';
 
@@ -13,7 +13,7 @@ function StaffPreview({ unit, target, staff }: StaffPreviewProps) {
     return <div>No staff selected</div>;
 
   return (
-    <div className="staff-preview">
+    <div className="combat-forecast">
       <StaffPreviewContent unit={unit} target={target} staff={staff} />
     </div>
   )
@@ -28,9 +28,14 @@ function StaffPreviewContent({ unit, target, staff }: StaffPreviewProps) {
       const amount = staffEffects.heal.getHealValue(staff, unit, target);
       return (
         <div>
-          <p>Heal</p>
-          <p>{target.record.name}</p>
-          <p>{target.hp} → {target.hp + amount}</p>
+          <div className="name">{target.record.name}</div>
+          <div className="hp">
+            <span className="label">HP: </span>
+            <span className="stat-value">
+              {target.hp} → {target.hp + amount}
+            </span>
+          </div>
+          <HPBar maxHP={target.maxHp} hp={target.hp + amount} damage={amount} />
         </div>
       );
     default:

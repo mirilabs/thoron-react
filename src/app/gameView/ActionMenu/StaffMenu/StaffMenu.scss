@@ -11,6 +11,7 @@
   grid-template-areas:
     "a b"
     "c c";
+  column-gap: 20%;
   
   .staff-select {
     grid-area: a;
