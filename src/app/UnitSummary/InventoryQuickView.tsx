@@ -1,52 +1,56 @@
-import "./WeaponSelector.scss";
-import React, { useState } from "react";
+import "./InventoryQuickView.scss";
+import React, { useContext, useState } from "react";
 import ItemShow from "./ItemShow";
 import { useSelectedUnit } from "@/app/utils/useUnit";
 import {
   useControllerDispatch
 } from "@/app/utils/reduxHooks";
 import { itemSelected } from "@/shared/store";
-import Item from "thoron/dist/Item";
 
-function WeaponSelector() {
-  const [selecting, setSelecting] = useState(false);
+function InventoryQuickView() {
+  const [isOpen, setOpen] = useState(false);
   const dispatch = useControllerDispatch();
   
   const unit = useSelectedUnit();
-  const setEquipped = (index) => {
+  const setEquipped = (index: number) => {
     unit.equip(index);
     dispatch(itemSelected(index));
   }
 
   const handleOpenMenu = () => {
     if (unit.record.items.length > 1) {
-      setSelecting(true);
+      setOpen(true);
     }
   }
 
   const handleItemSelect = (index: number) => {
     setEquipped(index);
-    setSelecting(false);
+    setOpen(false);
   }
 
   if (!unit) return null;
 
   const items = unit.record.items;
-  let itemElems;
+  let itemElems: JSX.Element | JSX.Element[];
 
-  if (!selecting) {
+  if (!isOpen) {
     // render currently equipped weapon    
     let item = items[unit.state.equippedIndex]
     itemElems = (
-      <ItemShow item={item} onClick={handleOpenMenu} />
+      <ItemShow item={item} equippable onClick={handleOpenMenu} />
     );
   }
   else {
     // render all items
-    itemElems = items.filter((item: Item) => item.type === "weapon")
-      .map((item, i) => (
-        <ItemShow item={item} key={i} onClick={() => { handleItemSelect(i) }} />
-      ));
+    itemElems = items.map((item, i) => {
+      if (item.type === "weapon") return (
+        <ItemShow key={i} item={item} equippable
+          onClick={() => { handleItemSelect(i) }} />
+      );
+      else return (
+        <ItemShow key={i} item={item} />
+      )
+    });
 
     // move equipped item to top of list
     const [ equipped ] = itemElems.splice(unit.state.equippedIndex, 1);
@@ -60,4 +64,4 @@ function WeaponSelector() {
   )
 }
 
-export default WeaponSelector;
+export default InventoryQuickView;

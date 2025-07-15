@@ -9,12 +9,13 @@ import ActionSelectState from "./ActionSelectState";
 import ActionController from "./ActionController";
 import Vector2 from "@/engine/utils/Vector2";
 import { ICursorEvent } from "@/engine/components/CursorEventHandler";
+import { DeployedUnit } from "thoron";
 
 class ActionConfirmState extends ControllerState {
   id = ControllerPhase.ACTION_CONFIRM;
 
   selectedUnitBody: UnitBody;
-  selectedUnit: any;
+  selectedUnit: DeployedUnit;
   actionRangeEnt: UnitActionRange;
   actionController: ActionController;
 
@@ -48,8 +49,12 @@ class ActionConfirmState extends ControllerState {
     );
 
     // pass ui events to actionController
-    this.addUIEventListener("left", () => this.actionController.selectPreviousItem());
-    this.addUIEventListener("right", () => this.actionController.selectNextItem())
+    this.addUIEventListener("left", () => {
+      this.actionController.selectPreviousItem()
+    });
+    this.addUIEventListener("right", () => {
+      this.actionController.selectNextItem()
+    });
     this.addUIEventListener("down", () => {
       this.actionController.selectNextTarget();
     });
@@ -85,12 +90,26 @@ class ActionConfirmState extends ControllerState {
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
     if (Vector2.eq(tileCoords, this.getDest())) {
-      console.log(this.controller);
+      // clicked on selected unit (at destination tile)
+      // return to ActionSelectState
+      store.dispatch(targetSelected(null));
+      store.dispatch(actionSelected(null));
+      this.setState(new ActionSelectState());
     }
     else if (unit && unit !== this.selectedUnit) {
-      store.dispatch(targetSelected(unit.id));
+      // clicked on unit other than the selected one
+
+      // if able to perform pending action on this target, select it
+      const actions = this.selectedUnit.getPossibleActionsTo(
+        this.getDest(),
+        unit
+      );
+      if (actions.includes(this.actionController.action)) {
+        store.dispatch(targetSelected(unit.id));
+      }
     }
     else {
+      // clicked outside of any unit
       this.startPanning();
     }
   }
@@ -105,9 +124,10 @@ class ActionConfirmState extends ControllerState {
     this.actionController.onTargetSelected();
     
     this.resetTargetIndicators();
-    let target = this.actionController.getTarget();
+    const target = this.actionController.getTarget();
+    const action = this.actionController.action;
     if (target)
-      this.controller.getUnitBody(target.id).showTargetIndicator();
+      this.controller.getUnitBody(target.id).showTargetIndicator(action);
   }
 
   onItemSelected() {
