@@ -1,3 +1,4 @@
+import ItemIcon from '@/app/UnitSummary/ItemIcon';
 import { Button } from '@mui/material';
 import React from 'react';
 import { DeployedUnit, ItemRecord } from 'thoron';
@@ -33,8 +34,12 @@ function StaffSelector({
     });
 
   return (
-    <div className="staff-select">
-      <h2>{unit.record.name}</h2>
+    <div className="staff-select combat-forecast">
+      <div className="name">{unit?.record.name}</div>
+      <div className="equipped">
+        <ItemIcon item={selectedStaff} />
+        <span>{selectedStaff?.name}</span>
+      </div>
       {items}
     </div>
   );
