@@ -2,6 +2,7 @@ import { ItemRecord } from "thoron";
 
 export const ironSword: ItemRecord = {
   name: "Iron Sword",
+  description: 'A basic sword made of iron.',
   type: "weapon",
   maxUses: 40,
   stats: {
