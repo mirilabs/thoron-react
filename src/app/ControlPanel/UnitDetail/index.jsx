@@ -1,7 +1,7 @@
 import "./index.scss";
 import React from "react";
 import StatView from "./StatView";
-import InventoryView from "./Items/Inventory";
+import InventoryView from "../Items/Inventory";
 import { useControllerDispatch } from "@/app/utils/reduxHooks";
 import { unitSelected } from "@/shared/store";
 
