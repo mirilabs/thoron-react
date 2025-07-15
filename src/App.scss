@@ -52,10 +52,6 @@ button, input[type="submit"], input[type="reset"] {
   font: inherit;
   cursor: pointer;
   outline: inherit;
-
-  &:hover {
-    background-color: var(--bg-color-3);
-  }
 }
 
 .icon {

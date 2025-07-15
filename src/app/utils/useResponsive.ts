@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import ViewportContext, { WindowSize } from '../ViewportContext';
 
 function useResponsive() {
-  let size = useContext(ViewportContext);
+  let size: number = useContext(ViewportContext) as number;
   return {
     ...WindowSize,
     size: size,
@@ -13,3 +13,4 @@ function useResponsive() {
 }
 
 export default useResponsive;
+export { WindowSize }
