@@ -16,7 +16,7 @@ function StaffMenuContainer(props: {
 
   return (
     <CSSTransition {...transitionProps}>
-      <div className="action-confirm-menu staff-menu" ref={nodeRef}>
+      <div className="action-confirm-menu" ref={nodeRef}>
         <StaffMenu />
       </div>
     </CSSTransition>
