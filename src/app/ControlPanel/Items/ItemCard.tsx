@@ -1,21 +1,25 @@
 import "./ItemCard.scss";
 import React, { useState } from "react";
-import ItemIcon from "./ItemIcon";
 import ItemDetail from "./ItemDetail";
+import { ItemRecord } from "thoron";
+import ItemTitle from "./ItemTitle";
 
-function ItemShow({ item, ...props }) {
+function ItemCard({ item, showDetailOnClick, ...props }: {
+  item: ItemRecord;
+  showDetailOnClick?: boolean;
+  [key: string]: any;
+}) {
   const [showDetail, setShowDetail] = useState(false);
   const toggleDetail = () => { setShowDetail(!showDetail) }
 
   return (
     <div className="item-card" onClick={toggleDetail} {...props}>
-      <ItemIcon item={item} />
-      <h2>{item.name ?? '???'}</h2>
+      <ItemTitle item={item} />
       {
-        showDetail && <ItemDetail item={item} />
+        showDetail && <ItemDetail record={item} />
       }
     </div>
   )
 }
 
-export default ItemShow;
+export default ItemCard;

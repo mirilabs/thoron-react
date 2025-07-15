@@ -1,12 +1,12 @@
 import "./WeaponSelector.scss";
 import React, { useState } from "react";
-import ItemCard from "../Items/ItemCard";
 import { useSelectedUnit } from "@/app/utils/useUnit";
 import {
   useControllerDispatch
 } from "@/app/utils/reduxHooks";
 import { itemSelected } from "@/shared/store";
 import Item from "thoron/dist/Item";
+import ItemTitle from "../ControlPanel/Items/ItemTitle";
 
 function WeaponSelector() {
   const [selecting, setSelecting] = useState(false);
@@ -38,14 +38,14 @@ function WeaponSelector() {
     // render currently equipped weapon    
     let item = items[unit.state.equippedIndex]
     itemElems = (
-      <ItemCard item={item} onClick={handleOpenMenu} />
+      <ItemTitle item={item} onClick={handleOpenMenu} />
     );
   }
   else {
     // render all items
     itemElems = items.filter((item: Item) => item.type === "weapon")
       .map((item, i) => (
-        <ItemCard item={item} key={i} onClick={() => { handleItemSelect(i) }} />
+        <ItemTitle item={item} key={i} onClick={() => { handleItemSelect(i) }} />
       ));
 
     // move equipped item to top of list

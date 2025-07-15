@@ -1,4 +1,7 @@
 .item-detail {
-  position: relative;
-  background-color: var(--bg-color-2);
+  .description {
+    margin: 8px 0;
+    font-size: small;
+    color: var(--text-color-2);
+  }
 }

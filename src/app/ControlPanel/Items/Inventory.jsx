@@ -1,5 +1,6 @@
 import "./Inventory.scss";
 import React from "react";
+import ItemCard from "./ItemCard";
 
 function ItemSelector({ index, item }) {
   return (
@@ -11,7 +12,7 @@ function ItemSelector({ index, item }) {
 
 function InventoryView({ items }) {
   const rows = items.map((item, i) => (
-    <ItemSelector index={i} item={item} key={i} />
+    <ItemCard key={i} item={item} index={i} className="item-card" />
   ));
 
   return (

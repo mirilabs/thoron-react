@@ -1,4 +1,4 @@
-import "./ItemDetail";
+import "./ItemDetail.scss";
 import React from "react";
 import { ItemRecord } from "thoron";
 import ItemIcon from "./ItemIcon";
@@ -9,21 +9,19 @@ interface ItemDetailProps {
 
 function ItemDetail({ record }: ItemDetailProps) {
   const {
-    name,
     description,
     uses,
+    maxUses,
+    type,
   } = record;
 
   return (
-    <div className="item-detail">
-      <ItemIcon item={record} />
-      <div className="item-detail__name">
-        {name}
+    <>
+      <div className="item-detail">
+        <p className="description">{description}</p>
+
       </div>
-      <div className="item-detail__description">
-        {description}
-      </div>
-    </div>
+    </>
   )
 }
 
