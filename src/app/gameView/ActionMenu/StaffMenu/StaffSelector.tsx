@@ -1,4 +1,4 @@
-import ItemIcon from '@/app/UnitSummary/ItemIcon';
+import ItemIcon from '@/app/ControlPanel/Items/ItemIcon';
 import { Button } from '@mui/material';
 import React from 'react';
 import { DeployedUnit, ItemRecord } from 'thoron';

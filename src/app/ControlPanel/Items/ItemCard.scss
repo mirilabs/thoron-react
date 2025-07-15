@@ -1,9 +1,4 @@
 .item-card {
   background-color: var(--bg-color-2);
   cursor: pointer;
-
-  .item-title:hover {
-    color: var(--text-color-2);
-    transition: color 0.3s ease;
-  }
 }
