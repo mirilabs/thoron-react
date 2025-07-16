@@ -5,8 +5,8 @@ import useResponsive from "@/app/utils/useResponsive";
 import { WindowSize } from "@/app/ViewportContext";
 
 // COMPONENTS
-import GameCanvas from '@/app/gameView/GameCanvas';
-import ActionUI from "@/app/gameView/ActionMenu";
+import GameCanvas from '@/app/GameView/GameCanvas';
+import ActionUI from "@/app/GameView/ActionMenu";
 import UnitSummary from "@/app/UnitSummary";
 import GameMenuContainer from "@/app/GameMenu";
 import ControlPanelContainer from "@/app/ControlPanel";
