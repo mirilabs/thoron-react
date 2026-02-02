@@ -114,18 +114,14 @@ class MovingState extends ControllerState {
 
     for (const target of this.controller.game.unitBodies.values()) {
       if (target === this.unitEnt) continue;
-      
-      let distance = target.unit.getDistance(nextCoords);
 
-      if (distance <= maxAttackRange) {
-        const possibleActions = this.unit.getPossibleActionsTo(
-          nextCoords, target.unit
-        );
+      const possibleActions = this.unit.getPossibleActionsTo(
+        nextCoords, target.unit
+      );
 
-        // show target indicator if possible actions exist
-        if (possibleActions.length > 0) {
-          target.showTargetIndicator(possibleActions[0]);
-        }
+      // show target indicator if possible actions exist
+      if (possibleActions.length > 0) {
+        target.showTargetIndicator(possibleActions[0]);
       }
       else {
         target.hideTargetIndicator();
