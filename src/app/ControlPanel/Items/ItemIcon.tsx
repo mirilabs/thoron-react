@@ -3,6 +3,8 @@ import React from "react";
 import icons from "@/icons/items";
 
 function ItemIcon({ item }) {
+  if (!item) return null;
+  
   let iconId = (item.type === "weapon") ?
     item.stats.weaponType :
     item.type;
