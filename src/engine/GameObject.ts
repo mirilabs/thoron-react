@@ -12,13 +12,10 @@ abstract class GameObject {
   onDestroy() {}
 
   addToScene(scene: Scene): Entity {
-    let entity = scene.createEntity();
-
-    this.components.forEach(c => entity.addComponent(c));
-
-    this.entity = entity;
+    this.entity = scene.createEntity();
+    this.entity.addComponents(this.components);
     this.onInit(scene);
-    return entity;
+    return this.entity;
   }
 
   destroy() {
