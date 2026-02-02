@@ -6,7 +6,7 @@ import DrawHandler from "./DrawHandler";
 import CursorEventHandler from "./CursorEventHandler";
 import TwoWayMap from "@/utils/TwoWayMap";
 
-const CIDS = {
+const COMPONENTS = {
   position: Position,
   rectangle: Rectangle,
   sprite: Sprite,
@@ -15,10 +15,10 @@ const CIDS = {
   cursorEvents: CursorEventHandler
 } as const;
 
-const COMPONENT_ID_MAP = new TwoWayMap(Object.entries(CIDS));
+const COMPONENT_ID_MAP = new TwoWayMap(Object.entries(COMPONENTS));
 
 type ComponentTypes = {
-  [K in keyof typeof CIDS]: InstanceType<typeof CIDS[K]>
+  [K in keyof typeof COMPONENTS]: InstanceType<typeof COMPONENTS[K]>
 };
 
 type ComponentId = keyof ComponentTypes;
