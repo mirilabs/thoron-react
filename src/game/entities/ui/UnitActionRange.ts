@@ -3,6 +3,8 @@ import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
 import { IVector2 } from "@/engine/utils/Vector2";
 import DrawHandler from "@/engine/components/DrawHandler";
+import { Command } from "thoron";
+import TilePainter from "./TilePainter";
 
 class UnitActionRange extends GameObject {
   chapter: any;
@@ -11,8 +13,9 @@ class UnitActionRange extends GameObject {
   unit: any;
   targetPos: IVector2;
   drawHandler: DrawHandler;
+  command: Command;
   
-  constructor(game: Game, unit: any, targetPos: IVector2) {
+  constructor(game: Game, unit: any, targetPos: IVector2, command: Command) {
     super();
     this.chapter = game.chapter;
     this.coords = game.coords;
@@ -20,6 +23,7 @@ class UnitActionRange extends GameObject {
     this.unit = unit;
     this.targetPos = targetPos;
     this.drawHandler = new DrawHandler(this.draw.bind(this), 30);
+    this.command = command;
 
     this.components = [
       this.drawHandler
@@ -41,44 +45,40 @@ class UnitActionRange extends GameObject {
   }
 
   paintTiles(ctx: CanvasRenderingContext2D) {
-    const unit = this.unit;
-
     const {
       tileWidth,
       tileHeight,
-      attackColor,
-      moveColor,
       highlightAlpha
     } = this.config;
 
-    let paintQueue: Map<string, string> = new Map();
+    const painter = new TilePainter(tileWidth, tileHeight);
+
+    // paint move range
+    switch(this.command) {
+      case "attack":
+        painter.color = this.config.attackColor;
+        painter.addTiles(this.chapter.terrain.getRange(
+          this.targetPos,
+          this.unit.equipped.minRange,
+          this.unit.equipped.maxRange
+        ).getCoords());
+        break;
+      case "trade":
+        painter.color = this.config.interactColor;
+        painter.addTiles(this.chapter.terrain.getRange(
+          this.targetPos, 1
+        ).getCoords());
+        break;
+      default:
+        break;
+    }
     
-    const attackRange = this.chapter.terrain.getRange(
-      this.targetPos,
-      unit.equipped.minRange,
-      unit.equipped.maxRange
-    );
-    attackRange.forEach(({ x, y }) => {
-      paintQueue.set(`${x},${y}`, attackColor);
-    });
+    // paint destination tile
+    painter.addTile(this.targetPos, this.config.moveColor);
 
     ctx.save();
     ctx.globalAlpha = highlightAlpha;
-    
-    // paint targetPos
-    let pixelCoords = this.coords.toPixels(this.targetPos.x, this.targetPos.y);
-    ctx.fillStyle = moveColor;
-    ctx.fillRect(pixelCoords.x, pixelCoords.y, tileWidth, tileHeight);
-
-    // paint attack range
-    for (const [coords, color] of paintQueue.entries()) {
-      let [x, y] = coords.split(',').map(n => parseInt(n));
-      let pixelCoords = this.coords.toPixels(x, y);
-
-      ctx.fillStyle = color;
-      ctx.fillRect(pixelCoords.x, pixelCoords.y, tileWidth, tileHeight);
-    }
-
+    painter.paint(ctx);
     ctx.restore();
   }
 }
