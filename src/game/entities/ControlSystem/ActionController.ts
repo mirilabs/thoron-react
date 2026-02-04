@@ -1,6 +1,6 @@
 import { IVector2 } from "@/engine/utils/Vector2";
 import controllerStore, { itemSelected, targetSelected } from "@/shared/store";
-import Chapter, { Command, DeployedUnit } from "thoron";
+import Chapter, { Command, DeployedUnit, ItemRecord } from "thoron";
 
 class ActionController {
   chapter: Chapter;
@@ -62,11 +62,13 @@ class ActionController {
     for (let j = 0; j < this.items.length; j++) {
       i = (i + 1) % this.items.length;
       
-      if (this.isInEquippedRange(this.getTarget())) {
+      if (this.isInRange(this.getTarget(), this.items[i])) {
         this.setItem(i);
         return;
       }
     }
+
+    throw new Error("Current target is out of range for all items");
   }
 
   /**
@@ -81,11 +83,13 @@ class ActionController {
       i--;
       if (i < 0) i = this.items.length - 1;
 
-      if (this.isInEquippedRange(this.getTarget())) {
+      if (this.isInRange(this.getTarget(), this.items[i])) {
         this.setItem(i);
         return;
       }
     }
+
+    throw new Error("Current target is out of range for all items");
   }
 
   /**
@@ -137,12 +141,13 @@ class ActionController {
   /**
    * Check if the target is within range of currently equipped item
    * @param target 
+   * @param param1 min and max range overrides
    * @returns True if in range
    */
-  isInEquippedRange(target: DeployedUnit) {
+  isInRange(target: DeployedUnit, item: ItemRecord) {
     let range = target.getDistance(this.destination);
-    return range >= this.unit.equipped.minRange &&
-      range <= this.unit.equipped.maxRange;
+    return range >= item.stats.minRange &&
+      range <= item.stats.maxRange;
   }
 
   /**
@@ -171,8 +176,10 @@ class ActionController {
     if (!target) return;
 
     // swap weapon if current one is out of range
-    if (!this.isInEquippedRange(target))
+    const equipped = this.unit.items[this.unit.state.equippedIndex];
+    if (!this.isInRange(target, equipped)) {
       this.selectNextItem();
+    }
   }
 
   /**
