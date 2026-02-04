@@ -2,15 +2,17 @@ import React, { useRef } from "react";
 import { useUIEmitter } from "../../utils/useUIAction";
 import { CSSTransition } from "react-transition-group";
 import "./ActionSelectMenu.scss";
-import { useSelectedUnit } from "@/app/utils/useUnit";
+import useUnit, { useSelectedUnit } from "@/app/utils/useUnit";
 import { useControllerSelector } from "@/app/utils/reduxHooks";
 import { Command, DeployedUnit } from "thoron";
 import ActionButton from "./ActionButton";
 import WaitButton from "./WaitButton";
 
+type PossibleActions = Partial<{ [action in Command]: any }>;
+
 function ActionMenu({ actions, possibleActions }: {
   actions: Command[],
-  possibleActions: Partial<{ [action in Command]: any }>
+  possibleActions: PossibleActions
 }) {
   const buttons = actions.map((action) => {
     if (possibleActions[action]) {
@@ -42,12 +44,28 @@ function ActionMenuToggle(props: {
   const nodeRef = useRef();
 
   let unit: DeployedUnit = useSelectedUnit();
+
+  let targetId: string = useControllerSelector(
+    state => state.pendingMove.targetId
+  );
+  let target = useUnit(targetId);
+
   let destination = useControllerSelector(
     state => state.pendingMove.destination
   );
-  let possibleActions = (unit && destination) ?
-    unit.getPossibleActions(destination) :
-    {};
+
+  let possibleActions: PossibleActions = {};
+  if (unit && destination) {
+    if (target) {
+      let actions = unit.getPossibleActionsTo(destination, target);
+      actions.forEach(action => {
+        possibleActions[action] = true;
+      });
+    }
+    else {
+      possibleActions = unit.getPossibleActions(destination);
+    }
+  }
 
   const handleClose = useUIEmitter("cancel");
   
