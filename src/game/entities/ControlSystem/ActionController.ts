@@ -176,9 +176,11 @@ class ActionController {
     if (!target) return;
 
     // swap weapon if current one is out of range
-    const equipped = this.unit.items[this.unit.state.equippedIndex];
-    if (!this.isInRange(target, equipped)) {
-      this.selectNextItem();
+    if (this.action === "attack") {
+      const equipped = this.unit.items[this.unit.state.equippedIndex];
+      if (!this.isInRange(target, equipped)) {
+        this.selectNextItem();
+      }
     }
   }
 
