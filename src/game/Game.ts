@@ -23,7 +23,7 @@ const defaultConfig: IGameConfig = {
   moveColor: '#0000ff',     // blue
   attackColor: '#ff0000',   // red
   healColor: '#00ff00',     // green
-  interactColor: 'ff00ff',  // magenta
+  interactColor: '#ff00ff',  // magenta
   highlightAlpha: 0.2,
 }
 

@@ -36,7 +36,8 @@ class ActionConfirmState extends ControllerState {
     this.actionRangeEnt = new UnitActionRange(
       game,
       this.selectedUnit,
-      pendingMove.destination
+      pendingMove.destination,
+      pendingMove.action
     );
     this.actionRangeEnt.addToScene(scene);
 
