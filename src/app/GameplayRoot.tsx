@@ -56,7 +56,7 @@ function GameplayRoot() {
     <ThoronProvider saveState={{ ...saveState, rngState }}>
       <ReduxProvider store={controllerStore}>
         <ThemeProvider theme={MUITheme}>
-          <div className="root">
+          <div className="gameplay-root">
             <Layout />
           </div>
           <> {/* config */}
