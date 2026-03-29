@@ -38,7 +38,7 @@ function CombatLogDetail({ unit, target, actionResult }: LogDetailProps) {
     actionResult.combatForecast.defender,
     actionResult.combatResult.defender
   );
-  
+
   const renderInitiatorOnLeft = unit.getTeam() < target.getTeam();
   if (!renderInitiatorOnLeft) {
     // swap positions
@@ -50,13 +50,15 @@ function CombatLogDetail({ unit, target, actionResult }: LogDetailProps) {
   return (
     <div className="combat-detail">
       <CombatPreview data={left} />
-      <CombatEvents
-        events={actionResult.events}
-        leftUnit={renderInitiatorOnLeft ? unit : target}
-        rightUnit={renderInitiatorOnLeft ? target : unit}
-        leftData={left}
-        rightData={right} />
       <CombatPreview data={right} />
+      <div>
+        <CombatEvents
+          events={actionResult.events}
+          leftUnit={renderInitiatorOnLeft ? unit : target}
+          rightUnit={renderInitiatorOnLeft ? target : unit}
+          leftData={left}
+          rightData={right} />
+      </div>
     </div>
   )
 }
