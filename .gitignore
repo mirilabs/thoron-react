@@ -11,10 +11,6 @@
 !.yarn/versions
 node_modules/
 
-# yalc
-.yalc/
-yalc.lock
-
 # logs
 npm-debug.log*
 yarn-debug.log*
