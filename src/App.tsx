@@ -4,9 +4,9 @@ import "./stylesheets/themes.scss";
 
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import fallbackRender from "@/app/utils/fallbackRender";
-import { ViewportProvider } from "@/app/ViewportContext";
-import { initializeUserSettings } from "@/app/ControlPanel/Settings/userSettings";
+import fallbackRender from "@/app/gameplay/utils/fallbackRender";
+import { ViewportProvider } from "@/app/gameplay/ViewportContext";
+import { initializeUserSettings } from "@/app/gameplay/ControlPanel/Settings/userSettings";
 import Router from "./Router";
 
 initializeUserSettings();
