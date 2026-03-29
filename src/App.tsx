@@ -7,27 +7,15 @@ import { ErrorBoundary } from "react-error-boundary";
 import fallbackRender from "@/app/utils/fallbackRender";
 import { ViewportProvider } from "@/app/ViewportContext";
 import { initializeUserSettings } from "@/app/ControlPanel/Settings/userSettings";
-import Navigation from "./Navigation";
 import Router from "./Router";
 
 initializeUserSettings();
-
-function Layout() {
-  return (
-    <>
-      <Navigation />
-      <div className="content">
-        <Router />
-      </div>
-    </>
-  )
-}
 
 export default function App() {
   return (
     <ErrorBoundary fallbackRender={fallbackRender}>
       <ViewportProvider>
-        <Layout />
+        <Router />
       </ViewportProvider>
     </ErrorBoundary>
   );
