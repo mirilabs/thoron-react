@@ -14,12 +14,12 @@ initializeUserSettings();
 
 function Layout() {
   return (
-    <div>
+    <>
       <Navigation />
-      <main>
+      <div className="content">
         <Router />
-      </main>
-    </div>
+      </div>
+    </>
   )
 }
 
