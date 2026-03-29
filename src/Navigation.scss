@@ -1,0 +1,21 @@
+nav {
+  background-color: var(--bg-color);
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.nav-link {
+  flex: 1;
+  display: flex;
+  text-decoration: none;
+
+  .MuiButton-root {
+    color: var(--text-color-2);
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: var(--text-color);
+    }
+  }
+}
