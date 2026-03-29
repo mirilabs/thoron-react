@@ -9,8 +9,11 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
 node_modules/
+
+# yalc
+.yalc/
+yalc.lock
 
 # logs
 npm-debug.log*
