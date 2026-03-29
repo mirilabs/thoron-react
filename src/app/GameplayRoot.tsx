@@ -1,5 +1,4 @@
-import "./Layout.scss";
-import "./stylesheets/themes.scss";
+import "./GameplayRoot.scss";
 import React from "react";
 import useResponsive from "@/app/utils/useResponsive";
 import { WindowSize } from "@/app/ViewportContext";
@@ -11,10 +10,10 @@ import UnitSummary from "@/app/UnitSummary";
 import GameMenuContainer from "@/app/GameMenu";
 import ControlPanelContainer from "@/app/ControlPanel";
 
-function Layout() {
+function GameplayRoot() {
   let { size } = useResponsive();
 
-  switch(size) {
+  switch (size) {
     case WindowSize.SMALL:
     default:
       return (
@@ -37,4 +36,4 @@ function Layout() {
   }
 }
 
-export default Layout;
+export default GameplayRoot;
