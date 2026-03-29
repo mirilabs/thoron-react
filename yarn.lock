@@ -1537,6 +1537,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie@npm:^1.0.1":
+  version: 1.1.1
+  resolution: "cookie@npm:1.1.1"
+  checksum: 10/85538153054791155cf4d38d2e807e3b9382d71bf71d92fc46fca348515ea574049d0d9ef8eb84d2d54a681ad1d7a7316b1989b901dace50a6c0f4c3858dbdb2
+  languageName: node
+  linkType: hard
+
 "core-js@npm:^3.19.2, core-js@npm:^3.38.1":
   version: 3.49.0
   resolution: "core-js@npm:3.49.0"
@@ -3056,6 +3063,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router@npm:^7.13.2":
+  version: 7.13.2
+  resolution: "react-router@npm:7.13.2"
+  dependencies:
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10/86e3538e4b50402bb15ac7b0938fdace5947a45d418bd1713b15288a208a5b102dfa599a3e5c4a86e136331b5dafaacfe57d93d2cc48241cf48fe770190cfbda
+  languageName: node
+  linkType: hard
+
 "react-tabs@npm:^6.1.0":
   version: 6.1.1
   resolution: "react-tabs@npm:6.1.1"
@@ -3351,6 +3374,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"set-cookie-parser@npm:^2.6.0":
+  version: 2.7.2
+  resolution: "set-cookie-parser@npm:2.7.2"
+  checksum: 10/4b6f5ec4e3fa1aef471d9207117704d217ba6bb6443400b41f5ea945c4a7f6fc08e405a122c1a32b4ebde41f06dea75e02c2af87cee9abb27f3e3fe911e5839b
+  languageName: node
+  linkType: hard
+
 "set-function-length@npm:^1.2.2":
   version: 1.2.2
   resolution: "set-function-length@npm:1.2.2"
@@ -3576,6 +3606,7 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-error-boundary: "npm:^4.0.13"
     react-redux: "npm:^9.2.0"
+    react-router: "npm:^7.13.2"
     react-tabs: "npm:^6.1.0"
     react-transition-group: "npm:^4.4.5"
     sass: "npm:^1.77.6"
