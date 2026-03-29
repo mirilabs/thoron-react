@@ -68,8 +68,6 @@ class CursorEventSystem extends System {
       // convert event coordinates to canvas coordinates
       let mousePos: IVector2 = this.getCoords(event);
 
-      console.log(this.canvas.getBoundingClientRect())
-
       let delta = this.prevPosition ?
         Vector2.difference(mousePos, this.prevPosition) :
         Vector2.ZERO;
