@@ -1,5 +1,7 @@
 import "./App.scss";
 import "./stylesheets/dev.css";
+import "./stylesheets/themes.scss";
+import MUITheme from "./stylesheets/MUITheme";
 
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -8,10 +10,9 @@ import { ViewportProvider } from "@/app/ViewportContext";
 import { Provider as ReduxProvider } from "react-redux";
 import controllerStore from "@/shared/store";
 import { KeybindInitializer } from "@/app/ControlPanel/Settings/keybinds";
-import LayoutRoot from "./Layout";
+import GameplayRoot from "./app/GameplayRoot";
 import { initializeUserSettings } from "@/app/ControlPanel/Settings/userSettings";
 import { ThemeProvider } from "@mui/material";
-import MUITheme from "./stylesheets/MUITheme";
 
 import { ThoronProvider } from "@/app/ThoronContext";
 import saveState from "./data/saveState";
@@ -26,7 +27,7 @@ function App() {
           <ReduxProvider store={controllerStore}>
             <ThemeProvider theme={MUITheme}>
               <div className="root">
-                <LayoutRoot />
+                <GameplayRoot />
               </div>
               <> {/* config */}
                 <KeybindInitializer />

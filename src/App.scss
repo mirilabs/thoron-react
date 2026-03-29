@@ -24,8 +24,8 @@ code {
   height: 100vh;
 
   isolation: isolate;
-    // enables popups to appear over other elements
-    // see https://base-ui.com/react/overview/quick-start
+  // enables popups to appear over other elements
+  // see https://base-ui.com/react/overview/quick-start
 }
 
 .app * {
@@ -43,7 +43,9 @@ code {
   color: white;
 }
 
-button, input[type="submit"], input[type="reset"] {
+button,
+input[type="submit"],
+input[type="reset"] {
   background-color: var(--bg-color-2);
   color: inherit;
   transition: background-color 200ms linear;
