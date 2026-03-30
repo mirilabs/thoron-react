@@ -9,8 +9,8 @@ type Campaign = {
 type Character = IUnitRecord & {
   id: number,
   campaignId: number,
-  portrait: Blob,
-  mapSprite: Blob
+  portrait?: Blob,
+  mapSprite?: Blob
 }
 
 type Item = ItemRecord & {
@@ -29,26 +29,11 @@ db.version(1).stores({
   characters: [
     "++id",
     "name",
-    "className",
-    "classTags",
-    "level",
-    "exp",
-    "movement",
-    "stats",
-    "growths",
-    "skills",
-    "items",
-    "campaignId",
-    "portrait",
-    "mapSprite"
+    "campaignId"
   ].join(", "),
   items: [
     "++id",
     "name",
-    "description",
-    "maxUses",
-    "type",
-    "stats",
     "campaignId"
   ].join(", "),
 });
