@@ -7,6 +7,8 @@ import { ErrorBoundary } from "react-error-boundary";
 import fallbackRender from "@/app/gameplay/utils/fallbackRender";
 import { ViewportProvider } from "@/app/gameplay/ViewportContext";
 import { initializeUserSettings } from "@/app/gameplay/ControlPanel/Settings/userSettings";
+import { ThemeProvider } from "@mui/material";
+import MUITheme from "@/stylesheets/MUITheme";
 import Router from "./Router";
 
 initializeUserSettings();
@@ -15,7 +17,9 @@ export default function App() {
   return (
     <ErrorBoundary fallbackRender={fallbackRender}>
       <ViewportProvider>
-        <Router />
+        <ThemeProvider theme={MUITheme}>
+          <Router />
+        </ThemeProvider>
       </ViewportProvider>
     </ErrorBoundary>
   );

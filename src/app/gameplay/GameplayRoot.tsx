@@ -2,7 +2,6 @@ import "./GameplayRoot.scss";
 import React from "react";
 import useResponsive from "@/app/gameplay/utils/useResponsive";
 import { WindowSize } from "@/app/gameplay/ViewportContext";
-import MUITheme from "@/stylesheets/MUITheme";
 
 // COMPONENTS
 import GameCanvas from '@/app/gameplay/GameView/GameCanvas';
@@ -55,14 +54,12 @@ function GameplayRoot() {
   return (
     <ThoronProvider saveState={{ ...saveState, rngState }}>
       <ReduxProvider store={controllerStore}>
-        <ThemeProvider theme={MUITheme}>
-          <div className="gameplay-root">
-            <Layout />
-          </div>
-          <> {/* config */}
-            <KeybindInitializer />
-          </>
-        </ThemeProvider>
+        <div className="gameplay-root">
+          <Layout />
+        </div>
+        <> {/* config */}
+          <KeybindInitializer />
+        </>
       </ReduxProvider>
     </ThoronProvider>
   )
