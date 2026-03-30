@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import UnitEditForm from "../gameplay/ControlPanel/UnitEdit/UnitEditForm";
 import { IUnitRecord } from "thoron";
 import { Button } from "@mui/material";
+import db, { Character } from "@/data/db";
 
-const emptyCharacter: IUnitRecord = {
+const emptyCharacter: Partial<Character> = {
   id: 0,
   name: "",
   className: "",
@@ -23,14 +24,16 @@ const emptyCharacter: IUnitRecord = {
   items: []
 }
 
-function CharacterCreateForm({ handleSave, handleCancel }: {
+function CharacterCreateForm({
+  handleSave,
+  handleCancel
+}: {
   handleSave: (record: IUnitRecord) => void
   handleCancel: () => void
 }) {
-
   return (
     <div className="border border-[var(--accent-color)] rounded-lg p-2">
-      <UnitEditForm record={emptyCharacter}
+      <UnitEditForm record={emptyCharacter as Character}
         handleSave={handleSave}
         handleCancel={handleCancel} />
     </div>
@@ -40,8 +43,11 @@ function CharacterCreateForm({ handleSave, handleCancel }: {
 function CharacterCreate({ campaignId }: { campaignId: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSave = (record: IUnitRecord) => {
-    console.log(record);
+  const handleSave = async (record: Character) => {
+    await db.characters.add({
+      ...record,
+      campaignId: campaignId
+    });
     setIsOpen(false);
   }
 
