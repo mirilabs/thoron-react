@@ -1,14 +1,16 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
-import GameplayRoot from "./app/gameplay/GameplayRoot";
 import Navigation from "./Navigation";
+import CampaignIndex from "./app/campaigns/CampaignIndex";
+import GameplayRoot from "./app/gameplay/GameplayRoot";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <div className="content">
         <Routes>
-          <Route path="/" element={<GameplayRoot />} />
+          <Route path="/" element={<CampaignIndex />} />
+          <Route path="/gameplay" element={<GameplayRoot />} />
         </Routes>
       </div>
       <Navigation />
