@@ -12,6 +12,8 @@
     "@reduxjs/toolkit": "^2.6.0",
     "@tailwindcss/vite": "^4.2.2",
     "core-js": "^3.38.1",
+    "dexie": "^4.4.1",
+    "dexie-react-hooks": "^4.4.0",
     "react": "^19.0.0",
     "react-app-polyfill": "^3.0.0",
     "react-device-detect": "^2.2.3",
