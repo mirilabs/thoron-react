@@ -1,10 +1,10 @@
 import React from "react";
 import { TextField } from "@mui/material";
-import { IUnitRecord } from "thoron";
+import { Character } from "@/data/db";
 
 interface ClassFormProps {
-  data: IUnitRecord;
-  setData: (data: IUnitRecord) => void;
+  data: Character;
+  setData: (data: Character) => void;
 }
 
 function ClassForm({ data, setData }: ClassFormProps) {
