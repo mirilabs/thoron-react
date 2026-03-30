@@ -7,17 +7,16 @@ import { Button } from "@mui/material";
 import ClassForm from "./ClassForm";
 
 interface UnitEditFormProps {
-  unit: DeployedUnit;
+  record: IUnitRecord;
   handleSave: (record: IUnitRecord) => void;
   handleCancel: () => void;
 }
 
 function UnitEditForm({
-  unit,
+  record,
   handleSave,
   handleCancel
 }: UnitEditFormProps) {
-  const { record, state } = unit.serialize();
   const [formData, setFormData] = useState(record);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -36,10 +35,9 @@ function UnitEditForm({
     // validate data
     try {
       const unit = new Unit(formData);
-      
       handleSave(formData);
     }
-    catch(e) {
+    catch (e) {
       if (e instanceof ValidationError) {
         setErrorMsg(e.message);
       }
@@ -48,7 +46,7 @@ function UnitEditForm({
 
   // select which part of the form to render based on currently selected tab
   let content: React.JSX.Element;
-  switch(tabId) {
+  switch (tabId) {
     case "profile":
       content = (<ProfileForm data={formData} setData={setFormData} />);
       break;
