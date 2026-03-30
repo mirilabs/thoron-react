@@ -4,7 +4,7 @@ import db from "@/data/db";
 import CharacterCard from "./CharacterCard";
 import CharacterCreate from "./CharacterCreate";
 
-function CharacterIndex({ campaignId }: { campaignId: number }) {
+function CharacterList({ campaignId }: { campaignId: number }) {
   const characters = useLiveQuery(() => db.characters.where({ campaignId }).toArray(), [campaignId]);
 
   return (
@@ -21,4 +21,4 @@ function CharacterIndex({ campaignId }: { campaignId: number }) {
   )
 }
 
-export default CharacterIndex
+export default CharacterList
