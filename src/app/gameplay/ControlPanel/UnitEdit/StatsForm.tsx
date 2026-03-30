@@ -1,23 +1,23 @@
 import React from 'react';
-import { IUnitRecord } from 'thoron';
 import NumberField from './NumberField';
-import StatField, { GrowthField, StatFieldProps } from './StatField';
+import StatField, { GrowthField } from './StatField';
 import "./StatsForm.scss";
+import { Character } from '@/data/db';
 
 interface StatsFormProps {
-  data: IUnitRecord;
-  setData: (data: IUnitRecord) => void;
+  data: Character;
+  setData: (data: Character) => void;
 }
 
 const STATS = [
-  { label: "Max HP",      stat: "mhp" },
-  { label: "Strength",    stat: "str" },
-  { label: "Magic",       stat: "mag" },
-  { label: "Skill",       stat: "skl" },
-  { label: "Speed",       stat: "spd" },
-  { label: "Luck",        stat: "luk" },
-  { label: "Defense",     stat: "def" },
-  { label: "Resistance",  stat: "res" },
+  { label: "Max HP", stat: "mhp" },
+  { label: "Strength", stat: "str" },
+  { label: "Magic", stat: "mag" },
+  { label: "Skill", stat: "skl" },
+  { label: "Speed", stat: "spd" },
+  { label: "Luck", stat: "luk" },
+  { label: "Defense", stat: "def" },
+  { label: "Resistance", stat: "res" },
 ]
 
 function StatsForm({ data, setData }: StatsFormProps) {

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { DeployedUnit, IUnitRecord, Unit, ValidationError } from "thoron";
+import { IUnitRecord, Unit, ValidationError } from "thoron";
 import ProfileForm from "./ProfileForm";
 import StatsForm from "./StatsForm";
 import "./UnitEditForm.scss";
 import { Button } from "@mui/material";
 import ClassForm from "./ClassForm";
+import { Character } from "@/data/db";
 
 interface UnitEditFormProps {
-  record: IUnitRecord;
-  handleSave: (record: IUnitRecord) => void;
+  record: Character;
+  handleSave: (record: Character) => void;
   handleCancel: () => void;
 }
 
