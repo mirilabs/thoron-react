@@ -66,8 +66,7 @@ function UnitEditForm({
   return (
     <form className="unit-edit-form" onSubmit={handleSubmit}>
       <div className="unit-edit-form__title">
-        <h3>Editing {formData.name}</h3>
-        <span>
+        <span className="ml-auto">
           <Button variant="contained" type="submit">
             <i className="fas fa-save" />
           </Button>
