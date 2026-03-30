@@ -5,11 +5,16 @@ import CharacterCard from "./CharacterCard";
 import CharacterCreate from "./CharacterCreate";
 
 function CharacterList({ campaignId }: { campaignId: number }) {
-  const characters = useLiveQuery(() => db.characters.where({ campaignId }).toArray(), [campaignId]);
+  if (!campaignId) return null;
+
+  const characters = useLiveQuery(() => (
+    db.characters.where({ campaignId }).toArray()
+  ), [campaignId]);
 
   return (
     <div className={
-      "flex flex-col gap-4 border border-[var(--text-color)] rounded-lg p-4 m-4 " +
+      "flex flex-col gap-4 " +
+      "border border-[var(--text-color)] rounded-lg p-4 m-4 " +
       "bg-[var(--bg-color)]"
     }>
       <h1 className="text-xl font-bold">Characters</h1>
