@@ -25,6 +25,7 @@ function Navigation() {
   return (
     <nav>
       <NavButton to="/" label="Home" icon="house" />
+      <NavButton to="/gameplay" label="Gameplay" icon="gamepad" />
     </nav>
   )
 }
