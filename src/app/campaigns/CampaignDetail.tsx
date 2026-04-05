@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import db from "@/data/db";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import CharacterList from "../characters/CharacterList";
 import CampaignEdit from "./CampaignEdit";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { Campaign } from "@/data/db";
 
 function CampaignInfo({ campaign }: { campaign: Campaign }) {
@@ -43,6 +43,10 @@ function CampaignInfo({ campaign }: { campaign: Campaign }) {
 function CampaignDetail() {
   const { id } = useParams();
   const campaign = useLiveQuery(() => db.campaigns.get(Number(id)), [id]);
+  const itemCount = useLiveQuery(
+    () => db.items.where({ campaignId: Number(id) }).count(),
+    [id]
+  );
 
   if (!campaign) return (
     <div className="h-full flex flex-col items-center">
@@ -54,6 +58,23 @@ function CampaignDetail() {
     <div className="h-full flex flex-col items-center gap-4">
       <CampaignInfo campaign={campaign} />
       <CharacterList campaignId={Number(id)} />
+      <div className={
+        "bg-[var(--bg-color)] border border-[var(--text-color)] rounded-lg p-4"
+      }>
+        <div className="flex flex-row items-center justify-between gap-8">
+          <Link to={`/campaigns/${id}/items`}>
+            <Button variant="text"
+              startIcon={<i className="fas fa-toolbox" />}>
+              <p className="text-lg font-semibold">
+                Items
+              </p>
+            </Button>
+          </Link>
+          <p className="text-lg font-semibold">
+            {itemCount}
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

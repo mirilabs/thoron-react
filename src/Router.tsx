@@ -5,6 +5,7 @@ import CampaignIndex from "./app/campaigns/CampaignIndex";
 import CampaignDetail from "./app/campaigns/CampaignDetail";
 import GameplayRoot from "./app/gameplay/GameplayRoot";
 import CharacterShow from "./app/characters/CharacterShow";
+import ItemIndex from "./app/items/ItemIndex";
 
 export default function Router() {
   return (
@@ -15,6 +16,7 @@ export default function Router() {
           <Route path="/campaigns/:id">
             <Route index element={<CampaignDetail />} />
             <Route path="characters/:characterId" element={<CharacterShow />} />
+            <Route path="items" element={<ItemIndex />} />
           </Route>
           <Route path="/gameplay" element={<GameplayRoot />} />
         </Routes>
