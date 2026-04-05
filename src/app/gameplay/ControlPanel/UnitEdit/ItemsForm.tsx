@@ -119,4 +119,7 @@ function ItemsForm({ data, setData }: ItemsFormProps) {
 }
 
 export default ItemsForm;
+export {
+  ItemEntry
+}
 export type { ItemsFormProps };
