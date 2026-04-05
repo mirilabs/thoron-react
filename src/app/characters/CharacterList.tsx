@@ -14,7 +14,7 @@ function CharacterList({ campaignId }: { campaignId: number }) {
   return (
     <div className={
       "flex flex-col gap-4 " +
-      "border border-[var(--text-color)] rounded-lg p-4 m-4 " +
+      "border border-[var(--text-color)] rounded-lg p-4 " +
       "bg-[var(--bg-color)]"
     }>
       <h1 className="text-xl font-bold">Characters</h1>
