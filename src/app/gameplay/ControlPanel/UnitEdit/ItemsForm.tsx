@@ -1,5 +1,5 @@
 import React from "react";
-import { Character } from "@/data/db";
+import db, { Character } from "@/data/db";
 import { ItemRecord } from "thoron";
 import ItemCreator from "./ItemCreator";
 import ItemCard from "../Items/ItemCard";
@@ -20,14 +20,22 @@ function ItemsForm({ data, setData }: ItemsFormProps) {
     <ItemEntry key={i} item={item} />
   ));
 
+  const handleSave = async (item: ItemRecord) => {
+    const items = [...data.items, item];
+    await db.characters.update(data.id, { items });
+    setData({ ...data, items });
+  }
+
   return (
     <div>
       {
         data.items.length === 0 &&
         <p className="mb-4 text-[var(--text-color-2)]">No items</p>
       }
-      {itemEntries}
-      <ItemCreator data={data} setData={setData} />
+      <div className="flex flex-col gap-2 mb-4">
+        {itemEntries}
+      </div>
+      <ItemCreator onSave={handleSave} />
     </div>
   )
 }
