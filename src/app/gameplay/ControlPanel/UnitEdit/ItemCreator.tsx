@@ -1,15 +1,14 @@
 import React from "react";
 import { ItemRecord } from "thoron";
 import { useState } from "react";
-import { Button, FormLabel, TextField } from "@mui/material";
-import { ItemsFormProps } from "./ItemsForm";
+import { Button } from "@mui/material";
 import ItemEditor from "./ItemEditor";
 
-function ItemCreator({ data, setData }: ItemsFormProps) {
+function ItemCreator({ onSave }: { onSave: (item: ItemRecord) => void }) {
   const [editing, setEditing] = useState(false);
 
   const handleSave = (item: ItemRecord) => {
-    setData({ ...data, items: [...data.items, item] });
+    onSave(item);
     setEditing(false);
   }
 
