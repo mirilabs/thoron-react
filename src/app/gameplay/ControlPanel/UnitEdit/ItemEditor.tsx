@@ -25,13 +25,15 @@ const DEFAULT_STATS = {
 }
 
 function ItemEditor({
+  item,
   onSave,
   onCancel
 }: {
+  item?: ItemRecord,
   onSave: (item: ItemRecord) => void,
   onCancel: () => void
 }) {
-  const [formData, setFormData] = useState<ItemRecord>({
+  const [formData, setFormData] = useState<ItemRecord>(item || {
     name: "",
     type: "weapon",
     uses: 0,
