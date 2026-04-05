@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { IUnitRecord, Unit, ValidationError } from "thoron";
+import { Unit, ValidationError } from "thoron";
 import ProfileForm from "./ProfileForm";
 import StatsForm from "./StatsForm";
 import "./UnitEditForm.scss";
 import { Button } from "@mui/material";
 import ClassForm from "./ClassForm";
 import { Character } from "@/data/db";
+import ItemsForm from "./ItemsForm";
 
 interface UnitEditFormProps {
   record: Character;
@@ -58,7 +59,7 @@ function UnitEditForm({
       content = (<StatsForm data={formData} setData={setFormData} />);
       break;
     case "items":
-      content = (<>TBI</>);
+      content = (<ItemsForm data={formData} setData={setFormData} />);
       break;
     default:
       throw new Error("UnitEditForm: Invalid tabIndex")

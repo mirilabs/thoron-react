@@ -3,7 +3,7 @@
   flex-direction: column;
   margin: 0.25rem;
 
-  & > label {
+  &>label {
     color: var(--text-color-2);
     margin-left: 0.5rem;
     font-size: 0.875rem;
@@ -12,6 +12,8 @@
   .group {
     outline: 1px solid var(--bg-color-2);
     border-radius: 4px;
+    display: flex;
+    flex-direction: row;
 
     &:hover {
       outline-color: var(--bg-color-3);
@@ -39,7 +41,8 @@
     }
   }
 
-  .increment, .decrement {
+  .increment,
+  .decrement {
     background-color: var(--bg-color-2);
     outline: none;
 
