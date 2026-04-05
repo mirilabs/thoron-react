@@ -13,6 +13,17 @@ const theme = createTheme({
     }
   },
   components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          "&:hover": {
+            color: "var(--accent-color)",
+            backgroundColor: "var(--bg-color-2)",
+          }
+        }
+      },
+    },
     MuiFormLabel: {
       styleOverrides: {
         root: {
