@@ -51,7 +51,7 @@ function CampaignDetail() {
   );
 
   return (
-    <div className="h-full flex flex-col items-center">
+    <div className="h-full flex flex-col items-center gap-4">
       <CampaignInfo campaign={campaign} />
       <CharacterList campaignId={Number(id)} />
     </div>
