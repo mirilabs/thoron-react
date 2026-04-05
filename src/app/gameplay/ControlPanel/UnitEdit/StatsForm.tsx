@@ -33,6 +33,11 @@ function StatsForm({ data, setData }: StatsFormProps) {
     ));
   });
 
+  const statsSum = STATS.reduce((acc, { stat }) => acc + data.stats[stat], 0);
+  const growthsSum = STATS.reduce(
+    (acc, { stat }) => acc + data.growths[stat], 0
+  );
+
   return (
     <div className="unit-stats-form">
       <div className="level-inputs">
@@ -54,6 +59,8 @@ function StatsForm({ data, setData }: StatsFormProps) {
         <h3>Stats</h3>
         <h3>Growths</h3>
         {statFields}
+        <p>Total stats: {statsSum}</p>
+        <p>Total growths: {growthsSum}</p>
       </div>
     </div>
   )
