@@ -1,12 +1,14 @@
 import React from "react";
 import { Link, useParams } from "react-router";
-import { useLiveQuery } from "dexie-react-hooks";
-import db, { Item } from "@/data/db";
 import { Button } from "@mui/material";
-import { ItemEntry } from "@/app/gameplay/ControlPanel/UnitEdit/ItemsForm";
-import ItemCreator from "../gameplay/ControlPanel/UnitEdit/ItemCreator";
+import ItemList from "./ItemList";
+import { useLiveQuery } from "dexie-react-hooks";
+import db from "@/data/db";
+import ItemListJSON from "./ItemListJSON";
 
 function ItemIndex() {
+  const [phase, setPhase] = React.useState<"list" | "export">("list");
+
   const { id } = useParams();
   const campaignId = Number(id);
 
@@ -16,27 +18,6 @@ function ItemIndex() {
   );
 
   if (!items) return null;
-
-  const itemEntries = items.map(item => (
-    <ItemEntry key={item.id} item={item}
-      onUpdate={() => handleItemUpdate(item)}
-      onDelete={() => handleItemDelete(item)} />
-  ));
-
-  const handleItemCreate = async (item: Item) => {
-    await db.items.add({
-      ...item,
-      campaignId,
-    });
-  }
-
-  const handleItemUpdate = async (item: Item) => {
-    await db.items.update(item.id, item);
-  }
-
-  const handleItemDelete = async (item: Item) => {
-    await db.items.delete(item.id);
-  }
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -52,18 +33,29 @@ function ItemIndex() {
       }>
         <div className="flex flex-row">
           <h1 className="text-xl font-bold">Campaign Items</h1>
+          <span className="ml-auto flex flex-row">
+            {phase === "list" && (
+              <Button variant="contained"
+                onClick={() => setPhase("export")}
+                startIcon={<i className="fas fa-arrow-up-from-bracket" />}>
+                Export JSON
+              </Button>
+            )}
+            {phase === "export" && (
+              <Button variant="contained"
+                onClick={() => setPhase("list")}
+                startIcon={<i className="fas fa-arrow-left" />}>
+                Back
+              </Button>
+            )}
+          </span>
         </div>
-        <div className={
-          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 "
-        }>
-          {itemEntries}
-          {items.length === 0 && (
-            <p className="text-gray-400">No items in this campaign yet.</p>
-          )}
-        </div>
-        <div className="flex flex-row items-center">
-          <ItemCreator onSave={handleItemCreate} />
-        </div>
+        {phase === "list" && (
+          <ItemList campaignId={campaignId} items={items} />
+        )}
+        {phase === "export" && (
+          <ItemListJSON items={items} />
+        )}
       </div>
     </div>
   );
