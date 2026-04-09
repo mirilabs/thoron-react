@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import db, { Character } from "@/data/db";
 import { ItemRecord } from "thoron";
-import ItemCreator from "./ItemCreator";
 import ItemCard from "../Items/ItemCard";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import ItemEditor from "./ItemEditor";
+import GiveItemButton from "./GiveItemButton";
 
 interface ItemsFormProps {
   data: Character;
@@ -113,7 +113,9 @@ function ItemsForm({ data, setData }: ItemsFormProps) {
       <div className="flex flex-col gap-2 mb-4">
         {itemEntries}
       </div>
-      <ItemCreator onSave={handleItemCreate} />
+      <GiveItemButton
+        onGiveItem={(item) => handleItemCreate(item)}
+      />
     </div>
   )
 }
