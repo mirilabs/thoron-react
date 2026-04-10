@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox, FormLabel, MenuItem, Select, TextField } from "@mui/material";
 import { ItemRecord, StaffStats, WeaponStats } from "thoron";
-import NumberField from "./NumberField";
+import NumberField from "../gameplay/ControlPanel/UnitEdit/NumberField";
 
 const DEFAULT_STATS = {
   weapon: {
