@@ -23,7 +23,8 @@
     "react-tabs": "^6.1.0",
     "react-transition-group": "^4.4.5",
     "sass": "^1.77.6",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "thoron": "../thoron"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
