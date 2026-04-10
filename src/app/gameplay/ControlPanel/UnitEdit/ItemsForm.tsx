@@ -3,7 +3,7 @@ import db, { Character } from "@/data/db";
 import { ItemRecord } from "thoron";
 import ItemCard from "../Items/ItemCard";
 import { IconButton } from "@mui/material";
-import ItemEditor from "./ItemEditor";
+import ItemEditor from "../../../items/ItemEditor";
 import GiveItemButton from "./GiveItemButton";
 
 interface ItemsFormProps {

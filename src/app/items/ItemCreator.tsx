@@ -9,7 +9,6 @@ function ItemCreator({ onSave }: { onSave: (item: ItemRecord) => void }) {
 
   const handleSave = (item: ItemRecord) => {
     onSave(item);
-    setEditing(false);
   }
 
   if (editing) return (

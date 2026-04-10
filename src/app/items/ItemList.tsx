@@ -1,5 +1,5 @@
 import React from "react";
-import ItemCreator from "../gameplay/ControlPanel/UnitEdit/ItemCreator";
+import ItemCreator from "./ItemCreator";
 import { Item } from "@/data/db";
 import { ItemEntry } from "../gameplay/ControlPanel/UnitEdit/ItemsForm";
 import db from "@/data/db";
