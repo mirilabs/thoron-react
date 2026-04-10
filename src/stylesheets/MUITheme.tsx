@@ -64,6 +64,19 @@ const theme = createTheme({
           color: "var(--text-color)",
         }
       }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+          "&:hover": {
+            color: "var(--accent-color)",
+          },
+          "&.Mui-selected": {
+            color: "var(--accent-color)",
+          }
+        }
+      }
     }
   },
   typography: {
