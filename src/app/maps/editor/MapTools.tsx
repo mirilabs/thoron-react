@@ -13,7 +13,9 @@ function MapTools({
   height,
   onHeightChange,
   showGrid,
-  onShowGridChange
+  onShowGridChange,
+  showTerrain,
+  onShowTerrainChange
 }: {
   map: Map,
   name: string,
@@ -23,7 +25,9 @@ function MapTools({
   height: number,
   onHeightChange: (value: number) => void,
   showGrid: boolean,
-  onShowGridChange: (show: boolean) => void
+  onShowGridChange: (show: boolean) => void,
+  showTerrain: boolean,
+  onShowTerrainChange: (show: boolean) => void
 }) {
   const [tab, setTab] = React.useState(0);
 
@@ -79,6 +83,13 @@ function MapTools({
                 onChange={(event) => onShowGridChange(event.target.checked)}
               />
               Show grid
+            </FormLabel>
+            <FormLabel className="flex flex-row items-center gap-2">
+              <Checkbox
+                checked={showTerrain}
+                onChange={(event) => onShowTerrainChange(event.target.checked)}
+              />
+              Show terrain labels
             </FormLabel>
           </div>
         )}
