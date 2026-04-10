@@ -18,6 +18,12 @@ function DeleteButton({ onDelete }: { onDelete: () => void }) {
       >
         <i className="fas fa-check" />
       </IconButton>
+      <IconButton
+        size="small"
+        onClick={() => setConfirming(false)}
+      >
+        <i className="fas fa-times" />
+      </IconButton>
     </div>
   )
   else return (
