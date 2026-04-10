@@ -57,6 +57,14 @@ const theme = createTheme({
         },
       }
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "var(--bg-color)",
+          color: "var(--text-color)",
+        }
+      }
+    }
   },
   typography: {
     button: {
