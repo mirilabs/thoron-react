@@ -77,6 +77,18 @@ function MapEditor({
     setShowGrid(show);
   }
 
+  const [showTerrain, setShowTerrain] = React.useState(true);
+  const handleSetShowTerrain = (show: boolean) => {
+    const renderer = rendererRef.current;
+    if (!renderer) return;
+    if (show) {
+      renderer.showTerrain();
+    } else {
+      renderer.hideTerrain();
+    }
+    setShowTerrain(show);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className={
@@ -105,6 +117,8 @@ function MapEditor({
         onHeightChange={handleHeightChange}
         showGrid={showGrid}
         onShowGridChange={handleSetShowGrid}
+        showTerrain={showTerrain}
+        onShowTerrainChange={handleSetShowTerrain}
       />
       <div className="border border-[var(--text-color)] rounded-lg">
         <canvas

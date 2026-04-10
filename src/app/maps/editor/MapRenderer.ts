@@ -6,18 +6,25 @@ class MapRenderer {
   private ctx: CanvasRenderingContext2D;
   private map: Map;
   private options: {
-    showGrid?: boolean
+    showGrid?: boolean,
+    showTerrain?: boolean
   };
 
   constructor(ctx: CanvasRenderingContext2D, map: Map, options: {
-    showGrid?: boolean
+    showGrid?: boolean,
+    showTerrain?: boolean
   } = {}) {
     this.ctx = ctx;
     this.map = map;
     this.options = {
       showGrid: true,
+      showTerrain: true,
       ...options
     };
+  }
+
+  get terrainMap(): number[][] {
+    return this.map.map;
   }
 
   get width(): number {
@@ -37,11 +44,14 @@ class MapRenderer {
   }
 
   draw() {
-    this.ctx.fillStyle = "#ffffff";
-    this.ctx.fillRect(0, 0, this.widthPx, this.heightPx);
+    this.drawBackground();
 
     if (this.options.showGrid) {
       this.drawGrid();
+    }
+
+    if (this.options.showTerrain) {
+      this.drawTerrain();
     }
   }
 
@@ -75,6 +85,26 @@ class MapRenderer {
     }
   }
 
+  drawTerrain() {
+    this.ctx.save();
+    this.ctx.fillStyle = "#ffffff";
+    this.ctx.strokeStyle = "#000000";
+    this.ctx.lineWidth = 1;
+    this.ctx.font = "16px monospace";
+    this.ctx.textBaseline = "hanging";
+
+    this.terrainMap.forEach((row, y) => {
+      row.forEach((tileId, x) => {
+        const pixelX = x * TILE_SIZE;
+        const pixelY = y * TILE_SIZE;
+        const text = this.map.tiles[tileId]?.name || "?";
+        this.ctx.fillText(text, pixelX + 4, pixelY + 4);
+        this.ctx.strokeText(text, pixelX + 4, pixelY + 4);
+      });
+    });
+    this.ctx.restore();
+  }
+
   showGrid() {
     this.options.showGrid = true;
     this.draw();
@@ -82,6 +112,16 @@ class MapRenderer {
 
   hideGrid() {
     this.options.showGrid = false;
+    this.draw();
+  }
+
+  showTerrain() {
+    this.options.showTerrain = true;
+    this.draw();
+  }
+
+  hideTerrain() {
+    this.options.showTerrain = false;
     this.draw();
   }
 }
