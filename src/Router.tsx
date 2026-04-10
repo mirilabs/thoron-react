@@ -6,6 +6,7 @@ import CampaignDetail from "./app/campaigns/CampaignDetail";
 import GameplayRoot from "./app/gameplay/GameplayRoot";
 import CharacterShow from "./app/characters/CharacterShow";
 import ItemIndex from "./app/items/ItemIndex";
+import MapsIndex from "./app/maps/MapsIndex";
 
 export default function Router() {
   return (
@@ -17,6 +18,8 @@ export default function Router() {
             <Route index element={<CampaignDetail />} />
             <Route path="characters/:characterId" element={<CharacterShow />} />
             <Route path="items" element={<ItemIndex />} />
+            <Route path="maps" element={<MapsIndex />} />
+            <Route path="maps/:mapId" element={<MapsIndex />} />
           </Route>
           <Route path="/gameplay" element={<GameplayRoot />} />
         </Routes>

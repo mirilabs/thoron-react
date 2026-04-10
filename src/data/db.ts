@@ -1,5 +1,5 @@
 import { Dexie, type EntityTable } from "dexie";
-import { ItemRecord, IUnitRecord } from "thoron";
+import { ItemRecord, IUnitRecord, ITerrainRecord } from "thoron";
 
 type Campaign = {
   id: number,
@@ -18,10 +18,18 @@ type Item = ItemRecord & {
   campaignId: number
 }
 
+type Map = ITerrainRecord & {
+  id: number,
+  campaignId: number,
+  name: string,
+  background?: Blob
+}
+
 const db = new Dexie("thoron") as Dexie & {
   campaigns: EntityTable<Campaign, "id">,
   characters: EntityTable<Character, "id">,
   items: EntityTable<Item, "id">,
+  maps: EntityTable<Map, "id">
 }
 
 db.version(1).stores({
@@ -36,8 +44,13 @@ db.version(1).stores({
     "name",
     "campaignId"
   ].join(", "),
+  maps: [
+    "++id",
+    "name",
+    "campaignId"
+  ].join(", "),
 });
 
-export type { Campaign, Character, Item };
+export type { Campaign, Character, Item, Map };
 
 export default db;
