@@ -1,7 +1,10 @@
 import React from "react";
 import { Map } from "@/data/db";
 import { Button } from "@mui/material";
-import TileList from "../TileList";
+import MapTools from "./MapTools";
+import MapRenderer from "./MapRenderer";
+
+const TILE_SIZE = 64;
 
 function MapEditor({
   map,
@@ -12,6 +15,68 @@ function MapEditor({
   onSave: () => void,
   onCancel: () => void
 }) {
+  const [name, setName] = React.useState(map.name);
+
+  const handleNameChange = (value: string) => {
+    setName(value);
+  }
+
+  const tileMap = map.map;
+  const [width, setWidth] = React.useState(map.map[0].length);
+  const [height, setHeight] = React.useState(map.map.length);
+
+  const handleWidthChange = (value: number) => {
+    if (value === width + 1) {
+      tileMap.forEach((row: number[]) => {
+        row.push(0);
+      });
+    }
+    else if (value === width - 1) {
+      tileMap.forEach((row: number[]) => {
+        row.pop();
+      });
+    }
+    else return;
+    setWidth(value);
+  }
+
+  const handleHeightChange = (value: number) => {
+    if (value === height + 1) {
+      tileMap.push(Array(width).fill(0));
+    }
+    else if (value === height - 1) {
+      tileMap.pop();
+    }
+    else return;
+    setHeight(value);
+  }
+
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const rendererRef = React.useRef<MapRenderer | null>(null);
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const renderer = new MapRenderer(ctx, map, { showGrid: true });
+    rendererRef.current = renderer;
+    renderer.draw();
+  }, [tileMap, width, height]);
+
+  const [showGrid, setShowGrid] = React.useState(true);
+  const handleSetShowGrid = (show: boolean) => {
+    const renderer = rendererRef.current;
+    if (!renderer) return;
+    if (show) {
+      renderer.showGrid();
+    } else {
+      renderer.hideGrid();
+    }
+    setShowGrid(show);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className={
@@ -30,22 +95,22 @@ function MapEditor({
           </Button>
         </span>
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold flex items-center gap-2">
-          <i className="fa-regular fa-square text-[var(--accent-color)]" />
-          Tiles
-        </h2>
-        <TileList tiles={map.tiles || []} />
-      </div>
-      <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold flex items-center gap-2">
-          <i className="fa-regular fa-map text-[var(--accent-color)]" />
-          Map
-        </h2>
+      <MapTools
+        map={map}
+        name={name}
+        width={width}
+        height={height}
+        onNameChange={handleNameChange}
+        onWidthChange={handleWidthChange}
+        onHeightChange={handleHeightChange}
+        showGrid={showGrid}
+        onShowGridChange={handleSetShowGrid}
+      />
+      <div className="border border-[var(--text-color)] rounded-lg">
         <canvas
-          className="border border-[var(--text-color)] rounded-lg"
-          width={map.map[0].length * 32}
-          height={map.map.length * 32}
+          width={width * TILE_SIZE}
+          height={height * TILE_SIZE}
+          ref={canvasRef}
         />
       </div>
     </div>
