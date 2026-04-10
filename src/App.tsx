@@ -10,7 +10,7 @@ import { initializeUserSettings } from "@/app/gameplay/ControlPanel/Settings/use
 import { ThemeProvider } from "@mui/material";
 import MUITheme from "@/stylesheets/MUITheme";
 import Router from "./Router";
-import Alerts from "./app/Alerts";
+import Alerts from "./app/core/Alerts";
 
 initializeUserSettings();
 
