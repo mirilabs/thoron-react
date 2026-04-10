@@ -10,6 +10,7 @@ import { initializeUserSettings } from "@/app/gameplay/ControlPanel/Settings/use
 import { ThemeProvider } from "@mui/material";
 import MUITheme from "@/stylesheets/MUITheme";
 import Router from "./Router";
+import Alerts from "./app/Alerts";
 
 initializeUserSettings();
 
@@ -19,6 +20,7 @@ export default function App() {
       <ViewportProvider>
         <ThemeProvider theme={MUITheme}>
           <Router />
+          <Alerts />
         </ThemeProvider>
       </ViewportProvider>
     </ErrorBoundary>
