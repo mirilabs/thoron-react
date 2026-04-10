@@ -9,7 +9,7 @@ function MapDetailEmpty() {
   return (
     <div className={
       "flex flex-col items-center justify-center gap-4 h-full " +
-      "min-h-[400px] flex-1 " +
+      "min-h-[400px] " +
       "border border-[var(--text-color)] rounded-lg p-8 m-4 " +
       "bg-[var(--bg-color)] text-[var(--text-color-2)] shadow-inner"
     }>
@@ -95,15 +95,15 @@ function MapDetail({ mapId }: { mapId?: number }) {
 
       <div className="mt-4 flex-1 flex flex-col gap-3">
         <h2 className="text-lg font-semibold flex items-center gap-2">
-          <i className="fas fa-eye text-[var(--accent-color)]" />
-          Preview
+          <i className="fas fa-image text-[var(--accent-color)]" />
+          Background
         </h2>
-        <div className="flex-1 min-h-[300px] bg-slate-900 rounded-xl flex flex-col items-center justify-center border-2 border-dashed border-[var(--text-color-2)]/30 group hover:border-[var(--accent-color)]/50 transition-colors">
-          <i className="fas fa-mountain-sun text-5xl text-slate-700 group-hover:text-[var(--accent-color)] transition-colors duration-500 mb-4" />
-          <p className="text-slate-500 font-medium italic">Interactive map preview coming soon</p>
-          <button className="mt-4 px-6 py-2 bg-[var(--accent-color)] text-white rounded-lg font-semibold shadow-lg hover:brightness-110 transition-all">
-            Initialize Editor
-          </button>
+        <div className={
+          "flex-1 rounded-xl flex flex-col items-center justify-center " +
+          "bg-[var(--bg-color-2)] p-4 min-h-[300px] " +
+          "border border-[var(--text-color-2)]/20 "
+        }>
+          <p className="text-sm text-[var(--text-color-2)]">No background image</p>
         </div>
       </div>
     </div>
