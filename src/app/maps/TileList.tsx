@@ -25,7 +25,7 @@ function TileList({ tiles }: {
   tiles: ITileRecord[]
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
       {tiles.map((tile, i) => (
         <TileCard key={i} index={i} tile={tile} />
       ))}

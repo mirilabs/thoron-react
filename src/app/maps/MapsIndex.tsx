@@ -2,7 +2,8 @@ import React from "react";
 import { Link, useParams } from "react-router";
 import { Button } from "@mui/material";
 import MapList from "./MapList";
-import MapDetail, { MapDetailEmpty } from "./MapDetail";
+import MapDetail from "./MapDetail";
+import { MapDetailEmpty } from "./MapDetailContent";
 
 function MapsIndex() {
   const { id: campaignId, mapId } = useParams();
@@ -23,7 +24,7 @@ function MapsIndex() {
         </Link>
         <MapList campaignId={Number(campaignId)} />
       </div>
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col">
         {mapId ? (
           <MapDetail mapId={Number(mapId)} />
         ) : (
