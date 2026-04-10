@@ -3,6 +3,7 @@ import ItemCreator from "../gameplay/ControlPanel/UnitEdit/ItemCreator";
 import { Item } from "@/data/db";
 import { ItemEntry } from "../gameplay/ControlPanel/UnitEdit/ItemsForm";
 import db from "@/data/db";
+import ItemCreateJSON from "./ItemCreateJSON";
 
 function ItemList({ campaignId, items }: {
   campaignId: number,
@@ -19,6 +20,14 @@ function ItemList({ campaignId, items }: {
       ...item,
       campaignId,
     });
+  }
+
+  const handleItemsCreate = async (items: Item[]) => {
+    const itemsToAdd = items.map(item => ({
+      ...item,
+      campaignId,
+    }));
+    await db.items.bulkAdd(itemsToAdd);
   }
 
   const handleItemUpdate = async (item: Item) => {
@@ -41,8 +50,9 @@ function ItemList({ campaignId, items }: {
           <p className="text-gray-400">No items in this campaign yet.</p>
         )}
       </div>
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center gap-4 flex-wrap">
         <ItemCreator onSave={handleItemCreate} />
+        <ItemCreateJSON onSave={handleItemsCreate} />
       </div>
     </div>
   );
