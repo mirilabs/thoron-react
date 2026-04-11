@@ -24,7 +24,7 @@ function MapsIndex() {
         </Link>
         <MapList campaignId={Number(campaignId)} />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col min-w-[320px]">
         {mapId ? (
           <MapDetail mapId={Number(mapId)} />
         ) : (

@@ -89,6 +89,20 @@ function MapEditor({
     setShowTerrain(show);
   }
 
+  const [selectedTileId, setSelectedTileId] =
+    React.useState<number | null>(null);
+
+  const handleSetSelectedTileId = (tileId: number) => {
+    setSelectedTileId(tileId);
+  }
+
+  const handleTileDelete = (tileId: number) => {
+    if (map.tiles.length > 1) {
+      map.tiles.splice(tileId, 1);
+      setSelectedTileId(null);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className={
@@ -119,6 +133,9 @@ function MapEditor({
         onShowGridChange={handleSetShowGrid}
         showTerrain={showTerrain}
         onShowTerrainChange={handleSetShowTerrain}
+        selectedTileId={selectedTileId}
+        onTileSelect={handleSetSelectedTileId}
+        onTileDelete={handleTileDelete}
       />
       <div className="border border-[var(--text-color)] rounded-lg">
         <canvas
