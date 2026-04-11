@@ -25,6 +25,9 @@ function MapEditor({
     });
   }
 
+  const [background, setBackground] =
+    React.useState<HTMLImageElement | null>(null);
+
   const width = map.map[0].length;
   const height = map.map.length;
 
@@ -64,13 +67,14 @@ function MapEditor({
     if (!ctx) return;
 
     const renderer = new MapRenderer(ctx, map, {
+      background: background,
       showGrid: true,
       showTerrainLabels: showTerrainLabels,
       showTerrainTints: paintMode
     });
     rendererRef.current = renderer;
     renderer.draw();
-  }, [map]);
+  }, [map, background]);
 
   const draw = () => {
     const renderer = rendererRef.current;
@@ -216,6 +220,7 @@ function MapEditor({
         onTileDelete={handleTileDelete}
         paintMode={paintMode}
         onPaintModeChange={handlePaintModeChange}
+        onBackgroundChange={setBackground}
       />
       <div className="border border-[var(--text-color)] rounded-lg">
         <canvas
