@@ -9,43 +9,45 @@ function TileChip({
   index,
   tile,
   showDetail,
+  onSelect,
   onEdit,
-  onDelete,
-  onClick
+  onDelete
 }: {
   index: number,
   tile: ITileRecord,
   showDetail: boolean,
-  onEdit?: () => void,
-  onDelete?: (tileId: number) => void,
-  onClick: () => void
+  onSelect: () => void,
+  onEdit?: (tile: ITileRecord) => void,
+  onDelete?: (tileId: number) => void
 }) {
   return (
-    <div className={
-      "flex flex-col gap-2 " +
-      "border border-[var(--text-color-2)]/20 rounded-lg p-2 " +
-      "bg-[var(--bg-color)] hover:bg-[var(--bg-color-2)] cursor-pointer " +
-      "transition-colors duration-200 " +
-      (showDetail ? "bg-[var(--bg-color-2)]" : "")
-    } onClick={onClick}>
+    <div>
       <div className={
-        "flex flex-row items-center gap-4 " +
-        (showDetail ? "border-b border-[var(--accent-color)]" : "")
-      }>
-        <p className={
-          "text-lg text-[var(--text-color-2)] font-bold w-4 text-center"
+        "flex flex-col gap-2 pl-2 pr-2 " +
+        "border border-[var(--text-color-2)]/20 rounded-lg p-2 " +
+        "bg-[var(--bg-color)] hover:bg-[var(--bg-color-2)] cursor-pointer " +
+        "transition-colors duration-200 " +
+        (showDetail ? "bg-[var(--bg-color-2)]" : "")
+      } onClick={onSelect}>
+        <div className={
+          "flex flex-row items-center gap-2 pl-2 pr-2 " +
+          (showDetail ? "border-b border-[var(--accent-color)]" : "")
         }>
-          {index}
-        </p>
-        <p className="text-sm font-medium">{tile.name}</p>
+          <p className={
+            "text-lg text-[var(--text-color-2)] font-bold w-4 text-center"
+          }>
+            {index}
+          </p>
+          <p className="text-sm font-medium">{tile.name}</p>
+        </div>
+        {showDetail &&
+          <TileDetail
+            tile={tile}
+            onEdit={onEdit}
+            onDelete={onDelete ? () => onDelete(index) : undefined}
+          />
+        }
       </div>
-      {showDetail &&
-        <TileDetail
-          tile={tile}
-          onEdit={onEdit}
-          onDelete={onDelete ? () => onDelete(index) : undefined}
-        />
-      }
     </div>
   )
 }
@@ -56,7 +58,7 @@ function TileDetail({
   onDelete
 }: {
   tile: ITileRecord,
-  onEdit?: () => void,
+  onEdit?: (tile: ITileRecord) => void,
   onDelete?: () => void
 }) {
   let infCost: number, cavCost: number, armCost: number, flyCost: number;
@@ -72,33 +74,23 @@ function TileDetail({
 
   const [editing, setEditing] = React.useState(false);
   const handleTileSave = (tile: ITileRecord) => {
-    console.log(tile);
+    onEdit(tile);
     setEditing(false);
   }
 
   return (
-    <div>
-      <div className={
-        "grid grid-cols-2 gap-2 pt-2 pb-2 "
-      }>
+    <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-2 pt-2">
         <MoveCostIndicator type="infantry" cost={infCost} />
         <MoveCostIndicator type="cavalry" cost={cavCost} />
         <MoveCostIndicator type="armor" cost={armCost} />
         <MoveCostIndicator type="flying" cost={flyCost} />
       </div>
-      <div className="flex flex-row items-center gap-2">
-        {tile.stats && (
-          <span className="flex flex-row items-center gap-2">
-            <i className="fas fa-shield-alt" />
-            <p className="text-sm font-medium">{tile.stats.avd}</p>
-          </span>
-        )}
-        {tile.heal && (
-          <span className="flex flex-row items-center gap-2">
-            <i className="fas fa-heart" />
-            <p className="text-sm font-medium">{tile.heal}</p>
-          </span>
-        )}
+      <div className="grid grid-cols-2 gap-2">
+        <StatIndicator label="AVD" value={tile.stats?.avd} />
+        <StatIndicator label="DEF" value={tile.stats?.def} />
+        <StatIndicator label="RES" value={tile.stats?.res} />
+        <StatIndicator label="HEAL" value={tile.heal} />
       </div>
       <div className={
         "flex flex-row items-center gap-2 " +
@@ -135,6 +127,25 @@ function MoveCostIndicator({
     <span className="flex flex-row items-center gap-2">
       <img className="item-icon" src={icons[type]} alt={type} />
       <p className="text-sm font-medium">{cost.toString()}</p>
+    </span>
+  )
+}
+
+function StatIndicator({
+  label,
+  value
+}: {
+  label: string,
+  value: number
+}) {
+  if (!(value > 0)) {
+    return null;
+  }
+
+  return (
+    <span className="flex flex-row items-center gap-2">
+      <p className="text-xs text-[var(--text-color-2)]">{label}</p>
+      <p className="text-sm font-medium">{value}</p>
     </span>
   )
 }

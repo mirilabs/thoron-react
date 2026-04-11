@@ -3,12 +3,28 @@ import { Button, Dialog, DialogActions, DialogContent, TextField } from "@mui/ma
 import React from "react";
 import { ITileRecord } from "thoron";
 
+const BLANK_TILE: ITileRecord = {
+  name: "New tile",
+  cost: {
+    default: 1,
+    infantry: 1,
+    cavalry: 1,
+    armor: 1,
+    flying: 1
+  },
+  stats: {
+    avd: 0,
+    def: 0,
+    res: 0
+  }
+};
+
 function TileEdit({
-  tile,
+  tile = BLANK_TILE,
   onSave,
   onCancel
 }: {
-  tile: ITileRecord,
+  tile?: ITileRecord,
   onSave: (tile: ITileRecord) => void,
   onCancel: () => void
 }) {
@@ -33,13 +49,14 @@ function TileEdit({
   }
 
   const handleSave = () => {
-    onSave({
+    const draft: ITileRecord = {
       ...tile,
       name,
       cost,
       stats,
-      ...(heal > 0 ? { heal } : {})
-    });
+      heal
+    };
+    onSave(draft);
   }
 
   return (
