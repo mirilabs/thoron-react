@@ -18,6 +18,7 @@ const TERRAIN_COLORS = [
 class MapRenderer {
   private ctx: CanvasRenderingContext2D;
   private map: Map;
+  private background: HTMLImageElement | null;
   private options: {
     showGrid?: boolean,
     showTerrainLabels?: boolean,
@@ -25,6 +26,7 @@ class MapRenderer {
   };
 
   constructor(ctx: CanvasRenderingContext2D, map: Map, options: {
+    background?: HTMLImageElement | null,
     showGrid?: boolean,
     showTerrain?: boolean,
     showTerrainLabels?: boolean,
@@ -32,6 +34,7 @@ class MapRenderer {
   } = {}) {
     this.ctx = ctx;
     this.map = map;
+    this.background = options.background || null;
     this.options = {
       showGrid: true,
       showTerrainLabels: true,
@@ -80,12 +83,8 @@ class MapRenderer {
     this.ctx.fillStyle = "#ffffff";
     this.ctx.fillRect(0, 0, this.widthPx, this.heightPx);
 
-    if (this.map.background) {
-      const image = new Image();
-      image.src = URL.createObjectURL(this.map.background);
-      image.onload = () => {
-        this.ctx.drawImage(image, 0, 0, this.widthPx, this.heightPx);
-      };
+    if (this.background) {
+      this.ctx.drawImage(this.background, 0, 0, this.widthPx, this.heightPx);
     }
   }
 
@@ -110,7 +109,8 @@ class MapRenderer {
     this.ctx.save();
     this.ctx.fillStyle = "#ffffff";
     this.ctx.strokeStyle = "#000000";
-    this.ctx.lineWidth = 1;
+    this.ctx.shadowColor = "#000000";
+    this.ctx.shadowBlur = 2;
     this.ctx.font = "16px monospace";
     this.ctx.textBaseline = "hanging";
 
@@ -134,8 +134,8 @@ class MapRenderer {
     this.ctx.beginPath();
     this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
     this.ctx.clip();
-    this.ctx.fillText(text, pixelX + 4, pixelY + 4);
     this.ctx.strokeText(text, pixelX + 4, pixelY + 4);
+    this.ctx.fillText(text, pixelX + 4, pixelY + 4);
     this.ctx.restore();
   }
 

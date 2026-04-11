@@ -1,6 +1,6 @@
 import React from "react";
 import { Map } from "@/data/db";
-import { Checkbox, FormLabel, Tab, Tabs, TextField } from "@mui/material";
+import { Button, Checkbox, FormLabel, Tab, Tabs, TextField } from "@mui/material";
 import MapDimensions from "./MapDimensions";
 import TileList from "./TileList";
 import { ITileRecord } from "thoron";
@@ -28,7 +28,8 @@ function MapTools({
   onTileUpdate,
   onTileDelete,
   paintMode,
-  onPaintModeChange
+  onPaintModeChange,
+  onBackgroundChange
 }: {
   map: Map,
   onMapChange: (map: Map) => void,
@@ -45,7 +46,8 @@ function MapTools({
   onTileUpdate: (tileId: number, tile: ITileRecord) => void,
   onTileDelete: (tileId: number) => void,
   paintMode: boolean,
-  onPaintModeChange: (paint: boolean) => void
+  onPaintModeChange: (paint: boolean) => void,
+  onBackgroundChange: (background: HTMLImageElement | null) => void
 }) {
   const [tab, setTab] = React.useState(0);
 
@@ -56,6 +58,23 @@ function MapTools({
 
   const width = map.map[0].length;
   const height = map.map.length;
+
+  type UploadEvent = React.ChangeEvent<HTMLInputElement>;
+  const handleBackgroundChange = (event: UploadEvent) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      onMapChange({
+        ...map,
+        background: file
+      });
+
+      const image = new Image();
+      image.onload = () => {
+        onBackgroundChange(image);
+      }
+      image.src = URL.createObjectURL(file);
+    }
+  }
 
   return (
     <div className={
@@ -120,8 +139,25 @@ function MapTools({
           </div>
         )}
         {tab === MapToolsTab.Background && (
-          <div>
-            Background
+          <div className="flex flex-col gap-2">
+            <Button
+              variant="outlined"
+              component="label"
+              startIcon={<i className="fas fa-upload" />}
+            >
+              Upload Background
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleBackgroundChange}
+              />
+            </Button>
+            {map.background && (
+              <div className="text-sm text-[var(--text-color-2)]">
+                {(map.background as File).name || "Custom background"} uploaded
+              </div>
+            )}
           </div>
         )}
         {tab === MapToolsTab.View && (
