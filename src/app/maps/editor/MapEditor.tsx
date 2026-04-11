@@ -63,7 +63,11 @@ function MapEditor({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const renderer = new MapRenderer(ctx, map, { showGrid: true });
+    const renderer = new MapRenderer(ctx, map, {
+      showGrid: true,
+      showTerrainLabels: showTerrainLabels,
+      showTerrainTints: paintMode
+    });
     rendererRef.current = renderer;
     renderer.draw();
   }, [map]);
@@ -86,22 +90,34 @@ function MapEditor({
     setShowGrid(show);
   }
 
-  const [showTerrain, setShowTerrain] = React.useState(true);
-  const handleSetShowTerrain = (show: boolean) => {
+  const [showTerrainLabels, setShowTerrainLabels] = React.useState(true);
+  const handleSetShowTerrainLabels = (show: boolean) => {
     const renderer = rendererRef.current;
     if (!renderer) return;
     if (show) {
-      renderer.showTerrain();
+      renderer.showTerrainLabels();
     } else {
-      renderer.hideTerrain();
+      renderer.hideTerrainLabels();
     }
-    setShowTerrain(show);
+    setShowTerrainLabels(show);
   }
 
   const [selectedTileId, setSelectedTileId] =
     React.useState<number | null>(null);
 
   const [paintMode, setPaintMode] = React.useState(false);
+
+  const handlePaintModeChange = (paint: boolean) => {
+    setPaintMode(paint);
+
+    const renderer = rendererRef.current;
+    if (!renderer) return;
+    if (paint) {
+      renderer.showTerrainTints();
+    } else {
+      renderer.hideTerrainTints();
+    }
+  }
 
   const handleTileCreate = (tile: ITileRecord) => {
     setMap(prev => {
@@ -191,15 +207,15 @@ function MapEditor({
         onHeightChange={handleHeightChange}
         showGrid={showGrid}
         onShowGridChange={handleSetShowGrid}
-        showTerrain={showTerrain}
-        onShowTerrainChange={handleSetShowTerrain}
+        showTerrainLabels={showTerrainLabels}
+        onShowTerrainLabelsChange={handleSetShowTerrainLabels}
         selectedTileId={selectedTileId}
         onTileSelect={setSelectedTileId}
         onTileCreate={handleTileCreate}
         onTileUpdate={handleTileUpdate}
         onTileDelete={handleTileDelete}
         paintMode={paintMode}
-        onPaintModeChange={setPaintMode}
+        onPaintModeChange={handlePaintModeChange}
       />
       <div className="border border-[var(--text-color)] rounded-lg">
         <canvas

@@ -3,13 +3,13 @@ import { Map } from "@/data/db";
 const TILE_SIZE = 64;
 
 const TERRAIN_COLORS = [
+  "#ffffff",
   "#00ff00",
   "#0000ff",
   "#ff0000",
   "#ffff00",
   "#ff00ff",
   "#00ffff",
-  "#ffffff",
   "#ffaa00",
   "#aa00ff",
   "#00ffaa",
@@ -20,18 +20,22 @@ class MapRenderer {
   private map: Map;
   private options: {
     showGrid?: boolean,
-    showTerrain?: boolean
+    showTerrainLabels?: boolean,
+    showTerrainTints?: boolean
   };
 
   constructor(ctx: CanvasRenderingContext2D, map: Map, options: {
     showGrid?: boolean,
-    showTerrain?: boolean
+    showTerrain?: boolean,
+    showTerrainLabels?: boolean,
+    showTerrainTints?: boolean
   } = {}) {
     this.ctx = ctx;
     this.map = map;
     this.options = {
       showGrid: true,
-      showTerrain: true,
+      showTerrainLabels: true,
+      showTerrainTints: false,
       ...options
     };
   }
@@ -59,12 +63,16 @@ class MapRenderer {
   draw() {
     this.drawBackground();
 
-    if (this.options.showGrid) {
-      this.drawGrid();
+    if (this.options.showTerrainTints) {
+      this.drawTerrainTints();
     }
 
-    if (this.options.showTerrain) {
-      this.drawTerrain();
+    if (this.options.showTerrainLabels) {
+      this.drawTerrainLabels();
+    }
+
+    if (this.options.showGrid) {
+      this.drawGrid();
     }
   }
 
@@ -98,7 +106,7 @@ class MapRenderer {
     }
   }
 
-  drawTerrain() {
+  drawTerrainLabels() {
     this.ctx.save();
     this.ctx.fillStyle = "#ffffff";
     this.ctx.strokeStyle = "#000000";
@@ -107,27 +115,18 @@ class MapRenderer {
     this.ctx.textBaseline = "hanging";
 
     this.terrainMap.forEach((row, y) => {
-      row.forEach((tileId, x) => {
-        this._drawTerrainTile(x, y);
+      row.forEach((_, x) => {
+        this._drawTerrainLabel(x, y);
       });
     });
     this.ctx.restore();
   }
 
-  _drawTerrainTile(x: number, y: number) {
-    // tint
-    const tileIndex = this.terrainMap[y][x];
-    const tile = this.map.tiles[tileIndex];
+  _drawTerrainLabel(x: number, y: number) {
+    const tileId = this.terrainMap[y][x];
+    const tile = this.map.tiles[tileId];
     const pixelX = x * TILE_SIZE;
     const pixelY = y * TILE_SIZE;
-    this.ctx.save();
-    this.ctx.beginPath();
-    this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
-    this.ctx.clip();
-    this.ctx.globalAlpha = 0.2;
-    this.ctx.fillStyle = TERRAIN_COLORS[tileIndex % TERRAIN_COLORS.length];
-    this.ctx.fillRect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
-    this.ctx.restore();
 
     // label
     const text = tile?.name || "?";
@@ -137,6 +136,30 @@ class MapRenderer {
     this.ctx.clip();
     this.ctx.fillText(text, pixelX + 4, pixelY + 4);
     this.ctx.strokeText(text, pixelX + 4, pixelY + 4);
+    this.ctx.restore();
+  }
+
+  drawTerrainTints() {
+    this.ctx.save();
+    this.terrainMap.forEach((row, y) => {
+      row.forEach((_, x) => {
+        this._drawTerrainTint(x, y);
+      });
+    });
+    this.ctx.restore();
+  }
+
+  _drawTerrainTint(x: number, y: number) {
+    const tileIndex = this.terrainMap[y][x];
+    const pixelX = x * TILE_SIZE;
+    const pixelY = y * TILE_SIZE;
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
+    this.ctx.clip();
+    this.ctx.globalAlpha = 0.2;
+    this.ctx.fillStyle = TERRAIN_COLORS[tileIndex % TERRAIN_COLORS.length];
+    this.ctx.fillRect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
     this.ctx.restore();
   }
 
@@ -150,13 +173,23 @@ class MapRenderer {
     this.draw();
   }
 
-  showTerrain() {
-    this.options.showTerrain = true;
+  showTerrainLabels() {
+    this.options.showTerrainLabels = true;
     this.draw();
   }
 
-  hideTerrain() {
-    this.options.showTerrain = false;
+  hideTerrainLabels() {
+    this.options.showTerrainLabels = false;
+    this.draw();
+  }
+
+  showTerrainTints() {
+    this.options.showTerrainTints = true;
+    this.draw();
+  }
+
+  hideTerrainTints() {
+    this.options.showTerrainTints = false;
     this.draw();
   }
 }
