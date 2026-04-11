@@ -101,9 +101,7 @@ function MapEditor({
   const [selectedTileId, setSelectedTileId] =
     React.useState<number | null>(null);
 
-  const handleSetSelectedTileId = (tileId: number) => {
-    setSelectedTileId(tileId);
-  }
+  const [paintMode, setPaintMode] = React.useState(false);
 
   const handleTileCreate = (tile: ITileRecord) => {
     setMap(prev => {
@@ -126,9 +124,12 @@ function MapEditor({
 
         // update tile ids
         prev.map.forEach((row) => {
-          row.forEach((tileId, x) => {
-            if (tileId > tileId) {
-              row[x] = tileId - 1;
+          row.forEach((id, x) => {
+            if (id > tileId) {
+              row[x] = id - 1;
+            }
+            if (id === tileId) {
+              row[x] = 0;
             }
           });
         });
@@ -136,6 +137,32 @@ function MapEditor({
       setSelectedTileId(null);
     }
     draw();
+  }
+
+  type CanvasMouseEvent = React.MouseEvent<HTMLCanvasElement>;
+  const handleCanvasMouseEvent = (event: CanvasMouseEvent) => {
+    if (event.buttons === 0) return;
+    if (
+      !paintMode ||
+      selectedTileId === null ||
+      selectedTileId >= map.tiles.length
+    ) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const tileX = Math.floor(x / TILE_SIZE);
+    const tileY = Math.floor(y / TILE_SIZE);
+
+    if (tileX >= 0 && tileX < width && tileY >= 0 && tileY < height) {
+      setMap(prev => {
+        prev.map[tileY][tileX] = selectedTileId;
+      });
+    }
   }
 
   return (
@@ -167,16 +194,20 @@ function MapEditor({
         showTerrain={showTerrain}
         onShowTerrainChange={handleSetShowTerrain}
         selectedTileId={selectedTileId}
-        onTileSelect={handleSetSelectedTileId}
+        onTileSelect={setSelectedTileId}
         onTileCreate={handleTileCreate}
         onTileUpdate={handleTileUpdate}
         onTileDelete={handleTileDelete}
+        paintMode={paintMode}
+        onPaintModeChange={setPaintMode}
       />
       <div className="border border-[var(--text-color)] rounded-lg">
         <canvas
           width={width * TILE_SIZE}
           height={height * TILE_SIZE}
           ref={canvasRef}
+          onMouseDown={handleCanvasMouseEvent}
+          onMouseMove={handleCanvasMouseEvent}
         />
       </div>
     </div>

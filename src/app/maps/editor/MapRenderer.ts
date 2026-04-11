@@ -98,8 +98,13 @@ class MapRenderer {
         const pixelX = x * TILE_SIZE;
         const pixelY = y * TILE_SIZE;
         const text = this.map.tiles[tileId]?.name || "?";
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
+        this.ctx.clip();
         this.ctx.fillText(text, pixelX + 4, pixelY + 4);
         this.ctx.strokeText(text, pixelX + 4, pixelY + 4);
+        this.ctx.restore();
       });
     });
     this.ctx.restore();
