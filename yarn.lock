@@ -4070,6 +4070,7 @@ __metadata:
     tailwindcss: "npm:^4.2.2"
     thoron: ../thoron
     typescript: "npm:^5.7.3"
+    use-immer: "npm:^0.11.0"
     vite: "npm:^6.2.0"
     vite-plugin-node-polyfills: "npm:^0.23.0"
     web-vitals: "npm:^2.1.4"
@@ -4179,6 +4180,16 @@ __metadata:
     punycode: "npm:^1.4.1"
     qs: "npm:^6.12.3"
   checksum: 10/e787d070f0756518b982a4653ef6cdf4d9030d8691eee2d483344faf2b530b71d302287fa63b292299455fea5075c502a5ad5f920cb790e95605847f957a65e4
+  languageName: node
+  linkType: hard
+
+"use-immer@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "use-immer@npm:0.11.0"
+  peerDependencies:
+    immer: ">=8.0.0"
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
+  checksum: 10/09ddbddec5bd5a939dc462de4c9d1ce47989bc60daa712c5235664650b132e246b8e61b6bd3dc8179649445b7cf389065373c75f23829a676dbda6b5d2428928
   languageName: node
   linkType: hard
 
