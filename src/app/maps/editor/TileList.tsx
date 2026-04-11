@@ -1,32 +1,62 @@
 import React from "react";
 import { ITileRecord } from "thoron";
 import TileChip from "./TileChip";
+import { IconButton } from "@mui/material";
+import TileEdit from "./TileEdit";
 
-function TileList({ tiles, selectedTileId, onTileSelect, onTileDelete }: {
+function TileList({
+  tiles,
+  selectedTileId,
+  onTileSelect,
+  onTileCreate,
+  onTileUpdate,
+  onTileDelete
+}: {
   tiles: ITileRecord[],
   selectedTileId: number,
   onTileSelect: (tileId: number) => void,
+  onTileCreate: (tile: ITileRecord) => void,
+  onTileUpdate: (tileId: number, tile: ITileRecord) => void,
   onTileDelete: (tileId: number) => void
 }) {
+  const [createDialogOpen, setCreateDialogOpen] = React.useState(false);
+
   const handleTileDelete = (tileId: number) => {
     if (tiles.length > 1) {
       onTileDelete(tileId);
     }
   }
 
+  const tileElems = tiles.map((tile, i) => (
+    <TileChip
+      key={i}
+      index={i}
+      tile={tile}
+      showDetail={selectedTileId === i}
+      onSelect={() => onTileSelect(i)}
+      onEdit={(tile) => onTileUpdate(i, tile)}
+      onDelete={tiles.length > 1 ? handleTileDelete : undefined}
+    />
+  ));
+
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-      {tiles.map((tile, i) => (
-        <TileChip
-          key={i}
-          index={i}
-          tile={tile}
-          showDetail={selectedTileId === i}
-          onEdit={() => { }}
-          onDelete={tiles.length > 1 ? handleTileDelete : undefined}
-          onClick={() => onTileSelect(i)}
+    <div className="flex flex-row gap-2">
+      {tileElems}
+      <IconButton
+        className="w-[40px] h-[40px]"
+        onClick={() => setCreateDialogOpen(true)}
+      >
+        <i className="fa-solid fa-plus" />
+      </IconButton>
+      {createDialogOpen && (
+        <TileEdit
+          onSave={(tile) => {
+            onTileCreate(tile);
+            setCreateDialogOpen(false);
+          }}
+          onCancel={() => setCreateDialogOpen(false)}
         />
-      ))}
+      )}
     </div>
   )
 }

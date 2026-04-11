@@ -21,7 +21,7 @@ function MapDetail({ mapId }: { mapId?: number }) {
     }>
       {editing ? (
         <MapEditor
-          map={map}
+          record={map}
           onSave={() => setEditing(false)}
           onCancel={() => setEditing(false)}
         />

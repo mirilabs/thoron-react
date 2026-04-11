@@ -61,7 +61,7 @@ class MapRenderer {
 
     if (this.map.background) {
       const image = new Image();
-      image.src = this.map.background;
+      image.src = URL.createObjectURL(this.map.background);
       image.onload = () => {
         this.ctx.drawImage(image, 0, 0, this.widthPx, this.heightPx);
       };

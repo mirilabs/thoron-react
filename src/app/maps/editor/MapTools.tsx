@@ -3,14 +3,13 @@ import { Map } from "@/data/db";
 import { Checkbox, FormLabel, Tab, Tabs, TextField } from "@mui/material";
 import MapDimensions from "./MapDimensions";
 import TileList from "./TileList";
+import { ITileRecord } from "thoron";
 
 function MapTools({
   map,
-  name,
+  onMapChange,
   onNameChange,
-  width,
   onWidthChange,
-  height,
   onHeightChange,
   showGrid,
   onShowGridChange,
@@ -18,14 +17,14 @@ function MapTools({
   onShowTerrainChange,
   selectedTileId,
   onTileSelect,
+  onTileCreate,
+  onTileUpdate,
   onTileDelete
 }: {
   map: Map,
-  name: string,
+  onMapChange: (map: Map) => void,
   onNameChange: (value: string) => void,
-  width: number,
   onWidthChange: (value: number) => void,
-  height: number,
   onHeightChange: (value: number) => void,
   showGrid: boolean,
   onShowGridChange: (show: boolean) => void,
@@ -33,13 +32,18 @@ function MapTools({
   onShowTerrainChange: (show: boolean) => void,
   selectedTileId: number,
   onTileSelect: (tileId: number) => void,
+  onTileCreate: (tile: ITileRecord) => void,
+  onTileUpdate: (tileId: number, tile: ITileRecord) => void,
   onTileDelete: (tileId: number) => void
 }) {
   const [tab, setTab] = React.useState(0);
 
+  const width = map.map[0].length;
+  const height = map.map.length;
+
   return (
     <div className={
-      "border border-[var(--text-color-2)]/20 rounded-lg p-4"
+      "border border-[var(--text-color-2)]/20 rounded-lg"
     }>
       <Tabs
         value={tab}
@@ -60,12 +64,12 @@ function MapTools({
           label="View"
         />
       </Tabs>
-      <div>
+      <div className="p-4">
         {tab === 0 && (
-          <div className="flex flex-col gap-2 pt-4 pb-2">
+          <div className="flex flex-col gap-2">
             <TextField
               label="Name"
-              value={name}
+              value={map.name}
               onChange={(event) => onNameChange(event.target.value)}
             />
             <MapDimensions
@@ -79,9 +83,11 @@ function MapTools({
         {tab === 1 && (
           <div>
             <TileList
-              tiles={map.tiles || []}
+              tiles={map.tiles}
               selectedTileId={selectedTileId}
               onTileSelect={onTileSelect}
+              onTileCreate={onTileCreate}
+              onTileUpdate={onTileUpdate}
               onTileDelete={onTileDelete}
             />
           </div>

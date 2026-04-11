@@ -3,52 +3,55 @@ import { Map } from "@/data/db";
 import { Button } from "@mui/material";
 import MapTools from "./MapTools";
 import MapRenderer from "./MapRenderer";
+import { ITileRecord } from "thoron";
+import { useImmer } from "use-immer";
 
 const TILE_SIZE = 64;
 
 function MapEditor({
-  map,
+  record,
   onSave,
   onCancel
 }: {
-  map: Map,
+  record: Map,
   onSave: () => void,
   onCancel: () => void
 }) {
-  const [name, setName] = React.useState(map.name);
+  const [map, setMap] = useImmer(record);
 
   const handleNameChange = (value: string) => {
-    setName(value);
+    setMap(prev => {
+      prev.name = value;
+    });
   }
 
-  const tileMap = map.map;
-  const [width, setWidth] = React.useState(map.map[0].length);
-  const [height, setHeight] = React.useState(map.map.length);
+  const width = map.map[0].length;
+  const height = map.map.length;
 
   const handleWidthChange = (value: number) => {
-    if (value === width + 1) {
-      tileMap.forEach((row: number[]) => {
-        row.push(0);
-      });
-    }
-    else if (value === width - 1) {
-      tileMap.forEach((row: number[]) => {
-        row.pop();
-      });
-    }
-    else return;
-    setWidth(value);
+    setMap(prev => {
+      if (value === width + 1) {
+        prev.map.forEach((row: number[]) => {
+          row.push(0);
+        });
+      }
+      else if (value === width - 1) {
+        prev.map.forEach((row: number[]) => {
+          row.pop();
+        });
+      }
+    });
   }
 
   const handleHeightChange = (value: number) => {
-    if (value === height + 1) {
-      tileMap.push(Array(width).fill(0));
-    }
-    else if (value === height - 1) {
-      tileMap.pop();
-    }
-    else return;
-    setHeight(value);
+    setMap(prev => {
+      if (value === height + 1) {
+        prev.map.push(Array(width).fill(0));
+      }
+      else if (value === height - 1) {
+        prev.map.pop();
+      }
+    });
   }
 
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -63,7 +66,13 @@ function MapEditor({
     const renderer = new MapRenderer(ctx, map, { showGrid: true });
     rendererRef.current = renderer;
     renderer.draw();
-  }, [tileMap, width, height]);
+  }, [map]);
+
+  const draw = () => {
+    const renderer = rendererRef.current;
+    if (!renderer) return;
+    renderer.draw();
+  }
 
   const [showGrid, setShowGrid] = React.useState(true);
   const handleSetShowGrid = (show: boolean) => {
@@ -96,11 +105,37 @@ function MapEditor({
     setSelectedTileId(tileId);
   }
 
+  const handleTileCreate = (tile: ITileRecord) => {
+    setMap(prev => {
+      prev.tiles.push(tile);
+    });
+    setSelectedTileId(map.tiles.length);
+  }
+
+  const handleTileUpdate = (tileId: number, tile: ITileRecord) => {
+    setMap(prev => {
+      prev.tiles[tileId] = tile;
+    });
+    draw();
+  }
+
   const handleTileDelete = (tileId: number) => {
     if (map.tiles.length > 1) {
-      map.tiles.splice(tileId, 1);
+      setMap(prev => {
+        prev.tiles.splice(tileId, 1);
+
+        // update tile ids
+        prev.map.forEach((row) => {
+          row.forEach((tileId, x) => {
+            if (tileId > tileId) {
+              row[x] = tileId - 1;
+            }
+          });
+        });
+      });
       setSelectedTileId(null);
     }
+    draw();
   }
 
   return (
@@ -123,9 +158,7 @@ function MapEditor({
       </div>
       <MapTools
         map={map}
-        name={name}
-        width={width}
-        height={height}
+        onMapChange={setMap}
         onNameChange={handleNameChange}
         onWidthChange={handleWidthChange}
         onHeightChange={handleHeightChange}
@@ -135,6 +168,8 @@ function MapEditor({
         onShowTerrainChange={handleSetShowTerrain}
         selectedTileId={selectedTileId}
         onTileSelect={handleSetSelectedTileId}
+        onTileCreate={handleTileCreate}
+        onTileUpdate={handleTileUpdate}
         onTileDelete={handleTileDelete}
       />
       <div className="border border-[var(--text-color)] rounded-lg">
