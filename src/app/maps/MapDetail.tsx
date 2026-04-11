@@ -22,7 +22,13 @@ function MapDetail({ mapId }: { mapId?: number }) {
       {editing ? (
         <MapEditor
           record={map}
-          onSave={() => setEditing(false)}
+          onSave={(map) => {
+            db.maps.update(mapId, {
+              ...map,
+              tiles: map.tiles
+            });
+            setEditing(false);
+          }}
           onCancel={() => setEditing(false)}
         />
       ) : (
