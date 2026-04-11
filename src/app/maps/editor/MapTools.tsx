@@ -20,8 +20,8 @@ function MapTools({
   onHeightChange,
   showGrid,
   onShowGridChange,
-  showTerrain,
-  onShowTerrainChange,
+  showTerrainLabels,
+  onShowTerrainLabelsChange,
   selectedTileId,
   onTileSelect,
   onTileCreate,
@@ -37,8 +37,8 @@ function MapTools({
   onHeightChange: (value: number) => void,
   showGrid: boolean,
   onShowGridChange: (show: boolean) => void,
-  showTerrain: boolean,
-  onShowTerrainChange: (show: boolean) => void,
+  showTerrainLabels: boolean,
+  onShowTerrainLabelsChange: (show: boolean) => void,
   selectedTileId: number,
   onTileSelect: (tileId: number) => void,
   onTileCreate: (tile: ITileRecord) => void,
@@ -135,8 +135,8 @@ function MapTools({
             </FormLabel>
             <FormLabel className="flex flex-row items-center gap-2">
               <Checkbox
-                checked={showTerrain}
-                onChange={(event) => onShowTerrainChange(event.target.checked)}
+                checked={showTerrainLabels}
+                onChange={(event) => onShowTerrainLabelsChange(event.target.checked)}
               />
               Show terrain labels
             </FormLabel>
