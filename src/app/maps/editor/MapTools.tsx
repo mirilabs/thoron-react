@@ -12,6 +12,8 @@ enum MapToolsTab {
   View
 }
 
+const TILE_SIZE = 64;
+
 function MapTools({
   map,
   onMapChange,
@@ -146,6 +148,7 @@ function MapTools({
               startIcon={<i className="fas fa-upload" />}
             >
               Upload Background
+              {` (${width * TILE_SIZE} x ${height * TILE_SIZE})`}
               <input
                 type="file"
                 hidden
@@ -172,7 +175,9 @@ function MapTools({
             <FormLabel className="flex flex-row items-center gap-2">
               <Checkbox
                 checked={showTerrainLabels}
-                onChange={(event) => onShowTerrainLabelsChange(event.target.checked)}
+                onChange={
+                  (event) => onShowTerrainLabelsChange(event.target.checked)
+                }
               />
               Show terrain labels
             </FormLabel>
