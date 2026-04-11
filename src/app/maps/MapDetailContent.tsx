@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import DeleteButton from "../core/DeleteButton";
 import db, { Map } from "@/data/db";
-import TileList from "./TileList";
+import TileList from "./editor/TileList";
 
 function MapDetailEmpty() {
   return (
@@ -80,13 +80,6 @@ function MapDetailContent({
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-semibold flex items-center gap-2">
-            <i className="fa-regular fa-square text-[var(--accent-color)]" />
-            Tiles
-          </h2>
-          <TileList tiles={map.tiles || []} />
         </div>
       </div>
 

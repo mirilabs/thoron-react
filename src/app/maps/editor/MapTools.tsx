@@ -2,7 +2,7 @@ import React from "react";
 import { Map } from "@/data/db";
 import { Checkbox, FormLabel, Tab, Tabs, TextField } from "@mui/material";
 import MapDimensions from "./MapDimensions";
-import TileList from "../TileList";
+import TileList from "./TileList";
 
 function MapTools({
   map,
@@ -15,7 +15,10 @@ function MapTools({
   showGrid,
   onShowGridChange,
   showTerrain,
-  onShowTerrainChange
+  onShowTerrainChange,
+  selectedTileId,
+  onTileSelect,
+  onTileDelete
 }: {
   map: Map,
   name: string,
@@ -27,7 +30,10 @@ function MapTools({
   showGrid: boolean,
   onShowGridChange: (show: boolean) => void,
   showTerrain: boolean,
-  onShowTerrainChange: (show: boolean) => void
+  onShowTerrainChange: (show: boolean) => void,
+  selectedTileId: number,
+  onTileSelect: (tileId: number) => void,
+  onTileDelete: (tileId: number) => void
 }) {
   const [tab, setTab] = React.useState(0);
 
@@ -72,7 +78,12 @@ function MapTools({
         )}
         {tab === 1 && (
           <div>
-            <TileList tiles={map.tiles || []} />
+            <TileList
+              tiles={map.tiles || []}
+              selectedTileId={selectedTileId}
+              onTileSelect={onTileSelect}
+              onTileDelete={onTileDelete}
+            />
           </div>
         )}
         {tab === 2 && (
