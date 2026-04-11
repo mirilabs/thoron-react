@@ -8,7 +8,7 @@ const TILE_SIZE = 64;
 function MapDetailEmpty() {
   return (
     <div className={
-      "flex flex-col items-center justify-center gap-4 h-full " +
+      "flex flex-col items-center justify-center gap-4 " +
       "min-h-[400px] " +
       "border border-[var(--text-color)] rounded-lg p-8 m-4 " +
       "bg-[var(--bg-color)] text-[var(--text-color-2)] shadow-inner"
@@ -59,18 +59,31 @@ function MapDetailContent({
         </span>
       </div>
       <div className={
-        "rounded-xl flex flex-col items-center justify-center " +
-        "bg-[var(--bg-color-2)] min-h-[300px] " +
-        "border border-[var(--text-color-2)]/20 "
+        "bg-[var(--bg-color-2)] border border-[var(--text-color-2)]/20 " +
+        "overflow-auto max-h-[calc(100vh-200px)] rounded-lg"
       }>
-        {background && (
-          <img
-            src={background.src}
-            alt="background"
-            width={width}
-            height={height}
-          />
-        )}
+        <div
+          style={{ width: `${width}px`, height: `${height}px` }}
+          className="relative"
+        >
+          {background && (
+            <img
+              className="w-full h-full"
+              src={background.src}
+              alt="background"
+            />
+          )}
+          {!background && (
+            <div className={
+              "flex flex-col items-center justify-center gap-4 h-full "
+            }>
+              <i className="fas fa-map text-8xl opacity-10" />
+              <p className="text-xl font-medium text-[var(--text-color-2)]">
+                No background image
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   )

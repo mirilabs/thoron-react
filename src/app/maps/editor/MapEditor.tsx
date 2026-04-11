@@ -236,7 +236,10 @@ function MapEditor({
         onPaintModeChange={handlePaintModeChange}
         onBackgroundChange={setBackground}
       />
-      <div className="border border-[var(--text-color)] rounded-lg">
+      <div className={
+        "border border-[var(--text-color)] rounded-lg overflow-auto " +
+        "max-h-[calc(100vh-320px)]"
+      }>
         <canvas
           width={width * TILE_SIZE}
           height={height * TILE_SIZE}
