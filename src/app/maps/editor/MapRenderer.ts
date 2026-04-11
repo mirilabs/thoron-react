@@ -2,6 +2,19 @@ import { Map } from "@/data/db";
 
 const TILE_SIZE = 64;
 
+const TERRAIN_COLORS = [
+  "#00ff00",
+  "#0000ff",
+  "#ff0000",
+  "#ffff00",
+  "#ff00ff",
+  "#00ffff",
+  "#ffffff",
+  "#ffaa00",
+  "#aa00ff",
+  "#00ffaa",
+]
+
 class MapRenderer {
   private ctx: CanvasRenderingContext2D;
   private map: Map;
@@ -95,18 +108,35 @@ class MapRenderer {
 
     this.terrainMap.forEach((row, y) => {
       row.forEach((tileId, x) => {
-        const pixelX = x * TILE_SIZE;
-        const pixelY = y * TILE_SIZE;
-        const text = this.map.tiles[tileId]?.name || "?";
-        this.ctx.save();
-        this.ctx.beginPath();
-        this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
-        this.ctx.clip();
-        this.ctx.fillText(text, pixelX + 4, pixelY + 4);
-        this.ctx.strokeText(text, pixelX + 4, pixelY + 4);
-        this.ctx.restore();
+        this._drawTerrainTile(x, y);
       });
     });
+    this.ctx.restore();
+  }
+
+  _drawTerrainTile(x: number, y: number) {
+    // tint
+    const tileIndex = this.terrainMap[y][x];
+    const tile = this.map.tiles[tileIndex];
+    const pixelX = x * TILE_SIZE;
+    const pixelY = y * TILE_SIZE;
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
+    this.ctx.clip();
+    this.ctx.globalAlpha = 0.2;
+    this.ctx.fillStyle = TERRAIN_COLORS[tileIndex % TERRAIN_COLORS.length];
+    this.ctx.fillRect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
+    this.ctx.restore();
+
+    // label
+    const text = tile?.name || "?";
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.rect(pixelX, pixelY, TILE_SIZE, TILE_SIZE);
+    this.ctx.clip();
+    this.ctx.fillText(text, pixelX + 4, pixelY + 4);
+    this.ctx.strokeText(text, pixelX + 4, pixelY + 4);
     this.ctx.restore();
   }
 
