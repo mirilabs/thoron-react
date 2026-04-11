@@ -5,6 +5,13 @@ import MapDimensions from "./MapDimensions";
 import TileList from "./TileList";
 import { ITileRecord } from "thoron";
 
+enum MapToolsTab {
+  Info,
+  Terrain,
+  Background,
+  View
+}
+
 function MapTools({
   map,
   onMapChange,
@@ -19,7 +26,9 @@ function MapTools({
   onTileSelect,
   onTileCreate,
   onTileUpdate,
-  onTileDelete
+  onTileDelete,
+  paintMode,
+  onPaintModeChange
 }: {
   map: Map,
   onMapChange: (map: Map) => void,
@@ -34,9 +43,16 @@ function MapTools({
   onTileSelect: (tileId: number) => void,
   onTileCreate: (tile: ITileRecord) => void,
   onTileUpdate: (tileId: number, tile: ITileRecord) => void,
-  onTileDelete: (tileId: number) => void
+  onTileDelete: (tileId: number) => void,
+  paintMode: boolean,
+  onPaintModeChange: (paint: boolean) => void
 }) {
   const [tab, setTab] = React.useState(0);
+
+  const handleTabChange = (event: React.SyntheticEvent, value: number) => {
+    setTab(value);
+    onPaintModeChange(value === MapToolsTab.Terrain);
+  }
 
   const width = map.map[0].length;
   const height = map.map.length;
@@ -47,7 +63,7 @@ function MapTools({
     }>
       <Tabs
         value={tab}
-        onChange={(event, value) => setTab(value)}
+        onChange={handleTabChange}
         aria-label="Map tools"
         variant="fullWidth"
       >
@@ -60,12 +76,16 @@ function MapTools({
           label="Terrain"
         />
         <Tab
+          icon={<i className="fas fa-image" />}
+          label="Background"
+        />
+        <Tab
           icon={<i className="fas fa-eye" />}
           label="View"
         />
       </Tabs>
       <div className="p-4">
-        {tab === 0 && (
+        {tab === MapToolsTab.Info && (
           <div className="flex flex-col gap-2">
             <TextField
               label="Name"
@@ -80,8 +100,15 @@ function MapTools({
             />
           </div>
         )}
-        {tab === 1 && (
+        {tab === MapToolsTab.Terrain && (
           <div>
+            <FormLabel className="flex flex-row items-center gap-2">
+              <Checkbox
+                checked={paintMode}
+                onChange={(event) => onPaintModeChange(event.target.checked)}
+              />
+              Painting
+            </FormLabel>
             <TileList
               tiles={map.tiles}
               selectedTileId={selectedTileId}
@@ -92,7 +119,12 @@ function MapTools({
             />
           </div>
         )}
-        {tab === 2 && (
+        {tab === MapToolsTab.Background && (
+          <div>
+            Background
+          </div>
+        )}
+        {tab === MapToolsTab.View && (
           <div>
             <FormLabel className="flex flex-row items-center gap-2">
               <Checkbox
