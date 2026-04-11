@@ -14,10 +14,10 @@ function MapEditor({
   onCancel
 }: {
   record: Map,
-  onSave: () => void,
+  onSave: (map: Map) => void,
   onCancel: () => void
 }) {
-  const [map, setMap] = useImmer(record);
+  const [map, setMap] = useImmer<Map>(record);
 
   const handleNameChange = (value: string) => {
     setMap(prev => {
@@ -27,6 +27,16 @@ function MapEditor({
 
   const [background, setBackground] =
     React.useState<HTMLImageElement | null>(null);
+
+  React.useEffect(() => {
+    if (record.background) {
+      const image = new Image();
+      image.onload = () => {
+        setBackground(image);
+      }
+      image.src = URL.createObjectURL(record.background);
+    }
+  }, [record.background]);
 
   const width = map.map[0].length;
   const height = map.map.length;
@@ -185,6 +195,10 @@ function MapEditor({
     }
   }
 
+  const handleSave = () => {
+    onSave(map);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className={
@@ -198,7 +212,7 @@ function MapEditor({
           <Button variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={onSave}>
+          <Button variant="contained" onClick={handleSave}>
             Save
           </Button>
         </span>
