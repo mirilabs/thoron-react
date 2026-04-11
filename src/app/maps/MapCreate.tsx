@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import db from "@/data/db";
-import { ITerrainRecord } from "thoron";
-
-const defaultMap: ITerrainRecord = {
-  tiles: [{ name: "Plains", cost: 1 }],
-  map: Array(6).fill(null).map(() => Array(8).fill(0))
-}
+import defaultMap from "./defaultMap";
 
 function MapCreate({ campaignId }: { campaignId: number }) {
   const [isOpen, setIsOpen] = useState(false);
