@@ -6,12 +6,12 @@ import UnitIndexContainer from "./UnitIndex/UnitIndex";
 import ChapterLog from "./ChapterLog";
 
 enum ControlPanelTab {
-  ChapterLog,
   UnitIndex,
+  ChapterLog,
   Settings
 }
 
-function ControlPanel({ show, setShow }) {
+function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setShow: (show: boolean) => void, isStatic?: boolean }) {
   const [tabIndex, setTabIndex] = useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, value: number) => {
@@ -22,7 +22,7 @@ function ControlPanel({ show, setShow }) {
     }
     else if (value === tabIndex) {
       // if control panel is already open and same tab is clicked, close it
-      setShow(false);
+      if (!isStatic) setShow(false);
     }
     else {
       // switch to tab
@@ -30,7 +30,9 @@ function ControlPanel({ show, setShow }) {
     }
   }
 
-  useUIAction("cancel", () => setShow(false));
+  useUIAction("cancel", () => {
+    if (!isStatic) setShow(false);
+  });
   useUIAction(
     "open_chapter_log",
     () => handleTabChange(null, ControlPanelTab.ChapterLog)
@@ -56,14 +58,14 @@ function ControlPanel({ show, setShow }) {
         className="w-full control-panel-tabs"
       >
         <Tab
-          icon={<i className="fas fa-book" />}
-          label="Log"
-          value={ControlPanelTab.ChapterLog}
-        />
-        <Tab
           icon={<i className="fas fa-user" />}
           label="Character"
           value={ControlPanelTab.UnitIndex}
+        />
+        <Tab
+          icon={<i className="fas fa-book" />}
+          label="Log"
+          value={ControlPanelTab.ChapterLog}
         />
         <Tab
           icon={<i className="fas fa-cog" />}
@@ -72,21 +74,23 @@ function ControlPanel({ show, setShow }) {
         />
       </Tabs>
       <div className="flex-1 overflow-y-auto">
-        {tabIndex === ControlPanelTab.ChapterLog && <ChapterLog />}
         {tabIndex === ControlPanelTab.UnitIndex && <UnitIndexContainer />}
+        {tabIndex === ControlPanelTab.ChapterLog && <ChapterLog />}
         {tabIndex === ControlPanelTab.Settings && <Settings />}
       </div>
-      <div className={
-        "absolute right-0 bottom-0 left-auto " +
-        "min-w-12 max-w-16 aspect-square w-[15%]"
-      }>
-        <IconButton
-          onClick={() => setShow(false)}
-          className="w-full h-full"
-        >
-          <i className="fas fa-x" />
-        </IconButton>
-      </div>
+      {!isStatic && (
+        <div className={
+          "absolute right-0 bottom-0 left-auto " +
+          "min-w-12 max-w-16 aspect-square w-[15%]"
+        }>
+          <IconButton
+            onClick={() => setShow(false)}
+            className="w-full h-full"
+          >
+            <i className="fas fa-x" />
+          </IconButton>
+        </div>
+      )}
     </div>
   )
 }

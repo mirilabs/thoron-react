@@ -23,11 +23,6 @@
   @extend .gameplay__layer;
 }
 
-.layout-desktop {
-  @extend .gameplay__layer;
-  display: flex;
-}
-
 .gui-layer {
   @extend .gameplay__layer;
   z-index: 10;
