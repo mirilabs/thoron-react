@@ -1,7 +1,7 @@
 import React from "react";
 import ThemeSelector from "./ThemeSelector";
 
-function Settings() {
+function SettingsForm() {
   return (
     <div className="settings">
       <ThemeSelector />
@@ -9,4 +9,4 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default SettingsForm;

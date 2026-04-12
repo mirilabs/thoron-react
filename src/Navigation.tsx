@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import "./Navigation.scss";
 import React from "react";
 import { Button } from "@mui/material";
+import SettingsRoot from "./app/settings/SettingsRoot";
 
 function NavButton({ to, label, icon }: {
   to: string,
@@ -26,6 +27,7 @@ function Navigation() {
     <nav>
       <NavButton to="/" label="Home" icon="house" />
       <NavButton to="/gameplay" label="Gameplay" icon="gamepad" />
+      <SettingsRoot />
     </nav>
   )
 }

@@ -7,7 +7,7 @@ import { SaveState } from "thoron";
 import { ThoronProvider } from "./ThoronContext";
 import { Provider as ReduxProvider } from "react-redux";
 import controllerStore from "@/shared/store";
-import { KeybindInitializer } from "./ControlPanel/Settings/keybinds";
+import { KeybindInitializer } from "../settings/keybinds";
 
 function GameplayRoot({ saveState }: { saveState: SaveState }) {
   return (
