@@ -3,6 +3,7 @@ import { ITileRecord } from "thoron";
 import TileChip from "./TileChip";
 import { IconButton } from "@mui/material";
 import TileEdit from "./TileEdit";
+import useHorizontalScroll from "./useHorizontalScroll";
 
 function TileList({
   tiles,
@@ -39,8 +40,13 @@ function TileList({
     />
   ));
 
+  const scrollRef = useHorizontalScroll();
+
   return (
-    <div className="flex flex-row gap-2">
+    <div
+      ref={scrollRef}
+      className="flex flex-row gap-2 overflow-x-scroll"
+    >
       {tileElems}
       <IconButton
         className="w-[40px] h-[40px]"
