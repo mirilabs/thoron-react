@@ -9,17 +9,32 @@ import { UIAction } from "@/shared/UIEventEmitter";
 type KeybindSchema = { [K: string]: UIAction };
 
 const defaultKeybinds: KeybindSchema = {
-  'enter':  'confirm',
+  // Confirm / Cancel
+  'enter': 'confirm',
   'escape': 'cancel',
-  'z':      'confirm',
-  'x':      'cancel',
-  'c':      'open_character_detail',
-  'left':   'left', 'arrowleft': 'left',
-  'right':  'right', 'arrowright': 'right',
-  'up':     'up', 'arrowup': 'up',
-  'down':   'down', 'arrowdown': 'down',
-  'l':      'open_chapter_log',
-  'o':      'open_settings'
+  'z': 'confirm',
+  'x': 'cancel',
+
+  // WASD movement
+  'w': 'up',
+  'a': 'left',
+  's': 'down',
+  'd': 'right',
+
+  // Arrow movement
+  'left': 'left',
+  'arrowleft': 'left',
+  'right': 'right',
+  'arrowright': 'right',
+  'up': 'up',
+  'arrowup': 'up',
+  'down': 'down',
+  'arrowdown': 'down',
+
+  // Menus
+  'l': 'open_chapter_log',
+  'o': 'open_settings',
+  'c': 'open_character_detail',
 }
 
 const keybinds = new Map(Object.entries(defaultKeybinds));
