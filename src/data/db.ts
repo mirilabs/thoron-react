@@ -25,11 +25,18 @@ type Map = ITerrainRecord & {
   background?: Blob
 }
 
+type Chapter = {
+  id: number,
+  campaignId: number,
+  name: string,
+}
+
 const db = new Dexie("thoron") as Dexie & {
   campaigns: EntityTable<Campaign, "id">,
   characters: EntityTable<Character, "id">,
   items: EntityTable<Item, "id">,
-  maps: EntityTable<Map, "id">
+  maps: EntityTable<Map, "id">,
+  chapters: EntityTable<Chapter, "id">
 }
 
 db.version(1).stores({
@@ -49,8 +56,13 @@ db.version(1).stores({
     "name",
     "campaignId"
   ].join(", "),
+  chapters: [
+    "++id",
+    "name",
+    "campaignId"
+  ].join(", "),
 });
 
-export type { Campaign, Character, Item, Map };
+export type { Campaign, Character, Item, Map, Chapter };
 
 export default db;

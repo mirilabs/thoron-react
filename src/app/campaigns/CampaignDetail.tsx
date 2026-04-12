@@ -6,6 +6,7 @@ import CharacterList from "../characters/CharacterList";
 import CampaignEdit from "./CampaignEdit";
 import { Button, IconButton } from "@mui/material";
 import { Campaign } from "@/data/db";
+import ChapterList from "../chapters/ChapterList";
 
 function CampaignInfo({ campaign }: { campaign: Campaign }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -63,6 +64,7 @@ function CampaignDetail() {
   return (
     <div className="h-full flex flex-col items-center gap-4">
       <CampaignInfo campaign={campaign} />
+      <ChapterList campaignId={Number(id)} />
       <CharacterList campaignId={Number(id)} />
       <div className={
         "bg-[var(--bg-color)] border border-[var(--text-color)] " +
