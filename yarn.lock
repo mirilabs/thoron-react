@@ -3445,14 +3445,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-error-boundary@npm:^4.0.13":
-  version: 4.1.2
-  resolution: "react-error-boundary@npm:4.1.2"
-  dependencies:
-    "@babel/runtime": "npm:^7.12.5"
+"react-error-boundary@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "react-error-boundary@npm:6.1.1"
   peerDependencies:
-    react: ">=16.13.1"
-  checksum: 10/a8b59e5ef891bb6c48874d12c72bbd1a9292a56751adeee5666e228bd3a4913084329a9c21f7baafa0df68dc6d25e18883edb25946ce5763981885cbb93786eb
+    react: ^18.0.0 || ^19.0.0
+  checksum: 10/6a2b2d75466c9917b1657048cecff8a617ce5a2de8208677eb98802f6d324ba8a8d3acdce2e23e3deae3b7d35876675bc982e97a9f929a19ce2e926588097d71
   languageName: node
   linkType: hard
 
@@ -4062,7 +4060,7 @@ __metadata:
     react-app-polyfill: "npm:^3.0.0"
     react-device-detect: "npm:^2.2.3"
     react-dom: "npm:^19.0.0"
-    react-error-boundary: "npm:^4.0.13"
+    react-error-boundary: "npm:^6.1.1"
     react-redux: "npm:^9.2.0"
     react-router: "npm:^7.13.2"
     react-tabs: "npm:^6.1.0"
