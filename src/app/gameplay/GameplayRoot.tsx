@@ -1,23 +1,22 @@
 import "./GameplayRoot.scss";
 import React from "react";
-import useResponsive from "@/app/gameplay/utils/useResponsive";
-import { WindowSize } from "@/app/gameplay/ViewportContext";
+import useResponsive from "./utils/useResponsive";
+import { WindowSize } from "./ViewportContext";
 
 // COMPONENTS
-import GameCanvas from '@/app/gameplay/GameView/GameCanvas';
-import ActionUI from "@/app/gameplay/GameView/ActionMenu";
-import UnitSummary from "@/app/gameplay/UnitSummary";
-import GameMenuContainer from "@/app/gameplay/GameMenu";
-import ControlPanelContainer from "@/app/gameplay/ControlPanel";
+import GameCanvas from './GameView/GameCanvas';
+import ActionUI from "./GameView/ActionMenu";
+import UnitSummary from "./UnitSummary";
+import GameMenuContainer from "./GameMenu";
+import ControlPanelContainer from "./ControlPanel";
 
 // CONTEXTS
 import { ThoronProvider } from "./ThoronContext";
 import { Provider as ReduxProvider } from "react-redux";
 import controllerStore from "@/shared/store";
-import { KeybindInitializer } from "@/app/gameplay/ControlPanel/Settings/keybinds";
-import { ThemeProvider } from "@mui/material";
+import { KeybindInitializer } from "./ControlPanel/Settings/keybinds";
 
-import saveState from "@/data/saveState";
+import { SaveState } from "thoron";
 
 function Layout() {
   let { size } = useResponsive();
@@ -45,14 +44,9 @@ function Layout() {
   }
 }
 
-const rngState = {
-  seed: 0,
-  state: 0
-}
-
-function GameplayRoot() {
+function GameplayRoot({ saveState }: { saveState: SaveState }) {
   return (
-    <ThoronProvider saveState={{ ...saveState, rngState }}>
+    <ThoronProvider saveState={{ ...saveState }}>
       <ReduxProvider store={controllerStore}>
         <div className="gameplay-root">
           <Layout />

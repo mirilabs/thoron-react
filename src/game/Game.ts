@@ -6,6 +6,7 @@ import ControlSystem from './entities/ControlSystem';
 import Chapter, { GameController } from 'thoron';
 import MotionSystem from './entities/MotionSystem';
 import UnitBody from './entities/UnitBody';
+import { Map as MapRecord } from '@/data/db';
 
 interface IGameConfig {
   tileWidth: number;
@@ -73,8 +74,9 @@ class Game {
     let columns = terrain.height;
     let width = rows * this.config.tileWidth;
     let height = columns * this.config.tileHeight;
-    
-    const backgroundUrl = (terrain as any).record.background;    
+
+    const background = (terrain.record as MapRecord).background;
+    const backgroundUrl = URL.createObjectURL(background);
     let bg = new Background(width, height, backgroundUrl);
     bg.addToScene(scene);
 
@@ -94,7 +96,7 @@ class Game {
       unitBody.resetPosition(); // move to initial position
       this.unitBodies.set(unit.id, unitBody);
     }
-    
+
     this.scene.draw();
   }
 

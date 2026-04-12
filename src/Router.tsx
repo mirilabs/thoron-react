@@ -25,7 +25,6 @@ export default function Router() {
               <Route path="maps/:mapId" element={<MapsIndex />} />
             </Route>
             <Route path="chapters/:id" element={<ChapterShow />} />
-            <Route path="/gameplay" element={<GameplayRoot />} />
           </Routes>
         </div>
       </ErrorBoundary>
