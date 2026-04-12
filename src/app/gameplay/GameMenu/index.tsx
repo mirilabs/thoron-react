@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import GameMenuToggle from "./GameMenuToggle";
 import GameMenu from "./GameMenu";
-import useOutsideClickHandler from "@/app/gameplay/utils/useOutsideClickHandler";
+import useOutsideClickHandler from "@/app/utils/useOutsideClickHandler";
 
 function GameMenuContainer() {
   const [show, setShow] = useState(false);
@@ -13,7 +13,7 @@ function GameMenuContainer() {
   const nodeRef = useRef();
 
   useUIAction("cancel", () => setShow(false));
-  
+
   const rootRef = React.useRef(null);
   useOutsideClickHandler(rootRef, () => setShow(false));
 

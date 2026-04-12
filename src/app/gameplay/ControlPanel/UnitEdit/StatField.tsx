@@ -3,7 +3,7 @@ import NumberField from "./NumberField";
 import { Slider } from "@mui/material";
 import { IUnitRecord } from "thoron";
 import "./StatField.scss";
-import useResponsive, { WindowSize } from "@/app/gameplay/utils/useResponsive";
+import useResponsive, { WindowSize } from "@/app/utils/useResponsive";
 
 interface StatFieldProps {
   label?: string;
@@ -56,7 +56,7 @@ function StatField({
             color: "var(--accent-color)",
             width: "100px",
             marginBottom: 1
-            }} />
+          }} />
       }
     </div>
   );
@@ -77,7 +77,7 @@ function GrowthField({
       }
     })
   }
-  
+
   const { size } = useResponsive();
   const showSlider = shouldShowSlider(size);
 
@@ -89,7 +89,7 @@ function GrowthField({
         value={data.growths[stat]}
         onChange={(value) => setGrowthValue(value)}
         min={0} max={999} step={1}
-         />
+      />
       {
         showSlider &&
         <Slider
@@ -102,7 +102,7 @@ function GrowthField({
             color: "var(--accent-color-2)",
             width: "100px",
             marginBottom: 1
-            }} />
+          }} />
       }
     </div>
   )
