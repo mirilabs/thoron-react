@@ -10,8 +10,13 @@ function ErrorFallback(props: FallbackProps) {
   return (
     <div className="h-full">
       <h1>Something went wrong</h1>
-      <p>{error.message}</p>
-      <p>{error.stack}</p>
+      {
+        process.env.NODE_ENV === "development" &&
+        <>
+          <p>{error.message}</p>
+          <p>{error.stack}</p>
+        </>
+      }
     </div>
   )
 }
