@@ -8,24 +8,27 @@ import CharacterShow from "./app/characters/CharacterShow";
 import ItemIndex from "./app/items/ItemIndex";
 import MapsIndex from "./app/maps/MapsIndex";
 import ChapterShow from "./app/chapters/ChapterShow";
+import ErrorBoundary from "./app/core/ErrorBoundary";
 
 export default function Router() {
   return (
     <BrowserRouter>
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<CampaignIndex />} />
-          <Route path="/campaigns/:id">
-            <Route index element={<CampaignDetail />} />
-            <Route path="characters/:characterId" element={<CharacterShow />} />
-            <Route path="items" element={<ItemIndex />} />
-            <Route path="maps" element={<MapsIndex />} />
-            <Route path="maps/:mapId" element={<MapsIndex />} />
-          </Route>
-          <Route path="chapters/:id" element={<ChapterShow />} />
-          <Route path="/gameplay" element={<GameplayRoot />} />
-        </Routes>
-      </div>
+      <ErrorBoundary>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<CampaignIndex />} />
+            <Route path="/campaigns/:id">
+              <Route index element={<CampaignDetail />} />
+              <Route path="characters/:characterId" element={<CharacterShow />} />
+              <Route path="items" element={<ItemIndex />} />
+              <Route path="maps" element={<MapsIndex />} />
+              <Route path="maps/:mapId" element={<MapsIndex />} />
+            </Route>
+            <Route path="chapters/:id" element={<ChapterShow />} />
+            <Route path="/gameplay" element={<GameplayRoot />} />
+          </Routes>
+        </div>
+      </ErrorBoundary>
       <Navigation />
     </BrowserRouter>
   )
