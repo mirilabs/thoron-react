@@ -2,8 +2,10 @@ import React from "react";
 import { useControllerDispatch } from "@/app/gameplay/utils/reduxHooks";
 import { unitSelected } from "@/shared/store";
 import HPBar from "./HPBar";
+import { DeployedUnit } from "thoron";
+import { Character } from "@/data/db";
 
-function UnitTile({ unit }) {
+function UnitTile({ unit }: { unit: DeployedUnit }) {
   const dispatch = useControllerDispatch();
   const handleClick = () => dispatch(unitSelected(unit.id))
   const maxHp = unit.record.stats.mhp;
@@ -12,9 +14,9 @@ function UnitTile({ unit }) {
 
   return (
     <button className={`unit-tile team-${team}`} onClick={handleClick}>
-      <img className="sprite"
-        src={unit.record.sprite}
-        alt={unit.record.name + " sprite"} />
+      <img className="portrait"
+        src={URL.createObjectURL((unit.record as Character).portrait)}
+        alt={unit.record.name + " portrait"} />
       <span className="name">
         {unit.record.name}
       </span>
