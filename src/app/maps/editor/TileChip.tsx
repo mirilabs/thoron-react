@@ -23,6 +23,7 @@ function TileChip({
   return (
     <div>
       <div className={
+        "min-w-[120px] " +
         "flex flex-col gap-2 pl-2 pr-2 " +
         "border border-[var(--text-color-2)]/20 rounded-lg p-2 " +
         "bg-[var(--bg-color)] hover:bg-[var(--bg-color-2)] cursor-pointer " +
