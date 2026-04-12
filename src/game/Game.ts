@@ -104,7 +104,17 @@ class Game {
     return this.unitBodies.get(unitId);
   }
 
-  removeUnit(unitId: string | number) {
+  addUnitBody(unitId: string | number) {
+    const unit = this.chapter.getUnitById(unitId);
+    if (!unit) {
+      throw new Error(`Unit ${unitId} not found`);
+    }
+    const unitBody = new UnitBody(unit, this);
+    unitBody.addToScene(this.scene);
+    this.unitBodies.set(unitId, unitBody);
+  }
+
+  removeUnitBody(unitId: string | number) {
     let body = this.unitBodies.get(unitId);
     body.destroy();
     this.unitBodies.delete(unitId);
