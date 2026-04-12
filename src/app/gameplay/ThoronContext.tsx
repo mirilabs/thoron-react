@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Game from '../../game/Game';
 import UIEventEmitter from '../../shared/UIEventEmitter';
-import Chapter, { Controller, IChapterSaveState } from 'thoron';
+import Chapter, { Controller, IChapterSaveState, SaveState } from 'thoron';
 
 type ThoronContextState = {
-  save: IChapterSaveState,
+  save: SaveState,
   controller: Controller,
   chapter: Chapter,
   uiEvents?: UIEventEmitter,
