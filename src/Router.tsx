@@ -7,6 +7,7 @@ import GameplayRoot from "./app/gameplay/GameplayRoot";
 import CharacterShow from "./app/characters/CharacterShow";
 import ItemIndex from "./app/items/ItemIndex";
 import MapsIndex from "./app/maps/MapsIndex";
+import ChapterShow from "./app/chapters/ChapterShow";
 
 export default function Router() {
   return (
@@ -21,6 +22,7 @@ export default function Router() {
             <Route path="maps" element={<MapsIndex />} />
             <Route path="maps/:mapId" element={<MapsIndex />} />
           </Route>
+          <Route path="chapters/:id" element={<ChapterShow />} />
           <Route path="/gameplay" element={<GameplayRoot />} />
         </Routes>
       </div>

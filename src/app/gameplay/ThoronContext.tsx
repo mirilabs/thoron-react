@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Game from '../../game/Game';
 import UIEventEmitter from '../../shared/UIEventEmitter';
-import Chapter, { Controller, SaveState } from 'thoron';
+import Chapter, { Controller, IChapterSaveState } from 'thoron';
 
 type ThoronContextState = {
-  save: any,
+  save: IChapterSaveState,
   controller: Controller,
   chapter: Chapter,
   uiEvents?: UIEventEmitter,
@@ -22,7 +22,7 @@ const ThoronContext: React.Context<ThoronContextState> = createContext({
 });
 
 function ThoronProvider({ saveState, children }: {
-  saveState: SaveState,
+  saveState: IChapterSaveState,
   children: React.ReactNode
 }) {
   const [api, setApi] = useState({} as ThoronContextState);
