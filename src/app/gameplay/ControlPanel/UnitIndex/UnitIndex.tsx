@@ -24,6 +24,14 @@ function UnitIndex() {
     <UnitTile key={unit.id} unit={unit} />
   ));
 
+  if (tiles.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p>No units</p>
+      </div>
+    )
+  }
+
   return (
     <>
       {tiles}

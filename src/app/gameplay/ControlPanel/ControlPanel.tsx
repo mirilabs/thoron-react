@@ -73,7 +73,7 @@ function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setS
           value={ControlPanelTab.Edit}
         />
       </Tabs>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-4">
         {tabIndex === ControlPanelTab.Units && <UnitIndexContainer />}
         {tabIndex === ControlPanelTab.Log && <ChapterLog />}
         {tabIndex === ControlPanelTab.Edit && <ChapterEdit />}
