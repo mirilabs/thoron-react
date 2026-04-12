@@ -29,8 +29,12 @@ function SmallLayout() {
 
 function LargeLayout() {
   return (
-    <div>
-      <div className="layout-desktop">
+    <div className="flex flex-row w-full h-full">
+      {/* Game View Side */}
+      <div className={
+        "flex-1 relative h-full overflow-hidden " +
+        "border-r border-[var(--text-color-2)]/20"
+      }>
         <div className="gui-layer">
           <UnitSummary />
         </div>
@@ -42,8 +46,13 @@ function LargeLayout() {
         </div>
         <GameCanvas />
       </div>
-      <div>
-        <ControlPanelContainer />
+
+      {/* Control Panel Side */}
+      <div className={
+        "h-full overflow-hidden " +
+        "w-[33%] min-w-[320px] max-w-[480px]"
+      }>
+        <ControlPanelContainer variant="static" />
       </div>
     </div>
   )
