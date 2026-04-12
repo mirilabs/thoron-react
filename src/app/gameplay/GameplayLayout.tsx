@@ -29,20 +29,22 @@ function SmallLayout() {
 
 function LargeLayout() {
   return (
-    <div className="layout-mobile">
-      <div className="gui-layer">
-        <UnitSummary />
+    <div>
+      <div className="layout-desktop">
+        <div className="gui-layer">
+          <UnitSummary />
+        </div>
+        <div className="gui-layer">
+          <GameMenuContainer />
+        </div>
+        <div className="gui-layer">
+          <ActionUI />
+        </div>
+        <GameCanvas />
       </div>
-      <div className="gui-layer">
-        <GameMenuContainer />
-      </div>
-      <div className="gui-layer">
+      <div>
         <ControlPanelContainer />
       </div>
-      <div className="gui-layer">
-        <ActionUI />
-      </div>
-      <GameCanvas />
     </div>
   )
 }

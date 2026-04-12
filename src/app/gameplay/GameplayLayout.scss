@@ -1,10 +1,19 @@
-.layout-mobile {
+.gameplay__layer {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.layout-mobile {
+  @extend .gameplay__layer;
+}
+
+.layout-desktop {
+  @extend .gameplay__layer;
+  display: flex;
 }
 
 .gameplay-root {
@@ -19,14 +28,9 @@
 }
 
 .gui-layer {
-  position: absolute;
+  @extend .gameplay__layer;
   z-index: 10;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
-  overflow: hidden;
 
   &>* {
     pointer-events: all;
