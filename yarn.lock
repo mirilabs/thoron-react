@@ -4088,13 +4088,13 @@ __metadata:
 
 "thoron@file:../thoron::locator=thoron-react%40workspace%3A.":
   version: 2.2.12
-  resolution: "thoron@file:../thoron#../thoron::hash=c089d6&locator=thoron-react%40workspace%3A."
+  resolution: "thoron@file:../thoron#../thoron::hash=50c0bd&locator=thoron-react%40workspace%3A."
   dependencies:
     ajv: "npm:^8.11.0"
     heap-js: "npm:^2.3.0"
     lodash: "npm:^4.17.21"
     seedrandom: "npm:^3.0.5"
-  checksum: 10/cf6905d6c3009ced746152ab5e08abd5b3bd9ad796f31bd7a43af14c37626f8843bb0ab3214ac0edca411c552f5311da444962964af4e0305568bd5b976de3a7
+  checksum: 10/d617fc3664450c1e4faf17c58de60e918d71f904625476cfc0d7faec4954cce301dca256e7bccb02876140bf616bd04244c207f534b15341baad850d9ae4be7a
   languageName: node
   linkType: hard
 
