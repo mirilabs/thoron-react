@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import ThoronContext from "../../ThoronContext";
+import UnitAdd from "./UnitAdd";
 
 function ChapterEdit() {
+  const { controller } = useContext(ThoronContext);
+
   return (
     <div>
-      <h1>Chapter Edit</h1>
-      <p>TODO</p>
+      <UnitAdd controller={controller} />
     </div>
   )
 }

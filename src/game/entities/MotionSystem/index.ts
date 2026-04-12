@@ -37,7 +37,7 @@ class MotionSystem extends GameObject {
   getMotionCallback(event: ChapterEvent): () => Promise<void> {
     const unit = this.game.getUnitBody(event.unitId);
 
-    switch(event.type) {
+    switch (event.type) {
       case "combat_attack":
         let target = this.game.getUnitBody(event.targetId);
         return AttackMotion(this.game, unit, target, event);
@@ -47,8 +47,16 @@ class MotionSystem extends GameObject {
         }
       case "phase_change":
         return () => PhaseChangeMotion(this.game, event);
+      case "add_unit":
+        return async () => {
+          this.game.addUnitBody(event.saveState.id);
+        }
+      case "remove_unit":
+        return async () => {
+          this.game.removeUnitBody(event.saveState.id);
+        }
       default:
-        return
+        return () => Promise.resolve();
     }
   }
 }
