@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Tab, Tabs } from "@mui/material";
 import Settings from "./Settings";
 import useUIAction from "@/app/gameplay/utils/useUIAction";
-import UnitIndexContainer from "./UnitIndex";
+import UnitIndexContainer from "./UnitIndex/UnitIndex";
 import ChapterLog from "./ChapterLog";
 
 enum ControlPanelTab {
@@ -20,11 +20,13 @@ function ControlPanel({ show, setShow }) {
       setTabIndex(value);
       setShow(true);
     }
+    else if (value === tabIndex) {
+      // if control panel is already open and same tab is clicked, close it
+      setShow(false);
+    }
     else {
       // switch to tab
-      if (value !== tabIndex) {
-        setTabIndex(value);
-      }
+      setTabIndex(value);
     }
   }
 
