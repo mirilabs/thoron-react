@@ -5,7 +5,7 @@ import ActionUI from "./GameView/ActionMenu";
 import UnitSummary from "./UnitSummary";
 import GameMenuContainer from "./GameMenu";
 import ControlPanelContainer from "./ControlPanel";
-import useResponsive, { WindowSize } from "./utils/useResponsive";
+import useResponsive, { WindowSize } from "../utils/useResponsive";
 
 function SmallLayout() {
   return (

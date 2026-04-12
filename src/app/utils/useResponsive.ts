@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import ViewportContext, { WindowSize } from '../ViewportContext';
+import ViewportContext, { WindowSize } from '../gameplay/ViewportContext';
 
 function useResponsive() {
   let size: number = useContext(ViewportContext) as number;
