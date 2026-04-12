@@ -1,13 +1,16 @@
 import db from '@/data/db';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { SaveState } from 'thoron';
 
 function ChapterShow() {
   const { id } = useParams();
+  const [saveState, setSaveState] = useState<SaveState | null>(null);
 
   useEffect(() => {
     db.chapters.get(parseInt(id)).then((chapter) => {
-      console.log(chapter)
+      console.log("Loaded save:", chapter.save);
+      setSaveState(chapter.save);
     })
   }, [id]);
 
