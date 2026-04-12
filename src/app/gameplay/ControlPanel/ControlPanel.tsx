@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { IconButton, Tab, Tabs } from "@mui/material";
-import Settings from "./Settings";
 import useUIAction from "@/app/gameplay/utils/useUIAction";
 import UnitIndexContainer from "./UnitIndex/UnitIndex";
 import ChapterLog from "./ChapterLog";
+import ChapterEdit from "./ChapterEdit/ChapterEdit";
 
 enum ControlPanelTab {
-  UnitIndex,
-  ChapterLog,
-  Settings
+  Units,
+  Log,
+  Edit
 }
 
 function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setShow: (show: boolean) => void, isStatic?: boolean }) {
@@ -35,15 +35,15 @@ function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setS
   });
   useUIAction(
     "open_chapter_log",
-    () => handleTabChange(null, ControlPanelTab.ChapterLog)
+    () => handleTabChange(null, ControlPanelTab.Log)
   );
   useUIAction(
     "open_character_detail",
-    () => handleTabChange(null, ControlPanelTab.UnitIndex)
+    () => handleTabChange(null, ControlPanelTab.Units)
   );
   useUIAction(
     "open_settings",
-    () => handleTabChange(null, ControlPanelTab.Settings)
+    () => handleTabChange(null, ControlPanelTab.Edit)
   );
 
   return (
@@ -59,24 +59,24 @@ function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setS
       >
         <Tab
           icon={<i className="fas fa-user" />}
-          label="Character"
-          value={ControlPanelTab.UnitIndex}
+          label="Units"
+          value={ControlPanelTab.Units}
         />
         <Tab
           icon={<i className="fas fa-book" />}
           label="Log"
-          value={ControlPanelTab.ChapterLog}
+          value={ControlPanelTab.Log}
         />
         <Tab
-          icon={<i className="fas fa-cog" />}
-          label="Settings"
-          value={ControlPanelTab.Settings}
+          icon={<i className="fas fa-pen-to-square" />}
+          label="Edit"
+          value={ControlPanelTab.Edit}
         />
       </Tabs>
       <div className="flex-1 overflow-y-auto">
-        {tabIndex === ControlPanelTab.UnitIndex && <UnitIndexContainer />}
-        {tabIndex === ControlPanelTab.ChapterLog && <ChapterLog />}
-        {tabIndex === ControlPanelTab.Settings && <Settings />}
+        {tabIndex === ControlPanelTab.Units && <UnitIndexContainer />}
+        {tabIndex === ControlPanelTab.Log && <ChapterLog />}
+        {tabIndex === ControlPanelTab.Edit && <ChapterEdit />}
       </div>
       {!isStatic && (
         <div className={
