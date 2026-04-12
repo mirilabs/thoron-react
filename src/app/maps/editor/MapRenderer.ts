@@ -5,8 +5,8 @@ const TILE_SIZE = 64;
 const TERRAIN_COLORS = [
   "#ffffff",
   "#00ff00",
-  "#0000ff",
   "#ff0000",
+  "#0000ff",
   "#ffff00",
   "#ff00ff",
   "#00ffff",
