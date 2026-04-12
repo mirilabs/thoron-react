@@ -25,7 +25,7 @@ function ChapterCreate({ campaignId }: { campaignId: number }) {
     });
     setName("");
     setOpen(false);
-    navigate(`/campaigns/${campaignId}/chapters/${chapterId}`);
+    navigate(`/chapters/${chapterId}`);
   };
 
   return (
