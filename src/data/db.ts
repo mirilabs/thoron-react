@@ -1,5 +1,5 @@
 import { Dexie, type EntityTable } from "dexie";
-import { ItemRecord, IUnitRecord, ITerrainRecord } from "thoron";
+import { ItemRecord, IUnitRecord, ITerrainRecord, SaveState } from "thoron";
 
 type Campaign = {
   id: number,
@@ -29,6 +29,7 @@ type Chapter = {
   id: number,
   campaignId: number,
   name: string,
+  save: SaveState
 }
 
 const db = new Dexie("thoron") as Dexie & {
