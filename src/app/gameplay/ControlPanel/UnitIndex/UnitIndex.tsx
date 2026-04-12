@@ -18,7 +18,7 @@ function UnitIndexContainer() {
 function UnitIndex() {
   const { chapter } = useContext(ThoronContext);
   const units = chapter?.getUnits() ?? [];
-  units.sort((unit1, unit2) => unit1.getTeam() > unit2.getTeam());
+  units.sort((unit1, unit2) => unit1.getTeam() - unit2.getTeam());
 
   const tiles = units.map(unit => (
     <UnitTile key={unit.id} unit={unit} />
