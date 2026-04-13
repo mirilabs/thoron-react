@@ -24,6 +24,34 @@ const theme = createTheme({
         }
       },
     },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          "&:hover": {
+            color: "var(--accent-color)",
+            backgroundColor: "var(--bg-color-2)",
+          },
+          "&.Mui-selected": {
+            color: "var(--bg-color)",
+            backgroundColor: "var(--accent-color)",
+            "&:hover": {
+              color: "var(--bg-color-2)",
+              backgroundColor: "var(--accent-color)",
+            }
+          }
+        }
+      }
+    },
+    MuiToggleButtonGroup: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          display: "flex",
+          flexDirection: "row",
+        }
+      }
+    },
     MuiFormLabel: {
       styleOverrides: {
         root: {

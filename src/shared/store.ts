@@ -6,6 +6,8 @@ import {
 import listenerMiddleware from "./listenerMiddleware";
 import { Command } from "thoron";
 
+export type ChapterEditMode = "unit_move" | null;
+
 const initialState: {
   phase: ControllerPhase,
   unitId: string | number,
@@ -15,7 +17,8 @@ const initialState: {
     action: Command,
     targetId?: string,
     itemIndex?: number
-  }
+  },
+  editMode: ChapterEditMode
 } = {
   phase: null,
   unitId: null,
@@ -23,7 +26,8 @@ const initialState: {
   pendingMove: {
     destination: null,
     action: null
-  }
+  },
+  editMode: null
 }
 
 const controllerSlice = createSlice({
@@ -58,6 +62,10 @@ const controllerSlice = createSlice({
 
     pendingMoveDiscarded(state, action) {
       state.pendingMove = { destination: null, action: null }
+    },
+
+    chapterEditModeChanged(state, action) {
+      state.editMode = action.payload;
     }
   }
 });
@@ -70,12 +78,13 @@ export const {
   actionSelected,
   targetSelected,
   itemSelected,
-  pendingMoveDiscarded
+  pendingMoveDiscarded,
+  chapterEditModeChanged
 } = controllerSlice.actions;
 
 const controllerStore = configureStore({
   reducer: controllerSlice.reducer,
-  middleware: (getDefaultMiddleware) => 
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(listenerMiddleware)
 });
 
