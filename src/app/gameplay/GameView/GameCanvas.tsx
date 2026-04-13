@@ -15,13 +15,24 @@ function GameWindow() {
   // get dimensions from container
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // make <canvas> accessible to ThoronContext
-  const canvasRef = useCallback(node => {
-    setCanvas(node);
-  }, [setCanvas]);
+  const [canvasNode, setCanvasNode] = useState<HTMLCanvasElement | null>(null);
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
 
+  // make <canvas> accessible to ThoronContext
+  const canvasRef = useCallback((node: HTMLCanvasElement | null) => {
+    setCanvasNode(node);
+  }, []);
+
+  // setCanvas should only be called when the canvas element is ready
+  // and has dimensions
+  useEffect(() => {
+    if (canvasNode && width > 0 && height > 0) {
+      setCanvas(canvasNode);
+    }
+  }, [canvasNode, width, height, setCanvas]);
+
+  // update dimensions when container resizes
   useEffect(() => {
     if (!containerRef.current) return;
 

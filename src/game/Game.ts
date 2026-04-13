@@ -97,6 +97,12 @@ class Game {
       this.unitBodies.set(unit.id, unitBody);
     }
 
+    // center camera on center of map
+    this.scene.camera.translate = {
+      x: this.canvas.width / 2 - width / 2,
+      y: this.canvas.height / 2 - height / 2
+    }
+
     this.scene.draw();
   }
 
