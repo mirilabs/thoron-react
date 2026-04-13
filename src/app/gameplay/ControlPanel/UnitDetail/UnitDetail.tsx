@@ -4,6 +4,8 @@ import StatView from "./StatView";
 import Inventory from "../Items/Inventory";
 import { Character } from "@/data/db";
 import { IconButton } from "@mui/material";
+import moveTypeIcons from "@/icons/movetypes";
+import MoveTypeIcon from "./MoveTypeIcon";
 
 interface UnitDetailProps {
   record: Character,
@@ -54,15 +56,25 @@ function UnitDetail(props: UnitDetailProps) {
         <img className="w-24 h-24" src={portraitUrl} alt={name} />
         <div className="flex flex-col">
           <div className={
-            "flex flex-row justify-between items-baseline " +
+            "flex flex-row justify-between items-baseline gap-4 " +
             "border-b border-[var(--accent-color)] pb-2 mb-2"
           }>
             <h1 className="text-2xl font-bold">{name}</h1>
             <h2 className="text-lg">{className}</h2>
           </div>
-          <div className="flex flex-row gap-2 items-center">
-            <p>level</p>
-            <p>{record.level}</p>
+          <div className={
+            "flex flex-row justify-between items-baseline gap-4 " +
+            "border-b border-[var(--accent-color)] pb-2 mb-2"
+          }>
+            <span className="flex flex-row gap-1">
+              <p>level</p>
+              <p>{record.level}</p>
+            </span>
+            <span className="flex flex-row gap-1">
+              <p>move</p>
+              <p>{record.movement}</p>
+              <MoveTypeIcon moveType={record.moveType} />
+            </span>
           </div>
           <div className="flex flex-row gap-2 items-center">
             <p>exp</p>
