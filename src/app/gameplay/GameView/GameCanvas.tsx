@@ -1,4 +1,3 @@
-import "./GameCanvas.css";
 import React, {
   useCallback,
   useContext,
@@ -41,13 +40,16 @@ function GameWindow() {
   }, [containerRef]);
 
   if (!(containerRef.current)) return (
-    <div id="game-canvas-container" ref={containerRef}
+    <div ref={containerRef}
       className="w-full h-full" />
   );
 
   return (
-    <div id="game-canvas-container" ref={containerRef} >
-      <canvas id="game-canvas" ref={canvasRef} width={width} height={height} />
+    <div ref={containerRef}
+      className="w-full h-full absolute left-0 top-0 touch-none"
+    >
+      <canvas ref={canvasRef} width={width} height={height}
+        className="border-1 border-black" />
     </div>
   )
 }
