@@ -23,7 +23,7 @@ function ChapterEdit() {
 
   return (
     <div className="flex flex-col gap-2">
-      <UnitAdd controller={controller} />
+      <UnitAdd />
       <ToggleButtonGroup
         exclusive
         value={editMode}

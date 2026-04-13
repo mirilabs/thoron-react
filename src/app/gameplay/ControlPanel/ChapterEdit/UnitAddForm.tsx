@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-import { GameController } from "thoron";
 import db, { Character, Chapter } from "@/data/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import {
@@ -16,13 +15,14 @@ import {
 } from "@mui/material";
 import UnitEditForm from "../UnitEdit/UnitEditForm";
 import { createDefaultCharacter } from "./characterDefaults";
+import { useThoronContext } from "../../ThoronContext";
 
 interface UnitAddFormProps {
-  controller: GameController;
-  onDone: () => void;
+  onDone: (unit: Character) => void;
 }
 
-function UnitAddForm({ controller, onDone }: UnitAddFormProps) {
+function UnitAddForm({ onDone }: UnitAddFormProps) {
+  const { controller } = useThoronContext();
   const { id } = useParams();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [mode, setMode] = useState<"select" | "create">("select");
@@ -49,8 +49,7 @@ function UnitAddForm({ controller, onDone }: UnitAddFormProps) {
   const handleAddExisting = () => {
     const char = characters?.find(c => c.id === selectedCharId);
     if (char) {
-      controller.addUnit(char);
-      onDone();
+      onDone(char);
     }
   };
 
@@ -61,8 +60,7 @@ function UnitAddForm({ controller, onDone }: UnitAddFormProps) {
       const newId = await db.characters.add({ ...recordWithoutId, campaignId });
       finalChar = { ...record, id: newId as number, campaignId };
     }
-    controller.addUnit(finalChar);
-    onDone();
+    onDone(finalChar);
   };
 
   if (!chapter) return <Typography>Loading...</Typography>;
