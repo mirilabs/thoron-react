@@ -14,7 +14,7 @@ function LogString(props: LogStringProps) {
   let targetName = props.target?.record?.name ?? "(UNNAMED)";
 
   let predicate: React.ReactNode;
-  switch(props.actionResult.action.command) {
+  switch (props.actionResult.action.command) {
     case "wait":
       predicate = " waited";
       break;
@@ -54,12 +54,26 @@ function LogString(props: LogStringProps) {
         1: "Enemy Phase",
         2: "Ally Phase"
       })[phase];
-      
+
       return (
         <span>
           <strong>Turn {turn} - {phaseTitle}</strong>
         </span>
       )
+    case "add_unit":
+      return (
+        <span>
+          {"Unit added: "}
+          <strong>{unitName}</strong>
+        </span>
+      );
+    case "remove_unit":
+      return (
+        <span>
+          {"Unit removed: "}
+          <strong>{unitName}</strong>
+        </span>
+      );
   }
 
   return (
