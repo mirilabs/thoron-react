@@ -5,6 +5,7 @@ import Chapter, { Controller, IChapterSaveState, SaveState } from 'thoron';
 import db from '@/data/db';
 
 type ThoronContextState = {
+  chapterId: number,
   saveState: SaveState,
   controller: Controller,
   chapter: Chapter,
@@ -15,6 +16,7 @@ type ThoronContextState = {
 }
 
 const ThoronContext: React.Context<ThoronContextState> = createContext({
+  chapterId: null,
   saveState: null,
   controller: null,
   chapter: null,
@@ -46,6 +48,7 @@ function ThoronProvider({ chapterId, saveState, children }: {
     }
 
     setApi({
+      chapterId,
       ...api,
       saveState,
       controller,
