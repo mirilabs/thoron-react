@@ -116,6 +116,27 @@ const theme = createTheme({
           }
         }
       }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+        }
+      }
+    },
+    MuiDialogContentText: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+        }
+      }
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+        }
+      }
     }
   },
   typography: {

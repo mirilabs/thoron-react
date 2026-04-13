@@ -10,6 +10,7 @@ import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import DeleteButton from "@/app/core/DeleteButton";
 import db from "@/data/db";
 import { useNavigate } from "react-router";
+import UnitDelete from "./UnitDelete";
 
 function ChapterEdit() {
   const dispatch = useControllerDispatch();
@@ -44,7 +45,11 @@ function ChapterEdit() {
         <ToggleButton value="unit_move">
           Move Unit
         </ToggleButton>
+        <ToggleButton value="unit_delete">
+          Delete Unit
+        </ToggleButton>
       </ToggleButtonGroup>
+      <UnitDelete />
       <div className="flex flex-row items-center gap-2">
         <DeleteButton
           label="Delete this chapter?"

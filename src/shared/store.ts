@@ -6,7 +6,7 @@ import {
 import listenerMiddleware from "./listenerMiddleware";
 import { Command, UnitId } from "thoron";
 
-export type ChapterEditMode = "unit_move" | null;
+export type ChapterEditMode = "unit_move" | "unit_delete" | null;
 
 const initialState: {
   phase: ControllerPhase,
