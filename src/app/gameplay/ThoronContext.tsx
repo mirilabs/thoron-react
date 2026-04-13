@@ -2,26 +2,30 @@ import React, { useState, useEffect, createContext } from 'react';
 import Game from '../../game/Game';
 import UIEventEmitter from '../../shared/UIEventEmitter';
 import Chapter, { Controller, IChapterSaveState, SaveState } from 'thoron';
+import db from '@/data/db';
 
 type ThoronContextState = {
-  save: SaveState,
+  saveState: SaveState,
   controller: Controller,
   chapter: Chapter,
   uiEvents?: UIEventEmitter,
   canvas: HTMLCanvasElement,
-  setCanvas: (canvas: HTMLCanvasElement) => void
+  setCanvas: (canvas: HTMLCanvasElement) => void,
+  save: () => void
 }
 
 const ThoronContext: React.Context<ThoronContextState> = createContext({
-  save: null,
+  saveState: null,
   controller: null,
   chapter: null,
   uiEvents: null,
   canvas: null,
-  setCanvas: null
+  setCanvas: null,
+  save: null
 });
 
-function ThoronProvider({ saveState, children }: {
+function ThoronProvider({ chapterId, saveState, children }: {
+  chapterId: number,
   saveState: IChapterSaveState,
   children: React.ReactNode
 }) {
@@ -33,13 +37,20 @@ function ThoronProvider({ saveState, children }: {
   useEffect(() => {
     const controller = Controller.load(saveState);
     const chapter = controller.chapter;
+    const save = () => {
+      db.chapters.update(chapterId, {
+        save: controller.save()
+      });
+    }
+
     setApi({
       ...api,
-      save: saveState,
+      saveState,
       controller,
-      chapter
+      chapter,
+      save
     });
-  }, [saveState]);
+  }, [chapterId, saveState]);
 
   // when canvas is set, create Game object and attach canvas to it
   useEffect(() => {

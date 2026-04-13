@@ -31,12 +31,12 @@ function ChapterShow() {
     return <div>Error: {error}</div>
   }
 
-  if (!saveState) {
+  if (!saveState || !id) {
     return <div>Loading...</div>
   }
 
   return (
-    <GameplayRoot saveState={saveState} />
+    <GameplayRoot chapterId={parseInt(id)} saveState={saveState} />
   )
 }
 

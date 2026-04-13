@@ -7,11 +7,17 @@ import { SaveState } from "thoron";
 import { ThoronProvider } from "./ThoronContext";
 import { Provider as ReduxProvider } from "react-redux";
 import controllerStore from "@/shared/store";
-import { KeybindInitializer } from "../settings/keybinds";
+import { KeybindInitializer } from "../Settings/keybinds";
 
-function GameplayRoot({ saveState }: { saveState: SaveState }) {
+function GameplayRoot({
+  chapterId,
+  saveState
+}: {
+  chapterId: number,
+  saveState: SaveState
+}) {
   return (
-    <ThoronProvider saveState={{ ...saveState }}>
+    <ThoronProvider chapterId={chapterId} saveState={{ ...saveState }}>
       <ReduxProvider store={controllerStore}>
         <div className="gameplay-root">
           <GameplayLayout />
