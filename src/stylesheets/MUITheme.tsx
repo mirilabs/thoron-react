@@ -20,6 +20,13 @@ const theme = createTheme({
           "&:hover": {
             color: "var(--accent-color)",
             backgroundColor: "var(--bg-color-2)",
+          },
+          "&.MuiButton-contained": {
+            color: "var(--bg-color)",
+            backgroundColor: "var(--accent-color)",
+            "&:hover": {
+              color: "var(--bg-color-2)"
+            }
           }
         }
       }
