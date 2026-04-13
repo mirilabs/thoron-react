@@ -3,6 +3,8 @@ import UnitDetail from "./UnitDetail";
 import { DeployedUnit } from "thoron";
 import UnitEditForm from "../UnitEdit/UnitEditForm";
 import { Character } from "@/data/db";
+import { useControllerDispatch } from "../../utils/reduxHooks";
+import { unitSelected } from "@/shared/store";
 
 function UnitDetailContainer({ unit }: { unit: DeployedUnit }) {
   const [editing, setEditing] = useState(false);
@@ -12,12 +14,19 @@ function UnitDetailContainer({ unit }: { unit: DeployedUnit }) {
     setEditing(false);
   }
 
+  const dispatch = useControllerDispatch();
+  const handleClose = () => {
+    dispatch(unitSelected(null));
+  }
+
   return editing ? (
     <UnitEditForm record={unit.record as Character}
       handleSave={handleSave}
       handleCancel={() => setEditing(false)} />
   ) : (
-    <UnitDetail unit={unit} handleStartEdit={() => setEditing(true)} />
+    <UnitDetail record={unit.record as Character}
+      handleStartEdit={() => setEditing(true)}
+      handleClose={handleClose} />
   );
 }
 
