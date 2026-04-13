@@ -49,8 +49,6 @@ function UnitAddForm({ controller, onDone }: UnitAddFormProps) {
   const handleAddExisting = () => {
     const char = characters?.find(c => c.id === selectedCharId);
     if (char) {
-      // In a real scenario, we might want to deep clone the character data
-      // but addUnit should handle it.
       controller.addUnit(char);
       onDone();
     }
