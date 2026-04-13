@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 import ThoronContext from "../../ThoronContext";
 import UnitAdd from "./UnitAdd";
-import { useControllerDispatch } from "../../utils/reduxHooks";
+import {
+  useControllerDispatch,
+  useControllerSelector
+} from "../../utils/reduxHooks";
 import { ChapterEditMode, chapterEditModeChanged } from "@/shared/store";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
@@ -9,13 +12,12 @@ function ChapterEdit() {
   const { controller } = useContext(ThoronContext);
   const dispatch = useControllerDispatch();
 
-  const [editMode, setEditMode] = useState<ChapterEditMode>(null);
+  const editMode = useControllerSelector(state => state.editMode);
 
   const handleModeChange = (
     event: React.MouseEvent<HTMLElement>,
     value: ChapterEditMode
   ) => {
-    setEditMode(value);
     dispatch(chapterEditModeChanged(value));
   }
 

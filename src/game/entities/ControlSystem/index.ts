@@ -10,7 +10,8 @@ import controllerStore, { phaseChanged } from "@/shared/store";
 import { addAppListener } from "@/shared/listenerMiddleware";
 import {
   IdleState,
-  MovingState
+  MovingState,
+  FreeMoveState
 } from "./states";
 import Chapter, { Controller } from "thoron";
 import UnitBody from "../UnitBody";
@@ -25,7 +26,7 @@ class ControlSystem extends GameObject {
   scene: Scene;
   selectedUnitBody: UnitBody;
   currentState: ControllerState;
-  
+
   constructor(game: Game) {
     super();
     this.game = game;
@@ -69,6 +70,14 @@ class ControlSystem extends GameObject {
     // set new unit
     if (unit) {
       this.selectedUnitBody = this.getUnitBody(unit.id);
+
+      // if in unit move mode, enter free move state
+      const editMode = controllerStore.getState().editMode;
+      if (editMode === "unit_move") {
+        this.setState(new FreeMoveState());
+        return;
+      }
+
       this.selectedUnitBody.showMoveRange();
 
       let { canAct, team } = unit.getActionState();

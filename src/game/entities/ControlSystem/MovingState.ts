@@ -12,7 +12,7 @@ import { DeployedUnit } from "thoron";
 
 class MovingState extends ControllerState {
   id = ControllerPhase.MOVING;
-  
+
   unit: DeployedUnit;
   unitEnt: UnitPiece;
   entityPos: IVector2;
@@ -85,7 +85,7 @@ class MovingState extends ControllerState {
       this.lastX = tileCoords.x;
       this.lastY = tileCoords.y;
     }
-    
+
     // unit sprite follows cursor
     this.moveEntity(
       event.x - this.controller.config.tileWidth / 2,
@@ -101,7 +101,7 @@ class MovingState extends ControllerState {
     // ensure new position is unoccupied
     let occupant = this.controller.chapter.getUnitAt(nextCoords);
     if (occupant && occupant !== this.unit) return;
-    
+
     // update pathEnt with new target position
     this.unitEnt.setDestination(nextCoords);
 
@@ -110,8 +110,6 @@ class MovingState extends ControllerState {
     controllerStore.dispatch(destinationSelected(nextCoords));
 
     // update target indicators
-    let maxAttackRange = this.unit.getMaxAttackRange();
-
     for (const target of this.controller.game.unitBodies.values()) {
       if (target === this.unitEnt) continue;
 
