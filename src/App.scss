@@ -19,7 +19,7 @@ code {
 
 #root {
   position: relative;
-  background-color: #282c34;
+  background-color: var(--bg-color-3);
   color: var(--text-color);
   display: flex;
   flex-direction: column;
