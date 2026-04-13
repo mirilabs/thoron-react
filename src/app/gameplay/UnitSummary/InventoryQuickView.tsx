@@ -10,7 +10,7 @@ import { itemSelected } from "@/shared/store";
 function InventoryQuickView() {
   const [isOpen, setOpen] = useState(false);
   const dispatch = useControllerDispatch();
-  
+
   const unit = useSelectedUnit();
   const setEquipped = (index: number) => {
     unit.equip(index);
@@ -33,6 +33,17 @@ function InventoryQuickView() {
   const items = unit.record.items;
   let itemElems: JSX.Element | JSX.Element[];
 
+  if (items.length === 0) return (
+    <div className="weapon-selector">
+      <div className={
+        "item-title cursor-default " +
+        "text-[var(--text-color-2)] italic"
+      }>
+        (no items)
+      </div>
+    </div>
+  );
+
   if (!isOpen) {
     // render currently equipped weapon    
     let item = items[unit.state.equippedIndex]
@@ -53,7 +64,7 @@ function InventoryQuickView() {
     });
 
     // move equipped item to top of list
-    const [ equipped ] = itemElems.splice(unit.state.equippedIndex, 1);
+    const [equipped] = itemElems.splice(unit.state.equippedIndex, 1);
     itemElems.unshift(equipped);
   }
 
