@@ -2,55 +2,80 @@ import "./UnitDetail.scss";
 import React from "react";
 import StatView from "./StatView";
 import Inventory from "../Items/Inventory";
-import { useControllerDispatch } from "@/app/gameplay/utils/reduxHooks";
-import { unitSelected } from "@/shared/store";
-import { Unit } from "thoron";
-import ClassView from "./ClassView";
-import LevelView from "./LevelView";
+import { Character } from "@/data/db";
+import { IconButton } from "@mui/material";
 
 interface UnitDetailProps {
-  unit: Unit,
-  handleStartEdit: () => void;
+  record: Character,
+  handleStartEdit?: () => void;
+  handleClose?: () => void;
 }
 
 function UnitDetail(props: UnitDetailProps) {
-  const { unit, handleStartEdit } = props;
-  const dispatch = useControllerDispatch();
-  
+  const { record, handleStartEdit, handleClose } = props;
+
   const {
     name,
+    className,
     stats,
     growths,
-    items
-  } = unit.record;
+    items,
+  } = record;
+
+  const portraitUrl = record.portrait instanceof Blob ?
+    URL.createObjectURL(record.portrait) :
+    record.portrait;
 
   return (
-    <div className="unit-detail">
-      <div className="title">
-        <h1 className="unit-name">{name}</h1>
-        <span>
-          <button className="edit"
-            onClick={handleStartEdit}>
-            <i className="fas fa-edit" />
-          </button>
-          <button className="back"
-            onClick={() => dispatch(unitSelected(null))}>
-            <i className="fas fa-reply" />
-          </button>
-        </span>
+    <div className="flex flex-col gap-4">
+      {
+        (handleStartEdit || handleClose) && (
+          <div className="flex flex-row justify-end">
+            <span className="flex flex-row gap-2">
+              {
+                handleStartEdit && (
+                  <IconButton onClick={handleStartEdit}>
+                    <i className="fas fa-edit" />
+                  </IconButton>
+                )
+              }
+              {
+                handleClose && (
+                  <IconButton onClick={handleClose}>
+                    <i className="fas fa-x" />
+                  </IconButton>
+                )
+              }
+            </span>
+          </div>
+        )
+      }
+      <div className="flex flex-row gap-4 justify-center">
+        <img className="w-24 h-24" src={portraitUrl} alt={name} />
+        <div className="flex flex-col">
+          <div className={
+            "flex flex-row justify-between items-baseline " +
+            "border-b border-[var(--accent-color)] pb-2 mb-2"
+          }>
+            <h1 className="text-2xl font-bold">{name}</h1>
+            <h2 className="text-lg">{className}</h2>
+          </div>
+          <div className="flex flex-row gap-2 items-center">
+            <p>level</p>
+            <p>{record.level}</p>
+          </div>
+          <div className="flex flex-row gap-2 items-center">
+            <p>exp</p>
+            <p>{record.exp}</p>
+            <meter className="unit-detail__exp-bar"
+              value={record.exp}
+              max={100} />
+          </div>
+        </div>
       </div>
-      <div className="chara-class">
-        <ClassView record={unit.record} />
-      </div>
-      <div className="level">
-        <LevelView record={unit.record} />
-      </div>
-      <div className="inventory">
+      <div className="flex flex-row flex-wrap justify-around gap-8">
         <Inventory items={items} />
-      </div>
-      <div className="stats">
-        <StatView stats={stats}
-            growths={growths} />
+        <StatView stats={stats} growths={growths} />
       </div>
     </div>
   )

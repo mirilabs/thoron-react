@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Character } from "@/data/db";
 import db from "@/data/db";
-import LevelView from "../gameplay/ControlPanel/UnitDetail/LevelView";
 import StatView from "../gameplay/ControlPanel/UnitDetail/StatView";
-import ClassView from "../gameplay/ControlPanel/UnitDetail/ClassView";
 import InventoryView from "../gameplay/ControlPanel/Items/Inventory";
 import { Button } from "@mui/material";
 import UnitEditForm from "../gameplay/ControlPanel/UnitEdit/UnitEditForm";
+import UnitDetail from "../gameplay/ControlPanel/UnitDetail/UnitDetail";
 
 function CharacterDetail({
   character,
@@ -39,24 +38,10 @@ function CharacterDetail({
   else {
     content = (
       <>
-        <div className="flex flex-row gap-4 items-end">
-          <h1 className="text-xl font-bold">
-            {character.name}
-          </h1>
-          <ClassView record={character} />
-          {
-            editable && (
-              <Button variant="text"
-                onClick={() => setEditing(true)}
-                startIcon={<i className="fas fa-edit" />}>
-                Edit
-              </Button>
-            )
-          }
-        </div>
-        <LevelView record={character} />
-        <InventoryView items={character.items} />
-        <StatView stats={character.stats} growths={character.growths} />
+        <UnitDetail
+          record={character}
+          handleStartEdit={() => setEditing(true)}
+        />
       </>
     )
   }
