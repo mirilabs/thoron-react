@@ -8,7 +8,8 @@ function UnitAdd({ controller }: { controller: GameController }) {
 
   return (
     <div>
-      <Button variant="contained" onClick={() => setOpen(true)}>
+      <Button variant={open ? "contained" : "text"}
+        onClick={() => setOpen(true)}>
         Add Unit
       </Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
