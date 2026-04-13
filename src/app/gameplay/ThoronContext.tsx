@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import Game from '../../game/Game';
 import UIEventEmitter from '../../shared/UIEventEmitter';
 import Chapter, { Controller, IChapterSaveState, SaveState } from 'thoron';
@@ -38,9 +38,11 @@ function ThoronProvider({ chapterId, saveState, children }: {
     const controller = Controller.load(saveState);
     const chapter = controller.chapter;
     const save = () => {
+      const saveState = controller.save();
       db.chapters.update(chapterId, {
-        save: controller.save()
+        save: saveState
       });
+      console.log("Saved:", saveState);
     }
 
     setApi({
@@ -83,7 +85,12 @@ function ThoronProvider({ chapterId, saveState, children }: {
   )
 }
 
+function useThoronContext() {
+  return useContext(ThoronContext);
+}
+
 export default ThoronContext
 export {
-  ThoronProvider
+  ThoronProvider,
+  useThoronContext
 }
