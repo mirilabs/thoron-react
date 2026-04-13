@@ -10,8 +10,8 @@ interface LogStringProps {
 }
 
 function LogString(props: LogStringProps) {
-  let unitName = props.unit?.record?.name ?? "(UNNAMED)";
-  let targetName = props.target?.record?.name ?? "(UNNAMED)";
+  let unitName = props.unit?.record?.name ?? "???";
+  let targetName = props.target?.record?.name ?? "???";
 
   let predicate: React.ReactNode;
   switch (props.actionResult.action.command) {

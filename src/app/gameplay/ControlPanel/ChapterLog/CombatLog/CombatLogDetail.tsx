@@ -5,11 +5,12 @@ import CombatPreview, {
 } from "@/app/gameplay/GameView/ActionMenu/CombatMenu/CombatPreviewSide";
 import {
   DeployedUnit,
+  IAction,
   ICombatForecastSide,
   ICombatResultSide
 } from "thoron";
 import CombatEvents from "./CombatEvents";
-import { LogDetailProps } from "../LogItem";
+import { LogActionResultProps } from "../LogActionResult";
 
 function getForecastData(
   unit: DeployedUnit,
@@ -27,7 +28,16 @@ function getForecastData(
   } as ICombatPreview;
 }
 
-function CombatLogDetail({ unit, target, actionResult }: LogDetailProps) {
+function CombatLogDetail({ actionResult, chapter }: LogActionResultProps) {
+  const action = actionResult.action as IAction;
+  const unit = chapter.getUnitById(
+    action.unitId ??
+    actionResult.events[0].unitId
+  );
+  const target = (action.targetId !== undefined) ?
+    chapter.getUnitById(action.targetId) :
+    null;
+
   let left = getForecastData(
     unit,
     actionResult.combatForecast.initiator,
