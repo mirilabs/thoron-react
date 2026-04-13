@@ -13,7 +13,15 @@ enum ControlPanelTab {
   Edit
 }
 
-function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setShow: (show: boolean) => void, isStatic?: boolean }) {
+function ControlPanel({
+  show,
+  setShow,
+  isStatic = false
+}: {
+  show: boolean,
+  setShow: (show: boolean) => void,
+  isStatic?: boolean
+}) {
   const [tabIndex, setTabIndex] = useState(0);
 
   const dispatch = useControllerDispatch();

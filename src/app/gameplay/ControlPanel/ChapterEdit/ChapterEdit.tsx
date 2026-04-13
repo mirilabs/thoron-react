@@ -1,15 +1,17 @@
-import React, { useContext, useState } from "react";
-import ThoronContext from "../../ThoronContext";
+import React from "react";
+import { useThoronContext } from "../../ThoronContext";
 import UnitAdd from "./UnitAdd";
 import {
   useControllerDispatch,
   useControllerSelector
 } from "../../utils/reduxHooks";
 import { ChapterEditMode, chapterEditModeChanged } from "@/shared/store";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import DeleteButton from "@/app/core/DeleteButton";
+import db from "@/data/db";
+import { useNavigate } from "react-router";
 
 function ChapterEdit() {
-  const { controller } = useContext(ThoronContext);
   const dispatch = useControllerDispatch();
 
   const editMode = useControllerSelector(state => state.editMode);
@@ -19,6 +21,16 @@ function ChapterEdit() {
     value: ChapterEditMode
   ) => {
     dispatch(chapterEditModeChanged(value));
+  }
+
+  const { chapterId } = useThoronContext();
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    const chapter = await db.chapters.get(chapterId);
+    if (!chapter) return;
+    await db.chapters.delete(chapterId);
+    navigate(`/campaigns/${chapter.campaignId}`);
   }
 
   return (
@@ -33,6 +45,22 @@ function ChapterEdit() {
           Move Unit
         </ToggleButton>
       </ToggleButtonGroup>
+      <div className="flex flex-row items-center gap-2">
+        <DeleteButton
+          label="Delete this chapter?"
+          variant="alert"
+          onDelete={handleDelete}
+          button={
+            <Button
+              color="error"
+              variant="contained"
+              size="small"
+            >
+              Delete Chapter
+            </Button>
+          }
+        />
+      </div>
     </div>
   )
 }
