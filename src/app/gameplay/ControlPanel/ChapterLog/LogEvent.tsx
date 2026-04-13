@@ -45,7 +45,20 @@ const LogEventComponents: Partial<{
   "combat_start_effect": () => null,
   "combat_attack": () => null,
   "end_action": () => null,
-  "phase_change": () => null,
+  "phase_change": ({ event }) => {
+    const nextPhase = event.next;
+    const side = ["Player", "Enemy"][nextPhase.phase];
+    return (
+      <div className="flex flex-row gap-4 items-center">
+        <p className="text-[var(--text-color)] font-bold text-lg">
+          Turn {nextPhase.turn}
+        </p>
+        <p className="text-[var(--text-color)] font-bold text-lg">
+          {side} phase
+        </p>
+      </div>
+    );
+  },
   "add_unit": ({ event }) => {
     const { x, y } = event?.saveState?.state?.position;
     return (
@@ -79,7 +92,8 @@ function LogEvent({ chapter, event }: LogEventProps) {
 
   return (
     <div className={
-      "bg-[var(--bg-color-2)] rounded-md p-1 color-[var(--text-color-2)]"
+      "bg-[var(--bg-color-2)] rounded-md p-1 color-[var(--text-color-2)]" +
+      (event.type === "phase_change" ? " mt-4" : "")
     }
       onClick={handleClick}
     >
