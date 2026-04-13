@@ -4,6 +4,8 @@ import useUIAction from "@/app/gameplay/utils/useUIAction";
 import UnitIndexContainer from "./UnitIndex/UnitIndex";
 import ChapterLog from "./ChapterLog";
 import ChapterEdit from "./ChapterEdit/ChapterEdit";
+import { useControllerDispatch } from "../utils/reduxHooks";
+import { chapterEditModeChanged } from "@/shared/store";
 
 enum ControlPanelTab {
   Units,
@@ -13,6 +15,8 @@ enum ControlPanelTab {
 
 function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setShow: (show: boolean) => void, isStatic?: boolean }) {
   const [tabIndex, setTabIndex] = useState(0);
+
+  const dispatch = useControllerDispatch();
 
   const handleTabChange = (event: React.SyntheticEvent, value: number) => {
     if (!show) {
@@ -27,6 +31,11 @@ function ControlPanel({ show, setShow, isStatic = false }: { show: boolean, setS
     else {
       // switch to tab
       setTabIndex(value);
+    }
+
+    // reset edit mode if leaving edit tab
+    if (value !== ControlPanelTab.Edit) {
+      dispatch(chapterEditModeChanged(null));
     }
   }
 
