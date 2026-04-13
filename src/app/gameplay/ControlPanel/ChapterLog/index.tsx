@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import ThoronContext from "@/app/gameplay/ThoronContext";
-import LogItem from "./LogItem";
+import LogActionResult from "./LogActionResult";
 import ChapterLogControls from "./ChapterLogControls";
 
 function ChapterLog() {
@@ -13,25 +13,25 @@ function ChapterLog() {
 
       const unsubscribe = controller.subscribe((res) => {
         setHistory(history => {
-          return [ ...history, res ];
+          return [...history, res];
         });
       });
-      
+
       return unsubscribe;
     }
   }, [controller]);
 
   const items = history.map((actionResult, i) => {
     return (
-      <LogItem
+      <LogActionResult
         key={i}
         chapter={chapter}
-        actionResult={actionResult}  />
+        actionResult={actionResult} />
     );
   });
 
   return (
-    <div className="chapter-log">
+    <div className="flex flex-col gap-2">
       <ChapterLogControls />
       {items.length === 0 && <div>No history</div>}
       {items}
