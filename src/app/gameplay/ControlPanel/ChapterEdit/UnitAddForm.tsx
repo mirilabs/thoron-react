@@ -27,7 +27,7 @@ function UnitAddForm({ onDone }: UnitAddFormProps) {
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [mode, setMode] = useState<"select" | "create">("select");
   const [selectedCharId, setSelectedCharId] = useState<number | "">("");
-  const [saveToCampaign, setSaveToCampaign] = useState(true);
+  const [saveToCampaign, setSaveToCampaign] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -117,15 +117,6 @@ function UnitAddForm({ onDone }: UnitAddFormProps) {
         </>
       ) : (
         <Box className="flex flex-col gap-2">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={saveToCampaign}
-                onChange={(e) => setSaveToCampaign(e.target.checked)}
-              />
-            }
-            label="Save to Campaign characters database"
-          />
           <Box>
             <UnitEditForm
               record={createDefaultCharacter(campaignId!)}
@@ -133,6 +124,15 @@ function UnitAddForm({ onDone }: UnitAddFormProps) {
               handleCancel={() => setMode("select")}
             />
           </Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={saveToCampaign}
+                onChange={(e) => setSaveToCampaign(e.target.checked)}
+              />
+            }
+            label="Save to database"
+          />
         </Box>
       )}
     </Box>
