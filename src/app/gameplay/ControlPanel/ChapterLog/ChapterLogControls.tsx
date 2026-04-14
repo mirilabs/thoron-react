@@ -1,10 +1,9 @@
 import React from "react";
-import "./ChapterLogControls.scss";
 import EndPhaseButton from "./EndPhaseButton";
 
 function ChapterLogControls() {
   return (
-    <div className="chapter-log-controls">
+    <div className="flex flex-row justify-end">
       <EndPhaseButton />
     </div>
   )
