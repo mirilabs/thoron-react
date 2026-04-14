@@ -66,8 +66,11 @@ input[type="reset"] {
 }
 
 .icon {
-  fill: white;
   filter: var(--icon-filter);
   max-width: 1.2rem;
   max-height: 1.2rem;
+
+  &.alt {
+    filter: var(--icon-filter-2)
+  }
 }
