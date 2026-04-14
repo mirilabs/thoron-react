@@ -7,6 +7,8 @@ import Chapter, { GameController } from 'thoron';
 import MotionSystem from './entities/MotionSystem';
 import UnitBody from './entities/UnitBody';
 import { Map as MapRecord } from '@/data/db';
+import GameObject from '../engine/GameObject';
+
 
 interface IGameConfig {
   tileWidth: number;
@@ -37,6 +39,8 @@ class Game {
   canvas: HTMLCanvasElement;
   scene: Scene;
   unitBodies: Map<any, UnitBody> = new Map();
+  systems: GameObject[] = [];
+
 
   constructor(gameController: GameController, cfg: Partial<IGameConfig> = {}) {
     this.gameController = gameController
@@ -62,10 +66,27 @@ class Game {
   }
 
   unsetCanvas() {
-    this.scene.unsetCanvas();
-    delete this.scene;
+    if (this.scene) {
+      this.scene.unsetCanvas();
+      delete this.scene;
+    }
     delete this.canvas;
   }
+
+  destroy() {
+    for (let body of this.unitBodies.values()) {
+      body.destroy();
+    }
+    this.unitBodies.clear();
+
+    for (let system of this.systems) {
+      system.destroy();
+    }
+    this.systems = [];
+
+    this.unsetCanvas();
+  }
+
 
   init() {
     let scene = this.scene;
@@ -80,14 +101,20 @@ class Game {
     let bg = new Background(width, height, backgroundUrl);
     bg.addToScene(scene);
 
+    this.systems.push(bg);
+
     let grid = new Grid(rows, columns, this.config);
     grid.addToScene(scene);
+    this.systems.push(grid);
 
     let controlSystem = new ControlSystem(this);
     controlSystem.addToScene(scene);
+    this.systems.push(controlSystem);
 
     let motionSystem = new MotionSystem(this);
     motionSystem.addToScene(scene);
+    this.systems.push(motionSystem);
+
 
     let units = this.chapter.getUnits();
     for (let unit of units) {
