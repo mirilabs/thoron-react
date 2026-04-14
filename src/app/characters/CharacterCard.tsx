@@ -1,15 +1,16 @@
 import { Character } from "@/data/db";
 import { Link } from "react-router";
 import React from "react";
+import unknownIcon from "@/icons/unknown.svg"
 
 function CharacterCard({ character, onClick }: {
   character: Character
   onClick?: () => void
 }) {
   const portraitUrl = character.portrait ?
-    URL.createObjectURL(character.portrait) : "";
+    URL.createObjectURL(character.portrait) : unknownIcon;
   const mapSpriteUrl = character.mapSprite ?
-    URL.createObjectURL(character.mapSprite) : "";
+    URL.createObjectURL(character.mapSprite) : unknownIcon;
 
   return (
     <Link to={`/campaigns/${character.campaignId}/characters/${character.id}`}>
