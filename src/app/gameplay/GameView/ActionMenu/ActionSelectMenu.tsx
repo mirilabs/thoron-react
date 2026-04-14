@@ -2,11 +2,11 @@ import React, { useRef } from "react";
 import { useUIEmitter } from "../../utils/useUIAction";
 import { CSSTransition } from "react-transition-group";
 import "./ActionSelectMenu.scss";
-import useUnit, { useSelectedUnit } from "@/app/gameplay/utils/useUnit";
+import { useSelectedTarget, useSelectedUnit } from "@/app/gameplay/utils/useUnit";
 import { useControllerSelector } from "@/app/gameplay/utils/reduxHooks";
 import { Command, DeployedUnit } from "thoron";
-import ActionButton from "./ActionButton";
 import WaitButton from "./WaitButton";
+import ActionSelectButton from "./ActionSelectButton";
 
 type PossibleActions = Partial<{ [action in Command]: any }>;
 
@@ -16,7 +16,7 @@ function ActionMenu({ actions, possibleActions }: {
 }) {
   const buttons = actions.map((action) => {
     if (possibleActions[action]) {
-      return <ActionButton unitAction={action} key={action} />
+      return <ActionSelectButton unitAction={action} key={action} />
     }
     else return null;
   });
@@ -38,17 +38,13 @@ const rightActions: Command[] = [
   "trade"
 ]
 
-function ActionMenuToggle(props: {
-  display: boolean
+function ActionSelectMenu({ show }: {
+  show: boolean
 }) {
   const nodeRef = useRef();
 
   let unit: DeployedUnit = useSelectedUnit();
-
-  let targetId: string = useControllerSelector(
-    state => state.pendingMove.targetId
-  );
-  let target = useUnit(targetId);
+  let target: DeployedUnit = useSelectedTarget()
 
   let destination = useControllerSelector(
     state => state.pendingMove.destination
@@ -68,9 +64,9 @@ function ActionMenuToggle(props: {
   }
 
   const handleClose = useUIEmitter("cancel");
-  
+
   let transitionProps = {
-    in: props.display,
+    in: show,
     timeout: 100,
     nodeRef
   }
@@ -93,4 +89,4 @@ function ActionMenuToggle(props: {
   )
 }
 
-export default ActionMenuToggle;
+export default ActionSelectMenu;

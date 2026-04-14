@@ -34,14 +34,18 @@ function StaffSelector({
     });
 
   return (
-    <div className="staff-select combat-forecast">
-      <div className="name">{unit?.record.name}</div>
-      <div className="equipped">
-        <ItemIcon item={selectedStaff} />
-        <span>{selectedStaff?.name}</span>
+    <>
+      <div className="flex flex-row gap-4 justify-between mb-4">
+        <span className="text-xl font-bold">{unit?.record.name}</span>
+        <div className="flex flex-row gap-2 items-center">
+          <ItemIcon item={selectedStaff} />
+          <span className="text-lg">{selectedStaff?.name || "None"}</span>
+        </div>
       </div>
-      {items}
-    </div>
+      <div className="flex flex-col gap-2">
+        {items}
+      </div>
+    </>
   );
 }
 

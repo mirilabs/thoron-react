@@ -27,7 +27,7 @@ function StaffPreviewContent({ unit, target, staff }: StaffPreviewProps) {
     case "heal":
       const amount = staffEffects.heal.getHealValue(staff, unit, target);
       return (
-        <div>
+        <>
           <div className="name">{target.record.name}</div>
           <div className="hp">
             <span className="label">HP: </span>
@@ -36,13 +36,13 @@ function StaffPreviewContent({ unit, target, staff }: StaffPreviewProps) {
             </span>
           </div>
           <HPBar maxHP={target.maxHp} hp={target.hp + amount} damage={amount} />
-        </div>
+        </>
       );
     default:
       return (
-        <div>
+        <>
           <p>Unknown staff effect</p>
-        </div>
+        </>
       );
   }
 }
