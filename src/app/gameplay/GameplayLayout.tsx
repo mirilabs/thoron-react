@@ -1,7 +1,7 @@
 import React from "react";
 import "./GameplayLayout.scss";
 import GameCanvas from "./GameView/GameCanvas";
-import ActionUI from "./GameView/ActionMenu";
+import ActionUI from "./GameView/ActionUI";
 import UnitSummary from "./UnitSummary";
 import GameMenuContainer from "./GameMenu";
 import ControlPanelContainer from "./ControlPanel";

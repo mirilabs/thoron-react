@@ -4,7 +4,7 @@ import { useControllerSelector } from "@/app/gameplay/utils/reduxHooks";
 import CombatPreview from "./CombatPreview";
 import CombatInput from "./CombatInput";
 import { DeployedUnit } from "thoron";
-import { ICombatForecast } from "thoron/dist/Battle";
+import type { ICombatForecast } from "thoron";
 
 function CombatMenu() {
   const unit: DeployedUnit = useSelectedUnit();

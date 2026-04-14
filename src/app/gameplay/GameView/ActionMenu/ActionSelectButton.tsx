@@ -8,7 +8,7 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function ActionButton({ unitAction, isSelectable=true }: {
+function ActionSelectButton({ unitAction, isSelectable = true }: {
   unitAction: Command,
   isSelectable?: boolean
 }) {
@@ -29,4 +29,4 @@ function ActionButton({ unitAction, isSelectable=true }: {
   )
 }
 
-export default ActionButton;
+export default ActionSelectButton;
