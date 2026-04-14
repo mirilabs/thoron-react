@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router";
-import db, { Character, Chapter } from "@/data/db";
-import { useLiveQuery } from "dexie-react-hooks";
+import db, { Character } from "@/data/db";
 import {
-  Button,
   FormControl,
   InputLabel,
   Select,
@@ -11,130 +8,79 @@ import {
   Checkbox,
   FormControlLabel,
   Box,
-  Typography
+  Typography,
+  RadioGroup,
+  Radio
 } from "@mui/material";
 import UnitEditForm from "../UnitEdit/UnitEditForm";
 import { createDefaultCharacter } from "./characterDefaults";
+import { Team } from "thoron";
 import { useThoronContext } from "../../ThoronContext";
+import CharacterSelect from "./CharacterSelect";
 
 interface UnitAddFormProps {
-  onDone: (unit: Character) => void;
+  onDone: (unit: Character, team: Team) => void;
+  onCancel: () => void;
 }
 
-function UnitAddForm({ onDone }: UnitAddFormProps) {
-  const { controller } = useThoronContext();
-  const { id } = useParams();
-  const [chapter, setChapter] = useState<Chapter | null>(null);
-  const [mode, setMode] = useState<"select" | "create">("select");
-  const [selectedCharId, setSelectedCharId] = useState<number | "">("");
+function UnitAddForm({ onDone, onCancel }: UnitAddFormProps) {
+  const { campaignId } = useThoronContext();
+
   const [saveToCampaign, setSaveToCampaign] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      db.chapters.get(parseInt(id)).then(setChapter);
+  const [record, setRecord] = useState<Character>(createDefaultCharacter());
+  const [team, setTeam] = useState<Team>(Team.PLAYER);
+
+  const handleSelectCharacter = (char: Character) => {
+    setRecord(char);
+  }
+
+  const handleConfirm = () => {
+    if (saveToCampaign) {
+      const { id: _, ...rest } = record;
+      db.characters.add({ ...rest, campaignId });
     }
-  }, [id]);
-
-  const campaignId = chapter?.campaignId;
-
-  const characters = useLiveQuery(
-    () => (
-      campaignId ?
-        db.characters.where("campaignId").equals(campaignId).toArray() :
-        []
-    ),
-    [campaignId]
-  );
-
-  const handleAddExisting = () => {
-    const char = characters?.find(c => c.id === selectedCharId);
-    if (char) {
-      onDone(char);
-    }
+    onDone(record, team);
   };
-
-  const handleCreateNew = async (record: Character) => {
-    let finalChar = record;
-    if (saveToCampaign && campaignId) {
-      const { id: _, ...recordWithoutId } = record;
-      const newId = await db.characters.add({ ...recordWithoutId, campaignId });
-      finalChar = { ...record, id: newId as number, campaignId };
-    }
-    onDone(finalChar);
-  };
-
-  if (!chapter) return <Typography>Loading...</Typography>;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-      <Box sx={{ display: 'flex', gap: 1 }}>
-        <Button
-          variant={mode === "select" ? "contained" : "outlined"}
-          onClick={() => setMode("select")}
-          fullWidth
-        >
-          Select Existing
-        </Button>
-        <Button
-          variant={mode === "create" ? "contained" : "outlined"}
-          onClick={() => setMode("create")}
-          fullWidth
-        >
-          Create New
-        </Button>
-      </Box>
-
-      {mode === "select" ? (
-        <>
-          <FormControl fullWidth>
-            <InputLabel id="select-character-label">Select Character</InputLabel>
-            <Select
-              labelId="select-character-label"
-              value={selectedCharId}
-              label="Select Character"
-              onChange={(e) => setSelectedCharId(e.target.value as number)}
-            >
-              {characters?.map(c => (
-                <MenuItem key={c.id} value={c.id}>
-                  {c.name} ({c.className})
-                </MenuItem>
-              ))}
-              {(!characters || characters.length === 0) && (
-                <MenuItem disabled>
-                  No characters found for this campaign
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
-          <Button
-            variant="contained"
-            onClick={handleAddExisting}
-            disabled={selectedCharId === ""}
-            sx={{ alignSelf: 'flex-end' }}
-          >
-            Add to Chapter
-          </Button>
-        </>
-      ) : (
-        <Box className="flex flex-col gap-2">
-          <Box>
-            <UnitEditForm
-              record={createDefaultCharacter(campaignId!)}
-              handleSave={handleCreateNew}
-              handleCancel={() => setMode("select")}
-            />
-          </Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={saveToCampaign}
-                onChange={(e) => setSaveToCampaign(e.target.checked)}
-              />
-            }
-            label="Save to database"
+      <RadioGroup
+        value={team}
+        onChange={(e) => setTeam(Number(e.target.value) as Team)}
+        sx={{ flexDirection: 'row', gap: 2 }}
+      >
+        <FormControlLabel
+          value={Team.PLAYER}
+          control={<Radio />}
+          label="Player"
+        />
+        <FormControlLabel
+          value={Team.ENEMY}
+          control={<Radio />}
+          label="Enemy"
+        />
+      </RadioGroup>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={saveToCampaign}
+            onChange={(e) => setSaveToCampaign(e.target.checked)}
           />
-        </Box>
-      )}
+        }
+        label="Save to database"
+      />
+      <CharacterSelect
+        campaignId={campaignId}
+        onSelect={handleSelectCharacter}
+      />
+      <Box className="flex flex-col gap-2">
+        <UnitEditForm
+          record={record}
+          handleSave={handleConfirm}
+          handleCancel={onCancel}
+        />
+      </Box>
     </Box>
   );
 }
