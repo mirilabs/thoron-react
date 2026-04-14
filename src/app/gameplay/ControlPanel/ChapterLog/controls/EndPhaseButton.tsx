@@ -1,5 +1,6 @@
-import React, { useContext }  from "react";
+import React, { useContext } from "react";
 import ThoronContext from "@/app/gameplay/ThoronContext";
+import { Button } from "@mui/material";
 
 function EndPhaseButton() {
   const { controller } = useContext(ThoronContext);
@@ -11,7 +12,7 @@ function EndPhaseButton() {
   }
 
   return (
-    <button onClick={handleEndPhase}>End Phase</button>
+    <Button variant="outlined" onClick={handleEndPhase}>End Phase</Button>
   )
 }
 
