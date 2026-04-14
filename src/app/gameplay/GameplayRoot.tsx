@@ -10,14 +10,19 @@ import controllerStore from "@/shared/store";
 import { KeybindInitializer } from "../Settings/keybinds";
 
 function GameplayRoot({
+  campaignId,
   chapterId,
   saveState
 }: {
+  campaignId: number,
   chapterId: number,
   saveState: SaveState
 }) {
   return (
-    <ThoronProvider chapterId={chapterId} saveState={{ ...saveState }}>
+    <ThoronProvider
+      campaignId={campaignId}
+      chapterId={chapterId}
+      saveState={{ ...saveState }}>
       <ReduxProvider store={controllerStore}>
         <div className="gameplay-root">
           <GameplayLayout />

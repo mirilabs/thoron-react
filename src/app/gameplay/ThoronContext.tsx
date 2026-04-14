@@ -5,6 +5,7 @@ import Chapter, { Controller, IChapterSaveState, SaveState } from 'thoron';
 import db from '@/data/db';
 
 type ThoronContextState = {
+  campaignId: number,
   chapterId: number,
   saveState: SaveState,
   controller: Controller,
@@ -16,6 +17,7 @@ type ThoronContextState = {
 }
 
 const ThoronContext: React.Context<ThoronContextState> = createContext({
+  campaignId: null,
   chapterId: null,
   saveState: null,
   controller: null,
@@ -26,7 +28,8 @@ const ThoronContext: React.Context<ThoronContextState> = createContext({
   save: null
 });
 
-function ThoronProvider({ chapterId, saveState, children }: {
+function ThoronProvider({ campaignId, chapterId, saveState, children }: {
+  campaignId: number,
   chapterId: number,
   saveState: IChapterSaveState,
   children: React.ReactNode
@@ -48,6 +51,7 @@ function ThoronProvider({ chapterId, saveState, children }: {
     }
 
     setApi({
+      campaignId,
       chapterId,
       ...api,
       saveState,
@@ -55,7 +59,7 @@ function ThoronProvider({ chapterId, saveState, children }: {
       chapter,
       save
     });
-  }, [chapterId, saveState]);
+  }, [campaignId, chapterId, saveState]);
 
   // when canvas is set, create Game object and attach canvas to it
   useEffect(() => {
