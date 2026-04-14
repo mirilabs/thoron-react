@@ -23,8 +23,8 @@ export default function Router() {
               <Route path="items" element={<ItemIndex />} />
               <Route path="maps" element={<MapsIndex />} />
               <Route path="maps/:mapId" element={<MapsIndex />} />
+              <Route path="chapters/:id" element={<ChapterShow />} />
             </Route>
-            <Route path="chapters/:id" element={<ChapterShow />} />
           </Routes>
         </div>
       </ErrorBoundary>

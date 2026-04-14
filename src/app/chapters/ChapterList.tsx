@@ -6,7 +6,7 @@ import { Link } from "react-router";
 
 function ChapterCard({ chapter }: { chapter: Chapter }) {
   return (
-    <Link to={`/chapters/${chapter.id}`}>
+    <Link to={`/campaigns/${chapter.campaignId}/chapters/${chapter.id}`}>
       <div
         className={
           "bg-[var(--bg-color)] border border-[var(--text-color)] " +
