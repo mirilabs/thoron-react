@@ -66,7 +66,7 @@ function ChapterCreate({ campaignId }: { campaignId: number }) {
     });
     setName("");
     setOpen(false);
-    navigate(`/chapters/${chapterId}`);
+    navigate(`/campaigns/${campaignId}/chapters/${chapterId}`);
   }, [name, mapIndex, campaignId, navigate]);
 
   const handleClose = useCallback(() => {
