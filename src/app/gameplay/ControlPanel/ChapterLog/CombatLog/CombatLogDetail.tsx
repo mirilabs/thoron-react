@@ -2,7 +2,7 @@ import "./CombatLogDetail.scss";
 import React from "react";
 import CombatPreview, {
   ICombatPreview
-} from "@/app/gameplay/GameView/ActionMenu/CombatMenu/CombatPreviewSide";
+} from "@/app/gameplay/GameView/ActionConfirmMenu/CombatPreview/CombatPreviewStatsSide";
 import {
   DeployedUnit,
   IAction,

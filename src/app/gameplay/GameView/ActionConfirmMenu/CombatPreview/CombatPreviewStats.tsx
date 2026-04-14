@@ -1,6 +1,6 @@
 import React from "react";
 import { ICombatForecast, DeployedUnit, ICombatForecastSide } from "thoron";
-import CombatPreviewSide, { ICombatPreview } from "./CombatPreviewSide";
+import CombatPreviewSide, { ICombatPreview } from "./CombatPreviewStatsSide";
 
 function getForecastData(
   unit: DeployedUnit,
@@ -19,7 +19,7 @@ function getForecastData(
   }
 }
 
-function CombatPreviewContainer({ attacker, target, forecast }: {
+function CombatPreviewStats({ attacker, target, forecast }: {
   attacker: DeployedUnit,
   target: DeployedUnit,
   forecast: ICombatForecast
@@ -36,18 +36,11 @@ function CombatPreviewContainer({ attacker, target, forecast }: {
   )
 
   return (
-    <div className="combat-preview">
-      <span className="combat-preview__left">
-        <CombatPreviewSide data={attData} />
-      </span>
-      <span className="combat-preview__center">
-
-      </span>
-      <span className="combat-preview__right">
-        <CombatPreviewSide data={tgtData} />
-      </span>
+    <div className="flex flex-row justify-between">
+      <CombatPreviewSide data={attData} />
+      <CombatPreviewSide data={tgtData} />
     </div>
   )
 }
 
-export default CombatPreviewContainer;
+export default CombatPreviewStats;
