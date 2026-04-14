@@ -16,7 +16,7 @@ export default function Router() {
         <div className="content">
           <Routes>
             <Route path="/" element={<CampaignIndex />} />
-            <Route path="/campaigns/:id">
+            <Route path="/campaigns/:campaignId">
               <Route index element={<CampaignDetail />} />
               <Route path="characters" element={<CharactersIndex />} />
               <Route path="characters/:characterId"
@@ -24,7 +24,7 @@ export default function Router() {
               <Route path="items" element={<ItemIndex />} />
               <Route path="maps" element={<MapsIndex />} />
               <Route path="maps/:mapId" element={<MapsIndex />} />
-              <Route path="chapters/:id" element={<ChapterShow />} />
+              <Route path="chapters/:chapterId" element={<ChapterShow />} />
             </Route>
           </Routes>
         </div>

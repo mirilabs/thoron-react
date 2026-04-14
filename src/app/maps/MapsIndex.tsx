@@ -6,7 +6,7 @@ import MapDetail from "./MapDetail";
 import { MapDetailEmpty } from "./MapDetailContent";
 
 function MapsIndex() {
-  const { id: campaignId, mapId } = useParams();
+  const { campaignId, mapId } = useParams();
 
   return (
     <div className="flex flex-row gap-2 h-full">

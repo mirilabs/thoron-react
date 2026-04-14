@@ -10,13 +10,12 @@ function ItemSelector({ onSelect, onCancel }: {
   onSelect: (item: Item) => void,
   onCancel: () => void
 }) {
-  const { id } = useParams();
-  const campaignId = Number(id);
+  const { campaignId } = useParams();
 
   const [filter, setFilter] = useState("");
 
   const items = useLiveQuery(
-    () => db.items.where({ campaignId }).toArray(),
+    () => db.items.where({ campaignId: Number(campaignId) }).toArray(),
     [campaignId]
   );
 
