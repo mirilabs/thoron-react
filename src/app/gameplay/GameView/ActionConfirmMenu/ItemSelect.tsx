@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ItemIcon from '@/app/gameplay/ControlPanel/Items/ItemIcon';
 import { Button } from '@mui/material';
 import { Command, ItemRecord } from 'thoron';
-import { useSelectedUnit } from '../../utils/useUnit';
+import { useSelectedItem, useSelectedUnit } from '../../utils/useUnit';
 import {
   useControllerSelector,
   useControllerDispatch
@@ -17,13 +17,10 @@ const ITEM_FILTERS: Partial<{ [K in Command]: ItemRecord["type"] }> = {
 
 function ItemSelect() {
   const unit = useSelectedUnit();
-  const selectedItemIndex = useControllerSelector(
-    state => state.pendingMove.itemIndex
-  );
-  const selectedItem = unit?.items?.[selectedItemIndex];
-  const dispatch = useControllerDispatch();
+  const selectedItem = useSelectedItem();
   const actionType = useControllerSelector(state => state.pendingMove.action);
 
+  const dispatch = useControllerDispatch();
   const handleItemSelect = (item: ItemRecord) => {
     dispatch(itemSelected(unit.items.indexOf(item)));
   };
