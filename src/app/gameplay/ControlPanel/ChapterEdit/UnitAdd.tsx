@@ -25,8 +25,7 @@ function UnitAdd() {
         onClick={() => setOpen(true)}>
         Add Unit
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Add Unit</DialogTitle>
+      <Dialog open={open} onClose={() => setOpen(false)} maxWidth="lg">
         <DialogContent>
           <UnitAddForm onDone={handleAddUnit} onCancel={() => setOpen(false)} />
         </DialogContent>
