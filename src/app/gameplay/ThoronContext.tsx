@@ -13,7 +13,7 @@ type ThoronContextState = {
   uiEvents?: UIEventEmitter,
   canvas: HTMLCanvasElement,
   setCanvas: (canvas: HTMLCanvasElement) => void,
-  save: () => void
+  save: () => Promise<number>
 }
 
 const ThoronContext: React.Context<ThoronContextState> = createContext({
@@ -44,10 +44,10 @@ function ThoronProvider({ campaignId, chapterId, saveState, children }: {
     const chapter = controller.chapter;
     const save = () => {
       const saveState = controller.save();
-      db.chapters.update(chapterId, {
+      console.log("Saving chapter...", chapterId, saveState);
+      return db.chapters.update(chapterId, {
         save: saveState
       });
-      console.log("Saved:", saveState);
     }
 
     setApi({

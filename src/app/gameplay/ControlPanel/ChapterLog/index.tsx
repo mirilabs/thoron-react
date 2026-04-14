@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import ThoronContext from "@/app/gameplay/ThoronContext";
 import LogActionResult from "./LogActionResult";
-import ChapterLogControls from "./ChapterLogControls";
+import ChapterLogControls from "./controls/ChapterLogControls";
 
 function ChapterLog() {
   const { controller, chapter } = useContext(ThoronContext);
