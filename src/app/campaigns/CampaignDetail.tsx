@@ -43,10 +43,9 @@ function CampaignInfo({ campaign }: { campaign: Campaign }) {
 }
 
 function CampaignDetail() {
-  const { id } = useParams();
-  const campaignId = Number(id);
+  const { campaignId } = useParams();
   const campaign = useLiveQuery(
-    () => db.campaigns.get(campaignId),
+    () => db.campaigns.get(Number(campaignId)),
     [campaignId]
   );
 
@@ -60,9 +59,9 @@ function CampaignDetail() {
     <div className="h-full flex flex-col items-center gap-4">
       <CampaignInfo campaign={campaign} />
       <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
-        <ChapterList campaignId={campaignId} />
-        <CharacterList campaignId={campaignId} />
-        <CampaignAssets campaignId={campaignId} />
+        <ChapterList campaignId={Number(campaignId)} />
+        <CharacterList campaignId={Number(campaignId)} />
+        <CampaignAssets campaignId={Number(campaignId)} />
       </div>
     </div>
   )

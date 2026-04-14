@@ -1,17 +1,16 @@
 import db, { Chapter } from '@/data/db';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { SaveState } from 'thoron';
 import GameplayRoot from '../gameplay/GameplayRoot';
 
 function ChapterShow() {
-  const { id } = useParams();
+  const { chapterId } = useParams();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
-    db.chapters.get(parseInt(id!)).then((chapter) => {
+    db.chapters.get(parseInt(chapterId!)).then((chapter) => {
       if (!active) return;
       if (!chapter) {
         setError("Chapter not found");
@@ -25,20 +24,20 @@ function ChapterShow() {
       setChapter(chapter);
     });
     return () => { active = false; };
-  }, [id]);
+  }, [chapterId]);
 
   if (error) {
     return <div>Error: {error}</div>
   }
 
-  if (!chapter || !id) {
+  if (!chapter || !chapterId) {
     return <div>Loading...</div>
   }
 
   return (
     <GameplayRoot
       campaignId={chapter.campaignId}
-      chapterId={parseInt(id)}
+      chapterId={parseInt(chapterId!)}
       saveState={chapter.save}
     />
   )

@@ -9,11 +9,10 @@ import ItemListJSON from "./ItemListJSON";
 function ItemIndex() {
   const [phase, setPhase] = React.useState<"list" | "export">("list");
 
-  const { id } = useParams();
-  const campaignId = Number(id);
+  const { campaignId } = useParams();
 
   const items = useLiveQuery(
-    () => db.items.where({ campaignId }).toArray(),
+    () => db.items.where({ campaignId: Number(campaignId) }).toArray(),
     [campaignId]
   );
 
@@ -51,7 +50,7 @@ function ItemIndex() {
           </span>
         </div>
         {phase === "list" && (
-          <ItemList campaignId={campaignId} items={items} />
+          <ItemList campaignId={Number(campaignId)} items={items} />
         )}
         {phase === "export" && (
           <ItemListJSON items={items} />
