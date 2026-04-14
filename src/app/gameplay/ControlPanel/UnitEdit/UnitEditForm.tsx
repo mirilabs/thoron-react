@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Unit, ValidationError } from "thoron";
 import ProfileForm from "./ProfileForm";
 import StatsForm from "./StatsForm";
@@ -20,6 +20,12 @@ function UnitEditForm({
   handleCancel
 }: UnitEditFormProps) {
   const [formData, setFormData] = useState(record);
+
+  // when record prop is updated, reset form data
+  useEffect(() => {
+    setFormData(record);
+  }, [record]);
+
   const [errorMsg, setErrorMsg] = useState(null);
 
   const [tabId, setTabId] = useState("profile");

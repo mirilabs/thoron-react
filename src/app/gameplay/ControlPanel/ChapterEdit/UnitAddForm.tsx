@@ -32,6 +32,10 @@ function UnitAddForm({ onDone, onCancel }: UnitAddFormProps) {
   const [team, setTeam] = useState<Team>(Team.PLAYER);
 
   const handleSelectCharacter = (char: Character) => {
+    if (!char) {
+      setRecord(createDefaultCharacter());
+      return;
+    }
     setRecord(char);
   }
 
@@ -44,36 +48,40 @@ function UnitAddForm({ onDone, onCancel }: UnitAddFormProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-      <RadioGroup
-        value={team}
-        onChange={(e) => setTeam(Number(e.target.value) as Team)}
-        sx={{ flexDirection: 'row', gap: 2 }}
-      >
-        <FormControlLabel
-          value={Team.PLAYER}
-          control={<Radio />}
-          label="Player"
-        />
-        <FormControlLabel
-          value={Team.ENEMY}
-          control={<Radio />}
-          label="Enemy"
-        />
-      </RadioGroup>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={saveToCampaign}
-            onChange={(e) => setSaveToCampaign(e.target.checked)}
+    <Box className="flex flex-col md:flex-row gap-4 pt-1">
+      <Box>
+        <Typography variant="h6">Add Unit</Typography>
+        <RadioGroup
+          value={team}
+          onChange={(e) => setTeam(Number(e.target.value) as Team)}
+          sx={{ flexDirection: 'row', gap: 2 }}
+        >
+          <FormControlLabel
+            value={Team.PLAYER}
+            control={<Radio />}
+            label="Player"
           />
-        }
-        label="Save to database"
-      />
-      <CharacterSelect
-        campaignId={campaignId}
-        onSelect={handleSelectCharacter}
-      />
+          <FormControlLabel
+            value={Team.ENEMY}
+            control={<Radio />}
+            label="Enemy"
+          />
+        </RadioGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={saveToCampaign}
+              onChange={(e) => setSaveToCampaign(e.target.checked)}
+            />
+          }
+          label="Sync to database"
+        />
+        <CharacterSelect
+          campaignId={campaignId}
+          onSelect={handleSelectCharacter}
+          withBlank
+        />
+      </Box>
       <Box className="flex flex-col gap-2">
         <UnitEditForm
           record={record}

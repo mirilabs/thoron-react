@@ -10,10 +10,12 @@ import {
 
 function CharacterSelect({
   campaignId,
-  onSelect
+  onSelect,
+  withBlank = false
 }: {
   campaignId: number;
   onSelect: (char: Character) => void;
+  withBlank?: boolean;
 }) {
   const [characters, setCharacters] = useState<Character[] | null>(null);
   const [selectedCharId, setSelectedCharId] = useState<number | string>("");
@@ -33,6 +35,12 @@ function CharacterSelect({
   }, [campaignId]);
 
   const handleSelectCharacter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
+      setSelectedCharId("");
+      onSelect(null);
+      return;
+    }
+
     const id = Number(e.target.value);
     const char = characters?.find(c => c.id === id);
     if (char) {
@@ -52,6 +60,11 @@ function CharacterSelect({
         label="Select Character"
         onChange={handleSelectCharacter}
       >
+        {withBlank && (
+          <MenuItem value={""}>
+            [Blank]
+          </MenuItem>
+        )}
         {characters?.map(c => (
           <MenuItem key={c.id} value={c.id.toString()}>
             {c.name} ({c.className})
