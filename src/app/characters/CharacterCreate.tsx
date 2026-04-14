@@ -11,7 +11,7 @@ const emptyCharacter: Partial<Character> = {
   level: 1,
   exp: 0,
   movement: 5,
-  classTags: [],
+  moveType: "infantry",
   stats: {
     mhp: 1, str: 0, mag: 0, skl: 0,
     spd: 0, luk: 0, def: 0, res: 0
