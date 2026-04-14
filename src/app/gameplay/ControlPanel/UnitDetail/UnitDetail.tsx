@@ -62,10 +62,7 @@ function UnitDetail(props: UnitDetailProps) {
             <h1 className="text-2xl font-bold">{name}</h1>
             <h2 className="text-lg">{className}</h2>
           </div>
-          <div className={
-            "flex flex-row justify-between items-baseline gap-4 " +
-            "border-b border-[var(--accent-color)] pb-2 mb-2"
-          }>
+          <div className="flex flex-row justify-between items-baseline gap-4">
             <span className="flex flex-row gap-1">
               <p>level</p>
               <p>{record.level}</p>
