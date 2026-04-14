@@ -2,6 +2,7 @@ import React from "react";
 import ActionConfirmInputs from "./ActionConfirmInputs";
 import ItemSelect from "./ItemSelect";
 import ActionPreview from "./ActionPreview";
+import ActionConfirmHandler from "./ActionConfirmHandler";
 
 function ActionConfirmMenu({ show }: { show: boolean }) {
   return (
@@ -23,6 +24,7 @@ function ActionConfirmMenu({ show }: { show: boolean }) {
       <div className="col-span-2 pointer-events-auto">
         <ActionConfirmInputs />
       </div>
+      <ActionConfirmHandler enabled={show} />
     </div>
   )
 }
