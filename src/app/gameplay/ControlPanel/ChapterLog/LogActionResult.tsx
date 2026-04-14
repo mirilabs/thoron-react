@@ -34,7 +34,25 @@ function LogActionResult({ actionResult, chapter }: LogActionResultProps) {
 
   const Component = LogActionResultComponents[action.command];
   if (Component) {
-    return React.createElement(Component as any, { actionResult, chapter });
+    // if component contains a move event, render it
+    const moveEvent = actionResult.events.find(
+      (event: ChapterEvent) => event.type === "move"
+    )
+    const moveEventElement = moveEvent ? (
+      <LogEvent chapter={chapter} event={moveEvent} />
+    ) : null;
+
+    const element = React.createElement(
+      Component as any,
+      { actionResult, chapter }
+    );
+
+    return (
+      <>
+        {moveEventElement}
+        {element}
+      </>
+    )
   }
 
   // if no component, show events individually
