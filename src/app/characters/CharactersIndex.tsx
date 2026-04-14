@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import CharacterShow from "./CharacterShow";
 
 function CharactersIndex() {
-  const { id: campaignId, characterId } = useParams();
+  const { campaignId, characterId } = useParams();
 
   return (
     <div className="flex flex-row gap-4">
