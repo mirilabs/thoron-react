@@ -5,6 +5,7 @@ import ItemCard from "../Items/ItemCard";
 import { IconButton } from "@mui/material";
 import ItemEditor from "../../../items/ItemEditor";
 import GiveItemButton from "./GiveItemButton";
+import DeleteButton from "@/app/core/DeleteButton";
 
 interface ItemsFormProps {
   data: Character;
@@ -32,7 +33,7 @@ function ItemEntry({
         >
           <i className="fas fa-edit" />
         </IconButton>
-        <DeleteButton onDelete={() => onDelete(item)} />
+        <DeleteButton onDelete={() => onDelete(item)} variant="inline" />
       </div>
     </div>
   )
@@ -42,35 +43,6 @@ function ItemEntry({
       onSave={(newItem) => { onUpdate(newItem); setEditing(false); }}
       onCancel={() => setEditing(false)}
     />
-  )
-}
-
-function DeleteButton({ onDelete }: { onDelete: () => void }) {
-  const [confirming, setConfirming] = useState(false);
-
-  const handleConfirm = () => {
-    onDelete();
-    setConfirming(false);
-  }
-
-  if (confirming) return (
-    <div className="flex flex-row items-center">
-      <p className="text-[var(--text-color-2)]">Delete?</p>
-      <IconButton
-        size="small"
-        onClick={handleConfirm}
-      >
-        <i className="fas fa-check" />
-      </IconButton>
-    </div>
-  )
-  else return (
-    <IconButton
-      size="small"
-      onClick={() => setConfirming(true)}
-    >
-      <i className="fas fa-trash" />
-    </IconButton>
   )
 }
 

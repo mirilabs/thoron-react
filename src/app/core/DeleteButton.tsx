@@ -102,13 +102,13 @@ function DeleteButton({
         size="small"
         onClick={handleConfirm}
       >
-        <i className="fas fa-check text-green-500" />
+        <i className="fas fa-check" />
       </IconButton>
       <IconButton
         size="small"
         onClick={handleCancel}
       >
-        <i className="fas fa-times text-red-500" />
+        <i className="fas fa-times" />
       </IconButton>
     </div>
   )
