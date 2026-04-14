@@ -1,9 +1,9 @@
 import React from "react";
 import ActionConfirmInputs from "./ActionConfirmInputs";
 import ItemSelect from "./ItemSelect";
+import ActionPreview from "./ActionPreview";
 
 function ActionConfirmMenu({ show }: { show: boolean }) {
-
   return (
     <div className={
       "grid grid-cols-[0.3fr_0.7fr] grid-rows-[auto_100px] " +
@@ -18,7 +18,7 @@ function ActionConfirmMenu({ show }: { show: boolean }) {
         <ItemSelect />
       </div>
       <div className="flex flex-1 flex-col pointer-events-auto">
-
+        <ActionPreview />
       </div>
       <div className="col-span-2 pointer-events-auto">
         <ActionConfirmInputs />

@@ -1,12 +1,11 @@
-import "./CombatPreviewSide.scss";
+import React from "react";
 import HPBar from "@/app/gameplay/ControlPanel/UnitIndex/HPBar";
 import ItemIcon from "@/app/gameplay/ControlPanel/Items/ItemIcon";
-import React from "react";
-import { ItemRecord } from "thoron/dist/Item";
+import { ItemRecord } from "thoron";
 
 interface ICombatPreview {
   unitName: string,       // name of unit
-  unitSpriteUrl?: string, // unit sprite url
+  portraitUrl?: string, // unit portrait url
   equippedItem: ItemRecord, // equipped item
   maxHP: number,      // max hp value
   startHP: number,    // hp at beginning of combat
@@ -18,12 +17,12 @@ interface ICombatPreview {
   isInRange: boolean  // true if unit able to attack
 }
 
-function CombatPreview({ data }: {
+function CombatPreviewStatsSide({ data }: {
   data: ICombatPreview
 }) {
   const {
     unitName,
-    unitSpriteUrl,
+    portraitUrl,
     equippedItem,
     maxHP, startHP, endHP,
     damage, hit, crit, doubles,
@@ -31,24 +30,24 @@ function CombatPreview({ data }: {
   } = data;
 
   return (
-    <div className="combat-forecast">
+    <div className="flex flex-1 flex-col gap-2">
       <div>
-        <div className="name">
+        <div>
           {
-            unitSpriteUrl &&
-            <img className="sprite" src={unitSpriteUrl} alt={unitName} />
+            portraitUrl &&
+            <img className="portrait" src={portraitUrl} alt={unitName} />
           }
           {unitName}
         </div>
-        <div className="equipped">
+        <div className="flex flex-row items-center">
           <ItemIcon item={equippedItem} />
           <span>
             {equippedItem.name}
           </span>
         </div>
-        <div className="hp">
-          <span className="label">HP</span>
-          <span className="value">
+        <div>
+          <span>HP</span>
+          <span>
             {startHP} → {endHP}
           </span>
         </div>
@@ -56,23 +55,23 @@ function CombatPreview({ data }: {
           hp={startHP}
           damage={startHP - endHP} />
       </div>
-      <table className="stats">
+      <table>
         <tbody>
           <tr>
-            <th className="stat-label">Dmg</th>
-            <th className="stat-value">
+            <th>Dmg</th>
+            <th>
               {isInRange ? (damage + (doubles ? "×2" : "")) : "--"}
             </th>
           </tr>
           <tr>
-            <th className="stat-label">Hit</th>
-            <th className="stat-value">
+            <th>Hit</th>
+            <th>
               {isInRange ? hit : "--"}
             </th>
           </tr>
           <tr>
-            <th className="stat-label">Crit</th>
-            <th className="stat-value">
+            <th>Crit</th>
+            <th>
               {isInRange ? crit : "--"}
             </th>
           </tr>
@@ -82,7 +81,7 @@ function CombatPreview({ data }: {
   )
 }
 
-export default CombatPreview;
+export default CombatPreviewStatsSide;
 export {
   ICombatPreview
 }

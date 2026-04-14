@@ -1,18 +1,16 @@
 import React from "react";
-import useUnit, { useSelectedUnit } from "@/app/gameplay/utils/useUnit";
+import { useSelectedTarget, useSelectedUnit } from "@/app/gameplay/utils/useUnit";
 import { useControllerSelector } from "@/app/gameplay/utils/reduxHooks";
-import CombatPreview from "./CombatPreview";
-import CombatInput from "./CombatInput";
+import CombatPreview from "./CombatPreviewStats";
 import { DeployedUnit } from "thoron";
 import type { ICombatForecast } from "thoron";
 
 function CombatMenu() {
   const unit: DeployedUnit = useSelectedUnit();
-  const {
-    targetId,
-    destination
-  } = useControllerSelector(state => state.pendingMove);
-  const target: DeployedUnit = useUnit(targetId);
+  const target = useSelectedTarget()
+  const destination = useControllerSelector(
+    state => state.pendingMove.destination
+  );
 
   // rerender when equip index changes
   useControllerSelector(state => (
@@ -25,14 +23,10 @@ function CombatMenu() {
     forecast = unit?.getCombatForecast(target, range);
   }
 
+  if (!forecast) return null;
+
   return (
-    <>
-      {
-        forecast &&
-        <CombatPreview attacker={unit} target={target} forecast={forecast} />
-      }
-      <CombatInput />
-    </>
+    <CombatPreview attacker={unit} target={target} forecast={forecast} />
   )
 }
 
