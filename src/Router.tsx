@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Navigation from "./Navigation";
 import CampaignIndex from "./app/campaigns/CampaignIndex";
 import CampaignDetail from "./app/campaigns/CampaignDetail";
-import GameplayRoot from "./app/gameplay/GameplayRoot";
-import CharacterShow from "./app/characters/CharacterShow";
+import CharactersIndex from "./app/characters/CharactersIndex";
 import ItemIndex from "./app/items/ItemIndex";
 import MapsIndex from "./app/maps/MapsIndex";
 import ChapterShow from "./app/chapters/ChapterShow";
@@ -19,7 +18,9 @@ export default function Router() {
             <Route path="/" element={<CampaignIndex />} />
             <Route path="/campaigns/:id">
               <Route index element={<CampaignDetail />} />
-              <Route path="characters/:characterId" element={<CharacterShow />} />
+              <Route path="characters" element={<CharactersIndex />} />
+              <Route path="characters/:characterId"
+                element={<CharactersIndex />} />
               <Route path="items" element={<ItemIndex />} />
               <Route path="maps" element={<MapsIndex />} />
               <Route path="maps/:mapId" element={<MapsIndex />} />
