@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 import db, { Character } from "@/data/db";
 
 const emptyCharacter: Partial<Character> = {
-  id: 0,
   name: "",
   className: "",
   level: 1,
@@ -44,10 +43,15 @@ function CharacterCreate({ campaignId }: { campaignId: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSave = async (record: Character) => {
+    console.log(record);
     await db.characters.add({
       ...record,
       campaignId: campaignId
-    });
+    })
+      .catch((err) => {
+        console.error(err);
+        alert("Failed to create character");
+      });
     setIsOpen(false);
   }
 
