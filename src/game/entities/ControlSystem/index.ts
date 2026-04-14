@@ -1,4 +1,4 @@
-import { PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, removeListener } from "@reduxjs/toolkit";
 import GameObject from "@/engine/GameObject";
 import Scene from "@/engine/Scene";
 import CursorEventHandler, { ICursorEvent } from "@/engine/components/CursorEventHandler";
@@ -27,6 +27,10 @@ class ControlSystem extends GameObject {
   selectedUnitBody: UnitBody;
   currentState: ControllerState;
 
+  private selectionEffect = (action: PayloadAction) => (
+    this.onUnitSelected(action.payload)
+  );
+
   constructor(game: Game) {
     super();
     this.game = game;
@@ -46,11 +50,20 @@ class ControlSystem extends GameObject {
 
     controllerStore.dispatch(addAppListener({
       type: "controller/unitSelected",
-      effect: (action: PayloadAction) => this.onUnitSelected(action.payload)
+      effect: this.selectionEffect
     }));
+
 
     this.setState(new IdleState());
   }
+
+  onDestroy(): void {
+    controllerStore.dispatch(removeListener({
+      type: "controller/unitSelected",
+      effect: this.selectionEffect
+    }));
+  }
+
 
   getUnitBody(unitId: string | number) {
     return this.game.getUnitBody(unitId);

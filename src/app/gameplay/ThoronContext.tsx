@@ -73,8 +73,9 @@ function ThoronProvider({ campaignId, chapterId, saveState, children }: {
       }));
 
       return function cleanup() {
-        game.unsetCanvas();
+        game.destroy();
       }
+
     }
   }, [api.controller, canvas])
 
