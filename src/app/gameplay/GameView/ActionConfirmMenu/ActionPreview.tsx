@@ -17,9 +17,9 @@ function ActionPreview() {
   const PreviewComponent = PREVIEW_COMPONENTS[actionType];
 
   return (
-    <div>
+    <>
       {PreviewComponent ? <PreviewComponent /> : actionType}
-    </div>
+    </>
   )
 }
 

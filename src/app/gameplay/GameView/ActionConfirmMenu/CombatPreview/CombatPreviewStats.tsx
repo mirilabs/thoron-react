@@ -36,7 +36,7 @@ function CombatPreviewStats({ attacker, target, forecast }: {
   )
 
   return (
-    <div className="flex flex-row justify-between">
+    <div className="w-full flex flex-row justify-center gap-8">
       <CombatPreviewSide data={attData} />
       <CombatPreviewSide data={tgtData} />
     </div>

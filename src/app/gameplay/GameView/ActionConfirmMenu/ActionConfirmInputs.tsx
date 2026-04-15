@@ -7,8 +7,10 @@ function ActionConfirmInputs() {
   const confirm = useUIEmitter("confirm");
 
   return (
-    <div className="flex flex-row h-full gap-4">
-      <div className="flex flex-1 h-full p-4">
+    <div className={
+      "grid grid-cols-[1fr_2fr_1fr] gap-4 h-full pointer-events-auto"
+    }>
+      <div className="flex flex-1 h-full pt-4 pb-4">
         <button className="w-full h-full rounded-md"
           onClick={changeTarget}>
           <i className="fas fa-redo-alt" />
@@ -16,13 +18,13 @@ function ActionConfirmInputs() {
         </button>
       </div>
       <div className="flex flex-2 h-full">
-        <button className="w-full h-full rounded-lg"
+        <button className="w-full h-full rounded-lg bg-[var(--accent-color)]"
           onClick={confirm}>
           <i className="fas fa-check" />
           Use
         </button>
       </div>
-      <div className="flex flex-1 h-full p-4">
+      <div className="flex flex-1 h-full pt-4 pb-4">
         <button className="w-full h-full rounded-md"
           onClick={cancel}>
           <i className="fas fa-x" />
