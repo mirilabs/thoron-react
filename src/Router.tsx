@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
-import Navigation from "./Navigation";
+import Navigation from "./app/navigation";
 import CampaignIndex from "./app/campaigns/CampaignIndex";
 import CampaignDetail from "./app/campaigns/CampaignDetail";
 import CharactersIndex from "./app/characters/CharactersIndex";
