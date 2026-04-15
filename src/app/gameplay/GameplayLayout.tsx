@@ -5,10 +5,10 @@ import ActionUI from "./GameView/ActionUI";
 import UnitSummary from "./UnitSummary";
 import GameMenuContainer from "./GameMenu";
 import ControlPanelContainer from "./ControlPanel";
-import useResponsive, { WindowSize } from "../utils/useResponsive";
+import useResponsive from "../utils/useResponsive";
 
 function GameplayLayout() {
-  const { size } = useResponsive();
+  const [size, sizes] = useResponsive();
 
   return (
     <div className="flex flex-row w-full h-full">
@@ -24,7 +24,7 @@ function GameplayLayout() {
           <ActionUI />
         </div>
         {
-          size <= WindowSize.MEDIUM ? (
+          size <= sizes.MEDIUM ? (
             <div className="gui-layer">
               <ControlPanelContainer />
             </div>
@@ -34,7 +34,7 @@ function GameplayLayout() {
       </div>
       {/* Control Panel Side */}
       {
-        size >= WindowSize.LARGE ? (
+        size >= sizes.LARGE ? (
           <div className={
             "h-full overflow-hidden " +
             "w-[33%] min-w-[320px] max-w-[480px]"
