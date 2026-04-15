@@ -3,17 +3,13 @@ import NumberField from "./NumberField";
 import { Slider } from "@mui/material";
 import { IUnitRecord } from "thoron";
 import "./StatField.scss";
-import useResponsive, { WindowSize } from "@/app/utils/useResponsive";
+import useResponsive from "@/app/utils/useResponsive";
 
 interface StatFieldProps {
   label?: string;
   stat: string;
   data: IUnitRecord;
   setData: (data: IUnitRecord) => void;
-}
-
-function shouldShowSlider(windowSize: number): boolean {
-  return windowSize >= WindowSize.MEDIUM;
 }
 
 function StatField({
@@ -32,8 +28,8 @@ function StatField({
     });
   };
 
-  const { size } = useResponsive();
-  const showSlider = shouldShowSlider(size);
+  const [size, sizes] = useResponsive();
+  const showSlider = size >= sizes.MEDIUM;
 
   return (
     <div className="stat-field">
@@ -78,8 +74,8 @@ function GrowthField({
     })
   }
 
-  const { size } = useResponsive();
-  const showSlider = shouldShowSlider(size);
+  const [size, sizes] = useResponsive();
+  const showSlider = size >= sizes.MEDIUM;
 
   return (
     <div className="stat-field growth">
