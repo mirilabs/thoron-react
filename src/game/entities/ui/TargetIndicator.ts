@@ -25,7 +25,7 @@ const SIZE = {
 const ACTION_ICONS: { [K in Action["command"]]: string } = {
   attack: CombatTargetIcon,
   staff: StaffTargetIcon,
-  trade: CombatTargetIcon,
+  trade: UnknownIcon,
 
   // non-targeted actions
   item: UnknownIcon,

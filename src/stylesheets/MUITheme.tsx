@@ -13,6 +13,63 @@ const theme = createTheme({
     }
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          "&:hover": {
+            color: "var(--accent-color)",
+            backgroundColor: "var(--bg-color-2)",
+          },
+          "&.MuiButton-contained": {
+            color: "var(--bg-color)",
+            backgroundColor: "var(--accent-color)",
+            "&:hover": {
+              color: "var(--bg-color-2)"
+            }
+          }
+        }
+      }
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          "&:hover": {
+            color: "var(--accent-color)",
+            backgroundColor: "var(--bg-color-2)",
+          }
+        }
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          "&:hover": {
+            color: "var(--accent-color)",
+            backgroundColor: "var(--bg-color-2)",
+          },
+          "&.Mui-selected": {
+            color: "var(--bg-color)",
+            backgroundColor: "var(--accent-color)",
+            "&:hover": {
+              color: "var(--bg-color-2)",
+              backgroundColor: "var(--accent-color)",
+            }
+          }
+        }
+      }
+    },
+    MuiToggleButtonGroup: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          display: "flex",
+          flexDirection: "row",
+        }
+      }
+    },
     MuiFormLabel: {
       styleOverrides: {
         root: {
@@ -46,6 +103,59 @@ const theme = createTheme({
         },
       }
     },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color-2)",
+          "&:hover": {
+            color: "var(--accent-color)",
+            backgroundColor: "var(--bg-color-2)",
+          }
+        }
+      }
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "var(--bg-color)",
+          color: "var(--text-color)",
+        }
+      }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+          "&:hover": {
+            color: "var(--accent-color)",
+          },
+          "&.Mui-selected": {
+            color: "var(--accent-color)",
+          }
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+        }
+      }
+    },
+    MuiDialogContentText: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+        }
+      }
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          color: "var(--text-color)",
+        }
+      }
+    }
   },
   typography: {
     button: {

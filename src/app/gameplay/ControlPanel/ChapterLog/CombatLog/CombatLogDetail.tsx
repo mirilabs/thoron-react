@@ -1,0 +1,76 @@
+import "./CombatLogDetail.scss";
+import React from "react";
+import CombatPreview, {
+  ICombatPreview
+} from "@/app/gameplay/GameView/ActionConfirmMenu/CombatPreview/CombatPreviewStatsSide";
+import {
+  DeployedUnit,
+  IAction,
+  ICombatForecastSide,
+  ICombatResultSide
+} from "thoron";
+import CombatEvents from "./CombatEvents";
+import { LogActionResultProps } from "../LogActionResult";
+
+function getForecastData(
+  unit: DeployedUnit,
+  forecast: ICombatForecastSide,
+  result: ICombatResultSide
+): ICombatPreview {
+  return {
+    ...forecast,
+    unitName: unit.record.name,
+    unitSpriteUrl: unit.record['sprite'],
+    equippedItem: unit.items[unit.state.equippedIndex],
+    maxHP: unit.getStats().mhp,
+    startHP: result.startHP,
+    endHP: result.endHP
+  } as ICombatPreview;
+}
+
+function CombatLogDetail({ actionResult, chapter }: LogActionResultProps) {
+  const action = actionResult.action as IAction;
+  const unit = chapter.getUnitById(
+    action.unitId ??
+    actionResult.events[0].unitId
+  );
+  const target = (action.targetId !== undefined) ?
+    chapter.getUnitById(action.targetId) :
+    null;
+
+  let left = getForecastData(
+    unit,
+    actionResult.combatForecast.initiator,
+    actionResult.combatResult.initiator
+  );
+  let right = getForecastData(
+    target,
+    actionResult.combatForecast.defender,
+    actionResult.combatResult.defender
+  );
+
+  const renderInitiatorOnLeft = unit.getTeam() < target.getTeam();
+  if (!renderInitiatorOnLeft) {
+    // swap positions
+    let temp = left;
+    left = right;
+    right = temp;
+  }
+
+  return (
+    <div className="combat-detail">
+      <CombatPreview data={left} />
+      <CombatPreview data={right} />
+      <div>
+        <CombatEvents
+          events={actionResult.events}
+          leftUnit={renderInitiatorOnLeft ? unit : target}
+          rightUnit={renderInitiatorOnLeft ? target : unit}
+          leftData={left}
+          rightData={right} />
+      </div>
+    </div>
+  )
+}
+
+export default CombatLogDetail;

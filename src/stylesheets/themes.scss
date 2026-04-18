@@ -4,29 +4,34 @@
 // more info: https://stackoverflow.com/a/53336754
 
 :root {
-  &.theme-ourple, .theme-selector.theme-ourple {
+
+  &.theme-ourple,
+  .theme-selector.theme-ourple {
     --bg-color: rgb(24, 20, 27);
     --bg-color-2: rgb(48, 26, 53);
-    --bg-color-3: rgb(160, 91, 160);
+    --bg-color-3: rgb(40, 44, 52);
     --accent-color: rgb(255, 192, 203);
     --accent-color-2: rgb(192, 221, 255);
     --text-color: white;
     --text-color-2: rgb(235, 197, 219);
     --icon-filter: invert(100%) brightness(110%) contrast(100%);
+    --icon-filter-2: none;
     --team-0: rgb(55, 59, 121);
     --team-1: rgb(168, 40, 40);
     --team-2: rgb(71, 126, 64);
   }
 
-  &.theme-soap, .theme-selector.theme-soap {
+  &.theme-soap,
+  .theme-selector.theme-soap {
     --bg-color: rgb(253, 247, 255);
     --bg-color-2: rgb(234, 212, 240);
-    --bg-color-3: rgb(223, 153, 243);
+    --bg-color-3: rgb(235, 202, 218);
     --accent-color: rgb(139, 62, 158);
     --accent-color-2: rgb(83, 140, 206);
     --text-color: black;
     --text-color-2: rgb(78, 30, 58);
     --icon-filter: none;
+    --icon-filter-2: invert(100%) brightness(110%) contrast(100%);
     --team-0: rgb(109, 143, 236);
     --team-1: rgb(241, 100, 100);
     --team-2: rgb(151, 224, 151);

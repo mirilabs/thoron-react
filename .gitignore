@@ -9,7 +9,6 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
 node_modules/
 
 # logs
@@ -29,3 +28,6 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# editor
+.agents

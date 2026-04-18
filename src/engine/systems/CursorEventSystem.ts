@@ -26,7 +26,7 @@ class CursorEventSystem extends System {
     this.onMouseMove = this.cursorEventCallback('onMouseMove').bind(this);
     this.onMouseUp = this.cursorEventCallback('onMouseUp').bind(this);
   }
-  
+
   get canvas(): HTMLCanvasElement {
     return this.scene.canvas;
   }
@@ -46,8 +46,9 @@ class CursorEventSystem extends System {
   }
 
   getCoords(event: MouseEvent): IVector2 {
-    let x = event.pageX - this.canvas.offsetLeft;
-    let y = event.pageY - this.canvas.offsetTop;
+    let rect = this.canvas.getBoundingClientRect();
+    let x = event.pageX - this.canvas.offsetLeft - rect.x;
+    let y = event.pageY - this.canvas.offsetTop - rect.y;
     return { x, y }
   }
 
@@ -60,13 +61,13 @@ class CursorEventSystem extends System {
     callbackId: keyof ICursorEventHandler,
     isTouchEvent: boolean = false
   ): (event: MouseEvent) => void {
-    return function(event: PointerEvent) {
+    return function (event: PointerEvent) {
       // do not respond to non-primary pointer events
       if (!event.isPrimary) return;
 
       // convert event coordinates to canvas coordinates
       let mousePos: IVector2 = this.getCoords(event);
-      
+
       let delta = this.prevPosition ?
         Vector2.difference(mousePos, this.prevPosition) :
         Vector2.ZERO;

@@ -6,6 +6,9 @@ import ControlSystem from './entities/ControlSystem';
 import Chapter, { GameController } from 'thoron';
 import MotionSystem from './entities/MotionSystem';
 import UnitBody from './entities/UnitBody';
+import { Map as MapRecord } from '@/data/db';
+import GameObject from '../engine/GameObject';
+
 
 interface IGameConfig {
   tileWidth: number;
@@ -23,7 +26,7 @@ const defaultConfig: IGameConfig = {
   moveColor: '#0000ff',     // blue
   attackColor: '#ff0000',   // red
   healColor: '#00ff00',     // green
-  interactColor: 'ff00ff',  // magenta
+  interactColor: '#ff00ff',  // magenta
   highlightAlpha: 0.2,
 }
 
@@ -36,6 +39,8 @@ class Game {
   canvas: HTMLCanvasElement;
   scene: Scene;
   unitBodies: Map<any, UnitBody> = new Map();
+  systems: GameObject[] = [];
+
 
   constructor(gameController: GameController, cfg: Partial<IGameConfig> = {}) {
     this.gameController = gameController
@@ -61,10 +66,27 @@ class Game {
   }
 
   unsetCanvas() {
-    this.scene.unsetCanvas();
-    delete this.scene;
+    if (this.scene) {
+      this.scene.unsetCanvas();
+      delete this.scene;
+    }
     delete this.canvas;
   }
+
+  destroy() {
+    for (let body of this.unitBodies.values()) {
+      body.destroy();
+    }
+    this.unitBodies.clear();
+
+    for (let system of this.systems) {
+      system.destroy();
+    }
+    this.systems = [];
+
+    this.unsetCanvas();
+  }
+
 
   init() {
     let scene = this.scene;
@@ -73,19 +95,26 @@ class Game {
     let columns = terrain.height;
     let width = rows * this.config.tileWidth;
     let height = columns * this.config.tileHeight;
-    
-    const backgroundUrl = (terrain as any).record.background;    
+
+    const background = (terrain.record as MapRecord).background;
+    const backgroundUrl = URL.createObjectURL(background);
     let bg = new Background(width, height, backgroundUrl);
     bg.addToScene(scene);
 
+    this.systems.push(bg);
+
     let grid = new Grid(rows, columns, this.config);
     grid.addToScene(scene);
+    this.systems.push(grid);
 
     let controlSystem = new ControlSystem(this);
     controlSystem.addToScene(scene);
+    this.systems.push(controlSystem);
 
     let motionSystem = new MotionSystem(this);
     motionSystem.addToScene(scene);
+    this.systems.push(motionSystem);
+
 
     let units = this.chapter.getUnits();
     for (let unit of units) {
@@ -94,7 +123,13 @@ class Game {
       unitBody.resetPosition(); // move to initial position
       this.unitBodies.set(unit.id, unitBody);
     }
-    
+
+    // center camera on center of map
+    this.scene.camera.translate = {
+      x: this.canvas.width / 2 - width / 2,
+      y: this.canvas.height / 2 - height / 2
+    }
+
     this.scene.draw();
   }
 
@@ -102,7 +137,17 @@ class Game {
     return this.unitBodies.get(unitId);
   }
 
-  removeUnit(unitId: string | number) {
+  addUnitBody(unitId: string | number) {
+    const unit = this.chapter.getUnitById(unitId);
+    if (!unit) {
+      throw new Error(`Unit ${unitId} not found`);
+    }
+    const unitBody = new UnitBody(unit, this);
+    unitBody.addToScene(this.scene);
+    this.unitBodies.set(unitId, unitBody);
+  }
+
+  removeUnitBody(unitId: string | number) {
     let body = this.unitBodies.get(unitId);
     body.destroy();
     this.unitBodies.delete(unitId);

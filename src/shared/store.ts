@@ -4,18 +4,21 @@ import {
   ControllerPhase
 } from "@/game/entities/ControlSystem/ControllerState";
 import listenerMiddleware from "./listenerMiddleware";
-import { Command } from "thoron";
+import { Command, UnitId } from "thoron";
+
+export type ChapterEditMode = "unit_move" | "unit_delete" | null;
 
 const initialState: {
   phase: ControllerPhase,
-  unitId: string | number,
+  unitId: UnitId,
   position: IVector2,
   pendingMove: {
     destination: IVector2,
     action: Command,
-    targetId?: string,
+    targetId?: UnitId,
     itemIndex?: number
-  }
+  },
+  editMode: ChapterEditMode
 } = {
   phase: null,
   unitId: null,
@@ -23,7 +26,8 @@ const initialState: {
   pendingMove: {
     destination: null,
     action: null
-  }
+  },
+  editMode: null
 }
 
 const controllerSlice = createSlice({
@@ -32,32 +36,36 @@ const controllerSlice = createSlice({
   reducers: {
     phaseChanged: (state, action) => { state.phase = action.payload },
 
-    unitSelected: (state, action) => {
+    unitSelected: (state, action: { payload: UnitId }) => {
       state.unitId = action.payload;
     },
 
-    positionSelected: (state, action) => {
+    positionSelected: (state, action: { payload: IVector2 }) => {
       state.position = action.payload;
     },
 
-    destinationSelected: (state, action) => {
+    destinationSelected: (state, action: { payload: IVector2 }) => {
       state.pendingMove.destination = action.payload;
     },
 
-    actionSelected: (state, action) => {
+    actionSelected: (state, action: { payload: Command }) => {
       state.pendingMove.action = action.payload;
     },
 
-    targetSelected: (state, action) => {
+    targetSelected: (state, action: { payload: UnitId }) => {
       state.pendingMove.targetId = action.payload;
     },
 
-    itemSelected: (state, action) => {
+    itemSelected: (state, action: { payload: number }) => {
       state.pendingMove.itemIndex = action.payload;
     },
 
     pendingMoveDiscarded(state, action) {
       state.pendingMove = { destination: null, action: null }
+    },
+
+    chapterEditModeChanged(state, action: { payload: ChapterEditMode }) {
+      state.editMode = action.payload;
     }
   }
 });
@@ -70,12 +78,13 @@ export const {
   actionSelected,
   targetSelected,
   itemSelected,
-  pendingMoveDiscarded
+  pendingMoveDiscarded,
+  chapterEditModeChanged
 } = controllerSlice.actions;
 
 const controllerStore = configureStore({
   reducer: controllerSlice.reducer,
-  middleware: (getDefaultMiddleware) => 
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(listenerMiddleware)
 });
 

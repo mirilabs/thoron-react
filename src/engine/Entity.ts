@@ -49,6 +49,10 @@ class Entity {
     component.onInit(this);
   }
 
+  addComponents(components: AnyComponent[]) {
+    components.forEach(c => this.addComponent(c));
+  }
+
   removeComponent<T extends ComponentId>(
     cId: T
   ): void {

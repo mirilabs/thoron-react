@@ -13,7 +13,7 @@ interface UIEventSignatures extends IEventSignatures {
   right: () => void;
   up: () => void;
   down: () => void;
-  
+
   // menu toggles
   open_chapter_log: () => void;
   open_character_detail: () => void;
@@ -22,7 +22,7 @@ interface UIEventSignatures extends IEventSignatures {
 
 type UIAction = keyof UIEventSignatures;
 
-class UIEventEmitter extends EventEmitter<UIEventSignatures> {}
+class UIEventEmitter extends EventEmitter<UIEventSignatures> { }
 
 export default UIEventEmitter;
 export {

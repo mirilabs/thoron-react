@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   css: {
@@ -28,8 +29,9 @@ export default defineConfig({
         "events",
         "stream",
         "string_decoder",
-        
+
       ]
-    })
+    }),
+    tailwindcss()
   ]
 });

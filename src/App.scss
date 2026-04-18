@@ -17,15 +17,24 @@ code {
     monospace;
 }
 
-.root {
-  background-color: #282c34;
+#root {
+  position: relative;
+  background-color: var(--bg-color-3);
   color: var(--text-color);
-  width: 100vw;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
 
-  isolation: isolate;
-    // enables popups to appear over other elements
-    // see https://base-ui.com/react/overview/quick-start
+.content {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: scroll;
 }
 
 .app * {
@@ -43,7 +52,9 @@ code {
   color: white;
 }
 
-button, input[type="submit"], input[type="reset"] {
+button,
+input[type="submit"],
+input[type="reset"] {
   background-color: var(--bg-color-2);
   color: inherit;
   transition: background-color 200ms linear;
@@ -55,8 +66,11 @@ button, input[type="submit"], input[type="reset"] {
 }
 
 .icon {
-  fill: white;
   filter: var(--icon-filter);
   max-width: 1.2rem;
   max-height: 1.2rem;
+
+  &.alt {
+    filter: var(--icon-filter-2)
+  }
 }

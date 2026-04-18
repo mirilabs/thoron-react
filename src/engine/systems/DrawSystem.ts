@@ -65,6 +65,8 @@ class DrawSystem extends System {
   }
 
   draw() {
+    if (!this.canvas) return;
+
     this.ctx.resetTransform();
     this.clearCanvas();
     this.scene.camera.transformContext(this.ctx);

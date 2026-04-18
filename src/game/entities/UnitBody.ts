@@ -8,11 +8,13 @@ import { Position, Rectangle, Sprite } from "@/engine/components";
 import controllerStore from "@/shared/store";
 import { Command, DeployedUnit } from "thoron";
 import { IVector2 } from "@/engine/utils/Vector2";
+import { Character } from "@/data/db";
+import Scene from "@/engine/Scene";
 
 class UnitBody extends GameObject {
   unit: DeployedUnit;
   _game: WeakRef<Game>;
-  
+
   moveRangeEnt: UnitRange;
   pathEnt: UnitPath;
   targetIndicatorEnt: TargetIndicator;
@@ -21,18 +23,23 @@ class UnitBody extends GameObject {
 
   constructor(unit: DeployedUnit, game: Game) {
     super();
+
+    this._game = new WeakRef(game);
+    this.unit = unit;
+
     this.components = [
       new Position(0, 0),
       new Rectangle(game.coords.tileWidth, game.coords.tileHeight),
-      new Sprite(unit.record["sprite"], 40, (ctx) => {
+      new Sprite(this.getSpriteUrl(), 40, (ctx) => {
         if (this.grayscale) {
           ctx.filter = "grayscale(1)";
         }
       })
     ]
-    
-    this._game = new WeakRef(game);
-    this.unit = unit;
+  }
+
+  onInit(scene: Scene): void {
+    this.resetPosition();
   }
 
   get game(): Game {
@@ -41,6 +48,11 @@ class UnitBody extends GameObject {
 
   get coords(): CoordinateConverter {
     return this.game.coords;
+  }
+
+  getSpriteUrl(): string {
+    const image = (this.unit.record as Character).mapSprite;
+    return URL.createObjectURL(image);
   }
 
   resetPosition() {
