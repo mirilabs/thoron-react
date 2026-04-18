@@ -1,4 +1,4 @@
-import { PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, removeListener } from "@reduxjs/toolkit";
 import GameObject from "@/engine/GameObject";
 import Scene from "@/engine/Scene";
 import CursorEventHandler, { ICursorEvent } from "@/engine/components/CursorEventHandler";
@@ -10,7 +10,8 @@ import controllerStore, { phaseChanged } from "@/shared/store";
 import { addAppListener } from "@/shared/listenerMiddleware";
 import {
   IdleState,
-  MovingState
+  MovingState,
+  FreeMoveState
 } from "./states";
 import Chapter, { Controller } from "thoron";
 import UnitBody from "../UnitBody";
@@ -25,7 +26,11 @@ class ControlSystem extends GameObject {
   scene: Scene;
   selectedUnitBody: UnitBody;
   currentState: ControllerState;
-  
+
+  private selectionEffect = (action: PayloadAction) => (
+    this.onUnitSelected(action.payload)
+  );
+
   constructor(game: Game) {
     super();
     this.game = game;
@@ -45,11 +50,20 @@ class ControlSystem extends GameObject {
 
     controllerStore.dispatch(addAppListener({
       type: "controller/unitSelected",
-      effect: (action: PayloadAction) => this.onUnitSelected(action.payload)
+      effect: this.selectionEffect
     }));
+
 
     this.setState(new IdleState());
   }
+
+  onDestroy(): void {
+    controllerStore.dispatch(removeListener({
+      type: "controller/unitSelected",
+      effect: this.selectionEffect
+    }));
+  }
+
 
   getUnitBody(unitId: string | number) {
     return this.game.getUnitBody(unitId);
@@ -69,6 +83,14 @@ class ControlSystem extends GameObject {
     // set new unit
     if (unit) {
       this.selectedUnitBody = this.getUnitBody(unit.id);
+
+      // if in unit move mode, enter free move state
+      const editMode = controllerStore.getState().editMode;
+      if (editMode === "unit_move") {
+        this.setState(new FreeMoveState());
+        return;
+      }
+
       this.selectedUnitBody.showMoveRange();
 
       let { canAct, team } = unit.getActionState();

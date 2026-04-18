@@ -51,11 +51,19 @@ class ActionSelectState extends ControllerState {
     );
 
     if (target && target !== this.unitEnt.unit) {
+      console.log(possibleActions)
       // clicked on a target
+      // if no actions on this target are possible, do nothing
+      if (possibleActions.length === 0) {
+        return;
+      }
       // if only one action on this target is possible, select it by default
-      if (possibleActions.length === 1) {
+      else if (possibleActions.length === 1) {
         controllerStore.dispatch(actionSelected(possibleActions[0]));
         this.setState(new ActionConfirmState())
+      }
+      else {
+        
       }
 
       controllerStore.dispatch(targetSelected(target.id));

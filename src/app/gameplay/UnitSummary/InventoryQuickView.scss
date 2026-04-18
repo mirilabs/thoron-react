@@ -1,0 +1,20 @@
+@use "sass:color";
+
+.weapon-selector {
+  position: relative;
+  max-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  float: right;
+
+  margin-top: 8px;
+  z-index: 10;
+
+  .name {
+    opacity: 1;
+    margin: auto;
+    margin-right: 16px;
+    font-size: medium;
+  }
+}

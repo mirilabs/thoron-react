@@ -1,0 +1,11 @@
+.unit-detail__exp-bar {
+  width: 100px;
+  height: 0.2rem;
+  background: var(--bg-color-3);
+
+  &::-webkit-meter-optimum-value,
+  &::-moz-meter-bar,
+  &::-webkit-meter-bar {
+    background: var(--accent-color);
+  }
+}
