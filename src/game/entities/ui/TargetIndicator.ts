@@ -7,7 +7,6 @@ import { Action, Command } from "thoron";
 
 import CombatTargetIcon from "@/icons/target_combat.svg";
 import StaffTargetIcon from "@/icons/target_staff.svg";
-import UnknownIcon from "@/icons/unknown.svg";
 
 const TOP_OFFSET = {
   x: 0.2,
@@ -22,15 +21,9 @@ const SIZE = {
   height: 44
 }
 
-const ACTION_ICONS: { [K in Action["command"]]: string } = {
+const ACTION_ICONS: Partial<{ [K in Action["command"]]: string }> = {
   attack: CombatTargetIcon,
   staff: StaffTargetIcon,
-  trade: UnknownIcon,
-
-  // non-targeted actions
-  item: UnknownIcon,
-  wait: UnknownIcon,
-  end_phase: UnknownIcon,
 }
 
 class TargetIndicator extends GameObject {
@@ -73,3 +66,4 @@ class TargetIndicator extends GameObject {
 }
 
 export default TargetIndicator;
+export { ACTION_ICONS }
