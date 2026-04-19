@@ -8,6 +8,7 @@ class ActionController {
   action: Command;
   destination: IVector2;
   items: any[];
+  targetFilter: (unit: DeployedUnit) => boolean;
   targetIds: (string | number)[];
 
   constructor(
@@ -21,12 +22,18 @@ class ActionController {
     this.destination = destination;
     this.action = action;
 
-    switch(action) {
+    switch (action) {
       case "attack":
         this.items = unit.items.filter(item => item.type === "weapon");
+        this.targetFilter = this.filterDifferentTeam.bind(this);
+        break;
+      case "staff":
+        this.items = unit.items.filter(item => item.type === "staff");
+        this.targetFilter = this.filterSameTeam.bind(this);
         break;
       default:
         this.items = [];
+        this.targetFilter = () => false;
     }
   }
 
@@ -57,11 +64,11 @@ class ActionController {
    */
   selectNextItem() {
     let i = this.items.indexOf(this.getItem());
-    
+
     // loop through items until we find one in range
     for (let j = 0; j < this.items.length; j++) {
       i = (i + 1) % this.items.length;
-      
+
       if (this.isInRange(this.getTarget(), this.items[i])) {
         this.setItem(i);
         return;
@@ -123,9 +130,9 @@ class ActionController {
   findTargets() {
     let targets = this.chapter.getUnitsInRange(
       this.destination,
-      this.unit.getMinAttackRange(),
-      this.unit.getMaxAttackRange()
-    ).filter(unit => unit.getTeam() !== this.unit.getTeam())
+      this.getMinRange(),
+      this.getMaxRange()
+    ).filter(this.targetFilter);
 
     this.targetIds = targets.map(unit => unit.id);
 
@@ -190,7 +197,27 @@ class ActionController {
   onItemSelected() {
     const item = this.getItem();
 
-    
+
+  }
+
+  private filterDifferentTeam(unit: DeployedUnit) {
+    return unit.getTeam() !== this.unit.getTeam();
+  }
+
+  private filterSameTeam(unit: DeployedUnit) {
+    return unit.getTeam() === this.unit.getTeam();
+  }
+
+  private getMinRange() {
+    return this.items.reduce((min, item) => {
+      return Math.min(min, item.stats.minRange);
+    }, 0);
+  }
+
+  private getMaxRange() {
+    return this.items.reduce((max, item) => {
+      return Math.max(max, item.stats.maxRange);
+    }, 0);
   }
 }
 
