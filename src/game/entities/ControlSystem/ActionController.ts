@@ -7,7 +7,7 @@ class ActionController {
   unit: DeployedUnit;
   action: Command;
   destination: IVector2;
-  items: any[];
+  items: ItemRecord[];
   targetFilter: (unit: DeployedUnit) => boolean;
   targetIds: (string | number)[];
 
@@ -25,15 +25,16 @@ class ActionController {
     switch (action) {
       case "attack":
         this.items = unit.items.filter(item => item.type === "weapon");
-        this.targetFilter = this.filterDifferentTeam.bind(this);
         break;
       case "staff":
         this.items = unit.items.filter(item => item.type === "staff");
-        this.targetFilter = this.filterSameTeam.bind(this);
         break;
       default:
         this.items = [];
-        this.targetFilter = () => false;
+    }
+
+    this.targetFilter = (unit: DeployedUnit) => {
+      return this.items.some(item => this.canTarget(unit, item));
     }
   }
 
@@ -63,19 +64,20 @@ class ActionController {
    * in range
    */
   selectNextItem() {
+    const target = this.getTarget();
     let i = this.items.indexOf(this.getItem());
 
-    // loop through items until we find one in range
+    // loop through items until we find one that can target the current target
     for (let j = 0; j < this.items.length; j++) {
       i = (i + 1) % this.items.length;
 
-      if (this.isInRange(this.getTarget(), this.items[i])) {
-        this.setItem(i);
+      if (this.canTarget(target, this.items[i])) {
+        this.setItem(this.unit.items.indexOf(this.items[i]));
         return;
       }
     }
 
-    throw new Error("Current target is out of range for all items");
+    throw new Error("Current target cannot be targeted by any item");
   }
 
   /**
@@ -83,20 +85,21 @@ class ActionController {
    * in range
    */
   selectPreviousItem() {
+    const target = this.getTarget();
     let i = this.items.indexOf(this.getItem());
 
-    // loop through items backwards until we find one in range
+    // loop through items backwards until we find one that can target
     for (let j = 0; j < this.items.length; j++) {
       i--;
       if (i < 0) i = this.items.length - 1;
 
-      if (this.isInRange(this.getTarget(), this.items[i])) {
-        this.setItem(i);
+      if (this.canTarget(target, this.items[i])) {
+        this.setItem(this.unit.items.indexOf(this.items[i]));
         return;
       }
     }
 
-    throw new Error("Current target is out of range for all items");
+    throw new Error("Current target cannot be targeted by any item");
   }
 
   /**
@@ -127,12 +130,19 @@ class ActionController {
   /**
    * Get list of valid target ids according to attack range
    */
-  findTargets() {
+  findTargets(item?: ItemRecord) {
+    const filter = item
+      ? (u: DeployedUnit) => this.canTarget(u, item)
+      : this.targetFilter;
+
+    const minRange = item ? item.stats.minRange : this.getMinRange();
+    const maxRange = item ? item.stats.maxRange : this.getMaxRange();
+
     let targets = this.chapter.getUnitsInRange(
       this.destination,
-      this.getMinRange(),
-      this.getMaxRange()
-    ).filter(this.targetFilter);
+      minRange,
+      maxRange
+    ).filter(filter);
 
     this.targetIds = targets.map(unit => unit.id);
 
@@ -151,7 +161,7 @@ class ActionController {
    * @param param1 min and max range overrides
    * @returns True if in range
    */
-  isInRange(target: DeployedUnit, item: ItemRecord) {
+  private isInRange(target: DeployedUnit, item: ItemRecord) {
     let range = target.getDistance(this.destination);
     return range >= item.stats.minRange &&
       range <= item.stats.maxRange;
@@ -182,12 +192,9 @@ class ActionController {
     const target = this.getTarget();
     if (!target) return;
 
-    // swap weapon if current one is out of range
-    if (this.action === "attack") {
-      const equipped = this.unit.items[this.unit.state.equippedIndex];
-      if (!this.isInRange(target, equipped)) {
-        this.selectNextItem();
-      }
+    const item = this.getItem();
+    if (!this.canTarget(target, item)) {
+      this.selectNextItem();
     }
   }
 
@@ -195,9 +202,23 @@ class ActionController {
    * Item select callback
    */
   onItemSelected() {
-    const item = this.getItem();
+    this.findTargets(this.getItem());
+  }
 
+  private canTarget(target: DeployedUnit, item: ItemRecord) {
+    if (!item || !target) return false;
+    if (!this.isInRange(target, item)) return false;
 
+    if (item.type === "weapon") {
+      return this.filterDifferentTeam(target);
+    }
+    if (item.type === "staff") {
+      const targetsAlly = item.stats.targetsAlly ?? true;
+      return targetsAlly
+        ? this.filterSameTeam(target)
+        : this.filterDifferentTeam(target);
+    }
+    return false;
   }
 
   private filterDifferentTeam(unit: DeployedUnit) {
@@ -205,7 +226,7 @@ class ActionController {
   }
 
   private filterSameTeam(unit: DeployedUnit) {
-    return unit.getTeam() === this.unit.getTeam();
+    return unit.getTeam() === this.unit.getTeam() && unit !== this.unit;
   }
 
   private getMinRange() {
