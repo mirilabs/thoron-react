@@ -31,7 +31,7 @@ class ActionConfirmState extends ControllerState {
     this.selectedUnit = selectedUnitBody.unit;
 
     const { pendingMove } = store.getState();
-    
+
     // show action range
     this.actionRangeEnt = new UnitActionRange(
       game,
@@ -79,19 +79,19 @@ class ActionConfirmState extends ControllerState {
 
   onExit(nextState: ControllerState): void {
     super.onExit(nextState);
-    
+
     this.actionRangeEnt.destroy();
     this.resetTargetIndicators();
   }
 
   onMouseDown(event: ICursorEvent): void {
     super.onMouseDown(event);
-    
+
     let tileCoords = this.controller.coords.toTiles(event.x, event.y);
     let unit = this.controller.chapter.getUnitAt(tileCoords);
 
     if (Vector2.eq(tileCoords, this.getDest())) {
-      // clicked on selected unit (at destination tile)
+      // clicked on the acting unit (at destination tile)
       // return to ActionSelectState
       store.dispatch(targetSelected(null));
       store.dispatch(actionSelected(null));
@@ -123,7 +123,7 @@ class ActionConfirmState extends ControllerState {
 
   onTargetSelected() {
     this.actionController.onTargetSelected();
-    
+
     this.resetTargetIndicators();
     const target = this.actionController.getTarget();
     const action = this.actionController.action;
