@@ -110,21 +110,7 @@ class MovingState extends ControllerState {
     controllerStore.dispatch(destinationSelected(nextCoords));
 
     // update target indicators
-    for (const target of this.controller.game.unitBodies.values()) {
-      if (target === this.unitEnt) continue;
-
-      const possibleActions = this.unit.getPossibleActionsTo(
-        nextCoords, target.unit
-      );
-
-      // show target indicator if possible actions exist
-      if (possibleActions.length > 0) {
-        target.showTargetIndicator(possibleActions[0]);
-      }
-      else {
-        target.hideTargetIndicator();
-      }
-    }
+    this.updateTargetIndicators(nextCoords);
   }
 
   onMouseUp(event: ICursorEvent) {

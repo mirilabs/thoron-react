@@ -11,7 +11,7 @@ class ActionSelectState extends ControllerState {
   id = ControllerPhase.ACTION_SELECT;
   unitEnt: UnitPiece;
 
-  onEnter(prevState: MovingState) {
+  onEnter(prevState: ControllerState) {
     super.onEnter(prevState);
 
     this.unitEnt = this.controller.selectedUnitBody;
@@ -24,6 +24,10 @@ class ActionSelectState extends ControllerState {
     // wait for user to select action in ui
     this.addUIEventListener("select_action", this.onActionSelected);
     this.addUIEventListener("cancel", this.onCancel);
+
+    // show target indicators for potential actions from this position
+    const { destination } = controllerStore.getState().pendingMove;
+    this.updateTargetIndicators(destination);
   }
 
   onExit(nextState: ControllerState) {
