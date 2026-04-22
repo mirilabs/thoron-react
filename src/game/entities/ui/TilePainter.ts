@@ -13,14 +13,14 @@ class TilePainter {
     this.tileHeight = tileHeight;
   }
 
-  addTile(tilePos: IVector2, color: string = this.color) {
+  setTile(tilePos: IVector2, color: string = this.color) {
     const key = `${tilePos.x},${tilePos.y}`;
     this.coords.set(key, color);
   }
 
-  addTiles(tilePositions: IVector2[], color: string = this.color) {
+  setTiles(tilePositions: IVector2[], color: string = this.color) {
     for (const tilePos of tilePositions) {
-      this.addTile(tilePos, color);
+      this.setTile(tilePos, color);
     }
   }
 

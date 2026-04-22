@@ -9,7 +9,7 @@ class UnitRange extends GameObject {
   unit: any;
   coords: CoordinateConverter;
   config: IGameConfig;
-  
+
   constructor(game: Game, unit: any) {
     super();
     this.coords = game.coords;
@@ -46,10 +46,10 @@ class UnitRange extends GameObject {
     const {
       tileWidth,
       tileHeight,
-      attackColor,
-      moveColor,
       highlightAlpha
     } = this.config;
+    const moveColor = this.config.highlightColors.move;
+    const attackColor = this.config.highlightColors.attack;
 
     // store what color to paint each tile
     // higher-priority ranges are painted later, overwriting the
@@ -90,7 +90,7 @@ class UnitRange extends GameObject {
     const originMarkerScale = 0.65;
 
     ctx.save();
-    ctx.fillStyle = this.config.moveColor;
+    ctx.fillStyle = this.config.highlightColors.move;
     drawEightPointStar(
       ctx,
       center,
@@ -127,7 +127,7 @@ function drawEightPointStar(
   // horizontal square
   w = w / Math.sqrt(2);
   h = h / Math.sqrt(2);
-  ctx.rect(x - w, y - h, 2*w, 2*h);
+  ctx.rect(x - w, y - h, 2 * w, 2 * h);
 }
 
 export default UnitRange;
