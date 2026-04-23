@@ -18,14 +18,14 @@ function ItemCard({
     () => { setShowDetail(!showDetail) } :
     undefined;
 
+  const className = [
+    "bg-[var(--bg-color-2)] p-1 rounded-md max-w-[384px]",
+    showDetailOnClick ? "cursor-pointer" : "",
+    props.className
+  ].join(" ");
+
   return (
-    <div
-      className={
-        "bg-[var(--bg-color-2)] p-4 rounded-md max-w-[384px]" +
-        (showDetailOnClick ? " cursor-pointer" : "")
-      }
-      {...props}
-    >
+    <div className={className} {...props}>
       <ItemTitle item={item} onClick={toggleDetail} />
       {showDetail && <ItemDetail record={item} />}
     </div>
