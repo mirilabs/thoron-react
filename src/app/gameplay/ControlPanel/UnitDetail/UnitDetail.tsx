@@ -4,23 +4,25 @@ import StatView from "./StatView";
 import Inventory from "../Items/Inventory";
 import { Character } from "@/data/db";
 import { IconButton } from "@mui/material";
-import { IUnitState } from "thoron";
+import { DeployedUnit } from "thoron";
 import BasicInfoView from "./BasicInfoView";
+import CurrentStateView from "./CurrentStateView";
 
 interface UnitDetailProps {
   record: Character,
-  state?: IUnitState,
+  unit?: DeployedUnit,
   handleStartEdit?: () => void;
   handleClose?: () => void;
 }
 
 function UnitDetail({
   record,
-  state,
+  unit,
   handleStartEdit,
   handleClose
 }: UnitDetailProps) {
   const { stats, growths, items } = record;
+  const state = unit?.state;
 
   return (
     <div className="flex flex-col gap-4">
@@ -47,6 +49,9 @@ function UnitDetail({
         )
       }
       <BasicInfoView record={record} />
+      {
+        unit && <CurrentStateView unit={unit} />
+      }
       <div className="flex flex-row flex-wrap justify-around gap-8">
         <Inventory items={items} />
         <StatView stats={stats} growths={growths} />
