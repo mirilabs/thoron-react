@@ -24,7 +24,8 @@ function ActionConfirmHandler() {
         unitId,
         targetId: pendingMove.targetId,
         destination: pendingMove.destination,
-        command: pendingMove.action as Command
+        command: pendingMove.action as Command,
+        itemIndex: pendingMove.itemIndex
       } as Action;
       controller.pushAction(action);
 
