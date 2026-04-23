@@ -155,6 +155,32 @@ const theme = createTheme({
           color: "var(--text-color)",
         }
       }
+    },
+    MuiSlider: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: "var(--bg-color-2)",
+          }
+        },
+        thumb: {
+          height: 16,
+          width: 16,
+          backgroundColor: "var(--accent-color)",
+          "&:hover": {
+            boxShadow: "inherit",
+            backgroundColor: "var(--accent-color)",
+          },
+          "&.Mui-active": {
+            boxShadow: "inherit",
+            backgroundColor: "var(--accent-color)"
+          },
+        },
+        track: {
+          backgroundColor: "var(--accent-color)",
+          border: "none"
+        }
+      }
     }
   },
   typography: {
