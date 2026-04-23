@@ -8,8 +8,11 @@ class ActionController {
   action: Command;
   destination: IVector2;
   items: ItemRecord[];
-  targetFilter: (unit: DeployedUnit) => boolean;
   targetIds: (string | number)[];
+  targetFilter: (unit: DeployedUnit) => boolean;
+  minRange: number;
+  maxRange: number;
+  unitTeam: number;
 
   constructor(
     chapter: Chapter,
@@ -33,9 +36,10 @@ class ActionController {
         this.items = [];
     }
 
-    this.targetFilter = (unit: DeployedUnit) => {
-      return this.items.some(item => this.canTarget(unit, item));
-    }
+    this.targetFilter = this.getTargetFilter();
+    this.minRange = this.calculateMinRange();
+    this.maxRange = this.calculateMaxRange();
+    this.unitTeam = unit.getTeam();
   }
 
   /**
@@ -71,7 +75,7 @@ class ActionController {
     for (let j = 0; j < this.items.length; j++) {
       i = (i + 1) % this.items.length;
 
-      if (this.canTarget(target, this.items[i])) {
+      if (this.canUseItemOnTarget(this.items[i], target)) {
         this.setItem(this.unit.items.indexOf(this.items[i]));
         return;
       }
@@ -93,7 +97,7 @@ class ActionController {
       i--;
       if (i < 0) i = this.items.length - 1;
 
-      if (this.canTarget(target, this.items[i])) {
+      if (this.canUseItemOnTarget(this.items[i], target)) {
         this.setItem(this.unit.items.indexOf(this.items[i]));
         return;
       }
@@ -130,19 +134,12 @@ class ActionController {
   /**
    * Get list of valid target ids according to attack range
    */
-  findTargets(item?: ItemRecord) {
-    const filter = item
-      ? (u: DeployedUnit) => this.canTarget(u, item)
-      : this.targetFilter;
-
-    const minRange = item ? item.stats.minRange : this.getMinRange();
-    const maxRange = item ? item.stats.maxRange : this.getMaxRange();
-
-    let targets = this.chapter.getUnitsInRange(
+  findTargets() {
+    const targets = this.chapter.getUnitsInRange(
       this.destination,
-      minRange,
-      maxRange
-    ).filter(filter);
+      this.minRange,
+      this.maxRange
+    ).filter(this.targetFilter);
 
     this.targetIds = targets.map(unit => unit.id);
 
@@ -171,29 +168,57 @@ class ActionController {
    * Change selected target to next
    */
   selectNextTarget() {
-    let i = this.targetIds.indexOf(this.getTargetId()) + 1;
-    if (i >= this.targetIds.length) i = 0;
-    this.setTargetId(this.targetIds[i]);
+    const item = this.getItem();
+    let i = this.targetIds.indexOf(this.getTargetId());
+
+    for (let j = 0; j < this.targetIds.length; j++) {
+      i++;
+      if (i >= this.targetIds.length) i = 0;
+
+      const target = this.chapter.getUnitById(this.targetIds[i]);
+      if (!target) continue;
+
+      if (this.canUseItemOnTarget(item, target)) {
+        this.setTargetId(this.targetIds[i]);
+        return;
+      }
+    }
+
+    throw new Error("No valid targets found for current item");
   }
 
   /**
    * Change selected target to previous
    */
   selectPreviousTarget() {
-    let i = this.targetIds.indexOf(this.getTargetId()) - 1;
-    if (i < 0) i = this.targetIds.length - 1;
-    this.setTargetId(this.targetIds[i]);
+    const item = this.getItem();
+    let i = this.targetIds.indexOf(this.getTargetId());
+
+    for (let j = 0; j < this.targetIds.length; j++) {
+      i--;
+      if (i < 0) i = this.targetIds.length - 1;
+
+      const target = this.chapter.getUnitById(this.targetIds[i]);
+      if (!target) continue;
+
+      if (this.canUseItemOnTarget(item, target)) {
+        this.setTargetId(this.targetIds[i]);
+        return;
+      }
+    }
+
+    throw new Error("No valid targets found for current item");
   }
 
   /**
    * Target select callback
    */
   onTargetSelected() {
+    const item = this.getItem();
     const target = this.getTarget();
     if (!target) return;
 
-    const item = this.getItem();
-    if (!this.canTarget(target, item)) {
+    if (!this.canUseItemOnTarget(item, target)) {
       this.selectNextItem();
     }
   }
@@ -202,40 +227,65 @@ class ActionController {
    * Item select callback
    */
   onItemSelected() {
-    this.findTargets(this.getItem());
+    const item = this.getItem();
+    const target = this.getTarget();
+
+    if (!this.canUseItemOnTarget(item, target)) {
+      this.selectNextTarget();
+    }
   }
 
-  private canTarget(target: DeployedUnit, item: ItemRecord) {
-    if (!item || !target) return false;
+  private canUseItemOnTarget(
+    item: ItemRecord = this.getItem(),
+    target: DeployedUnit = this.getTarget()
+  ) {
+    if (!target) return false;
+    if (target.id === this.unit.id) return false;
     if (!this.isInRange(target, item)) return false;
 
-    if (item.type === "weapon") {
-      return this.filterDifferentTeam(target);
+    switch (item.type) {
+      case "weapon":
+        return this.isDifferentTeam(target);
+      case "staff":
+        return item.stats.targetsAlly ?
+          this.isSameTeam(target) :
+          this.isDifferentTeam(target);
+      default:
+        return false;
     }
-    if (item.type === "staff") {
-      const targetsAlly = item.stats.targetsAlly ?? true;
-      return targetsAlly
-        ? this.filterSameTeam(target)
-        : this.filterDifferentTeam(target);
+  }
+
+  private getTargetFilter(): (unit: DeployedUnit) => boolean {
+    switch (this.action) {
+      case "attack":
+        return (unit: DeployedUnit) => this.isDifferentTeam(unit);
+      case "staff":
+        const canTargetAlly = this.unit.canStaffAlly();
+        const canTargetEnemy = this.unit.canStaffEnemy();
+        return (unit: DeployedUnit) => {
+          return this.isSameTeam(unit) ? canTargetAlly : canTargetEnemy;
+        };
+      default:
+        return () => false;
     }
-    return false;
   }
 
-  private filterDifferentTeam(unit: DeployedUnit) {
-    return unit.getTeam() !== this.unit.getTeam();
+  private isDifferentTeam(unit: DeployedUnit) {
+    return unit.getTeam() !== this.unitTeam;
   }
 
-  private filterSameTeam(unit: DeployedUnit) {
-    return unit.getTeam() === this.unit.getTeam() && unit !== this.unit;
+  private isSameTeam(unit: DeployedUnit) {
+    return unit.getTeam() === this.unitTeam;
   }
 
-  private getMinRange() {
+  private calculateMinRange() {
+    if (this.items.length === 0) return 0;
     return this.items.reduce((min, item) => {
       return Math.min(min, item.stats.minRange);
-    }, 0);
+    }, Infinity);
   }
 
-  private getMaxRange() {
+  private calculateMaxRange() {
     return this.items.reduce((max, item) => {
       return Math.max(max, item.stats.maxRange);
     }, 0);
