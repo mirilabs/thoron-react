@@ -60,12 +60,10 @@ const LogEventComponents: Partial<{
     );
   },
   "add_unit": ({ event }) => {
-    const { x, y } = event?.saveState?.state?.position;
     return (
       <div className="flex flex-row gap-1 items-center">
         <p className="text-[var(--text-color-2)]">Deployed</p>
         <UnitChip unit={event.saveState} />
-        <p className="text-[var(--text-color-2)]">at ({x}, {y})</p>
       </div>
     );
   },
@@ -88,6 +86,9 @@ function LogEvent({ chapter, event }: LogEventProps) {
   const Component = LogEventComponents[event.type];
   if (Component) {
     content = React.createElement(Component as any, { chapter, event });
+  }
+  else {
+    return null;
   }
 
   return (
