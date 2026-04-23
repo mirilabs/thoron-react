@@ -1,11 +1,21 @@
 @keyframes flicker {
-  from { opacity: 1; }
-  50% { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .hp-bar-container {
   min-width: 60px;
+  display: flex;
+  align-items: center;
 }
 
 .hp-bar {
@@ -14,7 +24,7 @@
   display: flex;
   flex-direction: row;
 
-  & > * {
+  &>* {
     height: 8px;
   }
 
