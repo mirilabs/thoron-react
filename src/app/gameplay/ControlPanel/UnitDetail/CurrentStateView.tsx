@@ -14,24 +14,6 @@ const shadowStyle = {
   )
 }
 
-function StatItem({
-  label,
-  value
-}: {
-  label: string;
-  value: number;
-}) {
-  return (
-    <div
-      className="flex flex-row gap-2 items-center justify-between px-2"
-      style={shadowStyle}
-    >
-      <h1 className="font-bold text-sm text-(--text-color-2)">{label}</h1>
-      <p className="text-sm">{value.toFixed(0)}</p>
-    </div>
-  )
-}
-
 function CurrentStateView({
   unit
 }: CurrentStateViewProps) {
