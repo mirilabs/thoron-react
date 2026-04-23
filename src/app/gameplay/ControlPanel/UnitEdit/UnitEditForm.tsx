@@ -3,7 +3,7 @@ import { Unit, ValidationError } from "thoron";
 import ProfileForm from "./ProfileForm";
 import StatsForm from "./StatsForm";
 import "./UnitEditForm.scss";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import ClassForm from "./ClassForm";
 import { Character } from "@/data/db";
 import ItemsForm from "./ItemsForm";
@@ -75,12 +75,12 @@ function UnitEditForm({
     <form className="unit-edit-form" onSubmit={handleSubmit}>
       <div className="unit-edit-form__title">
         <span className="ml-auto">
-          <Button variant="contained" type="submit">
+          <IconButton type="submit">
             <i className="fas fa-save" />
-          </Button>
-          <Button variant="outlined" onClick={handleCancel}>
-            <i className="fas fa-trash" />
-          </Button>
+          </IconButton>
+          <IconButton onClick={handleCancel}>
+            <i className="fas fa-times" />
+          </IconButton>
         </span>
       </div>
       {
@@ -102,7 +102,7 @@ function UnitEditForm({
           Save
         </Button>
         <Button variant="outlined" onClick={handleCancel}
-          startIcon={<i className="fas fa-trash" />}>
+          startIcon={<i className="fas fa-times" />}>
           Cancel
         </Button>
       </div>
