@@ -15,15 +15,10 @@ function UnitSummaryContainer() {
 
   if (!unit) return (<></>);
 
-  const record = {
-    ...unit.serialize(),
-    combatStats: unit.getCombatStats()
-  }
-
   return (
     <>
-      <UnitSummary unit={record} />
-      <UnitDetailToggle unit={record} />
+      <UnitSummary unit={unit} />
+      <UnitDetailToggle unit={unit} />
       <InventoryQuickView />
     </>
   )
