@@ -36,6 +36,9 @@ function ItemSelect() {
     dispatch(itemSelected(index));
   };
 
+  // rerender on equipped item change
+  useControllerSelector(state => state.pendingMove.itemIndex);
+
   const [filteredItems, setFilteredItems] = useState<ItemRecord[]>([]);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { DeployedUnit } from "thoron";
+import { useControllerSelector } from "../utils/reduxHooks";
 
 const shadowStyle = {
   boxShadow: (
@@ -28,8 +29,11 @@ function StatItem({
 function CombatStats({
   unit
 }: {
-  unit: DeployedUnit;
+  unit: DeployedUnit
 }) {
+  // rerender on equipped item change
+  useControllerSelector(state => state.pendingMove.itemIndex);
+
   const combatStats = unit.getCombatStats();
 
   const {

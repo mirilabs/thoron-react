@@ -3,6 +3,7 @@ import { DeployedUnit } from 'thoron';
 import HPBar from '../UnitIndex/HPBar';
 import ItemCard from '../Items/ItemCard';
 import CombatStats from '../../UnitSummary/CombatStats';
+import { useControllerSelector } from '../../utils/reduxHooks';
 
 interface CurrentStateViewProps {
   unit: DeployedUnit;
@@ -17,9 +18,12 @@ const shadowStyle = {
 function CurrentStateView({
   unit
 }: CurrentStateViewProps) {
+  const itemIndex = useControllerSelector(state => state.pendingMove.itemIndex);
+
   const hp = unit.state.hp;
   const maxHp = unit.record.stats.mhp;
-  const equippedItem = unit.items[unit.state.equippedIndex];
+  const equippedItem = unit.items[itemIndex ?? unit.state.equippedIndex];
+  const { minRange, maxRange } = equippedItem?.stats ?? {};
 
   return (
     <div className="flex flex-col gap-2 bg-[var(--bg-color-2)] p-4 rounded-md">
@@ -46,7 +50,7 @@ function CurrentStateView({
           <div className="flex flex-row gap-2 items-center ml-4">
             <h1 className="font-bold text-sm text-(--text-color-2)">Range</h1>
             <p className="text-sm">
-              {equippedItem.stats.minRange} - {equippedItem.stats.maxRange}
+              {minRange === maxRange ? minRange : `${minRange} - ${maxRange}`}
             </p>
           </div>
         </div>
