@@ -10,7 +10,7 @@ import {
 interface DeleteButtonProps {
   onDelete: () => void;
   variant?: "inline" | "alert";
-  label?: string;
+  message?: string;
   button?: React.ReactNode;
 }
 
@@ -18,7 +18,7 @@ function DeleteDialog({
   open,
   onClose,
   onDelete,
-  label
+  message
 }: DeleteButtonProps & { open: boolean, onClose: () => void }) {
   const handleConfirm = () => {
     onDelete();
@@ -28,7 +28,7 @@ function DeleteDialog({
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogContent>
-        {label || "Are you sure you want to delete this?"}
+        {message || "Are you sure you want to delete this?"}
       </DialogContent>
       <DialogActions>
         <Button
@@ -54,7 +54,7 @@ function DeleteDialog({
 function DeleteButton({
   onDelete,
   variant = "inline",
-  label,
+  message,
   button
 }: DeleteButtonProps) {
   const [confirming, setConfirming] = useState(false);
@@ -89,7 +89,7 @@ function DeleteButton({
           open={confirming}
           onClose={handleCancel}
           onDelete={handleConfirm}
-          label={label}
+          message={message}
         />
       </>
     )
