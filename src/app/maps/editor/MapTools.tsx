@@ -142,6 +142,12 @@ function MapTools({
         )}
         {tab === MapToolsTab.Background && (
           <div className="flex flex-col gap-2">
+            <p className="text-sm text-[var(--text-color-2)]">
+              Select an image to use as the background.
+            </p>
+            <p className="text-sm text-[var(--text-color-2)]">
+              Note that each tile is 64x64 pixels
+            </p>
             <Button
               variant="outlined"
               component="label"
@@ -158,7 +164,7 @@ function MapTools({
             </Button>
             {map.background && (
               <div className="text-sm text-[var(--text-color-2)]">
-                {(map.background as File).name || "Custom background"} uploaded
+                {(map.background as File).name}
               </div>
             )}
           </div>
