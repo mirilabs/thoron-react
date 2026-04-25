@@ -39,11 +39,6 @@ const LogEventComponents: Partial<{
       </div>
     );
   },
-  "noncombat_damage": () => null,
-  "combat_start": () => null,
-  "combat_end": () => null,
-  "combat_start_effect": () => null,
-  "combat_attack": () => null,
   "end_action": () => null,
   "phase_change": ({ event }) => {
     const nextPhase = event.next;
@@ -60,12 +55,10 @@ const LogEventComponents: Partial<{
     );
   },
   "add_unit": ({ event }) => {
-    const { x, y } = event?.saveState?.state?.position;
     return (
       <div className="flex flex-row gap-1 items-center">
         <p className="text-[var(--text-color-2)]">Deployed</p>
         <UnitChip unit={event.saveState} />
-        <p className="text-[var(--text-color-2)]">at ({x}, {y})</p>
       </div>
     );
   },
@@ -88,6 +81,14 @@ function LogEvent({ chapter, event }: LogEventProps) {
   const Component = LogEventComponents[event.type];
   if (Component) {
     content = React.createElement(Component as any, { chapter, event });
+  }
+  else {
+    console.warn("No component found for event type", event.type, event);
+    content = (
+      <div className="text-sm text-wrap">
+        {JSON.stringify(event)}
+      </div>
+    );
   }
 
   return (

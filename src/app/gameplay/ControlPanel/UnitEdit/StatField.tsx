@@ -2,7 +2,6 @@ import React from "react";
 import NumberField from "./NumberField";
 import { Slider } from "@mui/material";
 import { IUnitRecord } from "thoron";
-import "./StatField.scss";
 import useResponsive from "@/app/utils/useResponsive";
 
 interface StatFieldProps {
@@ -32,7 +31,7 @@ function StatField({
   const showSlider = size >= sizes.MEDIUM;
 
   return (
-    <div className="stat-field">
+    <div className="flex flex-row items-end gap-2">
       {/* stat value */}
       <NumberField
         label={label}
@@ -78,7 +77,7 @@ function GrowthField({
   const showSlider = size >= sizes.MEDIUM;
 
   return (
-    <div className="stat-field growth">
+    <div className="flex flex-row items-end gap-2">
       <NumberField
         label={label}
         name={stat + "_growth"}
@@ -89,15 +88,25 @@ function GrowthField({
       {
         showSlider &&
         <Slider
+          className="alt"
           name={stat + "_growth"}
           value={data.growths[stat]}
           onChange={(e, value) => setGrowthValue(value as number)}
           min={0} max={100} step={5}
           valueLabelDisplay="auto"
           sx={{
-            color: "var(--accent-color-2)",
             width: "100px",
-            marginBottom: 1
+            marginBottom: 1,
+            "& .MuiSlider-thumb": {
+              backgroundColor: "var(--accent-color-2)",
+            },
+            "& .MuiSlider-track": {
+              backgroundColor: "var(--accent-color-2)",
+            },
+            "& .MuiSlider-rail": {
+              backgroundColor: "var(--accent-color-2)",
+              borderColor: "var(--accent-color-2)",
+            }
           }} />
       }
     </div>

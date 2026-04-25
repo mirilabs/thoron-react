@@ -36,7 +36,7 @@ abstract class ControllerState {
     this._controller = new WeakRef(controller);
     this.setState = controller.setState.bind(controller);
   }
-  
+
   addUIEventListener<K extends keyof UIEventSignatures>(
     eventId: K,
     callback: UIEventSignatures[K]
@@ -55,10 +55,30 @@ abstract class ControllerState {
     return this.controller.coords.toTiles(vec.x, vec.y);
   }
 
+  updateTargetIndicators(coords: IVector2) {
+    const { unitId } = controllerStore.getState();
+    if (unitId === null) return;
+
+    const unit = this.controller.chapter.getUnitById(unitId);
+    const unitEnt = this.controller.getUnitBody(unitId);
+    if (!unit || !unitEnt) return;
+
+    for (const target of this.controller.game.unitBodies.values()) {
+      if (target === unitEnt) continue;
+
+      const actions = unit.getPossibleActionsTo(coords, target.unit);
+      if (actions.length > 0) {
+        target.showTargetIndicator(actions[0]);
+      } else {
+        target.hideTargetIndicator();
+      }
+    }
+  }
+
   startPanning() {
     this.panning = true;
   }
- 
+
   onEnter(prevState: ControllerState) {
   }
 
@@ -76,7 +96,7 @@ abstract class ControllerState {
     }
   }
 
-  onMouseDown(event: ICursorEvent) {}
+  onMouseDown(event: ICursorEvent) { }
 
   onMouseMove(event: ICursorEvent) {
     if (this.panning) {

@@ -2,7 +2,7 @@ import GameObject from "@/engine/GameObject";
 import CoordinateConverter from "game/utils/CoordinateConverter";
 import Game from "game/Game";
 import UnitRange from "./ui/UnitMoveRange";
-import TargetIndicator from "./ui/TargetIndicator";
+import TargetIndicator, { ACTION_ICONS } from "./ui/TargetIndicator";
 import UnitPath from "./ui/UnitPath";
 import { Position, Rectangle, Sprite } from "@/engine/components";
 import controllerStore from "@/shared/store";
@@ -100,6 +100,7 @@ class UnitBody extends GameObject {
 
   showTargetIndicator(command: Command) {
     if (this.targetIndicatorEnt !== undefined) return;
+    if (!ACTION_ICONS[command]) return;
     this.targetIndicatorEnt = new TargetIndicator(this, command);
     this.targetIndicatorEnt.addToScene(this.game.scene);
   }

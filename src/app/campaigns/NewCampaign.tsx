@@ -55,7 +55,7 @@ export default function NewCampaign() {
 
   if (!isOpen) return (
     <Button variant="contained" onClick={() => setIsOpen(true)}>
-      New Game
+      New Campaign
     </Button>
   )
 

@@ -1,7 +1,8 @@
 import React from "react";
 import Chapter, { ActionResult, ChapterEvent, IAction } from "thoron";
-import CombatLogDetail from "./CombatLog/CombatLogDetail";
 import LogEvent from "./LogEvent";
+import CombatLog from "./CombatLog/CombatLog";
+import StaffLog from "./StaffLog";
 
 export interface LogActionResultProps {
   actionResult: ActionResult,
@@ -15,17 +16,10 @@ const LogActionResultComponents: Partial<{
   }) => React.ReactNode
 }> = {
   "attack": ({ actionResult, chapter }) => {
-    return <CombatLogDetail actionResult={actionResult} chapter={chapter} />;
+    return <CombatLog actionResult={actionResult} chapter={chapter} />;
   },
-  "wait": ({ actionResult, chapter }) => {
-    // only show move event
-    const moveEvent = actionResult.events.find(
-      (event: ChapterEvent) => event.type === "move"
-    );
-    if (!moveEvent) return null;
-    return (
-      <LogEvent chapter={chapter} event={moveEvent} />
-    );
+  "staff": ({ actionResult, chapter }) => {
+    return <StaffLog actionResult={actionResult} chapter={chapter} />;
   }
 }
 

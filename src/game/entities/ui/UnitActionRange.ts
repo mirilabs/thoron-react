@@ -3,18 +3,18 @@ import Game, { IGameConfig } from "../../Game";
 import CoordinateConverter from "../../utils/CoordinateConverter";
 import { IVector2 } from "@/engine/utils/Vector2";
 import DrawHandler from "@/engine/components/DrawHandler";
-import { Command } from "thoron";
+import { Command, DeployedUnit } from "thoron";
 import TilePainter from "./TilePainter";
 
 class UnitActionRange extends GameObject {
   chapter: any;
   coords: CoordinateConverter;
   config: IGameConfig;
-  unit: any;
+  unit: DeployedUnit;
   targetPos: IVector2;
   drawHandler: DrawHandler;
   command: Command;
-  
+
   constructor(game: Game, unit: any, targetPos: IVector2, command: Command) {
     super();
     this.chapter = game.chapter;
@@ -44,6 +44,30 @@ class UnitActionRange extends GameObject {
     this.paintTiles(ctx);
   }
 
+  private getActionRange(command: Command): [number, number] {
+    let min = 0;
+    let max = 0;
+    switch (command) {
+      case "attack":
+        min = this.unit.getMinAttackRange();
+        max = this.unit.getMaxAttackRange();
+        break;
+      case "staff":
+        min = this.unit.getMinStaffRange();
+        max = this.unit.getMaxStaffRange();
+        break;
+      case "trade":
+        min = 1;
+        max = 1;
+        break;
+      default:
+        min = 0;
+        max = 0;
+        break;
+    }
+    return [min, max];
+  }
+
   paintTiles(ctx: CanvasRenderingContext2D) {
     const {
       tileWidth,
@@ -53,28 +77,19 @@ class UnitActionRange extends GameObject {
 
     const painter = new TilePainter(tileWidth, tileHeight);
 
-    // paint move range
-    switch(this.command) {
-      case "attack":
-        painter.color = this.config.attackColor;
-        painter.addTiles(this.chapter.terrain.getRange(
-          this.targetPos,
-          this.unit.equipped.minRange,
-          this.unit.equipped.maxRange
-        ).getCoords());
-        break;
-      case "trade":
-        painter.color = this.config.interactColor;
-        painter.addTiles(this.chapter.terrain.getRange(
-          this.targetPos, 1
-        ).getCoords());
-        break;
-      default:
-        break;
-    }
-    
-    // paint destination tile
-    painter.addTile(this.targetPos, this.config.moveColor);
+    const commandColor = this.config.highlightColors[this.command];
+    if (!commandColor) return;
+
+    const [min, max] = this.getActionRange(this.command);
+    const coords = this.chapter.terrain
+      .getRange(this.targetPos, min, max)
+      .getCoords();
+
+    // action range
+    painter.setTiles(coords, commandColor);
+
+    // destination tile
+    painter.setTile(this.targetPos, this.config.highlightColors.move);
 
     ctx.save();
     ctx.globalAlpha = highlightAlpha;

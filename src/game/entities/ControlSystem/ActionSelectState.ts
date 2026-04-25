@@ -11,7 +11,7 @@ class ActionSelectState extends ControllerState {
   id = ControllerPhase.ACTION_SELECT;
   unitEnt: UnitPiece;
 
-  onEnter(prevState: MovingState) {
+  onEnter(prevState: ControllerState) {
     super.onEnter(prevState);
 
     this.unitEnt = this.controller.selectedUnitBody;
@@ -24,6 +24,10 @@ class ActionSelectState extends ControllerState {
     // wait for user to select action in ui
     this.addUIEventListener("select_action", this.onActionSelected);
     this.addUIEventListener("cancel", this.onCancel);
+
+    // show target indicators for potential actions from this position
+    const { destination } = controllerStore.getState().pendingMove;
+    this.updateTargetIndicators(destination);
   }
 
   onExit(nextState: ControllerState) {
@@ -51,27 +55,29 @@ class ActionSelectState extends ControllerState {
     );
 
     if (target && target !== this.unitEnt.unit) {
-      console.log(possibleActions)
       // clicked on a target
-      // if no actions on this target are possible, do nothing
       if (possibleActions.length === 0) {
+        // if no actions on this target are possible, do nothing
         return;
       }
-      // if only one action on this target is possible, select it by default
-      else if (possibleActions.length === 1) {
+      else if (
+        possibleActions.length === 1 &&
+        ["attack", "staff"].includes(possibleActions[0])
+      ) {
+        // if only one action on this target is possible,
+        // and that action is attack or staff,
+        // select it by default
         controllerStore.dispatch(actionSelected(possibleActions[0]));
         this.setState(new ActionConfirmState())
       }
-      else {
-        
-      }
 
+      // ActionSelectMenu shows possible actions to selected target
       controllerStore.dispatch(targetSelected(target.id));
     }
     else if (this.unitEnt.unit.getMoveRange().includes(tileCoords)) {
       // clicked on a tile in move range
       this.setState(new MovingState());
-      
+
       // pass mousedown event to next state
       this.controller.currentState.onMouseDown(event);
     }

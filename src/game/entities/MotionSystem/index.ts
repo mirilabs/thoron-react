@@ -5,6 +5,7 @@ import { GameController, ChapterEvent } from "thoron";
 import AsyncQueue from "./AsyncQueue";
 import AttackMotion from "./AttackMotion";
 import PhaseChangeMotion from "./PhaseChangeMotion";
+import NonCombatDamageMotion from "./NonCombatDamageMotion";
 
 class MotionSystem extends GameObject {
   game: Game;
@@ -41,6 +42,8 @@ class MotionSystem extends GameObject {
       case "combat_attack":
         let target = this.game.getUnitBody(event.targetId);
         return AttackMotion(this.game, unit, target, event);
+      case "noncombat_damage":
+        return NonCombatDamageMotion(this.game, unit, event);
       case "end_action":
         return async () => {
           unit.grayscale = true;

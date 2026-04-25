@@ -4,29 +4,25 @@ import StatView from "./StatView";
 import Inventory from "../Items/Inventory";
 import { Character } from "@/data/db";
 import { IconButton } from "@mui/material";
-import moveTypeIcons from "@/icons/movetypes";
-import MoveTypeIcon from "./MoveTypeIcon";
+import { DeployedUnit } from "thoron";
+import BasicInfoView from "./BasicInfoView";
+import CurrentStateView from "./CurrentStateView";
 
 interface UnitDetailProps {
   record: Character,
+  unit?: DeployedUnit,
   handleStartEdit?: () => void;
   handleClose?: () => void;
 }
 
-function UnitDetail(props: UnitDetailProps) {
-  const { record, handleStartEdit, handleClose } = props;
-
-  const {
-    name,
-    className,
-    stats,
-    growths,
-    items,
-  } = record;
-
-  const portraitUrl = record.portrait instanceof Blob ?
-    URL.createObjectURL(record.portrait) :
-    record.portrait;
+function UnitDetail({
+  record,
+  unit,
+  handleStartEdit,
+  handleClose
+}: UnitDetailProps) {
+  const { stats, growths, items } = record;
+  const state = unit?.state;
 
   return (
     <div className="flex flex-col gap-4">
@@ -52,36 +48,10 @@ function UnitDetail(props: UnitDetailProps) {
           </div>
         )
       }
-      <div className="flex flex-row gap-4 justify-center">
-        <img className="w-24 h-24" src={portraitUrl} alt={name} />
-        <div className="flex flex-col">
-          <div className={
-            "flex flex-row justify-between items-baseline gap-4 " +
-            "border-b border-[var(--accent-color)] pb-2 mb-2"
-          }>
-            <h1 className="text-2xl font-bold">{name}</h1>
-            <h2 className="text-lg">{className}</h2>
-          </div>
-          <div className="flex flex-row justify-between items-baseline gap-4">
-            <span className="flex flex-row gap-1">
-              <p>level</p>
-              <p>{record.level}</p>
-            </span>
-            <span className="flex flex-row gap-1">
-              <p>move</p>
-              <p>{record.movement}</p>
-              <MoveTypeIcon moveType={record.moveType} />
-            </span>
-          </div>
-          <div className="flex flex-row gap-2 items-center">
-            <p>exp</p>
-            <p>{record.exp}</p>
-            <meter className="unit-detail__exp-bar"
-              value={record.exp}
-              max={100} />
-          </div>
-        </div>
-      </div>
+      <BasicInfoView record={record} />
+      {
+        unit && <CurrentStateView unit={unit} />
+      }
       <div className="flex flex-row flex-wrap justify-around gap-8">
         <Inventory items={items} />
         <StatView stats={stats} growths={growths} />

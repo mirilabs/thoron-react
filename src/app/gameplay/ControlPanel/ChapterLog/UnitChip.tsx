@@ -6,14 +6,18 @@ import { unitSelected } from "@/shared/store";
 
 export interface UnitChipProps {
   unit: DeployedUnit | IDeploymentState
+  clickToSelect?: boolean
 }
 
-function UnitChip({ unit }: UnitChipProps) {
+function UnitChip({
+  unit,
+  clickToSelect = true
+}: UnitChipProps) {
   const dispatch = useControllerDispatch();
 
-  const handleClick = () => {
+  const handleClick = clickToSelect ? () => {
     dispatch(unitSelected(unit?.id));
-  }
+  } : undefined;
 
   if (!unit) return (
     <div className="flex flex-row gap-1">
@@ -26,12 +30,19 @@ function UnitChip({ unit }: UnitChipProps) {
     URL.createObjectURL(mapSprite) :
     mapSprite;
 
+  const className = [
+    "flex",
+    "flex-row",
+    "gap-1",
+    "items-center",
+    "rounded-md",
+    "p-1",
+    clickToSelect ? "hover:bg-[var(--bg-color)] cursor-pointer" : "",
+    "transition-colors duration-100"
+  ].join(" ");
+
   return (
-    <div onClick={handleClick} className={
-      "flex flex-row gap-1 items-center " +
-      "rounded-md p-1 " +
-      "hover:bg-[var(--bg-color)] transition-colors duration-100 cursor-pointer"
-    }>
+    <div onClick={handleClick} className={className}>
       {src &&
         <img src={src} alt={name}
           className="w-[32px] h-[32px] object-contain"

@@ -2,6 +2,7 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import DeleteButton from "../core/DeleteButton";
 import { Map } from "@/data/db";
+import useBlobUrl from "../utils/useBlobUrl";
 
 const TILE_SIZE = 64;
 
@@ -28,14 +29,7 @@ function MapDetailContent({
   onDelete: () => void,
   onEdit: () => void
 }) {
-  const background = React.useMemo(() => {
-    if (!map.background) {
-      return null;
-    }
-    const image = new Image();
-    image.src = URL.createObjectURL(map.background);
-    return image;
-  }, [map.background]);
+  const backgroundUrl = useBlobUrl(map.background);
 
   const width = map.map[0].length * TILE_SIZE;
   const height = map.map.length * TILE_SIZE;
@@ -66,14 +60,14 @@ function MapDetailContent({
           style={{ width: `${width}px`, height: `${height}px` }}
           className="relative"
         >
-          {background && (
+          {backgroundUrl && (
             <img
               className="w-full h-full"
-              src={background.src}
+              src={backgroundUrl}
               alt="background"
             />
           )}
-          {!background && (
+          {!backgroundUrl && (
             <div className={
               "flex flex-col items-center justify-center gap-4 h-full "
             }>

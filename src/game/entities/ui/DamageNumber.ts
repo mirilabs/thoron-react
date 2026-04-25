@@ -17,10 +17,11 @@ class DamageNumber extends GameObject {
   config: IGameConfig;
   size: number = INITIAL_TEXT_SIZE;
   fillStyle: string;
-  text: string;
   opacity: number = 1;
+  value: string | number;
+  text: string;
 
-  constructor(origin: Vector2, event: AttackEvent, config: IGameConfig) {
+  constructor(origin: Vector2, value: string | number, config: IGameConfig) {
     super();
 
     const position = new Position(origin.x, origin.y);
@@ -44,24 +45,23 @@ class DamageNumber extends GameObject {
       }, 75)
     ]
 
+    this.value = value;
     this.config = config;
-    this.setDrawAttributes(event);
+    this.setDrawAttributes();
   }
 
-  setDrawAttributes(event: AttackEvent): void {
-    let { damage, didHit, didCrit } = event;
-
-    if (!didHit) {
+  setDrawAttributes(): void {
+    if (typeof this.value === "number") {
+      this.fillStyle = this.value > 0 ? "red" : "#7be784";
+      this.text = Math.abs(this.value).toString();
+    }
+    else if (this.value === "MISS") {
       this.fillStyle = "gray";
       this.text = "MISS";
     }
-    else if (didCrit) {
+    else if (this.value.includes("CRIT")) {
       this.fillStyle = "yellow";
-      this.text = `CRIT ${damage}`;
-    }
-    else {
-      this.fillStyle = "red";
-      this.text = damage.toString();
+      this.text = this.value;
     }
   }
 
@@ -72,17 +72,17 @@ class DamageNumber extends GameObject {
       Vector2.UP,
       FLOATING_OFFSET_SCALE * this.config.tileWidth
     ).sum(p1);
-    
+
     let path = new MotionSequence(this.entity);
     path.addMotion((progress) => {
       // move from p0 to p1
       this.setPosition(Vector2.lerp(p0, p1, progress));
-      
+
       // increase text size
       this.size = INITIAL_TEXT_SIZE;
       this.size += progress * (FINAL_TEXT_SIZE - INITIAL_TEXT_SIZE);
     }, STATIC_DURATION, EASE.easeOutCubic);
-    
+
     path.addMotion((progress) => {
       // move from p1 to p2
       this.setPosition(Vector2.lerp(p1, p2, progress));
@@ -90,7 +90,7 @@ class DamageNumber extends GameObject {
       // fade away
       this.opacity = 1 - progress;
     }, FLOAT_DURATION);
-    
+
     path.start().then(() => this.destroy());
   }
 

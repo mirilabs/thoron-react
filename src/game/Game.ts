@@ -13,20 +13,24 @@ import GameObject from '../engine/GameObject';
 interface IGameConfig {
   tileWidth: number;
   tileHeight: number;
-  moveColor: string;
-  attackColor: string;
-  healColor: string;
-  interactColor: string;
+  highlightColors: {
+    move: string;
+    attack: string;
+    staff: string;
+    interact: string;
+  }
   highlightAlpha: number;
 }
 
 const defaultConfig: IGameConfig = {
   tileWidth: 64,
   tileHeight: 64,
-  moveColor: '#0000ff',     // blue
-  attackColor: '#ff0000',   // red
-  healColor: '#00ff00',     // green
-  interactColor: '#ff00ff',  // magenta
+  highlightColors: {
+    move: '#0000ff',    // blue
+    attack: '#ff0000',  // red
+    staff: '#00ff00',   // green
+    interact: '#ff00ff',// magenta
+  },
   highlightAlpha: 0.2,
 }
 

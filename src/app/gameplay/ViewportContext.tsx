@@ -29,6 +29,8 @@ function getWindowSize(): WindowSize {
     if (width < maxWidth)
       return size;
   }
+
+  return WindowSize.XXL;
 }
 
 function ViewportProvider({ children }: { children: React.ReactNode }) {

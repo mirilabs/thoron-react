@@ -36,34 +36,28 @@ function ChapterEdit() {
 
   return (
     <div className="flex flex-col gap-2">
-      <UnitAdd />
-      <ToggleButtonGroup
-        exclusive
-        value={editMode}
-        onChange={handleModeChange}
-      >
-        <ToggleButton value="unit_move">
-          Move Unit
-        </ToggleButton>
-        <ToggleButton value="unit_delete">
-          Delete Unit
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <UnitDelete />
+      <div className="flex flex-row items-center gap-2">
+        <UnitAdd />
+        <ToggleButtonGroup
+          exclusive
+          value={editMode}
+          onChange={handleModeChange}
+        >
+          <ToggleButton value="unit_move">
+            Move Unit
+          </ToggleButton>
+          <ToggleButton value="unit_delete">
+            Delete Unit
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <UnitDelete />
+      </div>
       <div className="flex flex-row items-center gap-2">
         <DeleteButton
-          label="Delete this chapter?"
+          label="Delete Chapter"
+          message="Delete this chapter?"
           variant="alert"
           onDelete={handleDelete}
-          button={
-            <Button
-              color="error"
-              variant="contained"
-              size="small"
-            >
-              Delete Chapter
-            </Button>
-          }
         />
       </div>
     </div>
