@@ -13,6 +13,8 @@ function InventoryQuickView() {
 
   const unit = useSelectedUnit();
   const setEquipped = (index: number) => {
+    if (!unit || !unit.canAct()) return;
+
     unit.equip(index);
     dispatch(itemSelected(index));
   }
