@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Navigation from "./app/navigation";
+
+import HomePage from "./app/home/HomePage";
 import CampaignIndex from "./app/campaigns/CampaignIndex";
 import CampaignDetail from "./app/campaigns/CampaignDetail";
 import CharactersIndex from "./app/characters/CharactersIndex";
@@ -15,7 +17,7 @@ export default function Router() {
       <ErrorBoundary>
         <div className="content">
           <Routes>
-            <Route path="/" element={<CampaignIndex />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/campaigns">
               <Route index element={<CampaignIndex />} />
               <Route path=":campaignId">
