@@ -60,6 +60,11 @@ export default function NewCampaign() {
   )
 
   return (
-    <NewCampaignForm isOpen={isOpen} setIsOpen={setIsOpen} />
+    <>
+      <Button variant="outlined">
+        New Campaign
+      </Button>
+      <NewCampaignForm isOpen={isOpen} setIsOpen={setIsOpen} />
+    </>
   )
 }
