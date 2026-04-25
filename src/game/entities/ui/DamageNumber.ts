@@ -52,8 +52,8 @@ class DamageNumber extends GameObject {
 
   setDrawAttributes(): void {
     if (typeof this.value === "number") {
-      this.fillStyle = this.value > 0 ? "red" : "green";
-      this.text = this.value.toString();
+      this.fillStyle = this.value > 0 ? "red" : "#7be784";
+      this.text = Math.abs(this.value).toString();
     }
     else if (this.value === "MISS") {
       this.fillStyle = "gray";
