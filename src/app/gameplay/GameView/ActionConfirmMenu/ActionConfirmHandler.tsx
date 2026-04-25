@@ -5,9 +5,10 @@ import {
   useControllerDispatch,
   useControllerSelector
 } from "@/app/gameplay/utils/reduxHooks";
-import { Action, Command } from "thoron";
+import { Action, applyStaffEffect, Command } from "thoron";
 import { unitSelected } from "@/shared/store";
 import { InvalidActionError } from "thoron";
+import { addAlert } from "@/app/core/Alerts";
 
 /**
  * Enables the callback to confirm the action selected in the action menu
@@ -19,24 +20,29 @@ function ActionConfirmHandler() {
   const pendingMove = useControllerSelector(state => state.pendingMove);
 
   useUIAction("confirm", () => {
-    try {
-      const action = {
-        unitId,
-        targetId: pendingMove.targetId,
-        destination: pendingMove.destination,
-        command: pendingMove.action as Command,
-        itemIndex: pendingMove.itemIndex
-      } as Action;
-      controller.pushAction(action);
+    const action = {
+      unitId,
+      targetId: pendingMove.targetId,
+      destination: pendingMove.destination,
+      command: pendingMove.action as Command,
+      itemIndex: pendingMove.itemIndex
+    } as Action;
 
-      dispatch(unitSelected(null));
+    try {
+      controller.pushAction(action);
     }
     catch (e) {
       if (e instanceof InvalidActionError) {
-        console.error(e);
+        addAlert({
+          message: e.message,
+          type: "error"
+        });
+        return;
       }
-      else throw e;
+      throw e;
     }
+
+    dispatch(unitSelected(null));
   });
 
   return null;

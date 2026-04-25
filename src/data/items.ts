@@ -69,7 +69,7 @@ export const heal: ItemRecord = {
     effect: "heal",
     targetsAlly: true,
     basePower: 10,
-    magicScale: 1/2,
+    magicCoeff: 1/2,
     minRange: 1,
     maxRange: 1
   }

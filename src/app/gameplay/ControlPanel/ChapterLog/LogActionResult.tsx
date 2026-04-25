@@ -2,6 +2,7 @@ import React from "react";
 import Chapter, { ActionResult, ChapterEvent, IAction } from "thoron";
 import LogEvent from "./LogEvent";
 import CombatLog from "./CombatLog/CombatLog";
+import StaffLog from "./StaffLog";
 
 export interface LogActionResultProps {
   actionResult: ActionResult,
@@ -16,6 +17,9 @@ const LogActionResultComponents: Partial<{
 }> = {
   "attack": ({ actionResult, chapter }) => {
     return <CombatLog actionResult={actionResult} chapter={chapter} />;
+  },
+  "staff": ({ actionResult, chapter }) => {
+    return <StaffLog actionResult={actionResult} chapter={chapter} />;
   }
 }
 

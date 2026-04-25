@@ -39,11 +39,6 @@ const LogEventComponents: Partial<{
       </div>
     );
   },
-  "noncombat_damage": () => null,
-  "combat_start": () => null,
-  "combat_end": () => null,
-  "combat_start_effect": () => null,
-  "combat_attack": () => null,
   "end_action": () => null,
   "phase_change": ({ event }) => {
     const nextPhase = event.next;
@@ -88,7 +83,12 @@ function LogEvent({ chapter, event }: LogEventProps) {
     content = React.createElement(Component as any, { chapter, event });
   }
   else {
-    return null;
+    console.warn("No component found for event type", event.type, event);
+    content = (
+      <div className="text-sm text-wrap">
+        {JSON.stringify(event)}
+      </div>
+    );
   }
 
   return (
