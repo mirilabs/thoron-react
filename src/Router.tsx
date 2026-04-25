@@ -13,7 +13,7 @@ import ErrorBoundary from "./app/core/ErrorBoundary";
 
 export default function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ErrorBoundary>
         <div className="content">
           <Routes>

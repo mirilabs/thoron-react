@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["vite/client"],
     "outDir": "./dist",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "baseUrl": "src/",
     "paths": {
-      "@/*": ["./*"],
+      "@/*": ["./*"]
     },
     "lib": ["DOM", "ESNext"],
     "downlevelIteration": true
   },
   "include": [
-    "src",
-    "types"
+    "src"
   ]
-}
+}
