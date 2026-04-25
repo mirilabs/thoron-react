@@ -11,6 +11,7 @@ interface DeleteButtonProps {
   onDelete: () => void;
   variant?: "inline" | "alert";
   message?: string;
+  label?: string;
   button?: React.ReactNode;
 }
 
@@ -54,6 +55,7 @@ function DeleteDialog({
 function DeleteButton({
   onDelete,
   variant = "inline",
+  label,
   message,
   button
 }: DeleteButtonProps) {
@@ -68,18 +70,44 @@ function DeleteButton({
     setConfirming(false);
   }
 
-  const buttonElem = button ? (
-    <div onClick={() => setConfirming(true)}>
-      {button}
-    </div>
-  ) : (
-    <IconButton
-      size="small"
-      onClick={() => setConfirming(true)}
-    >
-      <i className="fas fa-trash" />
-    </IconButton>
-  )
+  let buttonElem;
+  if (button) {
+    buttonElem = (
+      <div onClick={() => setConfirming(true)}>
+        {button}
+      </div>
+    )
+  }
+  else if (label) {
+    buttonElem = (
+      <Button
+        variant="outlined"
+        size="small"
+        onClick={() => setConfirming(true)}
+        sx={{
+          color: "var(--error-color)",
+          borderColor: "var(--error-color)",
+          "&:hover": {
+            color: "var(--error-color)",
+            borderColor: "var(--error-color)"
+          }
+        }}
+        startIcon={<i className="fas fa-trash" />}
+      >
+        {label}
+      </Button>
+    )
+  }
+  else {
+    buttonElem = (
+      <IconButton
+        size="small"
+        onClick={() => setConfirming(true)}
+      >
+        <i className="fas fa-trash" />
+      </IconButton>
+    )
+  }
 
   if (variant === "alert") {
     return (
