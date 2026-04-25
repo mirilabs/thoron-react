@@ -34,5 +34,5 @@ export default defineConfig({
     }),
     tailwindcss()
   ],
-  base: "/",
+  base: "/thoron-react/",
 });
