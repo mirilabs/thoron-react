@@ -15,7 +15,10 @@ function CampaignIndex() {
       ))}
       <div className="flex flex-col items-center gap-2">
         {campaignsCount === 0 &&
-          <i className="fas fa-arrow-down text-2xl" />
+          <>
+            <p>Click to get started!</p>
+            <i className="fas fa-arrow-down" />
+          </>
         }
         <NewCampaign />
       </div>
