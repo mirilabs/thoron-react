@@ -74,7 +74,7 @@ function UnitAddForm({ onDone, onCancel }: UnitAddFormProps) {
               onChange={(e) => setSaveToCampaign(e.target.checked)}
             />
           }
-          label="Sync to database"
+          label="Save to database"
         />
         <CharacterSelect
           campaignId={campaignId}
